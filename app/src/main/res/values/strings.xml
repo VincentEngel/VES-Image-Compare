@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">VES - Image Compare</string>
+    <string name="link_github_subsampling_scale_image_view"><a href="https://github.com/davemorrissey/subsampling-scale-image-view">Subsampling Scale Image View</a></string>
+    <string name="link_github_project"><a href="https://github.com/VincentEngel/Android-Image-Compare">VES - Android Image Compare</a></string>
+    <string name="ves_image_compare">VES - Image Compare</string>
+    <string name="github_project">GitHub Project</string>
+    <string name="used_library">Used Library</string>
+    <string name="todo">TODO</string>
+    <string name="first_image">First Image</string>
+    <string name="second_image">Second Image</string>
+    <string name="transparent">Transparent</string>
+    <string name="side_by_side">Side by Side</string>
+    <string name="overlay_slide">Overlay Slide</string>
+    <string name="overlay_tap">Overlay Tap</string>
+    <string name="app_icon">App Icon</string>
+    <string name="link_app_icon"><a href="https://github.com/google/material-design-icons">Google - Material Design Icons</a></string>
+    <string name="color_theme">Color Theme</string>
+    <string name="link_color_theme"><a href="https://github.com/SimpleMobileTools/Simple-Calendar">Simple Calendar</a></string>
+</resources>

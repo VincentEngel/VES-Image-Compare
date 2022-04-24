@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#303030"
+    tools:context=".InfoActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/info_text_view_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/ves_image_compare"
+                android:textSize="34sp" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/info_text_view_github_project"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="15dp"
+                            android:text="@string/github_project"
+                            android:textSize="16sp" />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/info_text_view_link_github_project"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="15dp"
+                            android:paddingBottom="15dp"
+                            android:text="@string/link_github_project"
+                            android:textSize="16sp" />
+                    </FrameLayout>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/info_text_view_library"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="15dp"
+                            android:text="@string/used_library"
+                            android:textSize="16sp" />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/info_text_view_link_library"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="15dp"
+                            android:paddingBottom="15dp"
+                            android:text="@string/link_github_subsampling_scale_image_view"
+                            android:textSize="16sp" />
+                    </FrameLayout>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/info_text_view_color_theme"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="15dp"
+                            android:text="@string/color_theme"
+                            android:textSize="16sp" />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/info_text_view_link_color_theme"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="15dp"
+                            android:paddingBottom="15dp"
+                            android:text="@string/link_color_theme"
+                            android:textSize="16sp" />
+                    </FrameLayout>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/info_text_view_app_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="15dp"
+                            android:text="@string/app_icon"
+                            android:textSize="16sp" />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/info_text_view_link_app_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="15dp"
+                            android:paddingBottom="15dp"
+                            android:text="@string/link_app_icon"
+                            android:textSize="16sp" />
+                    </FrameLayout>
+                </TableRow>
+
+            </TableLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

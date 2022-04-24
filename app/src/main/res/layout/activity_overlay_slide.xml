@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#303030"
+    android:keepScreenOn="true"
+    tools:context=".OverlaySlideActivity">
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/overlay_slide_image_view_base"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            tools:srcCompat="@tools:sample/backgrounds/scenic"
+            android:contentDescription="@string/todo" />
+
+        <ImageView
+            android:id="@+id/overlay_slide_image_view_front"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            tools:srcCompat="@tools:sample/backgrounds/scenic"
+            android:contentDescription="@string/todo" />
+
+    </FrameLayout>
+
+    <ImageButton
+        android:id="@+id/overlay_slide_button_swap_seekbar"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:backgroundTint="#F57C00"
+        android:contentDescription="@string/todo"
+        app:layout_constraintBottom_toTopOf="@+id/overlay_slide_seek_bar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@android:drawable/stat_notify_sync_noanim"
+        tools:ignore="ImageContrastCheck,DuplicateSpeakableTextCheck" />
+
+    <SeekBar
+        android:id="@+id/overlay_slide_seek_bar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
