@@ -1,11 +1,5 @@
 package com.vincentengelsoftware.androidimagecompare;
 
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
@@ -16,6 +10,11 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
     public static final String KEY_URI_IMAGE_FIRST = "key.uri.image.first";
@@ -78,12 +77,9 @@ public class MainActivity extends AppCompatActivity {
                 OverlayTransparentActivity.class
         );
 
-        findViewById(R.id.home_button_info).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), InfoActivity.class);
-                startActivity(intent);
-            }
+        findViewById(R.id.home_button_info).setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), InfoActivity.class);
+            startActivity(intent);
         });
 
         findViewById(R.id.frame_layout_image_right).setOnTouchListener(new View.OnTouchListener() {
@@ -117,64 +113,52 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.home_button_swap_images).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Uri temp = uri_image_first;
-                uri_image_first = uri_image_second;
-                uri_image_second = temp;
+        findViewById(R.id.home_button_swap_images).setOnClickListener(view -> {
+            Uri temp = uri_image_first;
+            uri_image_first = uri_image_second;
+            uri_image_second = temp;
 
-                ImageView image_first = findViewById(R.id.home_image_first);
-                image_first.setImageURI(uri_image_first);
+            ImageView image_first = findViewById(R.id.home_image_first);
+            image_first.setImageURI(uri_image_first);
 
-                ImageView image_second = findViewById(R.id.home_image_second);
-                image_second.setImageURI(uri_image_second);
-            }
+            ImageView image_second = findViewById(R.id.home_image_second);
+            image_second.setImageURI(uri_image_second);
         });
     }
 
     private void addButtonChangeActivityLogic(Button btn, Class<?> targetActivity)
     {
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (uri_image_first == null || uri_image_second == null) {
-                    return;
-                }
-
-                Intent intent = new Intent(getApplicationContext(), targetActivity);
-                intent.putExtra(KEY_URI_IMAGE_FIRST, uri_image_first.toString());
-                intent.putExtra(KEY_URI_IMAGE_SECOND, uri_image_second.toString());
-                startActivity(intent);
+        btn.setOnClickListener(view -> {
+            if (uri_image_first == null || uri_image_second == null) {
+                return;
             }
+
+            Intent intent = new Intent(getApplicationContext(), targetActivity);
+            intent.putExtra(KEY_URI_IMAGE_FIRST, uri_image_first.toString());
+            intent.putExtra(KEY_URI_IMAGE_SECOND, uri_image_second.toString());
+            startActivity(intent);
         });
     }
 
     private void addLoadImageLogic(ImageView imageView, String image) {
         ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
-                new ActivityResultCallback<Uri>() {
-                    @Override
-                    public void onActivityResult(Uri uri) {
-                        if (uri == null) {
-                            return;
-                        }
-
-                        // TODO this is ugly
-                        if (image.equals(KEY_URI_IMAGE_FIRST)) {
-                            uri_image_first = uri;
-                        } else {
-                            uri_image_second = uri;
-                        }
-                        imageView.setImageURI(uri);
+                uri -> {
+                    if (uri == null) {
+                        return;
                     }
+
+                    // TODO this is ugly
+                    if (image.equals(KEY_URI_IMAGE_FIRST)) {
+                        uri_image_first = uri;
+                    } else {
+                        uri_image_second = uri;
+                    }
+                    imageView.setImageURI(uri);
                 });
 
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Pass in the mime type you'd like to allow the user to select as the input
-                mGetContent.launch("image/*");
-            }
+        imageView.setOnClickListener(view -> {
+            // Pass in the mime type you'd like to allow the user to select as the input
+            mGetContent.launch("image/*");
         });
     }
 

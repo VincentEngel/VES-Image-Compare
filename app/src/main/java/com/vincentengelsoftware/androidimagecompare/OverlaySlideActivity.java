@@ -1,17 +1,16 @@
 package com.vincentengelsoftware.androidimagecompare;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.SeekBar;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.vincentengelsoftware.androidimagecompare.helper.SlideHelper;
 
@@ -60,17 +59,14 @@ public class OverlaySlideActivity extends AppCompatActivity {
         addSeekbarLogic(seekBar, image_front);
         seekBar.setProgress(50);
 
-        findViewById(R.id.overlay_slide_button_swap_seekbar).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                leftToRight = !leftToRight;
-                int progress = 50;
-                // onProgressChanged is not triggered if setProgress is called with current progress
-                if (seekBar.getProgress() == progress) {
-                    progress = 51;
-                }
-                seekBar.setProgress(progress);
+        findViewById(R.id.overlay_slide_button_swap_seekbar).setOnClickListener(view -> {
+            leftToRight = !leftToRight;
+            int progress = 50;
+            // onProgressChanged is not triggered if setProgress is called with current progress
+            if (seekBar.getProgress() == progress) {
+                progress = 51;
             }
+            seekBar.setProgress(progress);
         });
     }
 
