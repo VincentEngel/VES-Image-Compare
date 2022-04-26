@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
 public class TapHelperTest {
 
     @Test
-    public void testSetOnClickListener() {
+    public void setOnClickListener() {
         ImageView imageViewOne = new ImageView(ApplicationProvider.getApplicationContext());
         ImageView imageViewTwo = new ImageView(ApplicationProvider.getApplicationContext());
         imageViewOne.setVisibility(View.VISIBLE);
