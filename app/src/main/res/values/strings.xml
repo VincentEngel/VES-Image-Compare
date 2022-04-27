@@ -5,7 +5,6 @@
     <string name="ves_image_compare">VES - Image Compare</string>
     <string name="github_project">GitHub Project</string>
     <string name="used_library">Used Library</string>
-    <string name="todo">TODO</string>
     <string name="first_image">First Image</string>
     <string name="second_image">Second Image</string>
     <string name="transparent">Transparent</string>
@@ -16,4 +15,11 @@
     <string name="link_app_icon"><a href="https://github.com/google/material-design-icons">Google - Material Design Icons</a></string>
     <string name="color_theme">Color Theme</string>
     <string name="link_color_theme"><a href="https://github.com/SimpleMobileTools/Simple-Calendar">Simple Calendar</a></string>
+    <string name="switch_slide_direction">Switch slide direction</string>
+    <string name="background_image">Background image</string>
+    <string name="front_image">Front image</string>
+    <string name="show_information">Show information</string>
+    <string name="swap_images">Swap images</string>
+    <string name="first_image_label">First image label</string>
+    <string name="second_image_label">Second image label</string>
 </resources>

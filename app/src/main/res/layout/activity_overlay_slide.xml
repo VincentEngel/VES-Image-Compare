@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             tools:srcCompat="@tools:sample/backgrounds/scenic"
-            android:contentDescription="@string/todo" />
+            android:contentDescription="@string/background_image" />
 
         <ImageView
             android:id="@+id/overlay_slide_image_view_front"
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             tools:srcCompat="@tools:sample/backgrounds/scenic"
-            android:contentDescription="@string/todo" />
+            android:contentDescription="@string/front_image" />
 
     </FrameLayout>
 
@@ -37,7 +37,7 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:backgroundTint="#F57C00"
-        android:contentDescription="@string/todo"
+        android:contentDescription="@string/switch_slide_direction"
         app:layout_constraintBottom_toTopOf="@+id/overlay_slide_seek_bar"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@android:drawable/stat_notify_sync_noanim"

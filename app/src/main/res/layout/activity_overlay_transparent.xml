@@ -20,7 +20,7 @@
             android:layout_gravity="center"
             android:background="@android:color/transparent"
             tools:srcCompat="@tools:sample/backgrounds/scenic"
-            android:contentDescription="@string/todo" />
+            android:contentDescription="@string/first_image" />
 
         <ImageView
             android:id="@+id/overlay_transparent_image_view_transparent"
@@ -30,7 +30,7 @@
             android:alpha="0.50"
             android:background="@android:color/transparent"
             tools:srcCompat="@tools:sample/backgrounds/scenic"
-            android:contentDescription="@string/todo" />
+            android:contentDescription="@string/second_image" />
 
     </FrameLayout>
 
