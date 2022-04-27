@@ -20,6 +20,4 @@
     <string name="front_image">Front image</string>
     <string name="show_information">Show information</string>
     <string name="swap_images">Swap images</string>
-    <string name="first_image_label">First image label</string>
-    <string name="second_image_label">Second image label</string>
 </resources>

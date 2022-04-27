@@ -13,12 +13,12 @@ import android.widget.SeekBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.vincentengelsoftware.androidimagecompare.helper.SlideHelper;
+import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
 
 public class OverlaySlideActivity extends AppCompatActivity {
     private Bitmap bitmapSource;
 
-    // Just swap images???
-    private boolean leftToRight = true;
+    private final UtilMutableBoolean leftToRight = new UtilMutableBoolean();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,80 +56,13 @@ public class OverlaySlideActivity extends AppCompatActivity {
         }
 
         SeekBar seekBar = findViewById(R.id.overlay_slide_seek_bar);
-        addSeekbarLogic(seekBar, image_front);
+        SlideHelper.addSeekbarLogic(seekBar, image_front, leftToRight, bitmapSource);
         seekBar.setProgress(50);
 
-        findViewById(R.id.overlay_slide_button_swap_seekbar).setOnClickListener(view -> {
-            leftToRight = !leftToRight;
-            int progress = 50;
-            // onProgressChanged is not triggered if setProgress is called with current progress
-            if (seekBar.getProgress() == progress) {
-                progress = 51;
-            }
-            seekBar.setProgress(progress);
-        });
-    }
-
-    // TODO move to helper class
-    private void addSeekbarLogic(SeekBar seekBar, ImageView image_front)
-    {
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                int width = bitmapSource.getWidth() * i / 100;
-
-                if (width == 0) {
-                    width = 1;
-                }
-
-                Bitmap bitmapCopy = bitmapSource.copy(bitmapSource.getConfig(), true);
-
-                int[] pixels = new int[bitmapSource.getHeight()*bitmapSource.getWidth()];
-                bitmapSource.getPixels(
-                        pixels,
-                        0,
-                        bitmapSource.getWidth(),
-                        0,
-                        0,
-                        bitmapSource.getWidth(),
-                        bitmapSource.getHeight()
-                );
-
-                if (leftToRight) {
-                    for (int x = width; x < bitmapSource.getWidth(); x++) {
-                        for (int y = 0; y < bitmapSource.getHeight(); y++) {
-                            pixels[x + (y * bitmapSource.getWidth())] = Color.alpha(Color.TRANSPARENT);
-                        }
-                    }
-                } else {
-                    for (int x = 0; x < width; x++) {
-                        for (int y = 0; y < bitmapSource.getHeight(); y++) {
-                            pixels[x + (y * bitmapSource.getWidth())] = Color.alpha(Color.TRANSPARENT);
-                        }
-                    }
-                }
-
-                bitmapCopy.setPixels(
-                        pixels,
-                        0,
-                        bitmapSource.getWidth(),
-                        0,
-                        0,
-                        bitmapSource.getWidth(),
-                        bitmapSource.getHeight()
-                );
-
-                image_front.setImageBitmap(bitmapCopy);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-            }
-        });
+        SlideHelper.setSwapSlideDirectionOnClick(
+                findViewById(R.id.overlay_slide_button_swap_seekbar),
+                seekBar,
+                leftToRight
+        );
     }
 }
