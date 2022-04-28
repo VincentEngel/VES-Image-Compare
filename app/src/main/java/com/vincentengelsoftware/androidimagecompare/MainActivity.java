@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MotionEvent;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -55,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         pressedTime = System.currentTimeMillis();
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void setUpActivityButtons()
     {
         addButtonChangeActivityLogic(
@@ -82,35 +82,32 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        findViewById(R.id.frame_layout_image_right).setOnTouchListener(new View.OnTouchListener() {
-            @SuppressLint("ClickableViewAccessibility")
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN){
-                    int x = (int) event.getX();
-                    int y = (int) event.getY();
+        findViewById(R.id.frame_layout_image_right).setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_DOWN){
+                int x = (int) event.getX();
+                int y = (int) event.getY();
 
-                    int[] imageButtonLocation = new int[2];
-                    ImageButton imageButton = findViewById(R.id.home_button_swap_images);
-                    imageButton.getLocationOnScreen(imageButtonLocation);
+                int[] imageButtonLocation = new int[2];
+                ImageButton imageButton = findViewById(R.id.home_button_swap_images);
+                imageButton.getLocationOnScreen(imageButtonLocation);
 
-                    int[] viewLocation = new int[2];
-                    v.getLocationOnScreen(viewLocation);
+                int[] viewLocation = new int[2];
+                v.getLocationOnScreen(viewLocation);
 
 
-                    imageButtonLocation[0] = imageButtonLocation[0] - viewLocation[0];
-                    imageButtonLocation[1] = imageButtonLocation[1] - viewLocation[1];
+                imageButtonLocation[0] = imageButtonLocation[0] - viewLocation[0];
+                imageButtonLocation[1] = imageButtonLocation[1] - viewLocation[1];
 
-                    if (
-                            x >= imageButtonLocation[0]
-                                    && x <= (imageButtonLocation[0] + imageButton.getWidth())
-                                    && y >= imageButtonLocation[1]
-                                    && y <= (imageButtonLocation[1] + imageButton.getHeight())
-                    ) {
-                        findViewById(R.id.home_button_swap_images).callOnClick();
-                    }
+                if (
+                        x >= imageButtonLocation[0]
+                                && x <= (imageButtonLocation[0] + imageButton.getWidth())
+                                && y >= imageButtonLocation[1]
+                                && y <= (imageButtonLocation[1] + imageButton.getHeight())
+                ) {
+                    findViewById(R.id.home_button_swap_images).callOnClick();
                 }
-                return true;
             }
+            return true;
         });
 
         findViewById(R.id.home_button_swap_images).setOnClickListener(view -> {

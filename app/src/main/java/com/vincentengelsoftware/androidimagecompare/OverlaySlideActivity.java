@@ -1,17 +1,16 @@
 package com.vincentengelsoftware.androidimagecompare;
 
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.vincentengelsoftware.androidimagecompare.helper.FullScreenHelper;
 import com.vincentengelsoftware.androidimagecompare.helper.SlideHelper;
 import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
 
@@ -24,10 +23,7 @@ public class OverlaySlideActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.getWindow().setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN
-        );
+        FullScreenHelper.setFullScreenFlags(this.getWindow());
 
         setContentView(R.layout.activity_overlay_slide);
 

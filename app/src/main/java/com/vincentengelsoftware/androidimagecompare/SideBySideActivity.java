@@ -1,13 +1,13 @@
 package com.vincentengelsoftware.androidimagecompare;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.WindowManager;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
+import com.vincentengelsoftware.androidimagecompare.helper.FullScreenHelper;
 
 public class SideBySideActivity extends AppCompatActivity {
 
@@ -15,10 +15,7 @@ public class SideBySideActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.getWindow().setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN
-        );
+        FullScreenHelper.setFullScreenFlags(this.getWindow());
 
         setContentView(R.layout.activity_side_by_side);
 

@@ -5,9 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageView;
 
+import com.vincentengelsoftware.androidimagecompare.helper.FullScreenHelper;
 import com.vincentengelsoftware.androidimagecompare.helper.TapHelper;
 
 public class OverlayTapActivity extends AppCompatActivity {
@@ -15,10 +15,7 @@ public class OverlayTapActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.getWindow().setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN
-        );
+        FullScreenHelper.setFullScreenFlags(this.getWindow());
 
         setContentView(R.layout.activity_overlay_tap);
 
