@@ -1,12 +1,9 @@
 package com.vincentengelsoftware.androidimagecompare;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -36,12 +33,12 @@ public class MainActivity extends AppCompatActivity {
 
         addLoadImageLogic(
                 findViewById(R.id.home_image_first),
-                KEY_URI_IMAGE_FIRST
+                uri_image_first
         );
 
         addLoadImageLogic(
                 findViewById(R.id.home_image_second),
-                KEY_URI_IMAGE_SECOND
+                uri_image_second
         );
     }
 
@@ -112,19 +109,14 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void addLoadImageLogic(ImageView imageView, String image) {
+    private void addLoadImageLogic(ImageView imageView, UtilMutableUri mutableUri) {
         ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
                 uri -> {
                     if (uri == null) {
                         return;
                     }
 
-                    // TODO this is ugly
-                    if (image.equals(KEY_URI_IMAGE_FIRST)) {
-                        uri_image_first.uri = uri;
-                    } else {
-                        uri_image_second.uri = uri;
-                    }
+                    mutableUri.uri = uri;
                     imageView.setImageURI(uri);
                 });
 

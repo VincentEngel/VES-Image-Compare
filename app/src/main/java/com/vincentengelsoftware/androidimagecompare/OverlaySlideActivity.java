@@ -27,14 +27,16 @@ public class OverlaySlideActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_overlay_slide);
 
+        Uri uriSecondImage = Uri.parse(
+                getIntent().getStringExtra(MainActivity.KEY_URI_IMAGE_SECOND)
+        );
+
         ImageView image_base = findViewById(R.id.overlay_slide_image_view_base);
         image_base.setImageURI(
                 Uri.parse(getIntent().getStringExtra(MainActivity.KEY_URI_IMAGE_FIRST))
         );
         ImageView image_front = findViewById(R.id.overlay_slide_image_view_front);
-        image_front.setImageURI(
-                Uri.parse(getIntent().getStringExtra(MainActivity.KEY_URI_IMAGE_SECOND))
-        );
+        image_front.setImageURI(uriSecondImage);
 
         try {
             Point size = new Point();
@@ -42,7 +44,7 @@ public class OverlaySlideActivity extends AppCompatActivity {
             bitmapSource = SlideHelper.resizeBitmap(
                     MediaStore.Images.Media.getBitmap(
                             this.getContentResolver(),
-                            Uri.parse(getIntent().getStringExtra(MainActivity.KEY_URI_IMAGE_SECOND))
+                            uriSecondImage
                     ),
                     size.x,
                     size.y
