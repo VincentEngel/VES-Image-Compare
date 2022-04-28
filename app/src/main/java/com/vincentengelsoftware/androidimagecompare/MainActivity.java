@@ -15,12 +15,15 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.vincentengelsoftware.androidimagecompare.helper.MainHelper;
+import com.vincentengelsoftware.androidimagecompare.util.UtilMutableUri;
+
 public class MainActivity extends AppCompatActivity {
     public static final String KEY_URI_IMAGE_FIRST = "key.uri.image.first";
     public static final String KEY_URI_IMAGE_SECOND = "key.uri.image.second";
 
-    protected Uri uri_image_first;
-    protected Uri uri_image_second;
+    protected UtilMutableUri uri_image_first = new UtilMutableUri();
+    protected UtilMutableUri uri_image_second = new UtilMutableUri();
 
     private long pressedTime;
 
@@ -54,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
         pressedTime = System.currentTimeMillis();
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     private void setUpActivityButtons()
     {
         addButtonChangeActivityLogic(
@@ -82,57 +84,30 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        findViewById(R.id.frame_layout_image_right).setOnTouchListener((v, event) -> {
-            if (event.getAction() == MotionEvent.ACTION_DOWN){
-                int x = (int) event.getX();
-                int y = (int) event.getY();
+        MainHelper.passClickToUnderlyingView(
+                findViewById(R.id.frame_layout_image_right),
+                findViewById(R.id.home_button_swap_images)
+        );
 
-                int[] imageButtonLocation = new int[2];
-                ImageButton imageButton = findViewById(R.id.home_button_swap_images);
-                imageButton.getLocationOnScreen(imageButtonLocation);
-
-                int[] viewLocation = new int[2];
-                v.getLocationOnScreen(viewLocation);
-
-
-                imageButtonLocation[0] = imageButtonLocation[0] - viewLocation[0];
-                imageButtonLocation[1] = imageButtonLocation[1] - viewLocation[1];
-
-                if (
-                        x >= imageButtonLocation[0]
-                                && x <= (imageButtonLocation[0] + imageButton.getWidth())
-                                && y >= imageButtonLocation[1]
-                                && y <= (imageButtonLocation[1] + imageButton.getHeight())
-                ) {
-                    findViewById(R.id.home_button_swap_images).callOnClick();
-                }
-            }
-            return true;
-        });
-
-        findViewById(R.id.home_button_swap_images).setOnClickListener(view -> {
-            Uri temp = uri_image_first;
-            uri_image_first = uri_image_second;
-            uri_image_second = temp;
-
-            ImageView image_first = findViewById(R.id.home_image_first);
-            image_first.setImageURI(uri_image_first);
-
-            ImageView image_second = findViewById(R.id.home_image_second);
-            image_second.setImageURI(uri_image_second);
-        });
+        MainHelper.addSwapImageLogic(
+                findViewById(R.id.home_button_swap_images),
+                uri_image_first,
+                uri_image_second,
+                findViewById(R.id.home_image_first),
+                findViewById(R.id.home_image_second)
+        );
     }
 
     private void addButtonChangeActivityLogic(Button btn, Class<?> targetActivity)
     {
         btn.setOnClickListener(view -> {
-            if (uri_image_first == null || uri_image_second == null) {
+            if (uri_image_first.uri == null || uri_image_second.uri == null) {
                 return;
             }
 
             Intent intent = new Intent(getApplicationContext(), targetActivity);
-            intent.putExtra(KEY_URI_IMAGE_FIRST, uri_image_first.toString());
-            intent.putExtra(KEY_URI_IMAGE_SECOND, uri_image_second.toString());
+            intent.putExtra(KEY_URI_IMAGE_FIRST, uri_image_first.uri.toString());
+            intent.putExtra(KEY_URI_IMAGE_SECOND, uri_image_second.uri.toString());
             startActivity(intent);
         });
     }
@@ -146,9 +121,9 @@ public class MainActivity extends AppCompatActivity {
 
                     // TODO this is ugly
                     if (image.equals(KEY_URI_IMAGE_FIRST)) {
-                        uri_image_first = uri;
+                        uri_image_first.uri = uri;
                     } else {
-                        uri_image_second = uri;
+                        uri_image_second.uri = uri;
                     }
                     imageView.setImageURI(uri);
                 });
@@ -167,26 +142,26 @@ public class MainActivity extends AppCompatActivity {
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         if (savedInstanceState.getString(KEY_URI_IMAGE_FIRST) != null) {
             ImageView imageView = findViewById(R.id.home_image_first);
-            uri_image_first = Uri.parse(savedInstanceState.getString(KEY_URI_IMAGE_FIRST));
-            imageView.setImageURI(uri_image_first);
+            uri_image_first.uri = Uri.parse(savedInstanceState.getString(KEY_URI_IMAGE_FIRST));
+            imageView.setImageURI(uri_image_first.uri);
         }
 
         if (savedInstanceState.getString(KEY_URI_IMAGE_SECOND) != null) {
             ImageView imageView = findViewById(R.id.home_image_second);
-            uri_image_second = Uri.parse(savedInstanceState.getString(KEY_URI_IMAGE_SECOND));
-            imageView.setImageURI(uri_image_second);
+            uri_image_second.uri = Uri.parse(savedInstanceState.getString(KEY_URI_IMAGE_SECOND));
+            imageView.setImageURI(uri_image_second.uri);
         }
     }
 
 
     // invoked when the activity may be temporarily destroyed, save the instance state here
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        if (uri_image_first != null) {
-            outState.putString(KEY_URI_IMAGE_FIRST, uri_image_first.toString());
+        if (uri_image_first.uri != null) {
+            outState.putString(KEY_URI_IMAGE_FIRST, uri_image_first.uri.toString());
         }
 
-        if (uri_image_second != null) {
-            outState.putString(KEY_URI_IMAGE_SECOND, uri_image_second.toString());
+        if (uri_image_second.uri != null) {
+            outState.putString(KEY_URI_IMAGE_SECOND, uri_image_second.uri.toString());
         }
 
         // call superclass to save any view hierarchy
