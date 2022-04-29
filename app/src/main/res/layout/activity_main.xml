@@ -157,7 +157,7 @@
 
                 <Button
                     android:id="@+id/button_overlay_slide"
-                    android:layout_width="187dp"
+                    android:layout_width="188dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:layout_marginVertical="24dp"
@@ -173,7 +173,7 @@
 
                 <Button
                     android:id="@+id/button_overlay_tap"
-                    android:layout_width="187dp"
+                    android:layout_width="188dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:layout_marginVertical="24dp"
@@ -195,7 +195,7 @@
 
                 <Button
                     android:id="@+id/button_overlay_transparent"
-                    android:layout_width="187dp"
+                    android:layout_width="188dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:layout_marginVertical="24dp"
@@ -211,7 +211,7 @@
 
                 <Button
                     android:id="@+id/button_side_by_side"
-                    android:layout_width="187dp"
+                    android:layout_width="188dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:layout_marginVertical="24dp"
