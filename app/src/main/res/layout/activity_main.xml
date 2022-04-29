@@ -25,8 +25,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:paddingTop="20dp"
-                    android:paddingBottom="10dp"
+                    android:paddingTop="48dp"
+                    android:paddingBottom="48dp"
                     android:text="@string/ves_image_compare"
                     android:textSize="24sp" />
 
@@ -35,7 +35,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="38dp"
                     android:layout_marginEnd="10dp"
                     android:backgroundTint="#F57C00"
                     android:contentDescription="@string/show_information"
@@ -157,14 +157,14 @@
 
                 <Button
                     android:id="@+id/button_overlay_slide"
-                    android:layout_width="wrap_content"
+                    android:layout_width="187dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:layout_marginVertical="24dp"
                     android:layout_marginEnd="12dp"
-                    android:textSize="22sp"
                     android:text="@string/overlay_slide"
-                    android:textAllCaps="false" />
+                    android:textAllCaps="false"
+                    android:textSize="22sp" />
             </FrameLayout>
 
             <FrameLayout
@@ -173,14 +173,14 @@
 
                 <Button
                     android:id="@+id/button_overlay_tap"
-                    android:layout_width="wrap_content"
+                    android:layout_width="187dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:layout_marginVertical="24dp"
                     android:layout_marginStart="12dp"
-                    android:textSize="22sp"
                     android:text="@string/overlay_tap"
-                    android:textAllCaps="false" />
+                    android:textAllCaps="false"
+                    android:textSize="22sp" />
             </FrameLayout>
 
         </TableRow>
@@ -195,14 +195,14 @@
 
                 <Button
                     android:id="@+id/button_overlay_transparent"
-                    android:layout_width="wrap_content"
+                    android:layout_width="187dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:layout_marginVertical="24dp"
                     android:layout_marginEnd="12dp"
-                    android:textSize="22sp"
                     android:text="@string/transparent"
-                    android:textAllCaps="false" />
+                    android:textAllCaps="false"
+                    android:textSize="22sp" />
             </FrameLayout>
 
             <FrameLayout
@@ -211,14 +211,14 @@
 
                 <Button
                     android:id="@+id/button_side_by_side"
-                    android:layout_width="wrap_content"
+                    android:layout_width="187dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:layout_marginVertical="24dp"
                     android:layout_marginStart="12dp"
-                    android:textSize="22sp"
                     android:text="@string/side_by_side"
-                    android:textAllCaps="false" />
+                    android:textAllCaps="false"
+                    android:textSize="22sp" />
             </FrameLayout>
 
         </TableRow>
