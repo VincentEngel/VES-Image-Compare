@@ -1,13 +1,18 @@
 package com.vincentengelsoftware.androidimagecompare.helper;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
-import android.net.Uri;
+import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.view.MotionEvent;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
-import com.vincentengelsoftware.androidimagecompare.util.UtilMutableUri;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import com.vincentengelsoftware.androidimagecompare.util.ImageHolder;
 
 public class MainHelper {
     @SuppressLint("ClickableViewAccessibility")
@@ -43,19 +48,34 @@ public class MainHelper {
 
     public static void addSwapImageLogic(
             ImageButton imageButton,
-            UtilMutableUri mutableUriOne,
-            UtilMutableUri mutableUriTwo,
+            ImageHolder mutableUriOne,
+            ImageHolder mutableUriTwo,
             ImageView imageViewOne,
             ImageView imageViewTwo
     ) {
         imageButton.setOnClickListener(view -> {
-            Uri temp = mutableUriOne.uri;
-            mutableUriOne.uri = mutableUriTwo.uri;
-            mutableUriTwo.uri = temp;
+            ImageHolder imageHolder = new ImageHolder();
+            imageHolder.updateFromImageHolder(mutableUriOne);
+            mutableUriOne.updateFromImageHolder(mutableUriTwo);
+            mutableUriTwo.updateFromImageHolder(imageHolder);
 
-            imageViewOne.setImageURI(mutableUriOne.uri);
-
-            imageViewTwo.setImageURI(mutableUriTwo.uri);
+            imageViewOne.setImageBitmap(mutableUriOne.bitmapSmall);
+            imageViewTwo.setImageBitmap(mutableUriTwo.bitmapSmall);
         });
+    }
+
+    public static void requestPermission(final Activity context)
+    {
+        ActivityCompat.requestPermissions(
+                context,
+                new String[]{Manifest.permission.CAMERA},
+                1
+        );
+    }
+
+    public static boolean checkPermission(final Activity context)
+    {
+        return ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_GRANTED;
     }
 }

@@ -1,6 +1,7 @@
 package com.vincentengelsoftware.androidimagecompare;
 
 import android.content.Intent;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
@@ -10,17 +11,21 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 import com.vincentengelsoftware.androidimagecompare.helper.MainHelper;
-import com.vincentengelsoftware.androidimagecompare.util.UtilMutableUri;
+import com.vincentengelsoftware.androidimagecompare.util.ImageHolder;
+
+import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
     public static final String KEY_URI_IMAGE_FIRST = "key.uri.image.first";
     public static final String KEY_URI_IMAGE_SECOND = "key.uri.image.second";
 
-    protected UtilMutableUri uri_image_first = new UtilMutableUri();
-    protected UtilMutableUri uri_image_second = new UtilMutableUri();
+    protected ImageHolder image_holder_first = new ImageHolder();
+    protected ImageHolder image_holder_second = new ImageHolder();
 
     private long pressedTime;
 
@@ -33,12 +38,12 @@ public class MainActivity extends AppCompatActivity {
 
         addLoadImageLogic(
                 findViewById(R.id.home_image_first),
-                uri_image_first
+                image_holder_first
         );
 
         addLoadImageLogic(
                 findViewById(R.id.home_image_second),
-                uri_image_second
+                image_holder_second
         );
     }
 
@@ -88,8 +93,8 @@ public class MainActivity extends AppCompatActivity {
 
         MainHelper.addSwapImageLogic(
                 findViewById(R.id.home_button_swap_images),
-                uri_image_first,
-                uri_image_second,
+                image_holder_first,
+                image_holder_second,
                 findViewById(R.id.home_image_first),
                 findViewById(R.id.home_image_second)
         );
@@ -98,31 +103,72 @@ public class MainActivity extends AppCompatActivity {
     private void addButtonChangeActivityLogic(Button btn, Class<?> targetActivity)
     {
         btn.setOnClickListener(view -> {
-            if (uri_image_first.uri == null || uri_image_second.uri == null) {
+            if (image_holder_first.uri == null || image_holder_second.uri == null) {
                 return;
             }
 
             Intent intent = new Intent(getApplicationContext(), targetActivity);
-            intent.putExtra(KEY_URI_IMAGE_FIRST, uri_image_first.uri.toString());
-            intent.putExtra(KEY_URI_IMAGE_SECOND, uri_image_second.uri.toString());
+            intent.putExtra(KEY_URI_IMAGE_FIRST, image_holder_first.uri.toString());
+            intent.putExtra(KEY_URI_IMAGE_SECOND, image_holder_second.uri.toString());
             startActivity(intent);
         });
     }
 
-    private void addLoadImageLogic(ImageView imageView, UtilMutableUri mutableUri) {
-        ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
+    private void addLoadImageLogic(ImageView imageView, ImageHolder imageHolder) {
+        ActivityResultLauncher<String> mGetContentGallery = registerForActivityResult(
+                new ActivityResultContracts.GetContent(),
                 uri -> {
                     if (uri == null) {
                         return;
                     }
 
-                    mutableUri.uri = uri;
-                    imageView.setImageURI(uri);
+                    Point size = new Point();
+                    getWindowManager().getDefaultDisplay().getSize(size);
+                    imageHolder.updateFromUri(uri, this.getContentResolver(), size);
+                    imageView.setImageBitmap(imageHolder.bitmapSmall);
                 });
 
+
+        File temp = null;
+
+        try {
+            temp = File.createTempFile("camera_image", null, this.getCacheDir());
+        } catch (Exception ignored) {
+        }
+
+        Uri contentUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".fileprovider", temp);
+
+        ActivityResultLauncher<Uri> mGetContentCamera = registerForActivityResult(
+                new ActivityResultContracts.TakePicture(),
+                result -> {
+                    Point size = new Point();
+                    getWindowManager().getDefaultDisplay().getSize(size);
+                    imageHolder.updateFromUri(contentUri, this.getContentResolver(), size);
+                    imageView.setImageBitmap(imageHolder.bitmapSmall);
+                }
+        );
+
         imageView.setOnClickListener(view -> {
-            // Pass in the mime type you'd like to allow the user to select as the input
-            mGetContent.launch("image/*");
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+            final CharSequence[] optionsMenu = {"Take Photo", "Choose from Gallery", "Exit" };
+
+
+            builder.setItems(optionsMenu, (dialogInterface, i) -> {
+                if (optionsMenu[i].equals("Take Photo")) {
+                    if (MainHelper.checkPermission(MainActivity.this)) {
+                        mGetContentCamera.launch(contentUri);
+                    } else {
+                        MainHelper.requestPermission(MainActivity.this);
+                    }
+                } else if (optionsMenu[i].equals("Choose from Gallery")) {
+                    mGetContentGallery.launch("image/*");
+                }
+
+                dialogInterface.dismiss();
+            });
+
+            builder.create().show();
         });
     }
 
@@ -134,26 +180,26 @@ public class MainActivity extends AppCompatActivity {
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         if (savedInstanceState.getString(KEY_URI_IMAGE_FIRST) != null) {
             ImageView imageView = findViewById(R.id.home_image_first);
-            uri_image_first.uri = Uri.parse(savedInstanceState.getString(KEY_URI_IMAGE_FIRST));
-            imageView.setImageURI(uri_image_first.uri);
+            image_holder_first.uri = Uri.parse(savedInstanceState.getString(KEY_URI_IMAGE_FIRST));
+            imageView.setImageBitmap(image_holder_first.bitmapSmall);
         }
 
         if (savedInstanceState.getString(KEY_URI_IMAGE_SECOND) != null) {
             ImageView imageView = findViewById(R.id.home_image_second);
-            uri_image_second.uri = Uri.parse(savedInstanceState.getString(KEY_URI_IMAGE_SECOND));
-            imageView.setImageURI(uri_image_second.uri);
+            image_holder_second.uri = Uri.parse(savedInstanceState.getString(KEY_URI_IMAGE_SECOND));
+            imageView.setImageBitmap(image_holder_second.bitmapSmall);
         }
     }
 
 
     // invoked when the activity may be temporarily destroyed, save the instance state here
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        if (uri_image_first.uri != null) {
-            outState.putString(KEY_URI_IMAGE_FIRST, uri_image_first.uri.toString());
+        if (image_holder_first.uri != null) {
+            outState.putString(KEY_URI_IMAGE_FIRST, image_holder_first.uri.toString());
         }
 
-        if (uri_image_second.uri != null) {
-            outState.putString(KEY_URI_IMAGE_SECOND, uri_image_second.uri.toString());
+        if (image_holder_second.uri != null) {
+            outState.putString(KEY_URI_IMAGE_SECOND, image_holder_second.uri.toString());
         }
 
         // call superclass to save any view hierarchy

@@ -10,6 +10,7 @@ import android.widget.SeekBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.vincentengelsoftware.androidimagecompare.helper.BitmapHelper;
 import com.vincentengelsoftware.androidimagecompare.helper.FullScreenHelper;
 import com.vincentengelsoftware.androidimagecompare.helper.SlideHelper;
 import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
@@ -38,10 +39,11 @@ public class OverlaySlideActivity extends AppCompatActivity {
         ImageView image_front = findViewById(R.id.overlay_slide_image_view_front);
         image_front.setImageURI(uriSecondImage);
 
+        // TODO USE RESIZED BITMAP FROM MainActivity
         try {
             Point size = new Point();
             getWindowManager().getDefaultDisplay().getSize(size);
-            bitmapSource = SlideHelper.resizeBitmap(
+            bitmapSource = BitmapHelper.resizeBitmap(
                     MediaStore.Images.Media.getBitmap(
                             this.getContentResolver(),
                             uriSecondImage
