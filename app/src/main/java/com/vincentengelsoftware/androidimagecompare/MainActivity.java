@@ -24,8 +24,8 @@ public class MainActivity extends AppCompatActivity {
     public static final String KEY_URI_IMAGE_FIRST = "key.uri.image.first";
     public static final String KEY_URI_IMAGE_SECOND = "key.uri.image.second";
 
-    protected ImageHolder image_holder_first = new ImageHolder();
-    protected ImageHolder image_holder_second = new ImageHolder();
+    public static ImageHolder image_holder_first = new ImageHolder();
+    public static ImageHolder image_holder_second = new ImageHolder();
 
     private long pressedTime;
 
@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
         if (pressedTime + 2000 > System.currentTimeMillis()) {
             super.onBackPressed();
             this.finishAndRemoveTask();
@@ -124,8 +123,13 @@ public class MainActivity extends AppCompatActivity {
 
                     Point size = new Point();
                     getWindowManager().getDefaultDisplay().getSize(size);
-                    imageHolder.updateFromUri(uri, this.getContentResolver(), size);
-                    imageView.setImageBitmap(imageHolder.bitmapSmall);
+                    imageHolder.updateFromUri(
+                            uri,
+                            this.getContentResolver(),
+                            size,
+                            getResources().getDisplayMetrics()
+                    );
+                    imageView.setImageBitmap(imageHolder.getBitmapSmall());
                 });
 
 
@@ -136,28 +140,28 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception ignored) {
         }
 
-        Uri contentUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".fileprovider", temp);
+        Uri fileUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".fileprovider", temp);
 
         ActivityResultLauncher<Uri> mGetContentCamera = registerForActivityResult(
                 new ActivityResultContracts.TakePicture(),
                 result -> {
                     Point size = new Point();
                     getWindowManager().getDefaultDisplay().getSize(size);
-                    imageHolder.updateFromUri(contentUri, this.getContentResolver(), size);
-                    imageView.setImageBitmap(imageHolder.bitmapSmall);
+                    imageHolder.updateFromUri(fileUri, this.getContentResolver(), size, getResources().getDisplayMetrics());
+                    imageView.setImageBitmap(imageHolder.getBitmapSmall());
                 }
         );
 
         imageView.setOnClickListener(view -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-            final CharSequence[] optionsMenu = {"Take Photo", "Choose from Gallery", "Exit" };
+            final CharSequence[] optionsMenu = {"Take Photo", "Choose from Gallery"};
 
 
             builder.setItems(optionsMenu, (dialogInterface, i) -> {
                 if (optionsMenu[i].equals("Take Photo")) {
                     if (MainHelper.checkPermission(MainActivity.this)) {
-                        mGetContentCamera.launch(contentUri);
+                        mGetContentCamera.launch(fileUri);
                     } else {
                         MainHelper.requestPermission(MainActivity.this);
                     }
@@ -178,16 +182,31 @@ public class MainActivity extends AppCompatActivity {
 // The savedInstanceState Bundle is same as the one used in onCreate().
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
+        Point size = new Point();
+        getWindowManager().getDefaultDisplay().getSize(size);
+
         if (savedInstanceState.getString(KEY_URI_IMAGE_FIRST) != null) {
+            image_holder_first.updateFromUri(
+                    Uri.parse(savedInstanceState.getString(KEY_URI_IMAGE_FIRST)),
+                    this.getContentResolver(),
+                    size,
+                    getResources().getDisplayMetrics()
+            );
+
             ImageView imageView = findViewById(R.id.home_image_first);
-            image_holder_first.uri = Uri.parse(savedInstanceState.getString(KEY_URI_IMAGE_FIRST));
-            imageView.setImageBitmap(image_holder_first.bitmapSmall);
+            imageView.setImageBitmap(image_holder_first.getBitmapSmall());
         }
 
         if (savedInstanceState.getString(KEY_URI_IMAGE_SECOND) != null) {
+            image_holder_second.updateFromUri(
+                    Uri.parse(savedInstanceState.getString(KEY_URI_IMAGE_SECOND)),
+                    this.getContentResolver(),
+                    size,
+                    getResources().getDisplayMetrics()
+            );
+
             ImageView imageView = findViewById(R.id.home_image_second);
-            image_holder_second.uri = Uri.parse(savedInstanceState.getString(KEY_URI_IMAGE_SECOND));
-            imageView.setImageBitmap(image_holder_second.bitmapSmall);
+            imageView.setImageBitmap(image_holder_second.getBitmapSmall());
         }
     }
 

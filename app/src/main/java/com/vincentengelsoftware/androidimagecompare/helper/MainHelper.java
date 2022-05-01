@@ -59,8 +59,8 @@ public class MainHelper {
             mutableUriOne.updateFromImageHolder(mutableUriTwo);
             mutableUriTwo.updateFromImageHolder(imageHolder);
 
-            imageViewOne.setImageBitmap(mutableUriOne.bitmapSmall);
-            imageViewTwo.setImageBitmap(mutableUriTwo.bitmapSmall);
+            imageViewOne.setImageBitmap(mutableUriOne.getBitmapSmall());
+            imageViewTwo.setImageBitmap(mutableUriTwo.getBitmapSmall());
         });
     }
 
