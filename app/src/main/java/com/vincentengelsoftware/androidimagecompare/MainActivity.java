@@ -27,6 +27,9 @@ public class MainActivity extends AppCompatActivity {
     public static ImageHolder image_holder_first = new ImageHolder();
     public static ImageHolder image_holder_second = new ImageHolder();
 
+    public static final String KEY_FILE_URI = "key.file.uri";
+    private Uri fileUri;
+
     private long pressedTime;
 
     @Override
@@ -140,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception ignored) {
         }
 
-        Uri fileUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".fileprovider", temp);
+        fileUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".fileprovider", temp);
 
         ActivityResultLauncher<Uri> mGetContentCamera = registerForActivityResult(
                 new ActivityResultContracts.TakePicture(),
@@ -208,6 +211,10 @@ public class MainActivity extends AppCompatActivity {
             ImageView imageView = findViewById(R.id.home_image_second);
             imageView.setImageBitmap(image_holder_second.getBitmapSmall());
         }
+
+        if (savedInstanceState.getString(KEY_FILE_URI) != null) {
+            fileUri = Uri.parse(savedInstanceState.getString(KEY_FILE_URI));
+        }
     }
 
 
@@ -219,6 +226,10 @@ public class MainActivity extends AppCompatActivity {
 
         if (image_holder_second.uri != null) {
             outState.putString(KEY_URI_IMAGE_SECOND, image_holder_second.uri.toString());
+        }
+
+        if (fileUri != null) {
+            outState.putString(KEY_FILE_URI, fileUri.toString());
         }
 
         // call superclass to save any view hierarchy
