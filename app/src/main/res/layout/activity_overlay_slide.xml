@@ -10,8 +10,11 @@
 
     <FrameLayout
         android:id="@+id/frameLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/overlay_slide_button_swap_seekbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
@@ -19,16 +22,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            tools:srcCompat="@tools:sample/backgrounds/scenic"
-            android:contentDescription="@string/background_image" />
+            android:contentDescription="@string/background_image"
+            tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
         <ImageView
             android:id="@+id/overlay_slide_image_view_front"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            tools:srcCompat="@tools:sample/backgrounds/scenic"
-            android:contentDescription="@string/front_image" />
+            android:contentDescription="@string/front_image"
+            tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
     </FrameLayout>
 

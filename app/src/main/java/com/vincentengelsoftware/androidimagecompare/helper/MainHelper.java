@@ -54,7 +54,7 @@ public class MainHelper {
             ImageView imageViewTwo
     ) {
         imageButton.setOnClickListener(view -> {
-            ImageHolder imageHolder = new ImageHolder();
+            ImageHolder imageHolder = new ImageHolder("temp");
             imageHolder.updateFromImageHolder(mutableUriOne);
             mutableUriOne.updateFromImageHolder(mutableUriTwo);
             mutableUriTwo.updateFromImageHolder(imageHolder);

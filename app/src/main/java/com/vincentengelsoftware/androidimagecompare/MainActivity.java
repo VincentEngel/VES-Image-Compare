@@ -24,8 +24,8 @@ public class MainActivity extends AppCompatActivity {
     public static final String KEY_URI_IMAGE_FIRST = "key.uri.image.first";
     public static final String KEY_URI_IMAGE_SECOND = "key.uri.image.second";
 
-    public static ImageHolder image_holder_first = new ImageHolder();
-    public static ImageHolder image_holder_second = new ImageHolder();
+    public static ImageHolder image_holder_first = new ImageHolder(KEY_URI_IMAGE_FIRST);
+    public static ImageHolder image_holder_second = new ImageHolder(KEY_URI_IMAGE_SECOND);
 
     public static final String KEY_FILE_URI = "key.file.uri";
     private Uri fileUri;
@@ -65,22 +65,26 @@ public class MainActivity extends AppCompatActivity {
     {
         addButtonChangeActivityLogic(
                 findViewById(R.id.button_side_by_side),
-                SideBySideActivity.class
+                SideBySideActivity.class,
+                true
         );
 
         addButtonChangeActivityLogic(
                 findViewById(R.id.button_overlay_tap),
-                OverlayTapActivity.class
+                OverlayTapActivity.class,
+                false
         );
 
         addButtonChangeActivityLogic(
                 findViewById(R.id.button_overlay_slide),
-                OverlaySlideActivity.class
+                OverlaySlideActivity.class,
+                false
         );
 
         addButtonChangeActivityLogic(
                 findViewById(R.id.button_overlay_transparent),
-                OverlayTransparentActivity.class
+                OverlayTransparentActivity.class,
+                false
         );
 
         findViewById(R.id.home_button_info).setOnClickListener(view -> {
@@ -102,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
-    private void addButtonChangeActivityLogic(Button btn, Class<?> targetActivity)
+    private void addButtonChangeActivityLogic(Button btn, Class<?> targetActivity, boolean useOriginalImage)
     {
         btn.setOnClickListener(view -> {
             if (image_holder_first.uri == null || image_holder_second.uri == null) {
@@ -110,8 +114,15 @@ public class MainActivity extends AppCompatActivity {
             }
 
             Intent intent = new Intent(getApplicationContext(), targetActivity);
-            intent.putExtra(KEY_URI_IMAGE_FIRST, image_holder_first.uri.toString());
-            intent.putExtra(KEY_URI_IMAGE_SECOND, image_holder_second.uri.toString());
+
+            if (useOriginalImage) {
+                intent.putExtra(KEY_URI_IMAGE_FIRST, image_holder_first.uri.toString());
+                intent.putExtra(KEY_URI_IMAGE_SECOND, image_holder_second.uri.toString());
+            } else {
+                intent.putExtra(KEY_URI_IMAGE_FIRST, image_holder_first.getUriScreenSize().toString());
+                intent.putExtra(KEY_URI_IMAGE_SECOND, image_holder_second.getUriScreenSize().toString());
+            }
+
             startActivity(intent);
         });
     }
@@ -130,7 +141,8 @@ public class MainActivity extends AppCompatActivity {
                             uri,
                             this.getContentResolver(),
                             size,
-                            getResources().getDisplayMetrics()
+                            getResources().getDisplayMetrics(),
+                            getApplicationContext()
                     );
                     imageView.setImageBitmap(imageHolder.getBitmapSmall());
                 });
@@ -148,9 +160,13 @@ public class MainActivity extends AppCompatActivity {
         ActivityResultLauncher<Uri> mGetContentCamera = registerForActivityResult(
                 new ActivityResultContracts.TakePicture(),
                 result -> {
+                    if (!result) {
+                        Toast.makeText(getBaseContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     Point size = new Point();
                     getWindowManager().getDefaultDisplay().getSize(size);
-                    imageHolder.updateFromUri(fileUri, this.getContentResolver(), size, getResources().getDisplayMetrics());
+                    imageHolder.updateFromUri(fileUri, this.getContentResolver(), size, getResources().getDisplayMetrics(), getApplicationContext());
                     imageView.setImageBitmap(imageHolder.getBitmapSmall());
                 }
         );
@@ -167,6 +183,7 @@ public class MainActivity extends AppCompatActivity {
                         mGetContentCamera.launch(fileUri);
                     } else {
                         MainHelper.requestPermission(MainActivity.this);
+                        imageView.callOnClick();
                     }
                 } else if (optionsMenu[i].equals("Choose from Gallery")) {
                     mGetContentGallery.launch("image/*");
@@ -179,10 +196,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    // This callback is called only when there is a saved instance that is previously saved by using
-// onSaveInstanceState(). We restore some state in onCreate(), while we can optionally restore
-// other state here, possibly usable after onStart() has completed.
-// The savedInstanceState Bundle is same as the one used in onCreate().
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         Point size = new Point();
@@ -193,7 +206,8 @@ public class MainActivity extends AppCompatActivity {
                     Uri.parse(savedInstanceState.getString(KEY_URI_IMAGE_FIRST)),
                     this.getContentResolver(),
                     size,
-                    getResources().getDisplayMetrics()
+                    getResources().getDisplayMetrics(),
+                    getApplicationContext()
             );
 
             ImageView imageView = findViewById(R.id.home_image_first);
@@ -205,7 +219,8 @@ public class MainActivity extends AppCompatActivity {
                     Uri.parse(savedInstanceState.getString(KEY_URI_IMAGE_SECOND)),
                     this.getContentResolver(),
                     size,
-                    getResources().getDisplayMetrics()
+                    getResources().getDisplayMetrics(),
+                    getApplicationContext()
             );
 
             ImageView imageView = findViewById(R.id.home_image_second);
@@ -217,8 +232,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-    // invoked when the activity may be temporarily destroyed, save the instance state here
     public void onSaveInstanceState(@NonNull Bundle outState) {
         if (image_holder_first.uri != null) {
             outState.putString(KEY_URI_IMAGE_FIRST, image_holder_first.uri.toString());
@@ -232,7 +245,6 @@ public class MainActivity extends AppCompatActivity {
             outState.putString(KEY_FILE_URI, fileUri.toString());
         }
 
-        // call superclass to save any view hierarchy
         super.onSaveInstanceState(outState);
     }
 }
