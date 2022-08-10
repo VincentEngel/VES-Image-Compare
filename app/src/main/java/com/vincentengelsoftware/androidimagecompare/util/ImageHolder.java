@@ -4,26 +4,23 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.Point;
 import android.net.Uri;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.widget.ImageView;
 
-import androidx.core.content.FileProvider;
-import androidx.exifinterface.media.ExifInterface;
-
-import com.vincentengelsoftware.androidimagecompare.MainActivity;
 import com.vincentengelsoftware.androidimagecompare.helper.BitmapHelper;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 
 public class ImageHolder {
     String name;
     public Uri uri = null;
-    public Uri uriScreenSize;
     public Bitmap bitmap;
     private Bitmap bitmapSmall;
     private Bitmap bitmapScreenSize;
@@ -32,11 +29,33 @@ public class ImageHolder {
     private ContentResolver contentResolver;
     private DisplayMetrics displayMetrics;
 
+    private int rotation = 0;
+
     private final float MAX_SMALL_SIZE_DP = 164.499f;
 
     public ImageHolder(String name)
     {
         this.name = name;
+    }
+
+    public int getRotationDegree()
+    {
+        switch (this.rotation) {
+            case 0:
+                this.rotation++;
+                return 90;
+            case 1:
+                this.rotation++;
+                return 180;
+            case 2:
+                this.rotation++;
+                return 270;
+            case 3:
+                this.rotation = 0;
+                return 0;
+        }
+
+        return 0;
     }
 
     public void updateFromImageHolder(ImageHolder imageHolder)
@@ -45,9 +64,10 @@ public class ImageHolder {
         this.point = imageHolder.point;
         this.contentResolver = imageHolder.contentResolver;
         this.displayMetrics = imageHolder.displayMetrics;
+        this.bitmap = imageHolder.bitmap;
         this.bitmapSmall = imageHolder.bitmapSmall;
         this.bitmapScreenSize = imageHolder.bitmapScreenSize;
-        this.uriScreenSize = imageHolder.uriScreenSize;
+        this.rotation = imageHolder.rotation;
     }
 
     public Bitmap getBitmapSmall()
@@ -84,15 +104,6 @@ public class ImageHolder {
         return this.bitmapScreenSize;
     }
 
-    public Uri getUriScreenSize()
-    {
-        if (this.uriScreenSize != null) {
-            return this.uriScreenSize;
-        }
-
-        return this.uri;
-    }
-
     public void updateFromUri(Uri uri, ContentResolver cr, Point point, DisplayMetrics displayMetrics, Context context)
     {
         this.uri = uri;
@@ -101,30 +112,35 @@ public class ImageHolder {
         this.displayMetrics = displayMetrics;
         this.bitmapSmall = null;
         this.bitmapScreenSize = null;
-        this.uriScreenSize = null;
 
         try {
             InputStream input = cr.openInputStream(uri);
-            this.bitmap = ExifUtil.rotateBitmap(BitmapFactory.decodeStream(input), new ExifInterface(input));
+            this.bitmap = BitmapFactory.decodeStream(input);
             input.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
-        ImageHolder that = this;
+    public void rotateImage(Context context, ImageView imageView)
+    {
+        try {
+            Matrix matrix = new Matrix();
+            matrix.postRotate(this.getRotationDegree());
 
-        new Thread(() -> {
-            File temp;
-
-            try {
-                temp = File.createTempFile(that.name, null, context.getCacheDir());
-                FileOutputStream out = new FileOutputStream(temp);
-                that.getBitmapScreenSize().compress(Bitmap.CompressFormat.PNG, 100, out);
-                out.close();
-                uriScreenSize = Uri.parse(temp.getPath());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }).start();
+            this.bitmap = Bitmap.createBitmap(
+                    this.bitmap,
+                    0,
+                    0,
+                    this.bitmap.getWidth(),
+                    this.bitmap.getHeight(),
+                    matrix,
+                    true
+            );
+            this.bitmapSmall = null;
+            this.bitmapScreenSize = null;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

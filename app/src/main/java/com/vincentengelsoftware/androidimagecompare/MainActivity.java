@@ -104,24 +104,30 @@ public class MainActivity extends AppCompatActivity {
                 findViewById(R.id.home_image_first),
                 findViewById(R.id.home_image_second)
         );
+
+        MainHelper.addRotateImageLogic(
+                findViewById(R.id.home_button_rotate_image_left),
+                image_holder_first,
+                findViewById(R.id.home_image_first),
+                getApplicationContext()
+        );
+
+        MainHelper.addRotateImageLogic(
+                findViewById(R.id.home_button_rotate_image_right),
+                image_holder_second,
+                findViewById(R.id.home_image_second),
+                getApplicationContext()
+        );
     }
 
     private void addButtonChangeActivityLogic(Button btn, Class<?> targetActivity, boolean useOriginalImage)
     {
         btn.setOnClickListener(view -> {
-            if (image_holder_first.uri == null || image_holder_second.uri == null) {
+            if (image_holder_first.bitmap == null || image_holder_second.bitmap == null) {
                 return;
             }
 
             Intent intent = new Intent(getApplicationContext(), targetActivity);
-
-            if (useOriginalImage) {
-                intent.putExtra(KEY_URI_IMAGE_FIRST, image_holder_first.uri.toString());
-                intent.putExtra(KEY_URI_IMAGE_SECOND, image_holder_second.uri.toString());
-            } else {
-                intent.putExtra(KEY_URI_IMAGE_FIRST, image_holder_first.getUriScreenSize().toString());
-                intent.putExtra(KEY_URI_IMAGE_SECOND, image_holder_second.getUriScreenSize().toString());
-            }
 
             startActivity(intent);
         });

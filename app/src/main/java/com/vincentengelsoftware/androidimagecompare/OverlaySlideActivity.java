@@ -14,13 +14,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.vincentengelsoftware.androidimagecompare.helper.BitmapHelper;
 import com.vincentengelsoftware.androidimagecompare.helper.FullScreenHelper;
+import com.vincentengelsoftware.androidimagecompare.helper.ImageUpdater;
 import com.vincentengelsoftware.androidimagecompare.helper.SlideHelper;
 import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
 
 import java.io.InputStream;
 
 public class OverlaySlideActivity extends AppCompatActivity {
-    private Bitmap bitmapSource;
 
     private final UtilMutableBoolean leftToRight = new UtilMutableBoolean();
 
@@ -33,13 +33,14 @@ public class OverlaySlideActivity extends AppCompatActivity {
 
             setContentView(R.layout.activity_overlay_slide);
 
-            ImageView image_base = findViewById(R.id.overlay_slide_image_view_base);
-            image_base.setImageURI(
-                    Uri.parse(getIntent().getStringExtra(MainActivity.KEY_URI_IMAGE_FIRST))
+            ImageUpdater.updateImage(
+                    findViewById(R.id.overlay_slide_image_view_base),
+                    MainActivity.image_holder_first,
+                    ImageUpdater.SCREEN_SIZE
             );
-            ImageView image_front = findViewById(R.id.overlay_slide_image_view_front);
 
-            bitmapSource = MainActivity.image_holder_second.getBitmapScreenSize();
+            ImageView image_front = findViewById(R.id.overlay_slide_image_view_front);
+            Bitmap bitmapSource = MainActivity.image_holder_second.getBitmapScreenSize();
 
             SeekBar seekBar = findViewById(R.id.overlay_slide_seek_bar);
             SlideHelper.addSeekbarLogic(seekBar, image_front, leftToRight, bitmapSource);

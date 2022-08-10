@@ -134,6 +134,41 @@
 
                 </TableRow>
 
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageButton
+                            android:id="@+id/home_button_rotate_image_left"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_gravity="center_horizontal|top"
+                            android:backgroundTint="#F57C00"
+                            android:contentDescription="@string/swap_images"
+                            app:srcCompat="@android:drawable/stat_notify_sync_noanim"
+                            tools:ignore="ImageContrastCheck" />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageButton
+                            android:id="@+id/home_button_rotate_image_right"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_gravity="center_horizontal|top"
+                            android:backgroundTint="#F57C00"
+                            android:contentDescription="@string/swap_images"
+                            app:srcCompat="@android:drawable/stat_notify_sync_noanim"
+                            tools:ignore="ImageContrastCheck" />
+                    </FrameLayout>
+                </TableRow>
+
             </TableLayout>
 
         </LinearLayout>

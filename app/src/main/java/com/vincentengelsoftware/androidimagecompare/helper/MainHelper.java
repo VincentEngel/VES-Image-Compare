@@ -3,6 +3,7 @@ package com.vincentengelsoftware.androidimagecompare.helper;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.view.MotionEvent;
 import android.widget.FrameLayout;
@@ -46,6 +47,22 @@ public class MainHelper {
         });
     }
 
+    public static void addRotateImageLogic(
+            ImageButton imageButton,
+            ImageHolder imageHolder,
+            ImageView imageView,
+            Context context
+    ) {
+        imageButton.setOnClickListener(view -> {
+            imageHolder.rotateImage(context, imageView);
+            ImageUpdater.updateImage(
+                    imageView,
+                    imageHolder,
+                    ImageUpdater.SMALL
+            );
+        });
+    }
+
     public static void addSwapImageLogic(
             ImageButton imageButton,
             ImageHolder mutableUriOne,
@@ -59,8 +76,16 @@ public class MainHelper {
             mutableUriOne.updateFromImageHolder(mutableUriTwo);
             mutableUriTwo.updateFromImageHolder(imageHolder);
 
-            imageViewOne.setImageBitmap(mutableUriOne.getBitmapSmall());
-            imageViewTwo.setImageBitmap(mutableUriTwo.getBitmapSmall());
+            ImageUpdater.updateImage(
+                    imageViewOne,
+                    mutableUriOne,
+                    ImageUpdater.SMALL
+            );
+            ImageUpdater.updateImage(
+                    imageViewTwo,
+                    mutableUriTwo,
+                    ImageUpdater.SMALL
+            );
         });
     }
 

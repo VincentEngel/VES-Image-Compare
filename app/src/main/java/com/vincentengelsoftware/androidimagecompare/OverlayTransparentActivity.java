@@ -8,6 +8,7 @@ import android.widget.SeekBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.vincentengelsoftware.androidimagecompare.helper.FullScreenHelper;
+import com.vincentengelsoftware.androidimagecompare.helper.ImageUpdater;
 import com.vincentengelsoftware.androidimagecompare.helper.TransparentHelper;
 
 public class OverlayTransparentActivity extends AppCompatActivity {
@@ -19,13 +20,17 @@ public class OverlayTransparentActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_overlay_transparent);
 
-        ImageView image_base = findViewById(R.id.overlay_transparent_image_view_base);
-        image_base.setImageURI(
-                Uri.parse(getIntent().getStringExtra(MainActivity.KEY_URI_IMAGE_FIRST))
+        ImageUpdater.updateImage(
+                findViewById(R.id.overlay_transparent_image_view_base),
+                MainActivity.image_holder_first,
+                ImageUpdater.SCREEN_SIZE
         );
+
         ImageView image_transparent = findViewById(R.id.overlay_transparent_image_view_transparent);
-        image_transparent.setImageURI(
-                Uri.parse(getIntent().getStringExtra(MainActivity.KEY_URI_IMAGE_SECOND))
+        ImageUpdater.updateImage(
+                image_transparent,
+                MainActivity.image_holder_second,
+                ImageUpdater.SCREEN_SIZE
         );
         image_transparent.bringToFront();
 

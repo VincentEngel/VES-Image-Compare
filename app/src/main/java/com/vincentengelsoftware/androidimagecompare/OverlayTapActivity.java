@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.vincentengelsoftware.androidimagecompare.helper.FullScreenHelper;
+import com.vincentengelsoftware.androidimagecompare.helper.ImageUpdater;
 import com.vincentengelsoftware.androidimagecompare.helper.TapHelper;
 
 public class OverlayTapActivity extends AppCompatActivity {
@@ -20,13 +21,19 @@ public class OverlayTapActivity extends AppCompatActivity {
         setContentView(R.layout.activity_overlay_tap);
 
         ImageView image_first = findViewById(R.id.overlay_tap_image_view_one);
-        image_first.setImageURI(
-                Uri.parse(getIntent().getStringExtra(MainActivity.KEY_URI_IMAGE_FIRST))
+        ImageUpdater.updateImage(
+                image_first,
+                MainActivity.image_holder_first,
+                ImageUpdater.SCREEN_SIZE
         );
+
         ImageView image_second = findViewById(R.id.overlay_tap_image_view_two);
-        image_second.setImageURI(
-                Uri.parse(getIntent().getStringExtra(MainActivity.KEY_URI_IMAGE_SECOND))
+        ImageUpdater.updateImage(
+                image_second,
+                MainActivity.image_holder_second,
+                ImageUpdater.SCREEN_SIZE
         );
+
         image_second.setVisibility(View.INVISIBLE);
 
         TapHelper.setOnClickListener(image_first, image_second);
