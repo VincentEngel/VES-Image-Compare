@@ -108,15 +108,13 @@ public class MainActivity extends AppCompatActivity {
         MainHelper.addRotateImageLogic(
                 findViewById(R.id.home_button_rotate_image_left),
                 image_holder_first,
-                findViewById(R.id.home_image_first),
-                getApplicationContext()
+                findViewById(R.id.home_image_first)
         );
 
         MainHelper.addRotateImageLogic(
                 findViewById(R.id.home_button_rotate_image_right),
                 image_holder_second,
-                findViewById(R.id.home_image_second),
-                getApplicationContext()
+                findViewById(R.id.home_image_second)
         );
     }
 

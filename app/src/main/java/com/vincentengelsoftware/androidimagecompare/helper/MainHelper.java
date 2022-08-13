@@ -50,11 +50,13 @@ public class MainHelper {
     public static void addRotateImageLogic(
             ImageButton imageButton,
             ImageHolder imageHolder,
-            ImageView imageView,
-            Context context
+            ImageView imageView
     ) {
         imageButton.setOnClickListener(view -> {
-            imageHolder.rotateImage(context, imageView);
+            if (imageHolder.bitmap == null) {
+                return;
+            }
+            imageHolder.rotateImage();
             ImageUpdater.updateImage(
                     imageView,
                     imageHolder,
@@ -65,25 +67,28 @@ public class MainHelper {
 
     public static void addSwapImageLogic(
             ImageButton imageButton,
-            ImageHolder mutableUriOne,
-            ImageHolder mutableUriTwo,
+            ImageHolder imageHolderOne,
+            ImageHolder imageHolderTwo,
             ImageView imageViewOne,
             ImageView imageViewTwo
     ) {
         imageButton.setOnClickListener(view -> {
+            if (imageHolderOne.bitmap == null || imageHolderTwo.bitmap == null) {
+                return;
+            }
             ImageHolder imageHolder = new ImageHolder("temp");
-            imageHolder.updateFromImageHolder(mutableUriOne);
-            mutableUriOne.updateFromImageHolder(mutableUriTwo);
-            mutableUriTwo.updateFromImageHolder(imageHolder);
+            imageHolder.updateFromImageHolder(imageHolderOne);
+            imageHolderOne.updateFromImageHolder(imageHolderTwo);
+            imageHolderTwo.updateFromImageHolder(imageHolder);
 
             ImageUpdater.updateImage(
                     imageViewOne,
-                    mutableUriOne,
+                    imageHolderOne,
                     ImageUpdater.SMALL
             );
             ImageUpdater.updateImage(
                     imageViewTwo,
-                    mutableUriTwo,
+                    imageHolderTwo,
                     ImageUpdater.SMALL
             );
         });

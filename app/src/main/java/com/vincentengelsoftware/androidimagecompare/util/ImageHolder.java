@@ -13,9 +13,6 @@ import android.widget.ImageView;
 
 import com.vincentengelsoftware.androidimagecompare.helper.BitmapHelper;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.InputStream;
 
 public class ImageHolder {
@@ -29,7 +26,8 @@ public class ImageHolder {
     private ContentResolver contentResolver;
     private DisplayMetrics displayMetrics;
 
-    private int rotation = 0;
+    private int currentRotation = 0;
+    private int currentBitmapRotation = 0;
 
     private final float MAX_SMALL_SIZE_DP = 164.499f;
 
@@ -40,22 +38,13 @@ public class ImageHolder {
 
     public int getRotationDegree()
     {
-        switch (this.rotation) {
-            case 0:
-                this.rotation++;
-                return 90;
-            case 1:
-                this.rotation++;
-                return 180;
-            case 2:
-                this.rotation++;
-                return 270;
-            case 3:
-                this.rotation = 0;
-                return 0;
+        if (this.currentRotation == 3) {
+            this.currentRotation = 0;
+        } else {
+            this.currentRotation++;
         }
 
-        return 0;
+        return 90;
     }
 
     public void updateFromImageHolder(ImageHolder imageHolder)
@@ -67,7 +56,8 @@ public class ImageHolder {
         this.bitmap = imageHolder.bitmap;
         this.bitmapSmall = imageHolder.bitmapSmall;
         this.bitmapScreenSize = imageHolder.bitmapScreenSize;
-        this.rotation = imageHolder.rotation;
+        this.currentRotation = imageHolder.currentRotation;
+        this.currentBitmapRotation = imageHolder.currentBitmapRotation;
     }
 
     public Bitmap getBitmapSmall()
@@ -122,7 +112,7 @@ public class ImageHolder {
         }
     }
 
-    public void rotateImage(Context context, ImageView imageView)
+    public void rotateImage()
     {
         try {
             Matrix matrix = new Matrix();
