@@ -20,4 +20,6 @@
     <string name="front_image">Front image</string>
     <string name="show_information">Show information</string>
     <string name="swap_images">Swap images</string>
+    <string name="info_text_view_inspiration">This app is heavily inspired from the App \"Ditto - Photo Comparer\"</string>
+    <string name="link_ditto_photo_comparer"><a href="https://play.google.com/store/apps/details?id=com.sasiddiqui.ditto">Ditto - Photo Comparer</a></string>
 </resources>

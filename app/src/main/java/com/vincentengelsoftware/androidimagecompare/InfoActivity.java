@@ -24,5 +24,8 @@ public class InfoActivity extends AppCompatActivity {
 
         TextView textViewAppIcon = findViewById(R.id.info_text_view_link_app_icon);
         textViewAppIcon.setMovementMethod(LinkMovementMethod.getInstance());
+
+        TextView textViewDittoAppLink = findViewById(R.id.info_text_view_link_ditto_photo_comparer);
+        textViewDittoAppLink.setMovementMethod(LinkMovementMethod.getInstance());
     }
 }
