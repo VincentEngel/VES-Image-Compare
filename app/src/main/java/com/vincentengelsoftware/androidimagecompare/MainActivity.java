@@ -15,6 +15,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
+import com.vincentengelsoftware.androidimagecompare.helper.ImageUpdater;
 import com.vincentengelsoftware.androidimagecompare.helper.MainHelper;
 import com.vincentengelsoftware.androidimagecompare.util.ImageHolder;
 
@@ -145,8 +146,7 @@ public class MainActivity extends AppCompatActivity {
                             uri,
                             this.getContentResolver(),
                             size,
-                            getResources().getDisplayMetrics(),
-                            getApplicationContext()
+                            getResources().getDisplayMetrics()
                     );
                     imageView.setImageBitmap(imageHolder.getBitmapSmall());
                 });
@@ -170,8 +170,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                     Point size = new Point();
                     getWindowManager().getDefaultDisplay().getSize(size);
-                    imageHolder.updateFromUri(fileUri, this.getContentResolver(), size, getResources().getDisplayMetrics(), getApplicationContext());
-                    imageView.setImageBitmap(imageHolder.getBitmapSmall());
+                    imageHolder.updateFromUri(fileUri, this.getContentResolver(), size, getResources().getDisplayMetrics());
+                    ImageUpdater.updateImage(imageView, imageHolder, ImageUpdater.SMALL);
                 }
         );
 
@@ -210,8 +210,7 @@ public class MainActivity extends AppCompatActivity {
                     Uri.parse(savedInstanceState.getString(KEY_URI_IMAGE_FIRST)),
                     this.getContentResolver(),
                     size,
-                    getResources().getDisplayMetrics(),
-                    getApplicationContext()
+                    getResources().getDisplayMetrics()
             );
 
             ImageView imageView = findViewById(R.id.home_image_first);
@@ -223,8 +222,7 @@ public class MainActivity extends AppCompatActivity {
                     Uri.parse(savedInstanceState.getString(KEY_URI_IMAGE_SECOND)),
                     this.getContentResolver(),
                     size,
-                    getResources().getDisplayMetrics(),
-                    getApplicationContext()
+                    getResources().getDisplayMetrics()
             );
 
             ImageView imageView = findViewById(R.id.home_image_second);

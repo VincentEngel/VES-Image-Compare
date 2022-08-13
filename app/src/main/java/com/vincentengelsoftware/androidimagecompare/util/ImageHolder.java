@@ -94,7 +94,7 @@ public class ImageHolder {
         return this.bitmapScreenSize;
     }
 
-    public void updateFromUri(Uri uri, ContentResolver cr, Point point, DisplayMetrics displayMetrics, Context context)
+    public void updateFromUri(Uri uri, ContentResolver cr, Point point, DisplayMetrics displayMetrics)
     {
         this.uri = uri;
         this.point = point;
