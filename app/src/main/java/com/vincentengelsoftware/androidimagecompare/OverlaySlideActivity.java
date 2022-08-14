@@ -7,6 +7,7 @@ import android.widget.SeekBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.helper.FullScreenHelper;
 import com.vincentengelsoftware.androidimagecompare.helper.ImageUpdater;
 import com.vincentengelsoftware.androidimagecompare.helper.SlideHelper;
@@ -27,12 +28,12 @@ public class OverlaySlideActivity extends AppCompatActivity {
 
             ImageUpdater.updateImage(
                     findViewById(R.id.overlay_slide_image_view_base),
-                    MainActivity.image_holder_first,
+                    Images.image_holder_first,
                     ImageUpdater.SCREEN_SIZE
             );
 
             ImageView image_front = findViewById(R.id.overlay_slide_image_view_front);
-            Bitmap bitmapSource = MainActivity.image_holder_second.getBitmapScreenSize();
+            Bitmap bitmapSource = Images.image_holder_second.getBitmapScreenSize();
 
             SeekBar seekBar = findViewById(R.id.overlay_slide_seek_bar);
             SlideHelper.addSeekbarLogic(seekBar, image_front, leftToRight, bitmapSource);

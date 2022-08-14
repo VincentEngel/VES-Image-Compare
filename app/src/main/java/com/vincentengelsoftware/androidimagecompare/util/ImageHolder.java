@@ -13,7 +13,6 @@ import com.vincentengelsoftware.androidimagecompare.helper.BitmapHelper;
 import java.io.InputStream;
 
 public class ImageHolder {
-    String name;
     public Uri uri = null;
     public Bitmap bitmap;
     private Bitmap bitmapSmall;
@@ -28,11 +27,6 @@ public class ImageHolder {
     private static final int BASE_DEGREE = 90;
 
     private final float MAX_SMALL_SIZE_DP = 164.499f;
-
-    public ImageHolder(String name)
-    {
-        this.name = name;
-    }
 
     private int getRotationDegree()
     {

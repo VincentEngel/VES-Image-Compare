@@ -75,7 +75,7 @@ public class MainHelper {
             if (imageHolderOne.bitmap == null || imageHolderTwo.bitmap == null) {
                 return;
             }
-            ImageHolder imageHolder = new ImageHolder("temp");
+            ImageHolder imageHolder = new ImageHolder();
             imageHolder.updateFromImageHolder(imageHolderOne);
             imageHolderOne.updateFromImageHolder(imageHolderTwo);
             imageHolderTwo.updateFromImageHolder(imageHolder);
