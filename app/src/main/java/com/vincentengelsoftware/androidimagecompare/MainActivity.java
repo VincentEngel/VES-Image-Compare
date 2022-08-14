@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -66,26 +68,22 @@ public class MainActivity extends AppCompatActivity {
     {
         addButtonChangeActivityLogic(
                 findViewById(R.id.button_side_by_side),
-                SideBySideActivity.class,
-                true
+                SideBySideActivity.class
         );
 
         addButtonChangeActivityLogic(
                 findViewById(R.id.button_overlay_tap),
-                OverlayTapActivity.class,
-                false
+                OverlayTapActivity.class
         );
 
         addButtonChangeActivityLogic(
                 findViewById(R.id.button_overlay_slide),
-                OverlaySlideActivity.class,
-                false
+                OverlaySlideActivity.class
         );
 
         addButtonChangeActivityLogic(
                 findViewById(R.id.button_overlay_transparent),
-                OverlayTransparentActivity.class,
-                false
+                OverlayTransparentActivity.class
         );
 
         findViewById(R.id.home_button_info).setOnClickListener(view -> {
@@ -119,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
-    private void addButtonChangeActivityLogic(Button btn, Class<?> targetActivity, boolean useOriginalImage)
+    private void addButtonChangeActivityLogic(Button btn, Class<?> targetActivity)
     {
         btn.setOnClickListener(view -> {
             if (image_holder_first.bitmap == null || image_holder_second.bitmap == null) {
@@ -128,7 +126,24 @@ public class MainActivity extends AppCompatActivity {
 
             Intent intent = new Intent(getApplicationContext(), targetActivity);
 
-            startActivity(intent);
+            Thread t = new Thread(() -> {
+                runOnUiThread(() -> {
+                    ProgressBar progressBar = findViewById(R.id.pbProgess);
+                    progressBar.setVisibility(View.VISIBLE);
+                });
+
+                image_holder_first.calculateRotatedBitmap();
+                image_holder_second.calculateRotatedBitmap();
+
+                runOnUiThread(() -> {
+                    ProgressBar progressBar = findViewById(R.id.pbProgess);
+                    progressBar.setVisibility(View.GONE);
+                });
+
+                startActivity(intent);
+            });
+
+            t.start();
         });
     }
 

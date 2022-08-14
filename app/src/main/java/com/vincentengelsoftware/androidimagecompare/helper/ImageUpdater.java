@@ -7,8 +7,8 @@ import com.vincentengelsoftware.androidimagecompare.util.ImageHolder;
 
 public class ImageUpdater {
     public static final String ORIGINAL = "ORIGINAL";
-    public static final String SMALL = "SMALL";
     public static final String SCREEN_SIZE = "SCREEN_SIZE";
+    public static final String SMALL = "SMALL";
 
     public static void updateImage(
             ImageView imageView,
@@ -26,7 +26,7 @@ public class ImageUpdater {
                 break;
             case ORIGINAL:
             default:
-                bitmap = imageHolder.bitmap;
+                bitmap = imageHolder.rotatedBitmap;
                 break;
         }
 

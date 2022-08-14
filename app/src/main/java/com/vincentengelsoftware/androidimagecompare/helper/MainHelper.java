@@ -3,7 +3,6 @@ package com.vincentengelsoftware.androidimagecompare.helper;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.view.MotionEvent;
 import android.widget.FrameLayout;
@@ -56,7 +55,7 @@ public class MainHelper {
             if (imageHolder.bitmap == null) {
                 return;
             }
-            imageHolder.rotateImage();
+            imageHolder.rotatePreviewImage();
             ImageUpdater.updateImage(
                     imageView,
                     imageHolder,

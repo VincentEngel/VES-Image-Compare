@@ -21,11 +21,11 @@ public class SideBySideActivity extends AppCompatActivity {
 
         SubsamplingScaleImageView image_left = findViewById(R.id.side_by_side_image_left);
         image_left.setImage(
-                ImageSource.bitmap(MainActivity.image_holder_first.bitmap)
+                ImageSource.bitmap(MainActivity.image_holder_first.rotatedBitmap)
         );
         SubsamplingScaleImageView image_right = findViewById(R.id.side_by_side_image_right);
         image_right.setImage(
-                ImageSource.bitmap(MainActivity.image_holder_second.bitmap)
+                ImageSource.bitmap(MainActivity.image_holder_second.rotatedBitmap)
         );
     }
 }

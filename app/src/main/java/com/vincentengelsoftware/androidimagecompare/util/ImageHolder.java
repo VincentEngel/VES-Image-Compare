@@ -21,13 +21,14 @@ public class ImageHolder {
     public Bitmap bitmap;
     private Bitmap bitmapSmall;
     private Bitmap bitmapScreenSize;
+    public Bitmap rotatedBitmap;
 
     private Point point;
-    private ContentResolver contentResolver;
     private DisplayMetrics displayMetrics;
 
     private int currentRotation = 0;
     private int currentBitmapRotation = 0;
+    private static int BASE_DEGREE = 90;
 
     private final float MAX_SMALL_SIZE_DP = 164.499f;
 
@@ -36,7 +37,7 @@ public class ImageHolder {
         this.name = name;
     }
 
-    public int getRotationDegree()
+    private int getRotationDegree()
     {
         if (this.currentRotation == 3) {
             this.currentRotation = 0;
@@ -44,20 +45,37 @@ public class ImageHolder {
             this.currentRotation++;
         }
 
-        return 90;
+        return BASE_DEGREE;
     }
 
     public void updateFromImageHolder(ImageHolder imageHolder)
     {
         this.uri = imageHolder.uri;
         this.point = imageHolder.point;
-        this.contentResolver = imageHolder.contentResolver;
         this.displayMetrics = imageHolder.displayMetrics;
+
         this.bitmap = imageHolder.bitmap;
         this.bitmapSmall = imageHolder.bitmapSmall;
         this.bitmapScreenSize = imageHolder.bitmapScreenSize;
+        this.rotatedBitmap = imageHolder.rotatedBitmap;
+
         this.currentRotation = imageHolder.currentRotation;
         this.currentBitmapRotation = imageHolder.currentBitmapRotation;
+    }
+
+    public void calculateRotatedBitmap()
+    {
+        if (this.currentBitmapRotation == this.currentRotation && this.rotatedBitmap == null) {
+            this.rotatedBitmap = this.bitmap;
+            return;
+        }
+
+        if (this.rotatedBitmap == null || this.currentBitmapRotation != this.currentRotation) {
+            this.rotatedBitmap = BitmapHelper.rotateBitmap(this.bitmap, BASE_DEGREE * this.currentRotation);
+            this.bitmapScreenSize = null;
+            this.getBitmapScreenSize();
+            this.currentBitmapRotation = this.currentRotation;
+        }
     }
 
     public Bitmap getBitmapSmall()
@@ -85,7 +103,7 @@ public class ImageHolder {
     {
         if (this.bitmapScreenSize == null) {
             this.bitmapScreenSize = BitmapHelper.resizeBitmap(
-                    this.bitmap,
+                    this.rotatedBitmap,
                     Math.max(point.x, point.y),
                     Math.max(point.x, point.y)
             );
@@ -98,10 +116,13 @@ public class ImageHolder {
     {
         this.uri = uri;
         this.point = point;
-        this.contentResolver = cr;
         this.displayMetrics = displayMetrics;
         this.bitmapSmall = null;
         this.bitmapScreenSize = null;
+        this.rotatedBitmap = null;
+
+        this.currentRotation = 0;
+        this.currentBitmapRotation = 0;
 
         try {
             InputStream input = cr.openInputStream(uri);
@@ -112,25 +133,11 @@ public class ImageHolder {
         }
     }
 
-    public void rotateImage()
+    public void rotatePreviewImage()
     {
-        try {
-            Matrix matrix = new Matrix();
-            matrix.postRotate(this.getRotationDegree());
-
-            this.bitmap = Bitmap.createBitmap(
-                    this.bitmap,
-                    0,
-                    0,
-                    this.bitmap.getWidth(),
-                    this.bitmap.getHeight(),
-                    matrix,
-                    true
-            );
-            this.bitmapSmall = null;
-            this.bitmapScreenSize = null;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        this.bitmapSmall = BitmapHelper.rotateBitmap(
+                this.getBitmapSmall(),
+                this.getRotationDegree()
+        );
     }
 }
