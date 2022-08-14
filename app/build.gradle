@@ -6,7 +6,7 @@ android {
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.vincentengelsoftware.androidimagecompare"
+        applicationId 'com.vincentengelsoftware.vesandroidimagecompare'
         minSdk 26
         targetSdk 32
         versionCode 1
