@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
 import com.vincentengelsoftware.androidimagecompare.globals.Images;
+import com.vincentengelsoftware.androidimagecompare.globals.Status;
 import com.vincentengelsoftware.androidimagecompare.helper.ImageUpdater;
 import com.vincentengelsoftware.androidimagecompare.helper.MainHelper;
 import com.vincentengelsoftware.androidimagecompare.util.ImageHolder;
@@ -30,6 +31,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (Status.isFirstStart) {
+            Status.isFirstStart = false;
+            try {
+                for (File file : getApplicationContext().getCacheDir().listFiles()) {
+                    file.delete();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
         setUpActivityButtons();
 
@@ -142,16 +154,16 @@ public class MainActivity extends AppCompatActivity {
 
             Thread t = new Thread(() -> {
                 runOnUiThread(() -> {
-                    ProgressBar progressBar = findViewById(R.id.pbProgess);
-                    progressBar.setVisibility(View.VISIBLE);
+                    ProgressBar spinner = findViewById(R.id.pbProgess);
+                    spinner.setVisibility(View.VISIBLE);
                 });
 
                 Images.image_holder_first.calculateRotatedBitmap();
                 Images.image_holder_second.calculateRotatedBitmap();
 
                 runOnUiThread(() -> {
-                    ProgressBar progressBar = findViewById(R.id.pbProgess);
-                    progressBar.setVisibility(View.GONE);
+                    ProgressBar spinner = findViewById(R.id.pbProgess);
+                    spinner.setVisibility(View.GONE);
                 });
 
                 startActivity(intent);
