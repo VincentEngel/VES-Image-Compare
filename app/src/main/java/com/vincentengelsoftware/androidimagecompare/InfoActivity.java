@@ -6,11 +6,14 @@ import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
 import android.widget.TextView;
 
+import com.vincentengelsoftware.androidimagecompare.globals.Status;
+
 public class InfoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Status.activityIsOpening = false;
         setContentView(R.layout.activity_info);
 
         TextView textViewGithub = findViewById(R.id.info_text_view_link_github_project);

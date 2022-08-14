@@ -113,6 +113,11 @@ public class MainActivity extends AppCompatActivity {
         );
 
         findViewById(R.id.home_button_info).setOnClickListener(view -> {
+            if (Status.activityIsOpening) {
+                return;
+            }
+
+            Status.activityIsOpening = true;
             Intent intent = new Intent(getApplicationContext(), InfoActivity.class);
             startActivity(intent);
         });
@@ -146,9 +151,15 @@ public class MainActivity extends AppCompatActivity {
     private void addButtonChangeActivityLogic(Button btn, Class<?> targetActivity)
     {
         btn.setOnClickListener(view -> {
-            if (Images.image_holder_first.bitmap == null || Images.image_holder_second.bitmap == null) {
+            if (
+                    Images.image_holder_first.bitmap == null ||
+                            Images.image_holder_second.bitmap == null ||
+                            Status.activityIsOpening
+            ) {
                 return;
             }
+
+            Status.activityIsOpening = true;
 
             Intent intent = new Intent(getApplicationContext(), targetActivity);
 
@@ -208,6 +219,9 @@ public class MainActivity extends AppCompatActivity {
             );
 
             imageView.setOnClickListener(view -> {
+                if (Status.activityIsOpening) {
+                    return;
+                }
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
                 final CharSequence[] optionsMenu = {"Take Photo", "Choose from Gallery"};

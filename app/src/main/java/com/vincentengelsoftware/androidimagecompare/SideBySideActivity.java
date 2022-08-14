@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.vincentengelsoftware.androidimagecompare.globals.Images;
+import com.vincentengelsoftware.androidimagecompare.globals.Status;
 import com.vincentengelsoftware.androidimagecompare.helper.FullScreenHelper;
 
 public class SideBySideActivity extends AppCompatActivity {
@@ -14,6 +15,7 @@ public class SideBySideActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Status.activityIsOpening = false;
 
         FullScreenHelper.setFullScreenFlags(this.getWindow());
 

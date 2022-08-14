@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.vincentengelsoftware.androidimagecompare.globals.Status;
 import com.vincentengelsoftware.androidimagecompare.util.ImageHolder;
 
 public class MainHelper {
@@ -52,7 +53,7 @@ public class MainHelper {
             ImageView imageView
     ) {
         imageButton.setOnClickListener(view -> {
-            if (imageHolder.bitmap == null) {
+            if (imageHolder.bitmap == null || Status.activityIsOpening) {
                 return;
             }
             imageHolder.rotatePreviewImage();
@@ -72,7 +73,7 @@ public class MainHelper {
             ImageView imageViewTwo
     ) {
         imageButton.setOnClickListener(view -> {
-            if (imageHolderOne.bitmap == null || imageHolderTwo.bitmap == null) {
+            if (imageHolderOne.bitmap == null || imageHolderTwo.bitmap == null || Status.activityIsOpening) {
                 return;
             }
             ImageHolder imageHolder = new ImageHolder();
