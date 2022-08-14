@@ -3,25 +3,32 @@
 Android App to easily compare similar images
 
 ## Available comparisions
-### Overlay Slide
-Cut the side of the image in the front
+<img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/app_preview_images/menu.png" width=20% height=20%>
 
-TODO ADD IMAGES
+### Overlay Slide
+<p>Cut the side of the image in the front</p>
+<img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/app_preview_images/overlay_slide_1.png" width=20% height=20%>
 
 ### Overlay Tap
-Tap on the screen to switch the images being shown
-
-TODO ADD IMAGES
+<p>Tap on the screen to switch the images being shown</p>
+<div>
+  <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/app_preview_images/tap_1.png" width=20% height=20%>
+  <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/app_preview_images/tap_2.png" width=20% height=20%>
+</div>
 
 ### Transparent
-Adjust the transparency of the image in the front
-
-TODO ADD IMAGES
+<p>Adjust the transparency of the image in the front</p>
+<div>
+  <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/app_preview_images/transparent_1.png" width=20% height=20%>
+  <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/app_preview_images/transparent_2.png" width=20% height=20%>
+</div>
 
 ### Side by Side
-View both images side by side with the option to zoom into each image
-
-TODO ADD IMAGES
+<p>View both images side by side with the option to zoom into each image</p>
+<div>
+  <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/app_preview_images/side_by_side_1.png" width=20% height=20%>
+  <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/app_preview_images/side_by_side_2.png" width=75% height=75%>
+</div>
 
 ## Get the App here
 TODO ADD LINKS
