@@ -1,6 +1,8 @@
 package com.vincentengelsoftware.androidimagecompare;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
@@ -166,53 +168,52 @@ public class MainActivity extends AppCompatActivity {
                     imageView.setImageBitmap(imageHolder.getBitmapSmall());
                 });
 
-
-        File temp = null;
-
         try {
+            File temp;
+
             temp = File.createTempFile("camera_image", null, this.getCacheDir());
+
+            fileUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".fileprovider", temp);
+
+            ActivityResultLauncher<Uri> mGetContentCamera = registerForActivityResult(
+                    new ActivityResultContracts.TakePicture(),
+                    result -> {
+                        if (!result) {
+                            Toast.makeText(getBaseContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        Point size = new Point();
+                        getWindowManager().getDefaultDisplay().getSize(size);
+                        imageHolder.updateFromUri(fileUri, this.getContentResolver(), size, getResources().getDisplayMetrics());
+                        ImageUpdater.updateImage(imageView, imageHolder, ImageUpdater.SMALL);
+                    }
+            );
+
+            imageView.setOnClickListener(view -> {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+                final CharSequence[] optionsMenu = {"Take Photo", "Choose from Gallery"};
+
+
+                builder.setItems(optionsMenu, (dialogInterface, i) -> {
+                    if (optionsMenu[i].equals("Take Photo")) {
+                        if (MainHelper.checkPermission(MainActivity.this)) {
+                            mGetContentCamera.launch(fileUri);
+                        } else {
+                            MainHelper.requestPermission(MainActivity.this);
+                            imageView.callOnClick();
+                        }
+                    } else if (optionsMenu[i].equals("Choose from Gallery")) {
+                        mGetContentGallery.launch("image/*");
+                    }
+
+                    dialogInterface.dismiss();
+                });
+
+                builder.create().show();
+            });
         } catch (Exception ignored) {
         }
-
-        fileUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".fileprovider", temp);
-
-        ActivityResultLauncher<Uri> mGetContentCamera = registerForActivityResult(
-                new ActivityResultContracts.TakePicture(),
-                result -> {
-                    if (!result) {
-                        Toast.makeText(getBaseContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    Point size = new Point();
-                    getWindowManager().getDefaultDisplay().getSize(size);
-                    imageHolder.updateFromUri(fileUri, this.getContentResolver(), size, getResources().getDisplayMetrics());
-                    ImageUpdater.updateImage(imageView, imageHolder, ImageUpdater.SMALL);
-                }
-        );
-
-        imageView.setOnClickListener(view -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-            final CharSequence[] optionsMenu = {"Take Photo", "Choose from Gallery"};
-
-
-            builder.setItems(optionsMenu, (dialogInterface, i) -> {
-                if (optionsMenu[i].equals("Take Photo")) {
-                    if (MainHelper.checkPermission(MainActivity.this)) {
-                        mGetContentCamera.launch(fileUri);
-                    } else {
-                        MainHelper.requestPermission(MainActivity.this);
-                        imageView.callOnClick();
-                    }
-                } else if (optionsMenu[i].equals("Choose from Gallery")) {
-                    mGetContentGallery.launch("image/*");
-                }
-
-                dialogInterface.dismiss();
-            });
-
-            builder.create().show();
-        });
     }
 
     @Override

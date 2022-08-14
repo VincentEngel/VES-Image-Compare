@@ -148,7 +148,7 @@
                             android:layout_height="48dp"
                             android:layout_gravity="center_horizontal|top"
                             android:backgroundTint="#F57C00"
-                            android:contentDescription="@string/swap_images"
+                            android:contentDescription="@string/rotate_image_left"
                             app:srcCompat="@android:drawable/stat_notify_sync_noanim"
                             tools:ignore="ImageContrastCheck" />
                     </FrameLayout>
@@ -163,7 +163,7 @@
                             android:layout_height="48dp"
                             android:layout_gravity="center_horizontal|top"
                             android:backgroundTint="#F57C00"
-                            android:contentDescription="@string/swap_images"
+                            android:contentDescription="@string/rotate_image_right"
                             app:srcCompat="@android:drawable/stat_notify_sync_noanim"
                             tools:ignore="ImageContrastCheck" />
                     </FrameLayout>

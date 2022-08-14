@@ -12,7 +12,7 @@
         android:id="@+id/frameLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/overlay_slide_button_swap_seekbar"
+        app:layout_constraintBottom_toTopOf="@+id/tableRow"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -35,23 +35,37 @@
 
     </FrameLayout>
 
-    <ImageButton
-        android:id="@+id/overlay_slide_button_swap_seekbar"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:backgroundTint="#F57C00"
-        android:contentDescription="@string/switch_slide_direction"
-        app:layout_constraintBottom_toTopOf="@+id/overlay_slide_seek_bar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@android:drawable/stat_notify_sync_noanim"
-        tools:ignore="ImageContrastCheck,DuplicateSpeakableTextCheck" />
-
-    <SeekBar
-        android:id="@+id/overlay_slide_seek_bar"
-        android:layout_width="0dp"
+    <TableRow
+        android:id="@+id/tableRow"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <ImageButton
+                android:id="@+id/overlay_slide_button_swap_seekbar"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:backgroundTint="#F57C00"
+                android:contentDescription="@string/switch_slide_direction"
+                app:srcCompat="@android:drawable/stat_notify_sync_noanim"
+                tools:ignore="ImageContrastCheck,DuplicateSpeakableTextCheck" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <SeekBar
+                android:id="@+id/overlay_slide_seek_bar"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </FrameLayout>
+    </TableRow>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

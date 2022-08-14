@@ -1,15 +1,12 @@
 package com.vincentengelsoftware.androidimagecompare.util;
 
 import android.content.ContentResolver;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.graphics.Point;
 import android.net.Uri;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
-import android.widget.ImageView;
 
 import com.vincentengelsoftware.androidimagecompare.helper.BitmapHelper;
 
@@ -28,7 +25,7 @@ public class ImageHolder {
 
     private int currentRotation = 0;
     private int currentBitmapRotation = 0;
-    private static int BASE_DEGREE = 90;
+    private static final int BASE_DEGREE = 90;
 
     private final float MAX_SMALL_SIZE_DP = 164.499f;
 
