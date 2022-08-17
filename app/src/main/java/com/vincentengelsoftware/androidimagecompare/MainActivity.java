@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -77,6 +78,14 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+
+        ToggleButton tb = findViewById(R.id.home_keep_original_image_size);
+        if (Status.keepOriginalSize) {
+            tb.setChecked(true);
+        }
+        tb.setOnCheckedChangeListener(
+                (compoundButton, isChecked) -> Status.keepOriginalSize = isChecked
+        );
     }
 
     @Override
