@@ -3,6 +3,13 @@
     package="com.vincentengelsoftware.androidimagecompare">
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
 
+    <!-- Disable below for Playstore build -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.any" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <!-- Disable above for Playstore build -->
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -37,7 +44,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.vincentengelsoftware.androidimagecompare.fileprovider"
+            android:authorities="com.vincentengelsoftware.vesandroidimagecompare.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
 

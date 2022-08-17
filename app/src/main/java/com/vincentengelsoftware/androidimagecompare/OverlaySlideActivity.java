@@ -28,14 +28,22 @@ public class OverlaySlideActivity extends AppCompatActivity {
 
             setContentView(R.layout.activity_overlay_slide);
 
+            String imageSize = ImageUpdater.SCREEN_SIZE;
+            if (Status.keepOriginalSize) {
+                imageSize = ImageUpdater.ORIGINAL;
+            }
+
             ImageUpdater.updateImage(
                     findViewById(R.id.overlay_slide_image_view_base),
                     Images.image_holder_first,
-                    ImageUpdater.SCREEN_SIZE
+                    imageSize
             );
 
             ImageView image_front = findViewById(R.id.overlay_slide_image_view_front);
             Bitmap bitmapSource = Images.image_holder_second.getBitmapScreenSize();
+            if (Status.keepOriginalSize) {
+                bitmapSource = Images.image_holder_second.rotatedBitmap;
+            }
 
             SeekBar seekBar = findViewById(R.id.overlay_slide_seek_bar);
             SlideHelper.addSeekbarLogic(seekBar, image_front, leftToRight, bitmapSource);

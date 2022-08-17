@@ -184,6 +184,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Playstore version so that no data protection has to be provided:
+     * This addLoadImageLogic has no camera function
+     */
+    /**
     private void addLoadImageLogic(ImageView imageView, ImageHolder imageHolder) {
         ActivityResultLauncher<String> mGetContentGallery = registerForActivityResult(
                 new ActivityResultContracts.GetContent(),
@@ -213,71 +218,72 @@ public class MainActivity extends AppCompatActivity {
             });
         } catch (Exception ignored) {
         }
-    }
+    }*/
 
     /**
-     * private void addLoadImageLogic(ImageView imageView, ImageHolder imageHolder) {
-     *         ActivityResultLauncher<String> mGetContentGallery = registerForActivityResult(
-     *                 new ActivityResultContracts.GetContent(),
-     *                 uri -> {
-     *                     if (uri == null) {
-     *                         return;
-     *                     }
-     *
-     *                     Point size = new Point();
-     *                     getWindowManager().getDefaultDisplay().getSize(size);
-     *                     imageHolder.updateFromUri(
-     *                             uri,
-     *                             this.getContentResolver(),
-     *                             size,
-     *                             getResources().getDisplayMetrics()
-     *                     );
-     *                     imageView.setImageBitmap(imageHolder.getBitmapSmall());
-     *                 });
-     *
-     *         try {
-     *             ActivityResultLauncher<Uri> mGetContentCamera = registerForActivityResult(
-     *                     new ActivityResultContracts.TakePicture(),
-     *                     result -> {
-     *                         if (!result) {
-     *                             Toast.makeText(getBaseContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
-     *                             return;
-     *                         }
-     *                         Point size = new Point();
-     *                         getWindowManager().getDefaultDisplay().getSize(size);
-     *                         imageHolder.updateFromUri(Images.fileUri, this.getContentResolver(), size, getResources().getDisplayMetrics());
-     *                         ImageUpdater.updateImage(imageView, imageHolder, ImageUpdater.SMALL);
-     *                     }
-     *             );
-     *
-     *             imageView.setOnClickListener(view -> {
-     *                 if (Status.activityIsOpening) {
-     *                     return;
-     *                 }
-     *                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-     *
-     *                 final CharSequence[] optionsMenu = {"Take Photo", "Choose from Gallery"};
-     *
-     *
-     *                 builder.setItems(optionsMenu, (dialogInterface, i) -> {
-     *                     if (optionsMenu[i].equals("Take Photo")) {
-     *                         if (MainHelper.checkPermission(MainActivity.this)) {
-     *                             mGetContentCamera.launch(Images.fileUri);
-     *                         } else {
-     *                             MainHelper.requestPermission(MainActivity.this);
-     *                             imageView.callOnClick();
-     *                         }
-     *                     } else if (optionsMenu[i].equals("Choose from Gallery")) {
-     *                         mGetContentGallery.launch("image/*");
-     *                     }
-     *
-     *                     dialogInterface.dismiss();
-     *                 });
-     *
-     *                 builder.create().show();
-     *             });
-     *         } catch (Exception ignored) {
-     *         }
-     *     }
+     * F-droid version
      */
+    private void addLoadImageLogic(ImageView imageView, ImageHolder imageHolder) {
+        ActivityResultLauncher<String> mGetContentGallery = registerForActivityResult(
+                new ActivityResultContracts.GetContent(),
+                uri -> {
+                    if (uri == null) {
+                        return;
+                    }
+
+                    Point size = new Point();
+                    getWindowManager().getDefaultDisplay().getSize(size);
+                    imageHolder.updateFromUri(
+                            uri,
+                            this.getContentResolver(),
+                            size,
+                            getResources().getDisplayMetrics()
+                    );
+                    imageView.setImageBitmap(imageHolder.getBitmapSmall());
+                });
+
+        try {
+            ActivityResultLauncher<Uri> mGetContentCamera = registerForActivityResult(
+                    new ActivityResultContracts.TakePicture(),
+                    result -> {
+                        if (!result) {
+                            Toast.makeText(getBaseContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        Point size = new Point();
+                        getWindowManager().getDefaultDisplay().getSize(size);
+                        imageHolder.updateFromUri(Images.fileUri, this.getContentResolver(), size, getResources().getDisplayMetrics());
+                        ImageUpdater.updateImage(imageView, imageHolder, ImageUpdater.SMALL);
+                    }
+            );
+
+            imageView.setOnClickListener(view -> {
+                if (Status.activityIsOpening) {
+                    return;
+                }
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+                final CharSequence[] optionsMenu = {"Take Photo", "Choose from Gallery"};
+
+
+                builder.setItems(optionsMenu, (dialogInterface, i) -> {
+                    if (optionsMenu[i].equals("Take Photo")) {
+                        if (MainHelper.checkPermission(MainActivity.this)) {
+                            mGetContentCamera.launch(Images.fileUri);
+                        } else {
+                            MainHelper.requestPermission(MainActivity.this);
+                            imageView.callOnClick();
+                        }
+                    } else if (optionsMenu[i].equals("Choose from Gallery")) {
+                        mGetContentGallery.launch("image/*");
+                    }
+
+                    dialogInterface.dismiss();
+                });
+
+                builder.create().show();
+            });
+        } catch (Exception ignored) {
+        }
+    }
 }

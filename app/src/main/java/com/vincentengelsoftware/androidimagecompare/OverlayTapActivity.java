@@ -22,18 +22,23 @@ public class OverlayTapActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_overlay_tap);
 
+        String imageSize = ImageUpdater.SCREEN_SIZE;
+        if (Status.keepOriginalSize) {
+            imageSize = ImageUpdater.ORIGINAL;
+        }
+
         ImageView image_first = findViewById(R.id.overlay_tap_image_view_one);
         ImageUpdater.updateImage(
                 image_first,
                 Images.image_holder_first,
-                ImageUpdater.SCREEN_SIZE
+                imageSize
         );
 
         ImageView image_second = findViewById(R.id.overlay_tap_image_view_two);
         ImageUpdater.updateImage(
                 image_second,
                 Images.image_holder_second,
-                ImageUpdater.SCREEN_SIZE
+                imageSize
         );
 
         image_second.setVisibility(View.INVISIBLE);

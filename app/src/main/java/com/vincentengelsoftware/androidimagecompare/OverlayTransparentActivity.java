@@ -22,17 +22,22 @@ public class OverlayTransparentActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_overlay_transparent);
 
+        String imageSize = ImageUpdater.SCREEN_SIZE;
+        if (Status.keepOriginalSize) {
+            imageSize = ImageUpdater.ORIGINAL;
+        }
+
         ImageUpdater.updateImage(
                 findViewById(R.id.overlay_transparent_image_view_base),
                 Images.image_holder_first,
-                ImageUpdater.SCREEN_SIZE
+                imageSize
         );
 
         ImageView image_transparent = findViewById(R.id.overlay_transparent_image_view_transparent);
         ImageUpdater.updateImage(
                 image_transparent,
                 Images.image_holder_second,
-                ImageUpdater.SCREEN_SIZE
+                imageSize
         );
         image_transparent.bringToFront();
 
