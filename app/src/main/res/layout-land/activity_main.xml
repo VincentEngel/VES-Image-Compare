@@ -11,6 +11,7 @@
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fillViewport="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -20,81 +21,75 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TableLayout
+            <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
-                <TableRow
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
 
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/textView2"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:paddingStart="5dp"
-                                android:paddingTop="20dp"
-                                android:text="@string/use_original_image" />
-
-                            <ToggleButton
-                                android:id="@+id/home_keep_original_image_size"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:backgroundTint="#F57C00"
-                                android:text="@string/use_original_image"
-                                android:textColor="@color/black" />
-
-                        </LinearLayout>
-                    </FrameLayout>
-
-                    <FrameLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="1">
+                        android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/info_text_view_color_theme"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:paddingTop="20dp"
-                            android:text="@string/ves_image_compare"
-                            android:textSize="24sp" />
-
-                    </FrameLayout>
-
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1">
-
-                        <ImageButton
-                            android:id="@+id/home_button_info"
+                            android:id="@+id/textView2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="end"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginEnd="10dp"
+                            android:paddingStart="5dp"
+                            android:paddingTop="20dp"
+                            android:text="@string/use_original_image" />
+
+                        <ToggleButton
+                            android:id="@+id/home_keep_original_image_size"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:backgroundTint="#F57C00"
-                            android:contentDescription="@string/show_information"
-                            app:srcCompat="@android:drawable/ic_menu_info_details"
-                            tools:ignore="DuplicateSpeakableTextCheck" />
+                            android:text="@string/use_original_image"
+                            android:textColor="@color/black" />
 
-                    </FrameLayout>
+                    </LinearLayout>
+                </FrameLayout>
 
-                </TableRow>
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
 
-            </TableLayout>
+                    <TextView
+                        android:id="@+id/info_text_view_color_theme"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:paddingTop="20dp"
+                        android:text="@string/ves_image_compare"
+                        android:textSize="24sp" />
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <ImageButton
+                        android:id="@+id/home_button_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:backgroundTint="#F57C00"
+                        android:contentDescription="@string/show_information"
+                        app:srcCompat="@android:drawable/ic_menu_info_details"
+                        tools:ignore="DuplicateSpeakableTextCheck" />
+
+                </FrameLayout>
+
+            </TableRow>
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -208,64 +203,64 @@
 
             </TableLayout>
 
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:collapseColumns="*"
+                android:gravity="bottom"
+                android:stretchColumns="*">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="bottom">
+
+                    <Button
+                        android:id="@+id/button_overlay_slide"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginVertical="24dp"
+                        android:text="@string/overlay_slide"
+                        android:textAllCaps="false"
+                        android:textSize="22sp" />
+
+                    <Button
+                        android:id="@+id/button_side_by_side"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginVertical="24dp"
+                        android:text="@string/side_by_side"
+                        android:textAllCaps="false"
+                        android:textSize="22sp" />
+
+                    <Button
+                        android:id="@+id/button_overlay_tap"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginVertical="24dp"
+                        android:text="@string/overlay_tap"
+                        android:textAllCaps="false"
+                        android:textSize="22sp" />
+
+                    <Button
+                        android:id="@+id/button_overlay_transparent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginVertical="24dp"
+                        android:text="@string/transparent"
+                        android:textAllCaps="false"
+                        android:textSize="22sp" />
+
+                </TableRow>
+
+            </TableLayout>
+
         </LinearLayout>
     </ScrollView>
-
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:stretchColumns="*"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <Button
-                android:id="@+id/button_overlay_slide"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginVertical="24dp"
-                android:text="@string/overlay_slide"
-                android:textAllCaps="false"
-                android:textSize="22sp" />
-
-            <Button
-                android:id="@+id/button_side_by_side"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginVertical="24dp"
-                android:text="@string/side_by_side"
-                android:textAllCaps="false"
-                android:textSize="22sp" />
-
-            <Button
-                android:id="@+id/button_overlay_tap"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginVertical="24dp"
-                android:text="@string/overlay_tap"
-                android:textAllCaps="false"
-                android:textSize="22sp" />
-
-            <Button
-                android:id="@+id/button_overlay_transparent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginVertical="24dp"
-                android:text="@string/transparent"
-                android:textAllCaps="false"
-                android:textSize="22sp" />
-
-        </TableRow>
-
-    </TableLayout>
 
     <ProgressBar
         android:id="@+id/pbProgess"
