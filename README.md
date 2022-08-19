@@ -1,4 +1,4 @@
-# <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/icon.png" width=4% height=4%> VES-Image-Compare
+# <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/icon.png" width=4% height=4%> VES - Image Compare
 
 
 Android App to easily compare similar images
