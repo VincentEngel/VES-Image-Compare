@@ -1,7 +1,12 @@
 # <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/icon.png" width=4% height=4%> VES - Image Compare
 
-
 Android App to easily compare similar images
+
+## Download
+
+[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
+     alt="Get it on F-Droid"
+     height="80">](https://f-droid.org/packages/com.vincentengelsoftware.vesandroidimagecompare/)
 
 ## Available comparisions
 <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/menu.png" width=20% height=20%>
@@ -30,6 +35,3 @@ Android App to easily compare similar images
   <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/side_by_side_1.png" width=20% height=20%>
   <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/side_by_side_2.png" width=75% height=75%>
 </div>
-
-## Get the App here
-TODO ADD LINKS
