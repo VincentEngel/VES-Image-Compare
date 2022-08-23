@@ -2,10 +2,13 @@ package com.vincentengelsoftware.androidimagecompare.helper;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 
+import com.davemorrissey.labs.subscaleview.ImageSource;
+import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
 
 public class SlideHelper {
@@ -46,7 +49,7 @@ public class SlideHelper {
 
     public static void addSeekbarLogic(
             SeekBar seekBar,
-            ImageView imageView,
+            SubsamplingScaleImageView imageView,
             UtilMutableBoolean mutableBoolean,
             Bitmap bitmapSource
     ) {
@@ -96,7 +99,16 @@ public class SlideHelper {
                         bitmapSource.getHeight()
                 );
 
-                imageView.setImageBitmap(bitmapCopy);
+                imageView.setImage(ImageSource.bitmap(bitmapCopy));
+
+                if (
+                        (!mutableBoolean.value && seekBar.getProgress() >= 98)
+                        || (mutableBoolean.value && seekBar.getProgress() <= 2)
+                ) {
+                    imageView.setVisibility(View.GONE);
+                } else {
+                    imageView.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override

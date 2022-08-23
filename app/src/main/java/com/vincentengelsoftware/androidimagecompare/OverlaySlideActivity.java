@@ -7,6 +7,7 @@ import android.widget.SeekBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
 import com.vincentengelsoftware.androidimagecompare.helper.FullScreenHelper;
@@ -33,13 +34,13 @@ public class OverlaySlideActivity extends AppCompatActivity {
                 imageSize = ImageUpdater.ORIGINAL;
             }
 
-            ImageUpdater.updateImageViewImage(
+            ImageUpdater.updateSubsamplingScaleImageViewImage(
                     findViewById(R.id.overlay_slide_image_view_base),
                     Images.image_holder_first,
                     imageSize
             );
 
-            ImageView image_front = findViewById(R.id.overlay_slide_image_view_front);
+            SubsamplingScaleImageView image_front = findViewById(R.id.overlay_slide_image_view_front);
             Bitmap bitmapSource = Images.image_holder_second.getBitmapScreenSize();
             if (Status.keepOriginalSize) {
                 bitmapSource = Images.image_holder_second.rotatedBitmap;
