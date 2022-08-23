@@ -33,7 +33,7 @@ public class OverlaySlideActivity extends AppCompatActivity {
                 imageSize = ImageUpdater.ORIGINAL;
             }
 
-            ImageUpdater.updateImage(
+            ImageUpdater.updateImageViewImage(
                     findViewById(R.id.overlay_slide_image_view_base),
                     Images.image_holder_first,
                     imageSize

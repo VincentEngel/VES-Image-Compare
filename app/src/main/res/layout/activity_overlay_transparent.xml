@@ -18,17 +18,17 @@
 
         <ImageView
             android:id="@+id/overlay_transparent_image_view_base"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
             android:background="@android:color/transparent"
             android:contentDescription="@string/first_image"
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
-        <ImageView
+        <com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
             android:id="@+id/overlay_transparent_image_view_transparent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
             android:alpha="0.50"
             android:background="@android:color/transparent"

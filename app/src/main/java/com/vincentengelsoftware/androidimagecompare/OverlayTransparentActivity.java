@@ -6,6 +6,7 @@ import android.widget.SeekBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
 import com.vincentengelsoftware.androidimagecompare.helper.FullScreenHelper;
@@ -27,14 +28,14 @@ public class OverlayTransparentActivity extends AppCompatActivity {
             imageSize = ImageUpdater.ORIGINAL;
         }
 
-        ImageUpdater.updateImage(
+        ImageUpdater.updateImageViewImage(
                 findViewById(R.id.overlay_transparent_image_view_base),
                 Images.image_holder_first,
                 imageSize
         );
 
-        ImageView image_transparent = findViewById(R.id.overlay_transparent_image_view_transparent);
-        ImageUpdater.updateImage(
+        SubsamplingScaleImageView image_transparent = findViewById(R.id.overlay_transparent_image_view_transparent);
+        ImageUpdater.updateSubsamplingScaleImageViewImage(
                 image_transparent,
                 Images.image_holder_second,
                 imageSize

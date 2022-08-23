@@ -3,8 +3,10 @@ package com.vincentengelsoftware.androidimagecompare.helper;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 
+import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
+
 public class TransparentHelper {
-    public static void makeTargetTransparent(SeekBar seekBar, ImageView imageView)
+    public static void makeTargetTransparent(SeekBar seekBar, SubsamplingScaleImageView imageView)
     {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override

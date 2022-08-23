@@ -3,8 +3,10 @@ package com.vincentengelsoftware.androidimagecompare.helper;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
+
 public class TapHelper {
-    public static void setOnClickListener(ImageView imageViewListener, ImageView imageViewTarget)
+    public static void setOnClickListener(SubsamplingScaleImageView imageViewListener, SubsamplingScaleImageView imageViewTarget)
     {
         imageViewListener.setOnClickListener(view -> {
             imageViewListener.setVisibility(View.INVISIBLE);

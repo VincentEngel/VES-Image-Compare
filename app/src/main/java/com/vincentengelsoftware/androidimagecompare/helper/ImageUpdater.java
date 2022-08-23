@@ -3,6 +3,8 @@ package com.vincentengelsoftware.androidimagecompare.helper;
 import android.graphics.Bitmap;
 import android.widget.ImageView;
 
+import com.davemorrissey.labs.subscaleview.ImageSource;
+import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.vincentengelsoftware.androidimagecompare.util.ImageHolder;
 
 public class ImageUpdater {
@@ -10,7 +12,7 @@ public class ImageUpdater {
     public static final String SCREEN_SIZE = "SCREEN_SIZE";
     public static final String SMALL = "SMALL";
 
-    public static void updateImage(
+    public static void updateImageViewImage(
             ImageView imageView,
             ImageHolder imageHolder,
             String IMAGE_SIZE
@@ -31,5 +33,28 @@ public class ImageUpdater {
         }
 
         imageView.setImageBitmap(bitmap);
+    }
+
+    public static void updateSubsamplingScaleImageViewImage(
+            SubsamplingScaleImageView imageView,
+            ImageHolder imageHolder,
+            String IMAGE_SIZE
+    ) {
+        Bitmap bitmap;
+
+        switch (IMAGE_SIZE) {
+            case SMALL:
+                bitmap = imageHolder.getBitmapSmall();
+                break;
+            case SCREEN_SIZE:
+                bitmap = imageHolder.getBitmapScreenSize();
+                break;
+            case ORIGINAL:
+            default:
+                bitmap = imageHolder.rotatedBitmap;
+                break;
+        }
+
+        imageView.setImage(ImageSource.bitmap(bitmap));
     }
 }

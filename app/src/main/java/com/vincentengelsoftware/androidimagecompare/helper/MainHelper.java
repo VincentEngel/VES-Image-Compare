@@ -57,7 +57,7 @@ public class MainHelper {
                 return;
             }
             imageHolder.rotatePreviewImage();
-            ImageUpdater.updateImage(
+            ImageUpdater.updateImageViewImage(
                     imageView,
                     imageHolder,
                     ImageUpdater.SMALL
@@ -81,12 +81,12 @@ public class MainHelper {
             imageHolderOne.updateFromImageHolder(imageHolderTwo);
             imageHolderTwo.updateFromImageHolder(imageHolder);
 
-            ImageUpdater.updateImage(
+            ImageUpdater.updateImageViewImage(
                     imageViewOne,
                     imageHolderOne,
                     ImageUpdater.SMALL
             );
-            ImageUpdater.updateImage(
+            ImageUpdater.updateImageViewImage(
                     imageViewTwo,
                     imageHolderTwo,
                     ImageUpdater.SMALL

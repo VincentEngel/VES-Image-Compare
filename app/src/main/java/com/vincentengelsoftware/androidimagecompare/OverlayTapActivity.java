@@ -2,10 +2,10 @@ package com.vincentengelsoftware.androidimagecompare;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
 import com.vincentengelsoftware.androidimagecompare.helper.FullScreenHelper;
@@ -27,15 +27,15 @@ public class OverlayTapActivity extends AppCompatActivity {
             imageSize = ImageUpdater.ORIGINAL;
         }
 
-        ImageView image_first = findViewById(R.id.overlay_tap_image_view_one);
-        ImageUpdater.updateImage(
+        SubsamplingScaleImageView image_first = findViewById(R.id.overlay_tap_image_view_one);
+        ImageUpdater.updateSubsamplingScaleImageViewImage(
                 image_first,
                 Images.image_holder_first,
                 imageSize
         );
 
-        ImageView image_second = findViewById(R.id.overlay_tap_image_view_two);
-        ImageUpdater.updateImage(
+        SubsamplingScaleImageView image_second = findViewById(R.id.overlay_tap_image_view_two);
+        ImageUpdater.updateSubsamplingScaleImageViewImage(
                 image_second,
                 Images.image_holder_second,
                 imageSize

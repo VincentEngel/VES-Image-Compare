@@ -60,11 +60,11 @@ public class MainActivity extends AppCompatActivity {
         );
 
         if (Images.image_holder_first.uri != null) {
-            ImageUpdater.updateImage(first, Images.image_holder_first, ImageUpdater.SMALL);
+            ImageUpdater.updateImageViewImage(first, Images.image_holder_first, ImageUpdater.SMALL);
         }
 
         if (Images.image_holder_second.uri != null) {
-            ImageUpdater.updateImage(second, Images.image_holder_second, ImageUpdater.SMALL);
+            ImageUpdater.updateImageViewImage(second, Images.image_holder_second, ImageUpdater.SMALL);
         }
 
         if (Images.fileUri == null) {
@@ -193,45 +193,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     * Playstore version so that no data protection has to be provided:
-     * This addLoadImageLogic has no camera function
-     */
-    /**
-    private void addLoadImageLogic(ImageView imageView, ImageHolder imageHolder) {
-        ActivityResultLauncher<String> mGetContentGallery = registerForActivityResult(
-                new ActivityResultContracts.GetContent(),
-                uri -> {
-                    if (uri == null) {
-                        return;
-                    }
-
-                    Point size = new Point();
-                    getWindowManager().getDefaultDisplay().getSize(size);
-                    imageHolder.updateFromUri(
-                            uri,
-                            this.getContentResolver(),
-                            size,
-                            getResources().getDisplayMetrics()
-                    );
-                    imageView.setImageBitmap(imageHolder.getBitmapSmall());
-                });
-
-        try {
-            imageView.setOnClickListener(view -> {
-                if (Status.activityIsOpening) {
-                    return;
-                }
-
-                mGetContentGallery.launch("image/*");
-            });
-        } catch (Exception ignored) {
-        }
-    }*/
-
-    /**
-     * F-droid version
-     */
     private void addLoadImageLogic(ImageView imageView, ImageHolder imageHolder) {
         ActivityResultLauncher<String> mGetContentGallery = registerForActivityResult(
                 new ActivityResultContracts.GetContent(),
@@ -262,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
                         Point size = new Point();
                         getWindowManager().getDefaultDisplay().getSize(size);
                         imageHolder.updateFromUri(Images.fileUri, this.getContentResolver(), size, getResources().getDisplayMetrics());
-                        ImageUpdater.updateImage(imageView, imageHolder, ImageUpdater.SMALL);
+                        ImageUpdater.updateImageViewImage(imageView, imageHolder, ImageUpdater.SMALL);
                     }
             );
 
