@@ -1,5 +1,11 @@
-The App offers the following options to easily compare two similar images:
+The App offers the following options to easily compare two similar photos:
 
-- Show the images side by side and zoom into each image
-- Place the images behind each other and tap on the screen to quickly rotate between them
-- Place the images behind each other and adjust the width or transparency of the image in the front
+--------------------
+
+* Rotate the images before comparing them
+
+* Show the images side by side and zoom into each image
+
+* Place the images behind each other and tap on the screen to quickly switch between them
+
+* Place the images behind each other and adjust the width or transparency of the image in the front
