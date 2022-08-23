@@ -9,9 +9,10 @@
     tools:context=".OverlayTransparentActivity">
 
     <FrameLayout
+        android:id="@+id/frameLaout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/overlay_transparent_seek_bar"
+        app:layout_constraintBottom_toTopOf="@+id/tableRow"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -37,14 +38,40 @@
 
     </FrameLayout>
 
-    <SeekBar
-        android:id="@+id/overlay_transparent_seek_bar"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
+    <TableRow
+        android:id="@+id/tableRow"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintWidth_max="480dp" />
+        app:layout_constraintTop_toBottomOf="@+id/frameLaout">
+
+        <FrameLayout
+            android:layout_width="0dip"
+            android:layout_height="fill_parent"
+            android:layout_weight="1">
+
+            <SeekBar
+                android:id="@+id/overlay_slide_seek_bar"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <ImageButton
+                android:id="@+id/overlay_transparent_button_hide_front_image"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:backgroundTint="#F57C00"
+                android:contentDescription="@string/hide_front_image"
+                app:srcCompat="@android:drawable/ic_menu_view"
+                tools:ignore="ImageContrastCheck,DuplicateSpeakableTextCheck"
+                tools:srcCompat="@android:drawable/ic_menu_view" />
+        </FrameLayout>
+
+    </TableRow>
 </androidx.constraintlayout.widget.ConstraintLayout>

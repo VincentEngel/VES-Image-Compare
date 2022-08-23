@@ -2,7 +2,8 @@ package com.vincentengelsoftware.androidimagecompare;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.widget.ImageView;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.SeekBar;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -55,6 +56,15 @@ public class OverlaySlideActivity extends AppCompatActivity {
                     seekBar,
                     leftToRight
             );
+
+            ImageButton hideShow = findViewById(R.id.overlay_transparent_button_hide_front_image);
+            hideShow.setOnClickListener(view -> {
+                if (image_front.getVisibility() == View.VISIBLE) {
+                    image_front.setVisibility(View.GONE);
+                } else {
+                    image_front.setVisibility(View.VISIBLE);
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
             this.onBackPressed();
