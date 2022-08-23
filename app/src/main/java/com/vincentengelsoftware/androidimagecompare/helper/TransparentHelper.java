@@ -1,5 +1,6 @@
 package com.vincentengelsoftware.androidimagecompare.helper;
 
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 
@@ -11,6 +12,11 @@ public class TransparentHelper {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                if (seekBar.getProgress() <= 2) {
+                    imageView.setVisibility(View.GONE);
+                } else {
+                    imageView.setVisibility(View.VISIBLE);
+                }
                 imageView.setAlpha(
                         (float) seekBar.getProgress() / (float) seekBar.getMax()
                 );
@@ -23,6 +29,11 @@ public class TransparentHelper {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+                if (seekBar.getProgress() <= 2) {
+                    imageView.setVisibility(View.GONE);
+                } else {
+                    imageView.setVisibility(View.VISIBLE);
+                }
                 imageView.setAlpha(
                         (float) seekBar.getProgress() / (float) seekBar.getMax()
                 );

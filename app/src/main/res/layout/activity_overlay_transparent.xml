@@ -16,7 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
+        <com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
             android:id="@+id/overlay_transparent_image_view_base"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

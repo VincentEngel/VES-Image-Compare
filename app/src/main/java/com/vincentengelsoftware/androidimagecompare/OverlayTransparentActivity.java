@@ -28,7 +28,7 @@ public class OverlayTransparentActivity extends AppCompatActivity {
             imageSize = ImageUpdater.ORIGINAL;
         }
 
-        ImageUpdater.updateImageViewImage(
+        ImageUpdater.updateSubsamplingScaleImageViewImage(
                 findViewById(R.id.overlay_transparent_image_view_base),
                 Images.image_holder_first,
                 imageSize
