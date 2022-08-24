@@ -24,6 +24,7 @@ import com.vincentengelsoftware.androidimagecompare.helper.MainHelper;
 import com.vincentengelsoftware.androidimagecompare.util.ImageHolder;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private long pressedTime;
@@ -86,7 +87,83 @@ public class MainActivity extends AppCompatActivity {
         tb.setOnCheckedChangeListener(
                 (compoundButton, isChecked) -> Status.keepOriginalSize = isChecked
         );
+
+        try {
+            Intent intent = getIntent();
+            String action = intent.getAction();
+            String type = intent.getType();
+
+            if (Intent.ACTION_SEND.equals(action) && type != null) {
+                if (type.startsWith("image/")) {
+                    handleSendImage(intent);
+                }
+            } else if (Intent.ACTION_SEND_MULTIPLE.equals(action) && type != null) {
+                if (type.startsWith("image/")) {
+                    handleSendMultipleImages(intent);
+                }
+            }
+        } catch (Exception ignored) {
+        }
     }
+
+    void handleSendImage(Intent intent) {
+        Uri imageUri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
+        if (imageUri != null) {
+            Point size = new Point();
+            getWindowManager().getDefaultDisplay().getSize(size);
+
+            if (Images.image_holder_first.bitmap == null) {
+                Images.image_holder_first.updateFromUri(
+                        imageUri,
+                        this.getContentResolver(),
+                        size,
+                        getResources().getDisplayMetrics()
+                );
+                ImageView first = findViewById(R.id.home_image_first);
+                first.setImageBitmap(Images.image_holder_first.getBitmapSmall());
+                return;
+            }
+
+            Images.image_holder_second.updateFromUri(
+                    imageUri,
+                    this.getContentResolver(),
+                    size,
+                    getResources().getDisplayMetrics()
+            );
+            ImageView second = findViewById(R.id.home_image_second);
+            second.setImageBitmap(Images.image_holder_second.getBitmapSmall());
+        }
+    }
+
+    void handleSendMultipleImages(Intent intent) {
+        ArrayList<Uri> imageUris = intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
+        if (imageUris != null) {
+            ImageView first = findViewById(R.id.home_image_first);
+            ImageView second = findViewById(R.id.home_image_second);
+            Point size = new Point();
+            getWindowManager().getDefaultDisplay().getSize(size);
+
+            Images.image_holder_first.updateFromUri(
+                    imageUris.get(0),
+                    this.getContentResolver(),
+                    size,
+                    getResources().getDisplayMetrics()
+            );
+            Images.image_holder_second.updateFromUri(
+                    imageUris.get(1),
+                    this.getContentResolver(),
+                    size,
+                    getResources().getDisplayMetrics()
+            );
+            first.setImageBitmap(Images.image_holder_first.getBitmapSmall());
+            second.setImageBitmap(Images.image_holder_second.getBitmapSmall());
+
+            if (imageUris.size() > 2) {
+                Toast.makeText(getBaseContext(), "You can only compare two images at once", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
 
     @Override
     public void onBackPressed() {
