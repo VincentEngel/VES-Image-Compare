@@ -28,6 +28,9 @@ public class ImageHolder {
 
     private final float MAX_SMALL_SIZE_DP = 164.499f;
 
+    private CharSequence imageName;
+    public static CharSequence DEFAULT_IMAGE_NAME = "Unknown";
+
     private int getRotationDegree()
     {
         if (this.currentRotation == 3) {
@@ -37,6 +40,11 @@ public class ImageHolder {
         }
 
         return BASE_DEGREE;
+    }
+
+    public CharSequence getImageName()
+    {
+        return this.imageName;
     }
 
     public void updateFromImageHolder(ImageHolder imageHolder)
@@ -52,6 +60,8 @@ public class ImageHolder {
 
         this.currentRotation = imageHolder.currentRotation;
         this.currentBitmapRotation = imageHolder.currentBitmapRotation;
+
+        this.imageName = imageHolder.imageName;
     }
 
     public void calculateRotatedBitmap()
@@ -103,7 +113,7 @@ public class ImageHolder {
         return this.bitmapScreenSize;
     }
 
-    public void updateFromUri(Uri uri, ContentResolver cr, Point point, DisplayMetrics displayMetrics)
+    public void updateFromUri(Uri uri, ContentResolver cr, Point point, DisplayMetrics displayMetrics, CharSequence imageName)
     {
         this.uri = uri;
         this.point = point;
@@ -114,6 +124,8 @@ public class ImageHolder {
 
         this.currentRotation = 0;
         this.currentBitmapRotation = 0;
+
+        this.imageName = imageName;
 
         try {
             InputStream input = cr.openInputStream(uri);

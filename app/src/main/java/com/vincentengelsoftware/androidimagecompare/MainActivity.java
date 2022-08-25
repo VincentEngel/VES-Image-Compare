@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -16,6 +17,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
+import androidx.documentfile.provider.DocumentFile;
 
 import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
@@ -52,20 +54,26 @@ public class MainActivity extends AppCompatActivity {
 
         addLoadImageLogic(
                 first,
-                Images.image_holder_first
+                Images.image_holder_first,
+                findViewById(R.id.main_text_view_name_image_left)
         );
 
         addLoadImageLogic(
                 second,
-                Images.image_holder_second
+                Images.image_holder_second,
+                findViewById(R.id.main_text_view_name_image_right)
         );
 
         if (Images.image_holder_first.uri != null) {
             ImageUpdater.updateImageViewImage(first, Images.image_holder_first, ImageUpdater.SMALL);
+            TextView imageNameLeft = findViewById(R.id.main_text_view_name_image_left);
+            imageNameLeft.setText(Images.image_holder_first.getImageName());
         }
 
         if (Images.image_holder_second.uri != null) {
             ImageUpdater.updateImageViewImage(second, Images.image_holder_second, ImageUpdater.SMALL);
+            TextView imageNameRight = findViewById(R.id.main_text_view_name_image_right);
+            imageNameRight.setText(Images.image_holder_second.getImageName());
         }
 
         if (Images.fileUri == null) {
@@ -112,15 +120,25 @@ public class MainActivity extends AppCompatActivity {
             Point size = new Point();
             getWindowManager().getDefaultDisplay().getSize(size);
 
+            CharSequence imageName = ImageHolder.DEFAULT_IMAGE_NAME;
+            try {
+                DocumentFile df = DocumentFile.fromSingleUri(this, imageUri);
+                imageName = df.getName();
+            } catch (Exception ignored) {
+            }
+
             if (Images.image_holder_first.bitmap == null) {
                 Images.image_holder_first.updateFromUri(
                         imageUri,
                         this.getContentResolver(),
                         size,
-                        getResources().getDisplayMetrics()
+                        getResources().getDisplayMetrics(),
+                        imageName
                 );
                 ImageView first = findViewById(R.id.home_image_first);
                 first.setImageBitmap(Images.image_holder_first.getBitmapSmall());
+                TextView imageNameLeft = findViewById(R.id.main_text_view_name_image_left);
+                imageNameLeft.setText(Images.image_holder_first.getImageName());
                 return;
             }
 
@@ -128,10 +146,13 @@ public class MainActivity extends AppCompatActivity {
                     imageUri,
                     this.getContentResolver(),
                     size,
-                    getResources().getDisplayMetrics()
+                    getResources().getDisplayMetrics(),
+                    imageName
             );
             ImageView second = findViewById(R.id.home_image_second);
             second.setImageBitmap(Images.image_holder_second.getBitmapSmall());
+            TextView imageNameRight = findViewById(R.id.main_text_view_name_image_right);
+            imageNameRight.setText(Images.image_holder_second.getImageName());
         }
     }
 
@@ -143,20 +164,41 @@ public class MainActivity extends AppCompatActivity {
             Point size = new Point();
             getWindowManager().getDefaultDisplay().getSize(size);
 
+            CharSequence imageNameFirst = ImageHolder.DEFAULT_IMAGE_NAME;
+            try {
+                DocumentFile df = DocumentFile.fromSingleUri(this, imageUris.get(0));
+                imageNameFirst = df.getName();
+            } catch (Exception ignored) {
+            }
+
+            CharSequence imageNameSecond = ImageHolder.DEFAULT_IMAGE_NAME;
+            try {
+                DocumentFile df = DocumentFile.fromSingleUri(this, imageUris.get(1));
+                imageNameSecond = df.getName();
+            } catch (Exception ignored) {
+            }
+
             Images.image_holder_first.updateFromUri(
                     imageUris.get(0),
                     this.getContentResolver(),
                     size,
-                    getResources().getDisplayMetrics()
+                    getResources().getDisplayMetrics(),
+                    imageNameFirst
             );
             Images.image_holder_second.updateFromUri(
                     imageUris.get(1),
                     this.getContentResolver(),
                     size,
-                    getResources().getDisplayMetrics()
+                    getResources().getDisplayMetrics(),
+                    imageNameSecond
             );
             first.setImageBitmap(Images.image_holder_first.getBitmapSmall());
             second.setImageBitmap(Images.image_holder_second.getBitmapSmall());
+
+            TextView imageNameLeft = findViewById(R.id.main_text_view_name_image_left);
+            imageNameLeft.setText(Images.image_holder_first.getImageName());
+            TextView imageNameRight = findViewById(R.id.main_text_view_name_image_right);
+            imageNameRight.setText(Images.image_holder_second.getImageName());
 
             if (imageUris.size() > 2) {
                 Toast.makeText(getBaseContext(), "You can only compare two images at once", Toast.LENGTH_LONG).show();
@@ -218,7 +260,9 @@ public class MainActivity extends AppCompatActivity {
                 Images.image_holder_first,
                 Images.image_holder_second,
                 findViewById(R.id.home_image_first),
-                findViewById(R.id.home_image_second)
+                findViewById(R.id.home_image_second),
+                findViewById(R.id.main_text_view_name_image_left),
+                findViewById(R.id.main_text_view_name_image_right)
         );
 
         MainHelper.addRotateImageLogic(
@@ -270,12 +314,19 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void addLoadImageLogic(ImageView imageView, ImageHolder imageHolder) {
+    private void addLoadImageLogic(ImageView imageView, ImageHolder imageHolder, TextView imageNameText) {
         ActivityResultLauncher<String> mGetContentGallery = registerForActivityResult(
                 new ActivityResultContracts.GetContent(),
                 uri -> {
                     if (uri == null) {
                         return;
+                    }
+
+                    CharSequence imageName = ImageHolder.DEFAULT_IMAGE_NAME;
+                    try {
+                        DocumentFile df = DocumentFile.fromSingleUri(this, uri);
+                        imageName = df.getName();
+                    } catch (Exception ignored) {
                     }
 
                     Point size = new Point();
@@ -284,9 +335,11 @@ public class MainActivity extends AppCompatActivity {
                             uri,
                             this.getContentResolver(),
                             size,
-                            getResources().getDisplayMetrics()
+                            getResources().getDisplayMetrics(),
+                            imageName
                     );
                     imageView.setImageBitmap(imageHolder.getBitmapSmall());
+                    imageNameText.setText(imageHolder.getImageName());
                 });
 
         try {
@@ -297,10 +350,20 @@ public class MainActivity extends AppCompatActivity {
                             Toast.makeText(getBaseContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
                             return;
                         }
+
+                        CharSequence imageName = ImageHolder.DEFAULT_IMAGE_NAME;
+                        try {
+                            DocumentFile df = DocumentFile.fromSingleUri(this, Images.fileUri);
+                            imageName = df.getName();
+                        } catch (Exception ignored) {
+                        }
+
                         Point size = new Point();
                         getWindowManager().getDefaultDisplay().getSize(size);
-                        imageHolder.updateFromUri(Images.fileUri, this.getContentResolver(), size, getResources().getDisplayMetrics());
+                        imageHolder.updateFromUri(Images.fileUri, this.getContentResolver(), size, getResources().getDisplayMetrics(), imageName);
                         ImageUpdater.updateImageViewImage(imageView, imageHolder, ImageUpdater.SMALL);
+
+                        imageNameText.setText(imageHolder.getImageName());
                     }
             );
 

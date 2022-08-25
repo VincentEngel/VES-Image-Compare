@@ -26,4 +26,5 @@
     <string name="rotate_image_right">Rotate the right image</string>
     <string name="use_original_image">Use original Image</string>
     <string name="hide_front_image">Hide front image</string>
+    <string name="image_name">Image Name</string>
 </resources>

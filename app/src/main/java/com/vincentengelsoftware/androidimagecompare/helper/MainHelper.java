@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -70,7 +71,9 @@ public class MainHelper {
             ImageHolder imageHolderOne,
             ImageHolder imageHolderTwo,
             ImageView imageViewOne,
-            ImageView imageViewTwo
+            ImageView imageViewTwo,
+            TextView imageTextViewNameLeft,
+            TextView imageTextViewNameRight
     ) {
         imageButton.setOnClickListener(view -> {
             if (imageHolderOne.bitmap == null || imageHolderTwo.bitmap == null || Status.activityIsOpening) {
@@ -91,6 +94,9 @@ public class MainHelper {
                     imageHolderTwo,
                     ImageUpdater.SMALL
             );
+
+            imageTextViewNameLeft.setText(imageHolderOne.getImageName());
+            imageTextViewNameRight.setText(imageHolderTwo.getImageName());
         });
     }
 

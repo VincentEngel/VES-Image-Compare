@@ -101,9 +101,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <FrameLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/home_text_image_first"
@@ -112,11 +113,22 @@
                             android:layout_gravity="center"
                             android:text="@string/first_image"
                             android:textSize="24sp" />
-                    </FrameLayout>
 
-                    <FrameLayout
+                        <TextView
+                            android:id="@+id/main_text_view_name_image_left"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="10dp"
+                            android:paddingTop="10dp"
+                            android:paddingEnd="10dp"
+                            android:text="@string/image_name" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/home_text_image_second"
@@ -125,7 +137,17 @@
                             android:layout_gravity="center"
                             android:text="@string/second_image"
                             android:textSize="24sp" />
-                    </FrameLayout>
+
+                        <TextView
+                            android:id="@+id/main_text_view_name_image_right"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="10dp"
+                            android:paddingTop="10dp"
+                            android:paddingEnd="10dp"
+                            android:text="@string/image_name" />
+
+                    </LinearLayout>
 
                 </TableRow>
 
