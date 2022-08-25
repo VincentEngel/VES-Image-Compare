@@ -1,4 +1,4 @@
-# <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/icon.png" width=4% height=4%> VES - Image Compare
+# <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/icon.png" width=4% height=4%> VES - Image and Photo Compare
 
 Android App to easily compare similar images
 
@@ -8,7 +8,7 @@ Android App to easily compare similar images
      alt="Get it on F-Droid"
      height="80">](https://f-droid.org/packages/com.vincentengelsoftware.vesandroidimagecompare/)
 
-## Available comparisions
+## Available comparisons
 <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/menu.png" width=20% height=20%>
 
 ### Overlay Slide

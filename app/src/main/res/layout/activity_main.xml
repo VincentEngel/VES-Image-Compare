@@ -29,18 +29,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:paddingTop="48dp"
-                    android:paddingBottom="48dp"
+                    android:paddingTop="52dp"
+                    android:paddingBottom="24dp"
                     android:text="@string/ves_image_compare"
-                    android:textSize="24sp" />
+                    android:textSize="22sp" />
 
                 <ImageButton
                     android:id="@+id/home_button_info"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginTop="38dp"
-                    android:layout_marginEnd="10dp"
+                    android:layout_gravity="top|end"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginEnd="6dp"
                     android:backgroundTint="#F57C00"
                     android:contentDescription="@string/show_information"
                     app:srcCompat="@android:drawable/ic_menu_info_details"

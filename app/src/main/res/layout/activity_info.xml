@@ -25,7 +25,7 @@
                 android:gravity="center"
                 android:padding="10dp"
                 android:text="@string/ves_image_compare"
-                android:textSize="34sp" />
+                android:textSize="24sp" />
 
             <TableLayout
                 android:layout_width="match_parent"
