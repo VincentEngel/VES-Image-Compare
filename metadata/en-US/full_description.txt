@@ -2,11 +2,17 @@ The App offers the following options to easily compare two similar photos:
 
 --------------------
 
+* Take photos with your camera or load them from your gallery
+
 * Rotate the images before comparing them
 
-* Resize the image to fit to the screen
+* Resize the images to fit them to the screen
 
-* Show the images side by side and zoom into each image
+* Zoom into each image individually
+
+<b>Comparison modes:</b>
+
+* Show the images side by side
 
 * Place the images behind each other and tap on the screen to quickly switch between them
 
