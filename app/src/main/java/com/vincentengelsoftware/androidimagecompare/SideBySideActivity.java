@@ -22,9 +22,9 @@ public class SideBySideActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_side_by_side);
 
-        String imageSize = ImageUpdater.SCREEN_SIZE;
-        if (Status.keepOriginalSize) {
-            imageSize = ImageUpdater.ORIGINAL;
+        String imageSize = ImageUpdater.ORIGINAL;
+        if (Status.resize_image_left) {
+            imageSize = ImageUpdater.SCREEN_SIZE;
         }
 
         SubsamplingScaleImageView image_first = findViewById(R.id.side_by_side_image_left);
@@ -34,6 +34,10 @@ public class SideBySideActivity extends AppCompatActivity {
                 imageSize
         );
 
+        imageSize = ImageUpdater.ORIGINAL;
+        if (Status.resize_image_right) {
+            imageSize = ImageUpdater.SCREEN_SIZE;
+        }
         SubsamplingScaleImageView image_second = findViewById(R.id.side_by_side_image_right);
         ImageUpdater.updateSubsamplingScaleImageViewImage(
                 image_second,

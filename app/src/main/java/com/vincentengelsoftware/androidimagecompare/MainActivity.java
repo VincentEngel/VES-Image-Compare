@@ -8,9 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -88,13 +88,13 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        ToggleButton tb = findViewById(R.id.home_keep_original_image_size);
-        if (Status.keepOriginalSize) {
-            tb.setChecked(true);
-        }
-        tb.setOnCheckedChangeListener(
-                (compoundButton, isChecked) -> Status.keepOriginalSize = isChecked
-        );
+        Switch resizeLeftImage = findViewById(R.id.main_switch_resize_image_left);
+        resizeLeftImage.setChecked(Status.resize_image_left);
+        resizeLeftImage.setOnCheckedChangeListener((compoundButton, b) -> Status.resize_image_left = b);
+
+        Switch resizeRightImage = findViewById(R.id.main_switch_resize_image_right);
+        resizeRightImage.setChecked(Status.resize_image_right);
+        resizeRightImage.setOnCheckedChangeListener((compoundButton, b) -> Status.resize_image_right = b);
 
         try {
             Intent intent = getIntent();
@@ -262,7 +262,9 @@ public class MainActivity extends AppCompatActivity {
                 findViewById(R.id.home_image_first),
                 findViewById(R.id.home_image_second),
                 findViewById(R.id.main_text_view_name_image_left),
-                findViewById(R.id.main_text_view_name_image_right)
+                findViewById(R.id.main_text_view_name_image_right),
+                findViewById(R.id.main_switch_resize_image_left),
+                findViewById(R.id.main_switch_resize_image_right)
         );
 
         MainHelper.addRotateImageLogic(

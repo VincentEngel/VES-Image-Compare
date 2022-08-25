@@ -30,9 +30,9 @@ public class OverlaySlideActivity extends AppCompatActivity {
 
             setContentView(R.layout.activity_overlay_slide);
 
-            String imageSize = ImageUpdater.SCREEN_SIZE;
-            if (Status.keepOriginalSize) {
-                imageSize = ImageUpdater.ORIGINAL;
+            String imageSize = ImageUpdater.ORIGINAL;
+            if (Status.resize_image_left) {
+                imageSize = ImageUpdater.SCREEN_SIZE;
             }
 
             ImageUpdater.updateSubsamplingScaleImageViewImage(
@@ -42,9 +42,9 @@ public class OverlaySlideActivity extends AppCompatActivity {
             );
 
             SubsamplingScaleImageView image_front = findViewById(R.id.overlay_slide_image_view_front);
-            Bitmap bitmapSource = Images.image_holder_second.getBitmapScreenSize();
-            if (Status.keepOriginalSize) {
-                bitmapSource = Images.image_holder_second.rotatedBitmap;
+            Bitmap bitmapSource = Images.image_holder_second.rotatedBitmap;
+            if (Status.resize_image_right) {
+                bitmapSource = Images.image_holder_second.getBitmapScreenSize();
             }
 
             SeekBar seekBar = findViewById(R.id.overlay_slide_seek_bar);

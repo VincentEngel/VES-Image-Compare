@@ -152,13 +152,33 @@
                             android:id="@+id/main_text_view_name_image_left"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:paddingStart="10dp"
                             android:paddingEnd="10dp"
                             android:text="@string/image_name" />
 
                         <FrameLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1">
+
+                            <Switch
+                                android:id="@+id/main_switch_resize_image_left"
+                                android:layout_width="wrap_content"
+                                android:layout_height="48dp"
+                                android:layout_gravity="bottom|center_horizontal"
+                                android:paddingVertical="10dp"
+                                android:text="@string/resize"
+                                android:textColor="#EEEEEE"
+                                tools:ignore="DuplicateSpeakableTextCheck" />
+
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
 
                             <ImageButton
                                 android:id="@+id/home_button_rotate_image_left"
@@ -170,6 +190,8 @@
                                 app:srcCompat="@android:drawable/stat_notify_sync_noanim"
                                 tools:ignore="ImageContrastCheck" />
                         </FrameLayout>
+
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -181,13 +203,32 @@
                             android:id="@+id/main_text_view_name_image_right"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:paddingStart="10dp"
                             android:paddingEnd="10dp"
                             android:text="@string/image_name" />
 
                         <FrameLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom|center_horizontal"
+                            android:layout_weight="1">
+
+                            <Switch
+                                android:id="@+id/main_switch_resize_image_right"
+                                android:layout_width="wrap_content"
+                                android:layout_height="48dp"
+                                android:layout_gravity="bottom|center_horizontal"
+                                android:paddingVertical="10dp"
+                                android:text="@string/resize"
+                                android:textColor="#EEEEEE" />
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom|center_horizontal"
+                            android:layout_weight="1">
 
                             <ImageButton
                                 android:id="@+id/home_button_rotate_image_right"
@@ -201,41 +242,6 @@
                         </FrameLayout>
                     </LinearLayout>
 
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <LinearLayout
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
-
-                        <FrameLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
-
-                            <TextView
-                                android:id="@+id/textView"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/use_original_image" />
-                        </FrameLayout>
-
-                        <FrameLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
-
-                            <ToggleButton
-                                android:id="@+id/home_keep_original_image_size"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:backgroundTint="#F57C00"
-                                android:text="@string/use_original_image"
-                                android:textColor="@color/black" />
-                        </FrameLayout>
-
-                    </LinearLayout>
                 </TableRow>
 
             </TableLayout>

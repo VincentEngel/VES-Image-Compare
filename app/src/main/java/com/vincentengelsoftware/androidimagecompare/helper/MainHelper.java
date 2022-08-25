@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.core.app.ActivityCompat;
@@ -73,7 +74,9 @@ public class MainHelper {
             ImageView imageViewOne,
             ImageView imageViewTwo,
             TextView imageTextViewNameLeft,
-            TextView imageTextViewNameRight
+            TextView imageTextViewNameRight,
+            Switch resizeImageLeft,
+            Switch resizeImageRight
     ) {
         imageButton.setOnClickListener(view -> {
             if (imageHolderOne.bitmap == null || imageHolderTwo.bitmap == null || Status.activityIsOpening) {
@@ -97,6 +100,12 @@ public class MainHelper {
 
             imageTextViewNameLeft.setText(imageHolderOne.getImageName());
             imageTextViewNameRight.setText(imageHolderTwo.getImageName());
+
+            boolean temp = Status.resize_image_left;
+            Status.resize_image_left = Status.resize_image_right;
+            Status.resize_image_right = temp;
+            resizeImageLeft.setChecked(Status.resize_image_left);
+            resizeImageRight.setChecked(Status.resize_image_right);
         });
     }
 

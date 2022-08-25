@@ -22,9 +22,9 @@ public class OverlayTapActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_overlay_tap);
 
-        String imageSize = ImageUpdater.SCREEN_SIZE;
-        if (Status.keepOriginalSize) {
-            imageSize = ImageUpdater.ORIGINAL;
+        String imageSize = ImageUpdater.ORIGINAL;
+        if (Status.resize_image_left) {
+            imageSize = ImageUpdater.SCREEN_SIZE;
         }
 
         SubsamplingScaleImageView image_first = findViewById(R.id.overlay_tap_image_view_one);
@@ -34,6 +34,10 @@ public class OverlayTapActivity extends AppCompatActivity {
                 imageSize
         );
 
+        imageSize = ImageUpdater.ORIGINAL;
+        if (Status.resize_image_right) {
+            imageSize = ImageUpdater.SCREEN_SIZE;
+        }
         SubsamplingScaleImageView image_second = findViewById(R.id.overlay_tap_image_view_two);
         ImageUpdater.updateSubsamplingScaleImageViewImage(
                 image_second,

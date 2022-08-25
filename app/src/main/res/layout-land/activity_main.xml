@@ -30,35 +30,6 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/textView2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingStart="5dp"
-                            android:paddingTop="20dp"
-                            android:text="@string/use_original_image" />
-
-                        <ToggleButton
-                            android:id="@+id/home_keep_original_image_size"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:backgroundTint="#F57C00"
-                            android:text="@string/use_original_image"
-                            android:textColor="@color/black" />
-
-                    </LinearLayout>
-                </FrameLayout>
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1">
-
                     <TextView
                         android:id="@+id/info_text_view_color_theme"
                         android:layout_width="match_parent"
@@ -67,13 +38,6 @@
                         android:paddingTop="20dp"
                         android:text="@string/ves_image_compare"
                         android:textSize="24sp" />
-
-                </FrameLayout>
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1">
 
                     <ImageButton
                         android:id="@+id/home_button_info"
@@ -160,6 +124,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
+                        <Switch
+                            android:id="@+id/main_switch_resize_image_left"
+                            android:layout_width="wrap_content"
+                            android:layout_height="48dp"
+                            android:layout_gravity="start|top"
+                            android:layout_marginStart="10dp"
+                            android:text="@string/resize"
+                            android:textColor="#EEEEEE"
+                            tools:ignore="DuplicateSpeakableTextCheck" />
+
                         <ImageButton
                             android:id="@+id/home_button_rotate_image_left"
                             android:layout_width="48dp"
@@ -198,6 +172,15 @@
                         android:id="@+id/frame_layout_image_right"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
+
+                        <Switch
+                            android:id="@+id/main_switch_resize_image_right"
+                            android:layout_width="wrap_content"
+                            android:layout_height="48dp"
+                            android:layout_gravity="top|end"
+                            android:layout_marginEnd="10dp"
+                            android:text="@string/resize"
+                            android:textColor="#EEEEEE" />
 
                         <ImageView
                             android:id="@+id/home_image_second"

@@ -24,9 +24,9 @@ public class OverlayTransparentActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_overlay_transparent);
 
-        String imageSize = ImageUpdater.SCREEN_SIZE;
-        if (Status.keepOriginalSize) {
-            imageSize = ImageUpdater.ORIGINAL;
+        String imageSize = ImageUpdater.ORIGINAL;
+        if (Status.resize_image_left) {
+            imageSize = ImageUpdater.SCREEN_SIZE;
         }
 
         ImageUpdater.updateSubsamplingScaleImageViewImage(
@@ -35,6 +35,10 @@ public class OverlayTransparentActivity extends AppCompatActivity {
                 imageSize
         );
 
+        imageSize = ImageUpdater.ORIGINAL;
+        if (Status.resize_image_right) {
+            imageSize = ImageUpdater.SCREEN_SIZE;
+        }
         SubsamplingScaleImageView image_transparent = findViewById(R.id.overlay_transparent_image_view_transparent);
         ImageUpdater.updateSubsamplingScaleImageViewImage(
                 image_transparent,
