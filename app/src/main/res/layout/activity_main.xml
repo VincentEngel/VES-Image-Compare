@@ -161,16 +161,17 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_weight="1">
+                            android:layout_weight="1"
+                            android:paddingVertical="20dp">
 
                             <Switch
                                 android:id="@+id/main_switch_resize_image_left"
                                 android:layout_width="wrap_content"
                                 android:layout_height="48dp"
                                 android:layout_gravity="bottom|center_horizontal"
-                                android:paddingVertical="10dp"
                                 android:text="@string/resize"
                                 android:textColor="#EEEEEE"
+                                android:textSize="18sp"
                                 tools:ignore="DuplicateSpeakableTextCheck" />
 
                         </FrameLayout>
@@ -212,16 +213,17 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="bottom|center_horizontal"
-                            android:layout_weight="1">
+                            android:layout_weight="1"
+                            android:paddingVertical="20dp">
 
                             <Switch
                                 android:id="@+id/main_switch_resize_image_right"
                                 android:layout_width="wrap_content"
                                 android:layout_height="48dp"
                                 android:layout_gravity="bottom|center_horizontal"
-                                android:paddingVertical="10dp"
                                 android:text="@string/resize"
-                                android:textColor="#EEEEEE" />
+                                android:textColor="#EEEEEE"
+                                android:textSize="18sp" />
                         </FrameLayout>
 
                         <FrameLayout
