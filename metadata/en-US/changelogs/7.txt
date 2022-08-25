@@ -1,0 +1,6 @@
+Changelog
+
+--------------------
+
+* Show image names
+* Allow resize option to be set for each image individually
