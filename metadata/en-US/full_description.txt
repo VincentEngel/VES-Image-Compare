@@ -4,6 +4,8 @@ The App offers the following options to easily compare two similar photos:
 
 * Rotate the images before comparing them
 
+* Resize the image to fit to the screen
+
 * Show the images side by side and zoom into each image
 
 * Place the images behind each other and tap on the screen to quickly switch between them
