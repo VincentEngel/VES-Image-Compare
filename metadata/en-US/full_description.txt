@@ -4,6 +4,8 @@ The App offers the following options to easily compare two similar photos:
 
 * Take photos with your camera or load them from your gallery
 
+* Share images and photos directly to the app to compare them
+
 * Rotate the images before comparing them
 
 * Resize the images to fit them to the screen
