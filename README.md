@@ -1,6 +1,26 @@
 # <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/icon.png" width=4% height=4%> VES - Image and Photo Compare
 
-Android App to easily compare similar images
+The App offers the following options to easily compare two similar photos:
+
+* Take photos with your camera or load them from your gallery
+
+* Share images and photos directly to the app to compare them
+
+* Rotate the images before comparing them
+
+* Resize the images to fit them to the screen
+
+* Zoom into each image individually
+
+<b>Comparison modes:</b>
+
+* Show the images side by side
+
+* Place the images behind each other and tap on the screen to quickly switch between them
+
+* Place the images behind each other and adjust the width or transparency of the image in the front
+
+<b>NO ADS and Privacy friendly.</b> This App does not need access to the internet. All information is saved locally in your Apps Cache and can be deleted at any time through your Device Settings.
 
 ## Download
 
