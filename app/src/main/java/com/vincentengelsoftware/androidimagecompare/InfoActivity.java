@@ -35,7 +35,7 @@ public class InfoActivity extends AppCompatActivity {
         TextView textViewPrivacyPolicy = findViewById(R.id.info_text_view_privacy_policy);
         textViewPrivacyPolicy.setText(Html.fromHtml(
                 getString(R.string.privacy_policy),
-                Html.FROM_HTML_MODE_COMPACT
+                Html.FROM_HTML_MODE_LEGACY
         ));
         textViewPrivacyPolicy.setMovementMethod(LinkMovementMethod.getInstance());
     }
