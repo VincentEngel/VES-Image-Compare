@@ -3,6 +3,7 @@ package com.vincentengelsoftware.androidimagecompare;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.widget.TextView;
 
@@ -30,5 +31,12 @@ public class InfoActivity extends AppCompatActivity {
 
         TextView textViewDittoAppLink = findViewById(R.id.info_text_view_link_ditto_photo_comparer);
         textViewDittoAppLink.setMovementMethod(LinkMovementMethod.getInstance());
+
+        TextView textViewPrivacyPolicy = findViewById(R.id.info_text_view_privacy_policy);
+        textViewPrivacyPolicy.setText(Html.fromHtml(
+                getString(R.string.privacy_policy),
+                Html.FROM_HTML_MODE_COMPACT
+        ));
+        textViewPrivacyPolicy.setMovementMethod(LinkMovementMethod.getInstance());
     }
 }
