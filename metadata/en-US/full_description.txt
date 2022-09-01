@@ -1,4 +1,7 @@
-The App offers the following options to easily compare two similar photos:
+Do you have pictures that look similar and you can't decide which one you like better? Then this is the app for you. With this app you can compare two pictures in different ways to find out which one is better. Through the various comparison options, you can quickly and easily determine even minor differences in the pictures.
+
+
+<b>The App offers the following options to easily compare two similar photos:</b>
 
 * Take photos with your camera or load them from your gallery
 
@@ -11,11 +14,12 @@ The App offers the following options to easily compare two similar photos:
 * Zoom into each image individually
 
 <b>Comparison modes:</b>
+* <b>Side by Side:</b> Show the images side by side
 
-* Show the images side by side
+* <b>Overlay Tap:</b> Place the images behind each other and tap on the screen to quickly switch between them
 
-* Place the images behind each other and tap on the screen to quickly switch between them
+* <b>Overlay Slide:</b> Place the images behind each other and adjust the width of the image in the front
 
-* Place the images behind each other and adjust the width or transparency of the image in the front
+* <b>Transparent:</b> Place the images behind each other and adjust the transparency of the image in the front
 
 <b>NO ADS and Privacy friendly.</b> This App does not need access to the internet. All information is saved locally in your Apps Cache and can be deleted at any time through your Device Settings.
