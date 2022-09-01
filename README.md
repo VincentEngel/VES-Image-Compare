@@ -1,6 +1,6 @@
 # <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/icon.png" width=4% height=4%> VES - Image and Photo Compare
 
-The App offers the following options to easily compare two similar photos:
+<b>The App offers the following options to easily compare two similar photos:</b>
 
 * Take photos with your camera or load them from your gallery
 
@@ -13,14 +13,16 @@ The App offers the following options to easily compare two similar photos:
 * Zoom into each image individually
 
 <b>Comparison modes:</b>
+* <b>Side by Side:</b> Show the images side by side
 
-* Show the images side by side
+* <b>Overlay Tap:</b> Place the images behind each other and tap on the screen to quickly switch between them
 
-* Place the images behind each other and tap on the screen to quickly switch between them
+* <b>Overlay Slide:</b> Place the images behind each other and adjust the width of the image in the front
 
-* Place the images behind each other and adjust the width or transparency of the image in the front
+* <b>Transparent:</b> Place the images behind each other and adjust the transparency of the image in the front
 
 <b>NO ADS and Privacy friendly.</b> This App does not need access to the internet. All information is saved locally in your Apps Cache and can be deleted at any time through your Device Settings.
+
 
 ## Download
 
