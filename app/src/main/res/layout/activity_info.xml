@@ -104,6 +104,38 @@
                         android:layout_height="match_parent">
 
                         <TextView
+                            android:id="@+id/info_text_view_app_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="15dp"
+                            android:text="@string/app_icon"
+                            android:textSize="16sp" />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/info_text_view_link_app_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="15dp"
+                            android:paddingBottom="15dp"
+                            android:text="@string/link_app_icon"
+                            android:textSize="16sp" />
+                    </FrameLayout>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
                             android:id="@+id/info_text_view_color_theme"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -129,33 +161,32 @@
 
                 <TableRow
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent" >
 
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
                         <TextView
-                            android:id="@+id/info_text_view_app_icon"
+                            android:id="@+id/info_text_view_color_theme2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="15dp"
-                            android:text="@string/app_icon"
+                            android:text="@string/playstore"
                             android:textSize="16sp" />
+
                     </FrameLayout>
 
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
-                        <TextView
-                            android:id="@+id/info_text_view_link_app_icon"
+                        <Button
+                            android:id="@+id/info_btn_open_playstore"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingTop="15dp"
-                            android:paddingBottom="15dp"
-                            android:text="@string/link_app_icon"
-                            android:textSize="16sp" />
+                            android:text="@string/open_playstore" />
+
                     </FrameLayout>
                 </TableRow>
 

@@ -2,10 +2,16 @@ package com.vincentengelsoftware.androidimagecompare;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
 
@@ -38,5 +44,17 @@ public class InfoActivity extends AppCompatActivity {
                 Html.FROM_HTML_MODE_LEGACY
         ));
         textViewPrivacyPolicy.setMovementMethod(LinkMovementMethod.getInstance());
+
+        Button playStore = findViewById(R.id.info_btn_open_playstore);
+        playStore.setOnClickListener(view -> {
+            try {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" +getPackageName())));
+            } catch (ActivityNotFoundException e1) {
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" +getPackageName())));
+                } catch (ActivityNotFoundException ignored) {
+                }
+            }
+        });
     }
 }
