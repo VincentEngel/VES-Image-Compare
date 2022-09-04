@@ -28,12 +28,13 @@
 
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
      alt="Get it on F-Droid"
-     height="80">](https://f-droid.org/packages/com.vincentengelsoftware.vesandroidimagecompare/)
-
-[<img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
+     height="80">](https://f-droid.org/packages/com.vincentengelsoftware.vesandroidimagecompare/) [<img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
      alt="Get it on Google Play"
      height="80">](https://play.google.com/store/apps/details?id=com.vincentengelsoftware.vesandroidimagecompare)
 
+Watch the intro video on YouTube: https://www.youtube.com/watch?v=0vR4UDTbB9k
+
+</p>
 ## Available comparisons
 <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/menu.png" width=20% height=20%>
 
