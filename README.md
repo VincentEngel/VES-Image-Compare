@@ -34,7 +34,6 @@
 
 Watch the intro video on YouTube: https://www.youtube.com/watch?v=0vR4UDTbB9k
 
-</p>
 ## Available comparisons
 <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/menu.png" width=20% height=20%>
 
