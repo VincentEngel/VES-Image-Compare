@@ -17,10 +17,10 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
-import androidx.documentfile.provider.DocumentFile;
 
 import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
+import com.vincentengelsoftware.androidimagecompare.helper.CacheClearer;
 import com.vincentengelsoftware.androidimagecompare.helper.ImageUpdater;
 import com.vincentengelsoftware.androidimagecompare.helper.MainHelper;
 import com.vincentengelsoftware.androidimagecompare.util.ImageHolder;
@@ -38,40 +38,19 @@ public class MainActivity extends AppCompatActivity {
 
         if (Status.isFirstStart) {
             Status.isFirstStart = false;
-            try {
-                for (File file : getApplicationContext().getCacheDir().listFiles()) {
-                    file.delete();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            CacheClearer.clear(getApplicationContext());
         }
 
-        setUpActivityButtons();
-
-        ImageView first = findViewById(R.id.home_image_first);
-        ImageView second = findViewById(R.id.home_image_second);
-
-        addLoadImageLogic(
-                first,
-                Images.image_holder_first,
-                findViewById(R.id.main_text_view_name_image_left)
-        );
-
-        addLoadImageLogic(
-                second,
-                Images.image_holder_second,
-                findViewById(R.id.main_text_view_name_image_right)
-        );
+        setUpActions();
 
         if (Images.image_holder_first.uri != null) {
-            ImageUpdater.updateImageViewImage(first, Images.image_holder_first, ImageUpdater.SMALL);
+            ImageUpdater.updateImageViewImage(findViewById(R.id.home_image_first), Images.image_holder_first, ImageUpdater.SMALL);
             TextView imageNameLeft = findViewById(R.id.main_text_view_name_image_left);
             imageNameLeft.setText(Images.image_holder_first.getImageName());
         }
 
         if (Images.image_holder_second.uri != null) {
-            ImageUpdater.updateImageViewImage(second, Images.image_holder_second, ImageUpdater.SMALL);
+            ImageUpdater.updateImageViewImage(findViewById(R.id.home_image_second), Images.image_holder_second, ImageUpdater.SMALL);
             TextView imageNameRight = findViewById(R.id.main_text_view_name_image_right);
             imageNameRight.setText(Images.image_holder_second.getImageName());
         }
@@ -83,8 +62,7 @@ public class MainActivity extends AppCompatActivity {
                         getApplicationContext().getPackageName() + ".fileprovider",
                         File.createTempFile("camera_image", null, this.getCacheDir())
                 );
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (Exception ignored) {
             }
         }
 
@@ -120,12 +98,7 @@ public class MainActivity extends AppCompatActivity {
             Point size = new Point();
             getWindowManager().getDefaultDisplay().getSize(size);
 
-            CharSequence imageName = ImageHolder.DEFAULT_IMAGE_NAME;
-            try {
-                DocumentFile df = DocumentFile.fromSingleUri(this, imageUri);
-                imageName = df.getName();
-            } catch (Exception ignored) {
-            }
+            String imageName = MainHelper.getImageName(this, imageUri);
 
             if (Images.image_holder_first.bitmap == null) {
                 Images.image_holder_first.updateFromUri(
@@ -164,19 +137,8 @@ public class MainActivity extends AppCompatActivity {
             Point size = new Point();
             getWindowManager().getDefaultDisplay().getSize(size);
 
-            CharSequence imageNameFirst = ImageHolder.DEFAULT_IMAGE_NAME;
-            try {
-                DocumentFile df = DocumentFile.fromSingleUri(this, imageUris.get(0));
-                imageNameFirst = df.getName();
-            } catch (Exception ignored) {
-            }
-
-            CharSequence imageNameSecond = ImageHolder.DEFAULT_IMAGE_NAME;
-            try {
-                DocumentFile df = DocumentFile.fromSingleUri(this, imageUris.get(1));
-                imageNameSecond = df.getName();
-            } catch (Exception ignored) {
-            }
+            String imageNameFirst = MainHelper.getImageName(this, imageUris.get(0));
+            String imageNameSecond = MainHelper.getImageName(this, imageUris.get(1));
 
             Images.image_holder_first.updateFromUri(
                     imageUris.get(0),
@@ -218,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
         pressedTime = System.currentTimeMillis();
     }
 
-    private void setUpActivityButtons()
+    private void setUpActions()
     {
         addButtonChangeActivityLogic(
                 findViewById(R.id.button_side_by_side),
@@ -278,6 +240,21 @@ public class MainActivity extends AppCompatActivity {
                 Images.image_holder_second,
                 findViewById(R.id.home_image_second)
         );
+
+        ImageView first = findViewById(R.id.home_image_first);
+        ImageView second = findViewById(R.id.home_image_second);
+
+        addLoadImageLogic(
+                first,
+                Images.image_holder_first,
+                findViewById(R.id.main_text_view_name_image_left)
+        );
+
+        addLoadImageLogic(
+                second,
+                Images.image_holder_second,
+                findViewById(R.id.main_text_view_name_image_right)
+        );
     }
 
     private void addButtonChangeActivityLogic(Button btn, Class<?> targetActivity)
@@ -324,12 +301,7 @@ public class MainActivity extends AppCompatActivity {
                         return;
                     }
 
-                    CharSequence imageName = ImageHolder.DEFAULT_IMAGE_NAME;
-                    try {
-                        DocumentFile df = DocumentFile.fromSingleUri(this, uri);
-                        imageName = df.getName();
-                    } catch (Exception ignored) {
-                    }
+                    String imageName = MainHelper.getImageName(this, uri);
 
                     Point size = new Point();
                     getWindowManager().getDefaultDisplay().getSize(size);
@@ -353,12 +325,7 @@ public class MainActivity extends AppCompatActivity {
                             return;
                         }
 
-                        CharSequence imageName = ImageHolder.DEFAULT_IMAGE_NAME;
-                        try {
-                            DocumentFile df = DocumentFile.fromSingleUri(this, Images.fileUri);
-                            imageName = df.getName();
-                        } catch (Exception ignored) {
-                        }
+                        String imageName = MainHelper.getImageName(this, Images.fileUri);
 
                         Point size = new Point();
                         getWindowManager().getDefaultDisplay().getSize(size);

@@ -77,7 +77,7 @@ public class SlideHelper {
 
                 if (mutableBoolean.value) {
                     for (int x = width; x < bitmapSource.getWidth(); x++) {
-                        for (int y = 0; y < bitmapSource.getHeight(); y++) {
+                        for (int y = 0; y < bitmapSource.getHeight(); y++) { // TODO is Color.alpha needed?
                             pixels[x + (y * bitmapSource.getWidth())] = Color.alpha(Color.TRANSPARENT);
                         }
                     }

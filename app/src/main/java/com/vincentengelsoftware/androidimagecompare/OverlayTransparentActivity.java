@@ -51,7 +51,7 @@ public class OverlayTransparentActivity extends AppCompatActivity {
 
         TransparentHelper.makeTargetTransparent(seekBar, image_transparent);
 
-        seekBar.setProgress(seekBar.getMax() / 2);
+        seekBar.setProgress(50);
 
         ImageButton hideShow = findViewById(R.id.overlay_transparent_button_hide_front_image);
         hideShow.setOnClickListener(view -> {

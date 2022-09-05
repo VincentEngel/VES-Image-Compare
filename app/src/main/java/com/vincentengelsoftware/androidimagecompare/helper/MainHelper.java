@@ -3,7 +3,9 @@ package com.vincentengelsoftware.androidimagecompare.helper;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.view.MotionEvent;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -13,11 +15,15 @@ import android.widget.TextView;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.documentfile.provider.DocumentFile;
 
+import com.vincentengelsoftware.androidimagecompare.globals.Images;
+import com.vincentengelsoftware.androidimagecompare.globals.RequestPermissionCodes;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
 import com.vincentengelsoftware.androidimagecompare.util.ImageHolder;
 
 public class MainHelper {
+    // TODO improve UI to get rid of this method
     @SuppressLint("ClickableViewAccessibility")
     public static void passClickToUnderlyingView(FrameLayout frameLayout, ImageButton imageButton)
     {
@@ -114,7 +120,7 @@ public class MainHelper {
         ActivityCompat.requestPermissions(
                 context,
                 new String[]{Manifest.permission.CAMERA},
-                1
+                RequestPermissionCodes.CAMERA // TODO handle accepted in MainActivity to open camera automatically
         );
     }
 
@@ -122,5 +128,17 @@ public class MainHelper {
     {
         return ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
                 == PackageManager.PERMISSION_GRANTED;
+    }
+
+    public static String getImageName(Context context, Uri uri) {
+        try {
+            DocumentFile df = DocumentFile.fromSingleUri(context, uri);
+            if (df != null && df.getName() != null) {
+                return df.getName();
+            }
+        } catch (Exception ignored) {
+        }
+
+        return Images.DEFAULT_IMAGE_NAME;
     }
 }

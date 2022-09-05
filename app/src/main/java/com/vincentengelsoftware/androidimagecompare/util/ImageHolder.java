@@ -28,8 +28,7 @@ public class ImageHolder {
 
     private final float MAX_SMALL_SIZE_DP = 164.499f;
 
-    private CharSequence imageName;
-    public static CharSequence DEFAULT_IMAGE_NAME = "Unknown";
+    private String imageName;
 
     private int getRotationDegree()
     {
@@ -42,7 +41,7 @@ public class ImageHolder {
         return BASE_DEGREE;
     }
 
-    public CharSequence getImageName()
+    public String getImageName()
     {
         return this.imageName;
     }
@@ -113,7 +112,7 @@ public class ImageHolder {
         return this.bitmapScreenSize;
     }
 
-    public void updateFromUri(Uri uri, ContentResolver cr, Point point, DisplayMetrics displayMetrics, CharSequence imageName)
+    public void updateFromUri(Uri uri, ContentResolver cr, Point point, DisplayMetrics displayMetrics, String imageName)
     {
         this.uri = uri;
         this.point = point;
