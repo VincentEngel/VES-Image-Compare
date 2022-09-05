@@ -35,29 +35,31 @@
 Watch the intro video on YouTube: https://www.youtube.com/watch?v=0vR4UDTbB9k
 
 ## Available comparisons
-<img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/menu.png" width=20% height=20%>
+<img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/1_menu.png" width=20% height=20%> <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/6_main_2.png" width=70% height=20%>
 
 ### Overlay Slide
 <p>Cut the side of the image in the front</p>
-<img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/overlay_slide_1.png" width=20% height=20%>
+<div>
+<img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/2_overlay_slide_1.png" width=20% height=20%> <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/7_overlay_slide_2.png" width=70% height=20%>
+</div>
 
 ### Overlay Tap
 <p>Tap on the screen to switch the images being shown</p>
 <div>
-  <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/tap_1.png" width=20% height=20%>
-  <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/tap_2.png" width=20% height=20%>
+  <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/9_tap_1.png" width=20% height=20%>
+  <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/10_tap_2.png" width=20% height=20%>
 </div>
 
 ### Transparent
 <p>Adjust the transparency of the image in the front</p>
 <div>
-  <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/transparent_1.png" width=20% height=20%>
-  <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/transparent_2.png" width=20% height=20%>
+  <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/4_transparent_1.png" width=20% height=20%>
+  <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/5_transparent_2.png" width=20% height=20%>
 </div>
 
 ### Side by Side
 <p>View both images side by side with the option to zoom into each image</p>
 <div>
-  <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/side_by_side_1.png" width=20% height=20%>
-  <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/side_by_side_2.png" width=75% height=75%>
+  <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/3_side_by_side_1.png" width=20% height=20%>
+  <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/8_side_by_side_2.png" width=75% height=75%>
 </div>
