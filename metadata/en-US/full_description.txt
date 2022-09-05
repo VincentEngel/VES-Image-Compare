@@ -14,6 +14,7 @@ Do you have pictures that look similar and you can't decide which one you like b
 * Zoom into each image individually
 
 <b>Comparison modes:</b>
+
 * <b>Side by Side:</b> Show the images side by side
 
 * <b>Overlay Tap:</b> Place the images behind each other and tap on the screen to quickly switch between them
