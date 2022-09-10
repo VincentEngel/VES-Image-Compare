@@ -22,6 +22,5 @@ public class SideBySideActivity extends AppCompatActivity {
         Images.image_holder_first.updateVesImageViewWithAdjustedImage(findViewById(R.id.side_by_side_image_left));
 
         Images.image_holder_second.updateVesImageViewWithAdjustedImage(findViewById(R.id.side_by_side_image_right));
-
     }
 }
