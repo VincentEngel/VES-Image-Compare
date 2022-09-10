@@ -1,5 +1,6 @@
 package com.vincentengelsoftware.androidimagecompare;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Point;
 import android.net.Uri;
@@ -22,7 +23,9 @@ import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
 import com.vincentengelsoftware.androidimagecompare.helper.CacheClearer;
 import com.vincentengelsoftware.androidimagecompare.helper.ImageUpdater;
+import com.vincentengelsoftware.androidimagecompare.helper.KeyValueStorage;
 import com.vincentengelsoftware.androidimagecompare.helper.MainHelper;
+import com.vincentengelsoftware.androidimagecompare.helper.AskForReview;
 import com.vincentengelsoftware.androidimagecompare.util.ImageHolder;
 
 import java.io.File;
@@ -42,6 +45,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         setUpActions();
+
+        if (AskForReview.shouldAskForReview(getApplicationContext()))
+        {
+            askForReview();
+            KeyValueStorage.setBoolean(getApplicationContext(), KeyValueStorage.ASKED_FOR_REVIEW, true);
+        }
 
         if (Images.image_holder_first.uri != null) {
             ImageUpdater.updateImageViewImage(findViewById(R.id.home_image_first), Images.image_holder_first, ImageUpdater.SMALL);
@@ -364,5 +373,28 @@ public class MainActivity extends AppCompatActivity {
             });
         } catch (Exception ignored) {
         }
+    }
+
+    private void askForReview()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setCancelable(false);
+
+        builder.setMessage("If you like this App please support it by leaving a review in the Google PlayStore!");
+
+        builder.setNegativeButton("Open PlayStore", (dialogInterface, i) -> {
+            try {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" +getPackageName())));
+            } catch (ActivityNotFoundException e1) {
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" +getPackageName())));
+                } catch (ActivityNotFoundException ignored) {
+                }
+            }
+        });
+        builder.setPositiveButton("Don't show up again", (dialogInterface, i) -> {});
+
+        builder.create().show();
     }
 }
