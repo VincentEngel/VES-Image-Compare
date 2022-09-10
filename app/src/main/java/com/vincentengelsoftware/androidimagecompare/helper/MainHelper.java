@@ -61,15 +61,11 @@ public class MainHelper {
             ImageView imageView
     ) {
         imageButton.setOnClickListener(view -> {
-            if (imageHolder.bitmap == null || Status.activityIsOpening) {
+            if (imageHolder.getBitmap() == null || Status.activityIsOpening) {
                 return;
             }
             imageHolder.rotatePreviewImage();
-            ImageUpdater.updateImageViewImage(
-                    imageView,
-                    imageHolder,
-                    ImageUpdater.SMALL
-            );
+            imageHolder.updateImageViewPreviewImage(imageView);
         });
     }
 
@@ -85,7 +81,7 @@ public class MainHelper {
             Switch resizeImageRight
     ) {
         imageButton.setOnClickListener(view -> {
-            if (imageHolderOne.bitmap == null || imageHolderTwo.bitmap == null || Status.activityIsOpening) {
+            if (imageHolderOne.getBitmap() == null || imageHolderTwo.getBitmap() == null || Status.activityIsOpening) {
                 return;
             }
             ImageHolder imageHolder = new ImageHolder();
@@ -93,25 +89,14 @@ public class MainHelper {
             imageHolderOne.updateFromImageHolder(imageHolderTwo);
             imageHolderTwo.updateFromImageHolder(imageHolder);
 
-            ImageUpdater.updateImageViewImage(
-                    imageViewOne,
-                    imageHolderOne,
-                    ImageUpdater.SMALL
-            );
-            ImageUpdater.updateImageViewImage(
-                    imageViewTwo,
-                    imageHolderTwo,
-                    ImageUpdater.SMALL
-            );
+            imageHolderOne.updateImageViewPreviewImage(imageViewOne);
+            imageHolderTwo.updateImageViewPreviewImage(imageViewTwo);
 
             imageTextViewNameLeft.setText(imageHolderOne.getImageName());
             imageTextViewNameRight.setText(imageHolderTwo.getImageName());
 
-            boolean temp = Status.resize_image_left;
-            Status.resize_image_left = Status.resize_image_right;
-            Status.resize_image_right = temp;
-            resizeImageLeft.setChecked(Status.resize_image_left);
-            resizeImageRight.setChecked(Status.resize_image_right);
+            resizeImageLeft.setChecked(imageHolderOne.isResizeImageToScreen());
+            resizeImageRight.setChecked(imageHolderTwo.isResizeImageToScreen());
         });
     }
 

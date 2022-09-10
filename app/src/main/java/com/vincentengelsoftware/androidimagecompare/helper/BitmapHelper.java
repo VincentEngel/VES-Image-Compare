@@ -38,9 +38,7 @@ public class BitmapHelper {
                     matrix,
                     true
             );
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception ignored) {}
 
         return bitmap;
     }

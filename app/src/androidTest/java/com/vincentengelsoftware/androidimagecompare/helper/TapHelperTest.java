@@ -11,13 +11,15 @@ import org.junit.runner.RunWith;
 
 import static org.junit.Assert.*;
 
+import com.vincentengelsoftware.androidimagecompare.viewClasses.ZoomImageView;
+
 @RunWith(AndroidJUnit4.class)
 public class TapHelperTest {
 
     @Test
     public void setOnClickListener() {
-        ImageView imageViewOne = new ImageView(ApplicationProvider.getApplicationContext());
-        ImageView imageViewTwo = new ImageView(ApplicationProvider.getApplicationContext());
+        ZoomImageView imageViewOne = new ZoomImageView(ApplicationProvider.getApplicationContext());
+        ZoomImageView imageViewTwo = new ZoomImageView(ApplicationProvider.getApplicationContext());
         imageViewOne.setVisibility(View.VISIBLE);
         imageViewTwo.setVisibility(View.INVISIBLE);
 

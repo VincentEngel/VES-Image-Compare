@@ -18,10 +18,12 @@ public class KeyValueStorage {
 
     public static void setBoolean(Context context, String key, boolean value)
     {
-        SharedPreferences.Editor editor = context
-                .getSharedPreferences(context.getPackageName(), Context.MODE_PRIVATE)
-                .edit();
-        editor.putBoolean(key, value);
-        editor.apply();
+        try {
+            SharedPreferences.Editor editor = context
+                    .getSharedPreferences(context.getPackageName(), Context.MODE_PRIVATE)
+                    .edit();
+            editor.putBoolean(key, value);
+            editor.apply();
+        } catch (Exception ignored) {}
     }
 }

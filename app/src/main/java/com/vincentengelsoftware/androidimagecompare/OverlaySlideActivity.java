@@ -8,13 +8,12 @@ import android.widget.SeekBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
 import com.vincentengelsoftware.androidimagecompare.helper.FullScreenHelper;
-import com.vincentengelsoftware.androidimagecompare.helper.ImageUpdater;
 import com.vincentengelsoftware.androidimagecompare.helper.SlideHelper;
 import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
+import com.vincentengelsoftware.androidimagecompare.viewClasses.VesImageInterface;
 
 public class OverlaySlideActivity extends AppCompatActivity {
 
@@ -30,22 +29,10 @@ public class OverlaySlideActivity extends AppCompatActivity {
 
             setContentView(R.layout.activity_overlay_slide);
 
-            String imageSize = ImageUpdater.ORIGINAL;
-            if (Status.resize_image_left) {
-                imageSize = ImageUpdater.SCREEN_SIZE;
-            }
+            Images.image_holder_first.updateVesImageViewWithAdjustedImage(findViewById(R.id.overlay_slide_image_view_base));
 
-            ImageUpdater.updateSubsamplingScaleImageViewImage(
-                    findViewById(R.id.overlay_slide_image_view_base),
-                    Images.image_holder_first,
-                    imageSize
-            );
-
-            SubsamplingScaleImageView image_front = findViewById(R.id.overlay_slide_image_view_front);
-            Bitmap bitmapSource = Images.image_holder_second.rotatedBitmap;
-            if (Status.resize_image_right) {
-                bitmapSource = Images.image_holder_second.getBitmapScreenSize();
-            }
+            VesImageInterface image_front = findViewById(R.id.overlay_slide_image_view_front);
+            Bitmap bitmapSource = Images.image_holder_second.getAdjustedBitmap();
 
             SeekBar seekBar = findViewById(R.id.overlay_slide_seek_bar);
             SlideHelper.addSeekbarLogic(seekBar, image_front, leftToRight, bitmapSource);
@@ -65,9 +52,6 @@ public class OverlaySlideActivity extends AppCompatActivity {
                     image_front.setVisibility(View.VISIBLE);
                 }
             });
-        } catch (Exception e) {
-            e.printStackTrace();
-            this.onBackPressed();
-        }
+        } catch (Exception ignored) {}
     }
 }

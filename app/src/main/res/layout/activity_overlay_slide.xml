@@ -17,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
+        <com.vincentengelsoftware.androidimagecompare.viewClasses.ZoomImageView
             android:id="@+id/overlay_slide_image_view_base"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -25,7 +25,7 @@
             android:contentDescription="@string/background_image"
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
-        <com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
+        <com.vincentengelsoftware.androidimagecompare.viewClasses.ZoomImageView
             android:id="@+id/overlay_slide_image_view_front"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

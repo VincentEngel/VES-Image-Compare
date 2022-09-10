@@ -4,12 +4,10 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.SeekBar;
 
-import com.davemorrissey.labs.subscaleview.ImageSource;
-import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
+import com.vincentengelsoftware.androidimagecompare.viewClasses.VesImageInterface;
 
 public class SlideHelper {
     public static Bitmap resizeBitmap(Bitmap image, int maxWidth, int maxHeight) {
@@ -49,7 +47,7 @@ public class SlideHelper {
 
     public static void addSeekbarLogic(
             SeekBar seekBar,
-            SubsamplingScaleImageView imageView,
+            VesImageInterface imageView,
             UtilMutableBoolean mutableBoolean,
             Bitmap bitmapSource
     ) {
@@ -77,14 +75,14 @@ public class SlideHelper {
 
                 if (mutableBoolean.value) {
                     for (int x = width; x < bitmapSource.getWidth(); x++) {
-                        for (int y = 0; y < bitmapSource.getHeight(); y++) { // TODO is Color.alpha needed?
-                            pixels[x + (y * bitmapSource.getWidth())] = Color.alpha(Color.TRANSPARENT);
+                        for (int y = 0; y < bitmapSource.getHeight(); y++) {
+                            pixels[x + (y * bitmapSource.getWidth())] = Color.TRANSPARENT;
                         }
                     }
                 } else {
                     for (int x = 0; x < width; x++) {
                         for (int y = 0; y < bitmapSource.getHeight(); y++) {
-                            pixels[x + (y * bitmapSource.getWidth())] = Color.alpha(Color.TRANSPARENT);
+                            pixels[x + (y * bitmapSource.getWidth())] = Color.TRANSPARENT;
                         }
                     }
                 }
@@ -99,7 +97,7 @@ public class SlideHelper {
                         bitmapSource.getHeight()
                 );
 
-                imageView.setImage(ImageSource.bitmap(bitmapCopy));
+                imageView.setBitmapImage(bitmapCopy);
 
                 if (
                         (!mutableBoolean.value && seekBar.getProgress() >= 98)

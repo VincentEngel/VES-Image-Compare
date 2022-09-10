@@ -21,11 +21,10 @@ import androidx.core.content.FileProvider;
 
 import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
+import com.vincentengelsoftware.androidimagecompare.helper.AskForReview;
 import com.vincentengelsoftware.androidimagecompare.helper.CacheClearer;
-import com.vincentengelsoftware.androidimagecompare.helper.ImageUpdater;
 import com.vincentengelsoftware.androidimagecompare.helper.KeyValueStorage;
 import com.vincentengelsoftware.androidimagecompare.helper.MainHelper;
-import com.vincentengelsoftware.androidimagecompare.helper.AskForReview;
 import com.vincentengelsoftware.androidimagecompare.util.ImageHolder;
 
 import java.io.File;
@@ -52,14 +51,14 @@ public class MainActivity extends AppCompatActivity {
             KeyValueStorage.setBoolean(getApplicationContext(), KeyValueStorage.ASKED_FOR_REVIEW, true);
         }
 
-        if (Images.image_holder_first.uri != null) {
-            ImageUpdater.updateImageViewImage(findViewById(R.id.home_image_first), Images.image_holder_first, ImageUpdater.SMALL);
+        if (Images.image_holder_first.getUri() != null) {
+            Images.image_holder_first.updateImageViewPreviewImage(findViewById(R.id.home_image_first));
             TextView imageNameLeft = findViewById(R.id.main_text_view_name_image_left);
             imageNameLeft.setText(Images.image_holder_first.getImageName());
         }
 
-        if (Images.image_holder_second.uri != null) {
-            ImageUpdater.updateImageViewImage(findViewById(R.id.home_image_second), Images.image_holder_second, ImageUpdater.SMALL);
+        if (Images.image_holder_second.getUri() != null) {
+            Images.image_holder_second.updateImageViewPreviewImage(findViewById(R.id.home_image_second));
             TextView imageNameRight = findViewById(R.id.main_text_view_name_image_right);
             imageNameRight.setText(Images.image_holder_second.getImageName());
         }
@@ -76,12 +75,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Switch resizeLeftImage = findViewById(R.id.main_switch_resize_image_left);
-        resizeLeftImage.setChecked(Status.resize_image_left);
-        resizeLeftImage.setOnCheckedChangeListener((compoundButton, b) -> Status.resize_image_left = b);
+        resizeLeftImage.setChecked(Images.image_holder_first.isResizeImageToScreen());
+        resizeLeftImage.setOnCheckedChangeListener((compoundButton, b) -> Images.image_holder_first.setResizeImageToScreen(b));
 
         Switch resizeRightImage = findViewById(R.id.main_switch_resize_image_right);
-        resizeRightImage.setChecked(Status.resize_image_right);
-        resizeRightImage.setOnCheckedChangeListener((compoundButton, b) -> Status.resize_image_right = b);
+        resizeRightImage.setChecked(Images.image_holder_second.isResizeImageToScreen());
+        resizeRightImage.setOnCheckedChangeListener((compoundButton, b) -> Images.image_holder_second.setResizeImageToScreen(b));
 
         try {
             Intent intent = getIntent();
@@ -109,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
             String imageName = MainHelper.getImageName(this, imageUri);
 
-            if (Images.image_holder_first.bitmap == null) {
+            if (Images.image_holder_first.getBitmap() == null) {
                 Images.image_holder_first.updateFromUri(
                         imageUri,
                         this.getContentResolver(),
@@ -270,8 +269,8 @@ public class MainActivity extends AppCompatActivity {
     {
         btn.setOnClickListener(view -> {
             if (
-                    Images.image_holder_first.bitmap == null ||
-                            Images.image_holder_second.bitmap == null ||
+                    Images.image_holder_first.getBitmap() == null ||
+                            Images.image_holder_second.getBitmap() == null ||
                             Status.activityIsOpening
             ) {
                 return;
@@ -339,7 +338,7 @@ public class MainActivity extends AppCompatActivity {
                         Point size = new Point();
                         getWindowManager().getDefaultDisplay().getSize(size);
                         imageHolder.updateFromUri(Images.fileUri, this.getContentResolver(), size, getResources().getDisplayMetrics(), imageName);
-                        ImageUpdater.updateImageViewImage(imageView, imageHolder, ImageUpdater.SMALL);
+                        imageHolder.updateImageViewPreviewImage(imageView);
 
                         imageNameText.setText(imageHolder.getImageName());
                     }

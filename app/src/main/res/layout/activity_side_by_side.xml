@@ -19,14 +19,14 @@
         app:layout_constraintTop_toTopOf="parent">
 
 
-        <com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
+        <com.vincentengelsoftware.androidimagecompare.viewClasses.ZoomImageView
             android:id="@+id/side_by_side_image_left"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
-        <com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
+        <com.vincentengelsoftware.androidimagecompare.viewClasses.ZoomImageView
             android:id="@+id/side_by_side_image_right"
             android:layout_width="match_parent"
             android:layout_height="0dp"

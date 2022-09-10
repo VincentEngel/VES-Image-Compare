@@ -7,17 +7,19 @@ import android.graphics.Point;
 import android.net.Uri;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.widget.ImageView;
 
 import com.vincentengelsoftware.androidimagecompare.helper.BitmapHelper;
+import com.vincentengelsoftware.androidimagecompare.viewClasses.VesImageInterface;
 
 import java.io.InputStream;
 
 public class ImageHolder {
-    public Uri uri = null;
-    public Bitmap bitmap;
+    private Uri uri = null;
+    private Bitmap bitmap;
     private Bitmap bitmapSmall;
     private Bitmap bitmapScreenSize;
-    public Bitmap rotatedBitmap;
+    private Bitmap rotatedBitmap;
 
     private Point point;
     private DisplayMetrics displayMetrics;
@@ -29,6 +31,16 @@ public class ImageHolder {
     private final float MAX_SMALL_SIZE_DP = 164.499f;
 
     private String imageName;
+
+    private boolean resizeImageToScreen = false;
+
+    public Uri getUri() {
+        return uri;
+    }
+
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
 
     private int getRotationDegree()
     {
@@ -61,6 +73,8 @@ public class ImageHolder {
         this.currentBitmapRotation = imageHolder.currentBitmapRotation;
 
         this.imageName = imageHolder.imageName;
+
+        this.resizeImageToScreen = imageHolder.resizeImageToScreen;
     }
 
     public void calculateRotatedBitmap()
@@ -130,9 +144,7 @@ public class ImageHolder {
             InputStream input = cr.openInputStream(uri);
             this.bitmap = BitmapFactory.decodeStream(input);
             input.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception ignored) {}
     }
 
     public void rotatePreviewImage()
@@ -141,5 +153,32 @@ public class ImageHolder {
                 this.getBitmapSmall(),
                 this.getRotationDegree()
         );
+    }
+
+    public boolean isResizeImageToScreen() {
+        return this.resizeImageToScreen;
+    }
+
+    public void setResizeImageToScreen(boolean resizeImageToScreen) {
+        this.resizeImageToScreen = resizeImageToScreen;
+    }
+
+    public Bitmap getAdjustedBitmap()
+    {
+        if (this.resizeImageToScreen) {
+            return this.getBitmapScreenSize();
+        }
+
+        return this.rotatedBitmap;
+    }
+
+    public void updateVesImageViewWithAdjustedImage(VesImageInterface imageView)
+    {
+        imageView.setBitmapImage(this.getAdjustedBitmap());
+    }
+
+    public void updateImageViewPreviewImage(ImageView imageView)
+    {
+        imageView.setImageBitmap(this.getBitmapSmall());
     }
 }

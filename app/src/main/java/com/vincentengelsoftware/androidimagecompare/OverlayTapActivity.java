@@ -5,12 +5,11 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
 import com.vincentengelsoftware.androidimagecompare.helper.FullScreenHelper;
-import com.vincentengelsoftware.androidimagecompare.helper.ImageUpdater;
 import com.vincentengelsoftware.androidimagecompare.helper.TapHelper;
+import com.vincentengelsoftware.androidimagecompare.viewClasses.VesImageInterface;
 
 public class OverlayTapActivity extends AppCompatActivity {
     @Override
@@ -22,28 +21,12 @@ public class OverlayTapActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_overlay_tap);
 
-        String imageSize = ImageUpdater.ORIGINAL;
-        if (Status.resize_image_left) {
-            imageSize = ImageUpdater.SCREEN_SIZE;
-        }
+        VesImageInterface image_first = findViewById(R.id.overlay_tap_image_view_one);
 
-        SubsamplingScaleImageView image_first = findViewById(R.id.overlay_tap_image_view_one);
-        ImageUpdater.updateSubsamplingScaleImageViewImage(
-                image_first,
-                Images.image_holder_first,
-                imageSize
-        );
+        Images.image_holder_first.updateVesImageViewWithAdjustedImage(image_first);
 
-        imageSize = ImageUpdater.ORIGINAL;
-        if (Status.resize_image_right) {
-            imageSize = ImageUpdater.SCREEN_SIZE;
-        }
-        SubsamplingScaleImageView image_second = findViewById(R.id.overlay_tap_image_view_two);
-        ImageUpdater.updateSubsamplingScaleImageViewImage(
-                image_second,
-                Images.image_holder_second,
-                imageSize
-        );
+        VesImageInterface image_second = findViewById(R.id.overlay_tap_image_view_two);
+        Images.image_holder_second.updateVesImageViewWithAdjustedImage(image_second);
 
         image_second.setVisibility(View.INVISIBLE);
 

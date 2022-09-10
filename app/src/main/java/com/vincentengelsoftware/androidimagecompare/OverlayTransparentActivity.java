@@ -7,12 +7,11 @@ import android.widget.SeekBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
 import com.vincentengelsoftware.androidimagecompare.helper.FullScreenHelper;
-import com.vincentengelsoftware.androidimagecompare.helper.ImageUpdater;
 import com.vincentengelsoftware.androidimagecompare.helper.TransparentHelper;
+import com.vincentengelsoftware.androidimagecompare.viewClasses.VesImageInterface;
 
 public class OverlayTransparentActivity extends AppCompatActivity {
     @Override
@@ -24,27 +23,12 @@ public class OverlayTransparentActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_overlay_transparent);
 
-        String imageSize = ImageUpdater.ORIGINAL;
-        if (Status.resize_image_left) {
-            imageSize = ImageUpdater.SCREEN_SIZE;
-        }
+        Images.image_holder_first.updateVesImageViewWithAdjustedImage(findViewById(R.id.overlay_transparent_image_view_base));
 
-        ImageUpdater.updateSubsamplingScaleImageViewImage(
-                findViewById(R.id.overlay_transparent_image_view_base),
-                Images.image_holder_first,
-                imageSize
-        );
+        VesImageInterface image_transparent = findViewById(R.id.overlay_transparent_image_view_transparent);
 
-        imageSize = ImageUpdater.ORIGINAL;
-        if (Status.resize_image_right) {
-            imageSize = ImageUpdater.SCREEN_SIZE;
-        }
-        SubsamplingScaleImageView image_transparent = findViewById(R.id.overlay_transparent_image_view_transparent);
-        ImageUpdater.updateSubsamplingScaleImageViewImage(
-                image_transparent,
-                Images.image_holder_second,
-                imageSize
-        );
+        Images.image_holder_second.updateVesImageViewWithAdjustedImage(image_transparent);
+
         image_transparent.bringToFront();
 
         SeekBar seekBar = findViewById(R.id.overlay_slide_seek_bar);

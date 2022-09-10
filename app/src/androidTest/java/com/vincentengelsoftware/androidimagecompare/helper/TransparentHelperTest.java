@@ -1,12 +1,13 @@
 package com.vincentengelsoftware.androidimagecompare.helper;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-import android.widget.ImageView;
 import android.widget.SeekBar;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+
+import com.vincentengelsoftware.androidimagecompare.viewClasses.ZoomImageView;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +18,7 @@ public class TransparentHelperTest {
     @Test
     public void makeTargetTransparent() {
         SeekBar seekBar = new SeekBar(ApplicationProvider.getApplicationContext());
-        ImageView imageView = new ImageView(ApplicationProvider.getApplicationContext());
+        ZoomImageView imageView = new ZoomImageView(ApplicationProvider.getApplicationContext());
 
         seekBar.setProgress(50);
         imageView.setAlpha((float) 0.5);
