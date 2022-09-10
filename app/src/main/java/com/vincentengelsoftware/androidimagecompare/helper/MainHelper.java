@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.documentfile.provider.DocumentFile;
@@ -82,8 +83,8 @@ public class MainHelper {
             ImageView imageViewTwo,
             TextView imageTextViewNameLeft,
             TextView imageTextViewNameRight,
-            Switch resizeImageLeft,
-            Switch resizeImageRight
+            SwitchCompat resizeImageLeft,
+            SwitchCompat resizeImageRight
     ) {
         imageButton.setOnClickListener(view -> {
             if (imageHolderOne.getBitmap() == null || imageHolderTwo.getBitmap() == null || Status.activityIsOpening) {

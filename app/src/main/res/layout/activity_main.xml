@@ -164,7 +164,7 @@
                             android:layout_weight="1"
                             android:paddingVertical="20dp">
 
-                            <Switch
+                            <androidx.appcompat.widget.SwitchCompat
                                 android:id="@+id/main_switch_resize_image_left"
                                 android:layout_width="wrap_content"
                                 android:layout_height="48dp"
@@ -216,7 +216,7 @@
                             android:layout_weight="1"
                             android:paddingVertical="20dp">
 
-                            <Switch
+                            <androidx.appcompat.widget.SwitchCompat
                                 android:id="@+id/main_switch_resize_image_right"
                                 android:layout_width="wrap_content"
                                 android:layout_height="48dp"

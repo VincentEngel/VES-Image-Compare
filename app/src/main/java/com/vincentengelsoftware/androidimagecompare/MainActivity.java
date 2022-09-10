@@ -19,6 +19,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.FileProvider;
 
 import com.vincentengelsoftware.androidimagecompare.globals.Dimensions;
@@ -109,11 +110,11 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        Switch resizeLeftImage = findViewById(R.id.main_switch_resize_image_left);
+        SwitchCompat resizeLeftImage = findViewById(R.id.main_switch_resize_image_left);
         resizeLeftImage.setChecked(Images.image_holder_first.isResizeImageToScreen());
         resizeLeftImage.setOnCheckedChangeListener((compoundButton, b) -> Images.image_holder_first.setResizeImageToScreen(b));
 
-        Switch resizeRightImage = findViewById(R.id.main_switch_resize_image_right);
+        SwitchCompat resizeRightImage = findViewById(R.id.main_switch_resize_image_right);
         resizeRightImage.setChecked(Images.image_holder_second.isResizeImageToScreen());
         resizeRightImage.setOnCheckedChangeListener((compoundButton, b) -> Images.image_holder_second.setResizeImageToScreen(b));
 
