@@ -3,8 +3,10 @@ package com.vincentengelsoftware.androidimagecompare;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Point;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -19,12 +21,14 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
+import com.vincentengelsoftware.androidimagecompare.globals.Dimensions;
 import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
-import com.vincentengelsoftware.androidimagecompare.helper.AskForReview;
+import com.vincentengelsoftware.androidimagecompare.helper.ShouldAskForReview;
 import com.vincentengelsoftware.androidimagecompare.helper.CacheClearer;
 import com.vincentengelsoftware.androidimagecompare.helper.KeyValueStorage;
 import com.vincentengelsoftware.androidimagecompare.helper.MainHelper;
+import com.vincentengelsoftware.androidimagecompare.helper.UriHelper;
 import com.vincentengelsoftware.androidimagecompare.util.ImageHolder;
 
 import java.io.File;
@@ -42,33 +46,64 @@ public class MainActivity extends AppCompatActivity {
             Status.isFirstStart = false;
             CacheClearer.clear(getApplicationContext());
         }
+        
+        if (Dimensions.maxSide == 0) {
+            Point point = new Point();
+            getWindowManager().getDefaultDisplay().getSize(point);
+            Dimensions.maxSide = Math.max(point.x, point.y);
+        }
+        
+        if (Dimensions.maxSideForPreview == 0) {
+            Dimensions.maxSideForPreview = Math.round(
+                    TypedValue.applyDimension(
+                            TypedValue.COMPLEX_UNIT_DIP,
+                            ImageHolder.MAX_SMALL_SIZE_DP,
+                            getResources().getDisplayMetrics()
+                    )
+            );
+        }
 
         setUpActions();
 
-        if (AskForReview.shouldAskForReview(getApplicationContext()))
+        if (ShouldAskForReview.check(getApplicationContext()))
         {
             askForReview();
             KeyValueStorage.setBoolean(getApplicationContext(), KeyValueStorage.ASKED_FOR_REVIEW, true);
         }
 
-        if (Images.image_holder_first.getUri() != null) {
+        if (Images.image_holder_first.getBitmap() != null) {
             Images.image_holder_first.updateImageViewPreviewImage(findViewById(R.id.home_image_first));
             TextView imageNameLeft = findViewById(R.id.main_text_view_name_image_left);
             imageNameLeft.setText(Images.image_holder_first.getImageName());
         }
 
-        if (Images.image_holder_second.getUri() != null) {
+        if (Images.image_holder_second.getBitmap() != null) {
             Images.image_holder_second.updateImageViewPreviewImage(findViewById(R.id.home_image_second));
             TextView imageNameRight = findViewById(R.id.main_text_view_name_image_right);
             imageNameRight.setText(Images.image_holder_second.getImageName());
         }
 
-        if (Images.fileUri == null) {
+        if (Images.image_holder_first.getCameraUri() == null) {
             try {
-                Images.fileUri = FileProvider.getUriForFile(
-                        this,
-                        getApplicationContext().getPackageName() + ".fileprovider",
-                        File.createTempFile("camera_image", null, this.getCacheDir())
+                Images.image_holder_first.setCameraUri(
+                        FileProvider.getUriForFile(
+                                this,
+                                getApplicationContext().getPackageName() + ".fileprovider",
+                                File.createTempFile("camera_image_first_", null, this.getCacheDir())
+                        )
+                );
+            } catch (Exception ignored) {
+            }
+        }
+
+        if (Images.image_holder_second.getCameraUri() == null) {
+            try {
+                Images.image_holder_second.setCameraUri(
+                        FileProvider.getUriForFile(
+                                this,
+                                getApplicationContext().getPackageName() + ".fileprovider",
+                                File.createTempFile("camera_image_second_", null, this.getCacheDir())
+                        )
                 );
             } catch (Exception ignored) {
             }
@@ -102,73 +137,61 @@ public class MainActivity extends AppCompatActivity {
 
     void handleSendImage(Intent intent) {
         Uri imageUri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
-        if (imageUri != null) {
-            Point size = new Point();
-            getWindowManager().getDefaultDisplay().getSize(size);
 
-            String imageName = MainHelper.getImageName(this, imageUri);
+        if (imageUri != null) {
+            ImageHolder imageHolder;
+            ImageView imageView;
+            TextView imageName;
 
             if (Images.image_holder_first.getBitmap() == null) {
-                Images.image_holder_first.updateFromUri(
-                        imageUri,
-                        this.getContentResolver(),
-                        size,
-                        getResources().getDisplayMetrics(),
-                        imageName
-                );
-                ImageView first = findViewById(R.id.home_image_first);
-                first.setImageBitmap(Images.image_holder_first.getBitmapSmall());
-                TextView imageNameLeft = findViewById(R.id.main_text_view_name_image_left);
-                imageNameLeft.setText(Images.image_holder_first.getImageName());
-                return;
+                imageHolder = Images.image_holder_first;
+                imageView = findViewById(R.id.home_image_first);
+                imageName = findViewById(R.id.main_text_view_name_image_left);
+            } else {
+                imageHolder = Images.image_holder_second;
+                imageView = findViewById(R.id.home_image_second);
+                imageName = findViewById(R.id.main_text_view_name_image_right);
             }
 
-            Images.image_holder_second.updateFromUri(
-                    imageUri,
-                    this.getContentResolver(),
-                    size,
-                    getResources().getDisplayMetrics(),
+            MainHelper.updateImageFromIntent(
+                    imageHolder,
+                    UriHelper.getBitmap(this.getContentResolver(), imageUri),
+                    Dimensions.maxSide,
+                    Dimensions.maxSideForPreview,
+                    MainHelper.getImageName(this, imageUri),
+                    imageView,
                     imageName
             );
-            ImageView second = findViewById(R.id.home_image_second);
-            second.setImageBitmap(Images.image_holder_second.getBitmapSmall());
-            TextView imageNameRight = findViewById(R.id.main_text_view_name_image_right);
-            imageNameRight.setText(Images.image_holder_second.getImageName());
         }
     }
 
     void handleSendMultipleImages(Intent intent) {
         ArrayList<Uri> imageUris = intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
+
         if (imageUris != null) {
-            ImageView first = findViewById(R.id.home_image_first);
-            ImageView second = findViewById(R.id.home_image_second);
-            Point size = new Point();
-            getWindowManager().getDefaultDisplay().getSize(size);
+            if (imageUris.get(0) != null) {
+                MainHelper.updateImageFromIntent(
+                        Images.image_holder_first,
+                        UriHelper.getBitmap(this.getContentResolver(), imageUris.get(0)),
+                        Dimensions.maxSide,
+                        Dimensions.maxSideForPreview,
+                        MainHelper.getImageName(this, imageUris.get(0)),
+                        findViewById(R.id.home_image_first),
+                        findViewById(R.id.main_text_view_name_image_left)
+                );
+            }
 
-            String imageNameFirst = MainHelper.getImageName(this, imageUris.get(0));
-            String imageNameSecond = MainHelper.getImageName(this, imageUris.get(1));
-
-            Images.image_holder_first.updateFromUri(
-                    imageUris.get(0),
-                    this.getContentResolver(),
-                    size,
-                    getResources().getDisplayMetrics(),
-                    imageNameFirst
-            );
-            Images.image_holder_second.updateFromUri(
-                    imageUris.get(1),
-                    this.getContentResolver(),
-                    size,
-                    getResources().getDisplayMetrics(),
-                    imageNameSecond
-            );
-            first.setImageBitmap(Images.image_holder_first.getBitmapSmall());
-            second.setImageBitmap(Images.image_holder_second.getBitmapSmall());
-
-            TextView imageNameLeft = findViewById(R.id.main_text_view_name_image_left);
-            imageNameLeft.setText(Images.image_holder_first.getImageName());
-            TextView imageNameRight = findViewById(R.id.main_text_view_name_image_right);
-            imageNameRight.setText(Images.image_holder_second.getImageName());
+            if (imageUris.get(1) != null) {
+                MainHelper.updateImageFromIntent(
+                        Images.image_holder_second,
+                        UriHelper.getBitmap(this.getContentResolver(), imageUris.get(1)),
+                        Dimensions.maxSide,
+                        Dimensions.maxSideForPreview,
+                        MainHelper.getImageName(this, imageUris.get(1)),
+                        findViewById(R.id.home_image_second),
+                        findViewById(R.id.main_text_view_name_image_right)
+                );
+            }
 
             if (imageUris.size() > 2) {
                 Toast.makeText(getBaseContext(), "You can only compare two images at once", Toast.LENGTH_LONG).show();
@@ -269,9 +292,9 @@ public class MainActivity extends AppCompatActivity {
     {
         btn.setOnClickListener(view -> {
             if (
-                    Images.image_holder_first.getBitmap() == null ||
-                            Images.image_holder_second.getBitmap() == null ||
-                            Status.activityIsOpening
+                    Images.image_holder_first.getBitmap() == null
+                            || Images.image_holder_second.getBitmap() == null
+                            || Status.activityIsOpening
             ) {
                 return;
             }
@@ -309,18 +332,13 @@ public class MainActivity extends AppCompatActivity {
                         return;
                     }
 
-                    String imageName = MainHelper.getImageName(this, uri);
-
-                    Point size = new Point();
-                    getWindowManager().getDefaultDisplay().getSize(size);
-                    imageHolder.updateFromUri(
-                            uri,
-                            this.getContentResolver(),
-                            size,
-                            getResources().getDisplayMetrics(),
-                            imageName
+                    imageHolder.updateFromBitmap(
+                            UriHelper.getBitmap(this.getContentResolver(), uri),
+                            Dimensions.maxSide,
+                            Dimensions.maxSideForPreview,
+                            MainHelper.getImageName(this, uri)
                     );
-                    imageView.setImageBitmap(imageHolder.getBitmapSmall());
+                    imageHolder.updateImageViewPreviewImage(imageView);
                     imageNameText.setText(imageHolder.getImageName());
                 });
 
@@ -333,11 +351,12 @@ public class MainActivity extends AppCompatActivity {
                             return;
                         }
 
-                        String imageName = MainHelper.getImageName(this, Images.fileUri);
-
-                        Point size = new Point();
-                        getWindowManager().getDefaultDisplay().getSize(size);
-                        imageHolder.updateFromUri(Images.fileUri, this.getContentResolver(), size, getResources().getDisplayMetrics(), imageName);
+                        imageHolder.updateFromBitmap(
+                                UriHelper.getBitmap(this.getContentResolver(), imageHolder.getCameraUri()),
+                                Dimensions.maxSide,
+                                Dimensions.maxSideForPreview,
+                                MainHelper.getImageName(this, imageHolder.getCameraUri())
+                        );
                         imageHolder.updateImageViewPreviewImage(imageView);
 
                         imageNameText.setText(imageHolder.getImageName());
@@ -356,7 +375,7 @@ public class MainActivity extends AppCompatActivity {
                 builder.setItems(optionsMenu, (dialogInterface, i) -> {
                     if (optionsMenu[i].equals("Take Photo")) {
                         if (MainHelper.checkPermission(MainActivity.this)) {
-                            mGetContentCamera.launch(Images.fileUri);
+                            mGetContentCamera.launch(imageHolder.getCameraUri());
                         } else {
                             MainHelper.requestPermission(MainActivity.this);
                             imageView.callOnClick();

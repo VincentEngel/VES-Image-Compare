@@ -1,41 +1,39 @@
 package com.vincentengelsoftware.androidimagecompare.util;
 
-import android.content.ContentResolver;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Point;
 import android.net.Uri;
-import android.util.DisplayMetrics;
-import android.util.TypedValue;
 import android.widget.ImageView;
 
 import com.vincentengelsoftware.androidimagecompare.helper.BitmapHelper;
 import com.vincentengelsoftware.androidimagecompare.viewClasses.VesImageInterface;
 
-import java.io.InputStream;
-
 public class ImageHolder {
-    private Uri uri = null;
     private Bitmap bitmap;
     private Bitmap bitmapSmall;
     private Bitmap bitmapScreenSize;
     private Bitmap rotatedBitmap;
 
-    private Point point;
-    private DisplayMetrics displayMetrics;
-
     private int currentRotation = 0;
     private int currentBitmapRotation = 0;
     private static final int BASE_DEGREE = 90;
 
-    private final float MAX_SMALL_SIZE_DP = 164.499f;
+    public static final float MAX_SMALL_SIZE_DP = 164.499f;
+
+    private int maxSideSize;
+    private int maxSideSizeForSmallBitmap;
 
     private String imageName;
 
     private boolean resizeImageToScreen = false;
 
-    public Uri getUri() {
-        return uri;
+    private Uri cameraUri = null;
+
+    public Uri getCameraUri() {
+        return cameraUri;
+    }
+
+    public void setCameraUri(Uri cameraUri) {
+        this.cameraUri = cameraUri;
     }
 
     public Bitmap getBitmap() {
@@ -60,9 +58,8 @@ public class ImageHolder {
 
     public void updateFromImageHolder(ImageHolder imageHolder)
     {
-        this.uri = imageHolder.uri;
-        this.point = imageHolder.point;
-        this.displayMetrics = imageHolder.displayMetrics;
+        this.maxSideSize = imageHolder.maxSideSize;
+        this.maxSideSizeForSmallBitmap = imageHolder.maxSideSizeForSmallBitmap;
 
         this.bitmap = imageHolder.bitmap;
         this.bitmapSmall = imageHolder.bitmapSmall;
@@ -85,7 +82,12 @@ public class ImageHolder {
         }
 
         if (this.rotatedBitmap == null || this.currentBitmapRotation != this.currentRotation) {
-            this.rotatedBitmap = BitmapHelper.rotateBitmap(this.bitmap, BASE_DEGREE * this.currentRotation);
+            if (this.currentRotation == 0) {
+                this.rotatedBitmap = this.bitmap;
+            } else {
+                this.rotatedBitmap = BitmapHelper.rotateBitmap(this.bitmap, BASE_DEGREE * this.currentRotation);
+            }
+
             this.bitmapScreenSize = null;
             this.getBitmapScreenSize();
             this.currentBitmapRotation = this.currentRotation;
@@ -95,18 +97,10 @@ public class ImageHolder {
     public Bitmap getBitmapSmall()
     {
         if (this.bitmapSmall ==  null) {
-            int maxSideLength = Math.round(
-                    TypedValue.applyDimension(
-                            TypedValue.COMPLEX_UNIT_DIP,
-                            MAX_SMALL_SIZE_DP,
-                            displayMetrics
-                    )
-            );
-
             this.bitmapSmall = BitmapHelper.resizeBitmap(
                     this.bitmap,
-                    maxSideLength,
-                    maxSideLength
+                    this.maxSideSizeForSmallBitmap,
+                    this.maxSideSizeForSmallBitmap
             );
         }
 
@@ -118,33 +112,37 @@ public class ImageHolder {
         if (this.bitmapScreenSize == null) {
             this.bitmapScreenSize = BitmapHelper.resizeBitmap(
                     this.rotatedBitmap,
-                    Math.max(point.x, point.y),
-                    Math.max(point.x, point.y)
+                    this.maxSideSize,
+                    this.maxSideSize
             );
         }
 
         return this.bitmapScreenSize;
     }
 
-    public void updateFromUri(Uri uri, ContentResolver cr, Point point, DisplayMetrics displayMetrics, String imageName)
+    public void updateFromBitmap(
+            Bitmap bitmap,
+            int maxSideSize,
+            int maxSideSizeForSmallBitmap,
+            String imageName
+    )
     {
-        this.uri = uri;
-        this.point = point;
-        this.displayMetrics = displayMetrics;
+        this.resetProperties();
+
+        this.bitmap = bitmap;
+        this.imageName = imageName;
+        this.maxSideSize = maxSideSize;
+        this.maxSideSizeForSmallBitmap = maxSideSizeForSmallBitmap;
+    }
+
+    private void resetProperties()
+    {
         this.bitmapSmall = null;
         this.bitmapScreenSize = null;
         this.rotatedBitmap = null;
 
         this.currentRotation = 0;
         this.currentBitmapRotation = 0;
-
-        this.imageName = imageName;
-
-        try {
-            InputStream input = cr.openInputStream(uri);
-            this.bitmap = BitmapFactory.decodeStream(input);
-            input.close();
-        } catch (Exception ignored) {}
     }
 
     public void rotatePreviewImage()

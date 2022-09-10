@@ -5,8 +5,11 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.net.Uri;
 import android.view.MotionEvent;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -17,6 +20,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.documentfile.provider.DocumentFile;
 
+import com.vincentengelsoftware.androidimagecompare.R;
+import com.vincentengelsoftware.androidimagecompare.globals.Dimensions;
 import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.globals.RequestPermissionCodes;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
@@ -125,5 +130,25 @@ public class MainHelper {
         }
 
         return Images.DEFAULT_IMAGE_NAME;
+    }
+
+    public static void updateImageFromIntent(
+            ImageHolder imageHolder,
+            Bitmap bitmap,
+            int maxSideSize,
+            int maxSideSizeForSmallBitmap,
+            String imageName,
+            ImageView imageView,
+            TextView textView
+    )
+    {
+        imageHolder.updateFromBitmap(
+                bitmap,
+                maxSideSize,
+                maxSideSizeForSmallBitmap,
+                imageName
+        );
+        imageHolder.updateImageViewPreviewImage(imageView);
+        textView.setText(imageHolder.getImageName());
     }
 }

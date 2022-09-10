@@ -4,8 +4,8 @@ import android.content.Context;
 
 import java.util.concurrent.TimeUnit;
 
-public class AskForReview {
-    public static boolean shouldAskForReview(Context context)
+public class ShouldAskForReview {
+    public static boolean check(Context context)
     {
         return !KeyValueStorage.getBoolean(context, KeyValueStorage.ASKED_FOR_REVIEW, false)
                 && isAppInstalledForDays(context, 30);
