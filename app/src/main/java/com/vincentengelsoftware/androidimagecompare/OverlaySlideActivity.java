@@ -1,11 +1,9 @@
 package com.vincentengelsoftware.androidimagecompare;
 
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
 import android.widget.SeekBar;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,8 +18,6 @@ import com.vincentengelsoftware.androidimagecompare.viewClasses.VesImageInterfac
 public class OverlaySlideActivity extends AppCompatActivity {
 
     private final UtilMutableBoolean leftToRight = new UtilMutableBoolean();
-
-    private Thread calculationThread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

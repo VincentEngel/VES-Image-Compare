@@ -45,6 +45,10 @@ public class SlideHelper {
         });
     }
 
+    /**
+     * This is super bad with big images
+     * TODO: Improve speed(?) and move it to a thread
+     */
     public static void addSeekbarLogic(
             SeekBar seekBar,
             VesImageInterface imageView,
@@ -110,13 +114,10 @@ public class SlideHelper {
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
+            public void onStartTrackingTouch(SeekBar seekBar) {}
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-            }
+            public void onStopTrackingTouch(SeekBar seekBar) {}
         });
     }
 }
