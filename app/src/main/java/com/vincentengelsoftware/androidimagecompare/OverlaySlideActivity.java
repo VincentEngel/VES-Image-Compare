@@ -1,9 +1,11 @@
 package com.vincentengelsoftware.androidimagecompare;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +21,8 @@ public class OverlaySlideActivity extends AppCompatActivity {
 
     private final UtilMutableBoolean leftToRight = new UtilMutableBoolean();
 
+    private Thread calculationThread;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
@@ -29,10 +33,10 @@ public class OverlaySlideActivity extends AppCompatActivity {
 
             setContentView(R.layout.activity_overlay_slide);
 
-            Images.image_holder_first.updateVesImageViewWithAdjustedImage(findViewById(R.id.overlay_slide_image_view_base));
+            Images.first.updateVesImageViewWithAdjustedImage(findViewById(R.id.overlay_slide_image_view_base));
 
             VesImageInterface image_front = findViewById(R.id.overlay_slide_image_view_front);
-            Bitmap bitmapSource = Images.image_holder_second.getAdjustedBitmap();
+            Bitmap bitmapSource = Images.second.getAdjustedBitmap();
 
             SeekBar seekBar = findViewById(R.id.overlay_slide_seek_bar);
             SlideHelper.addSeekbarLogic(seekBar, image_front, leftToRight, bitmapSource);

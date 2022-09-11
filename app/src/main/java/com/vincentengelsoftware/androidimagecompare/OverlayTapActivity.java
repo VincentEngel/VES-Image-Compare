@@ -22,10 +22,10 @@ public class OverlayTapActivity extends AppCompatActivity {
         setContentView(R.layout.activity_overlay_tap);
 
         VesImageInterface image_first = findViewById(R.id.overlay_tap_image_view_one);
-        Images.image_holder_first.updateVesImageViewWithAdjustedImage(image_first);
+        Images.first.updateVesImageViewWithAdjustedImage(image_first);
 
         VesImageInterface image_second = findViewById(R.id.overlay_tap_image_view_two);
-        Images.image_holder_second.updateVesImageViewWithAdjustedImage(image_second);
+        Images.second.updateVesImageViewWithAdjustedImage(image_second);
 
         image_second.setVisibility(View.INVISIBLE);
 

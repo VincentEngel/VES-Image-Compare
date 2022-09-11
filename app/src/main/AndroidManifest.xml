@@ -31,7 +31,8 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:launchMode="singleTask"
+            android:exported="true"><!-- singleTask = Only allow one instance of this app -->
             <intent-filter><!-- WHAT IS THIS FOR? -->
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

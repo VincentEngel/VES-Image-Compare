@@ -3,7 +3,6 @@ package com.vincentengelsoftware.androidimagecompare;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Point;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -11,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
             Dimensions.maxSideForPreview = Math.round(
                     TypedValue.applyDimension(
                             TypedValue.COMPLEX_UNIT_DIP,
-                            ImageHolder.MAX_SMALL_SIZE_DP,
+                            Dimensions.MAX_SMALL_SIZE_DP,
                             getResources().getDisplayMetrics()
                     )
             );
@@ -72,54 +70,43 @@ public class MainActivity extends AppCompatActivity {
             KeyValueStorage.setBoolean(getApplicationContext(), KeyValueStorage.ASKED_FOR_REVIEW, true);
         }
 
-        if (Images.image_holder_first.getBitmap() != null) {
-            Images.image_holder_first.updateImageViewPreviewImage(findViewById(R.id.home_image_first));
+        if (Images.first.getBitmap() != null) {
+            Images.first.updateImageViewPreviewImage(findViewById(R.id.home_image_first));
             TextView imageNameLeft = findViewById(R.id.main_text_view_name_image_left);
-            imageNameLeft.setText(Images.image_holder_first.getImageName());
+            imageNameLeft.setText(Images.first.getImageName());
         }
 
-        if (Images.image_holder_second.getBitmap() != null) {
-            Images.image_holder_second.updateImageViewPreviewImage(findViewById(R.id.home_image_second));
+        if (Images.second.getBitmap() != null) {
+            Images.second.updateImageViewPreviewImage(findViewById(R.id.home_image_second));
             TextView imageNameRight = findViewById(R.id.main_text_view_name_image_right);
-            imageNameRight.setText(Images.image_holder_second.getImageName());
+            imageNameRight.setText(Images.second.getImageName());
         }
 
-        if (Images.image_holder_first.getCameraUri() == null) {
+        if (Images.fileUri == null) {
             try {
-                Images.image_holder_first.setCameraUri(
-                        FileProvider.getUriForFile(
-                                this,
-                                getApplicationContext().getPackageName() + ".fileprovider",
-                                File.createTempFile("camera_image_first_", null, this.getCacheDir())
-                        )
-                );
-            } catch (Exception ignored) {
-            }
-        }
-
-        if (Images.image_holder_second.getCameraUri() == null) {
-            try {
-                Images.image_holder_second.setCameraUri(
-                        FileProvider.getUriForFile(
-                                this,
-                                getApplicationContext().getPackageName() + ".fileprovider",
-                                File.createTempFile("camera_image_second_", null, this.getCacheDir())
-                        )
+                Images.fileUri = FileProvider.getUriForFile(
+                        this,
+                        getApplicationContext().getPackageName() + ".fileprovider",
+                        File.createTempFile("camera_image_first_", null, this.getCacheDir())
                 );
             } catch (Exception ignored) {
             }
         }
 
         SwitchCompat resizeLeftImage = findViewById(R.id.main_switch_resize_image_left);
-        resizeLeftImage.setChecked(Images.image_holder_first.isResizeImageToScreen());
-        resizeLeftImage.setOnCheckedChangeListener((compoundButton, b) -> Images.image_holder_first.setResizeImageToScreen(b));
+        resizeLeftImage.setChecked(Images.first.isResizeImageToScreen());
+        resizeLeftImage.setOnCheckedChangeListener((compoundButton, b) -> Images.first.setResizeImageToScreen(b));
 
         SwitchCompat resizeRightImage = findViewById(R.id.main_switch_resize_image_right);
-        resizeRightImage.setChecked(Images.image_holder_second.isResizeImageToScreen());
-        resizeRightImage.setOnCheckedChangeListener((compoundButton, b) -> Images.image_holder_second.setResizeImageToScreen(b));
+        resizeRightImage.setChecked(Images.second.isResizeImageToScreen());
+        resizeRightImage.setOnCheckedChangeListener((compoundButton, b) -> Images.second.setResizeImageToScreen(b));
 
+        this.handleIntent(getIntent());
+    }
+
+    private void handleIntent(Intent intent)
+    {
         try {
-            Intent intent = getIntent();
             String action = intent.getAction();
             String type = intent.getType();
 
@@ -136,6 +123,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * called when files are shared to this app when it is already running
+     */
+    public void onNewIntent(Intent intent)
+    {
+        super.onNewIntent(intent);
+        this.handleIntent(intent);
+    }
+
     void handleSendImage(Intent intent) {
         Uri imageUri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
 
@@ -144,12 +140,12 @@ public class MainActivity extends AppCompatActivity {
             ImageView imageView;
             TextView imageName;
 
-            if (Images.image_holder_first.getBitmap() == null) {
-                imageHolder = Images.image_holder_first;
+            if (Images.first.getBitmap() == null) {
+                imageHolder = Images.first;
                 imageView = findViewById(R.id.home_image_first);
                 imageName = findViewById(R.id.main_text_view_name_image_left);
             } else {
-                imageHolder = Images.image_holder_second;
+                imageHolder = Images.second;
                 imageView = findViewById(R.id.home_image_second);
                 imageName = findViewById(R.id.main_text_view_name_image_right);
             }
@@ -172,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
         if (imageUris != null) {
             if (imageUris.get(0) != null) {
                 MainHelper.updateImageFromIntent(
-                        Images.image_holder_first,
+                        Images.first,
                         UriHelper.getBitmap(this.getContentResolver(), imageUris.get(0)),
                         Dimensions.maxSide,
                         Dimensions.maxSideForPreview,
@@ -184,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
 
             if (imageUris.get(1) != null) {
                 MainHelper.updateImageFromIntent(
-                        Images.image_holder_second,
+                        Images.second,
                         UriHelper.getBitmap(this.getContentResolver(), imageUris.get(1)),
                         Dimensions.maxSide,
                         Dimensions.maxSideForPreview,
@@ -251,8 +247,8 @@ public class MainActivity extends AppCompatActivity {
 
         MainHelper.addSwapImageLogic(
                 findViewById(R.id.home_button_swap_images),
-                Images.image_holder_first,
-                Images.image_holder_second,
+                Images.first,
+                Images.second,
                 findViewById(R.id.home_image_first),
                 findViewById(R.id.home_image_second),
                 findViewById(R.id.main_text_view_name_image_left),
@@ -263,13 +259,13 @@ public class MainActivity extends AppCompatActivity {
 
         MainHelper.addRotateImageLogic(
                 findViewById(R.id.home_button_rotate_image_left),
-                Images.image_holder_first,
+                Images.first,
                 findViewById(R.id.home_image_first)
         );
 
         MainHelper.addRotateImageLogic(
                 findViewById(R.id.home_button_rotate_image_right),
-                Images.image_holder_second,
+                Images.second,
                 findViewById(R.id.home_image_second)
         );
 
@@ -278,13 +274,13 @@ public class MainActivity extends AppCompatActivity {
 
         addLoadImageLogic(
                 first,
-                Images.image_holder_first,
+                Images.first,
                 findViewById(R.id.main_text_view_name_image_left)
         );
 
         addLoadImageLogic(
                 second,
-                Images.image_holder_second,
+                Images.second,
                 findViewById(R.id.main_text_view_name_image_right)
         );
     }
@@ -293,8 +289,8 @@ public class MainActivity extends AppCompatActivity {
     {
         btn.setOnClickListener(view -> {
             if (
-                    Images.image_holder_first.getBitmap() == null
-                            || Images.image_holder_second.getBitmap() == null
+                    Images.first.getBitmap() == null
+                            || Images.second.getBitmap() == null
                             || Status.activityIsOpening
             ) {
                 return;
@@ -310,8 +306,8 @@ public class MainActivity extends AppCompatActivity {
                     spinner.setVisibility(View.VISIBLE);
                 });
 
-                Images.image_holder_first.calculateRotatedBitmap();
-                Images.image_holder_second.calculateRotatedBitmap();
+                Images.first.calculateRotatedBitmap();
+                Images.second.calculateRotatedBitmap();
 
                 runOnUiThread(() -> {
                     ProgressBar spinner = findViewById(R.id.pbProgess);
@@ -353,10 +349,10 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                         imageHolder.updateFromBitmap(
-                                UriHelper.getBitmap(this.getContentResolver(), imageHolder.getCameraUri()),
+                                UriHelper.getBitmap(this.getContentResolver(), Images.fileUri),
                                 Dimensions.maxSide,
                                 Dimensions.maxSideForPreview,
-                                MainHelper.getImageName(this, imageHolder.getCameraUri())
+                                MainHelper.getImageName(this, Images.fileUri)
                         );
                         imageHolder.updateImageViewPreviewImage(imageView);
 
@@ -376,7 +372,7 @@ public class MainActivity extends AppCompatActivity {
                 builder.setItems(optionsMenu, (dialogInterface, i) -> {
                     if (optionsMenu[i].equals("Take Photo")) {
                         if (MainHelper.checkPermission(MainActivity.this)) {
-                            mGetContentCamera.launch(imageHolder.getCameraUri());
+                            mGetContentCamera.launch(Images.fileUri);
                         } else {
                             MainHelper.requestPermission(MainActivity.this);
                             imageView.callOnClick();

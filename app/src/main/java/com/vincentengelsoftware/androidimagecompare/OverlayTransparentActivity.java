@@ -23,11 +23,11 @@ public class OverlayTransparentActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_overlay_transparent);
 
-        Images.image_holder_first.updateVesImageViewWithAdjustedImage(findViewById(R.id.overlay_transparent_image_view_base));
+        Images.first.updateVesImageViewWithAdjustedImage(findViewById(R.id.overlay_transparent_image_view_base));
 
         VesImageInterface image_transparent = findViewById(R.id.overlay_transparent_image_view_transparent);
 
-        Images.image_holder_second.updateVesImageViewWithAdjustedImage(image_transparent);
+        Images.second.updateVesImageViewWithAdjustedImage(image_transparent);
 
         image_transparent.bringToFront();
 

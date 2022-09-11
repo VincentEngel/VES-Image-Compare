@@ -19,8 +19,8 @@ public class SideBySideActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_side_by_side);
 
-        Images.image_holder_first.updateVesImageViewWithAdjustedImage(findViewById(R.id.side_by_side_image_left));
+        Images.first.updateVesImageViewWithAdjustedImage(findViewById(R.id.side_by_side_image_left));
 
-        Images.image_holder_second.updateVesImageViewWithAdjustedImage(findViewById(R.id.side_by_side_image_right));
+        Images.second.updateVesImageViewWithAdjustedImage(findViewById(R.id.side_by_side_image_right));
     }
 }

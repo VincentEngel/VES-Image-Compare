@@ -1,0 +1,2 @@
+* Add Privacy Policy
+* Increase minSdk from 26 to 28

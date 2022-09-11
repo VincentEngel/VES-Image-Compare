@@ -16,25 +16,14 @@ public class TransparentHelper {
                 } else {
                     imageView.setVisibility(View.VISIBLE);
                 }
-                imageView.setAlpha(
-                        (float) seekBar.getProgress() / (float) seekBar.getMax()
-                );
+                imageView.setAlpha((float) seekBar.getProgress() / (float) seekBar.getMax());
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
+            public void onStartTrackingTouch(SeekBar seekBar) {}
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                if (seekBar.getProgress() <= 2) {
-                    imageView.setVisibility(View.GONE);
-                } else {
-                    imageView.setVisibility(View.VISIBLE);
-                }
-                imageView.setAlpha((float) seekBar.getProgress() / 100);
-            }
+            public void onStopTrackingTouch(SeekBar seekBar) {}
         });
     }
 }

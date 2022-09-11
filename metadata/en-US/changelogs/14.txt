@@ -1,0 +1,2 @@
+* Add open in PlayStore button to Info Page
+* Improve f-droid metadata

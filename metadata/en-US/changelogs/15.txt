@@ -1,0 +1,5 @@
+* Ask ONE TIME for a review in Google PlayStore after the app was installed for 30 days
+* Refactor a lot of code
+* Use SwitchCompat instead of Switch
+* Fix bug of multiple app instances when files are shared directly to the app
+* Slightly improve bitmap rotation calculation

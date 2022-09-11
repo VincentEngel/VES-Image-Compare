@@ -1,7 +1,6 @@
 package com.vincentengelsoftware.androidimagecompare.util;
 
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.widget.ImageView;
 
 import com.vincentengelsoftware.androidimagecompare.helper.BitmapHelper;
@@ -15,40 +14,19 @@ public class ImageHolder {
 
     private int currentRotation = 0;
     private int currentBitmapRotation = 0;
-    private static final int BASE_DEGREE = 90;
-
-    public static final float MAX_SMALL_SIZE_DP = 164.499f;
-
-    private int maxSideSize;
-    private int maxSideSizeForSmallBitmap;
 
     private String imageName;
 
-    private boolean resizeImageToScreen = false;
+    private boolean resizeImageToScreen = true;
 
-    private Uri cameraUri = null;
+    // Should be part of the constructor as they never change
+    private int maxSideSize;
+    private int maxSideSizeForSmallBitmap;
 
-    public Uri getCameraUri() {
-        return cameraUri;
-    }
-
-    public void setCameraUri(Uri cameraUri) {
-        this.cameraUri = cameraUri;
-    }
+    private static final int BASE_DEGREE = 90;
 
     public Bitmap getBitmap() {
         return bitmap;
-    }
-
-    private int getRotationDegree()
-    {
-        if (this.currentRotation == 3) {
-            this.currentRotation = 0;
-        } else {
-            this.currentRotation++;
-        }
-
-        return BASE_DEGREE;
     }
 
     public String getImageName()
@@ -74,24 +52,29 @@ public class ImageHolder {
         this.resizeImageToScreen = imageHolder.resizeImageToScreen;
     }
 
+    /**
+     * TODO improve: If resize = true is set, then it is faster to resize before rotation
+     */
     public void calculateRotatedBitmap()
     {
-        if (this.currentBitmapRotation == this.currentRotation && this.rotatedBitmap == null) {
-            this.rotatedBitmap = this.bitmap;
+        // Already calculated
+        if (
+                this.currentBitmapRotation == this.currentRotation
+                        && this.rotatedBitmap != null
+                        && this.bitmapScreenSize != null
+        ) {
             return;
         }
 
-        if (this.rotatedBitmap == null || this.currentBitmapRotation != this.currentRotation) {
-            if (this.currentRotation == 0) {
-                this.rotatedBitmap = this.bitmap;
-            } else {
-                this.rotatedBitmap = BitmapHelper.rotateBitmap(this.bitmap, BASE_DEGREE * this.currentRotation);
-            }
-
-            this.bitmapScreenSize = null;
-            this.getBitmapScreenSize();
-            this.currentBitmapRotation = this.currentRotation;
+        if (this.currentRotation == 0) {
+            this.rotatedBitmap = this.bitmap;
+        } else {
+            this.rotatedBitmap = BitmapHelper.rotateBitmap(this.bitmap, BASE_DEGREE * this.currentRotation);
         }
+
+        this.bitmapScreenSize = null;
+        this.getBitmapScreenSize();
+        this.currentBitmapRotation = this.currentRotation;
     }
 
     public Bitmap getBitmapSmall()
@@ -125,8 +108,7 @@ public class ImageHolder {
             int maxSideSize,
             int maxSideSizeForSmallBitmap,
             String imageName
-    )
-    {
+    ) {
         this.resetProperties();
 
         this.bitmap = bitmap;
@@ -147,9 +129,15 @@ public class ImageHolder {
 
     public void rotatePreviewImage()
     {
+        if (this.currentRotation == 3) {
+            this.currentRotation = 0;
+        } else {
+            this.currentRotation++;
+        }
+
         this.bitmapSmall = BitmapHelper.rotateBitmap(
                 this.getBitmapSmall(),
-                this.getRotationDegree()
+                BASE_DEGREE
         );
     }
 
