@@ -5,4 +5,4 @@ https://f-droid.org/de/docs/All_About_Descriptions_Graphics_and_Screenshots/#fas
 https://gitlab.com/fdroid/fdroiddata/-/blob/master/metadata/com.vincentengelsoftware.vesandroidimagecompare.yml
 
 ## F-Droid StorePage
-https://gitlab.com/fdroid/fdroiddata/-/blob/master/metadata/com.vincentengelsoftware.vesandroidimagecompare.yml
+https://f-droid.org/packages/com.vincentengelsoftware.vesandroidimagecompare/
