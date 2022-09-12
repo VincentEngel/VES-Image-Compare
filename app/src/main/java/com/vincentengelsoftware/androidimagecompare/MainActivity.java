@@ -139,6 +139,9 @@ public class MainActivity extends AppCompatActivity {
         this.handleIntent(intent);
     }
 
+    /**
+     * TODO: Combine with handleSendMultipleImages by getting the urls and then passing them to a single handler method
+     */
     void handleSendImage(Intent intent) {
         Uri imageUri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
 
