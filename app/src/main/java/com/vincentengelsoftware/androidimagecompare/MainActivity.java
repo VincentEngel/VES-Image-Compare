@@ -36,6 +36,9 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     private long pressedTime;
 
+    /**
+     * TODO clear / refactor onCreate
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
                 Images.fileUri = FileProvider.getUriForFile(
                         this,
                         getApplicationContext().getPackageName() + ".fileprovider",
-                        File.createTempFile("camera_image_first_", null, this.getCacheDir())
+                        File.createTempFile("camera_image_", null, this.getCacheDir())
                 );
             } catch (Exception ignored) {
             }
@@ -101,7 +104,11 @@ public class MainActivity extends AppCompatActivity {
         resizeRightImage.setChecked(Images.second.isResizeImageToScreen());
         resizeRightImage.setOnCheckedChangeListener((compoundButton, b) -> Images.second.setResizeImageToScreen(b));
 
-        this.handleIntent(getIntent());
+
+        if (Status.handleIntentOnCreate) {
+            Status.handleIntentOnCreate = false;
+            this.handleIntent(getIntent());
+        }
     }
 
     private void handleIntent(Intent intent)
@@ -129,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
     public void onNewIntent(Intent intent)
     {
         super.onNewIntent(intent);
+        Toast.makeText(getBaseContext(), "onNewIntent", Toast.LENGTH_LONG).show();
         this.handleIntent(intent);
     }
 
@@ -348,15 +356,19 @@ public class MainActivity extends AppCompatActivity {
                             return;
                         }
 
-                        imageHolder.updateFromBitmap(
-                                UriHelper.getBitmap(this.getContentResolver(), Images.fileUri),
-                                Dimensions.maxSide,
-                                Dimensions.maxSideForPreview,
-                                MainHelper.getImageName(this, Images.fileUri)
-                        );
-                        imageHolder.updateImageViewPreviewImage(imageView);
+                        try {
+                            imageHolder.updateFromBitmap(
+                                    UriHelper.getBitmap(this.getContentResolver(), Images.fileUri),
+                                    Dimensions.maxSide,
+                                    Dimensions.maxSideForPreview,
+                                    MainHelper.getImageName(this, Images.fileUri)
+                            );
+                            imageHolder.updateImageViewPreviewImage(imageView);
 
-                        imageNameText.setText(imageHolder.getImageName());
+                            imageNameText.setText(imageHolder.getImageName());
+                        } catch (Exception ignored) {
+                            Toast.makeText(getBaseContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                        }
                     }
             );
 
