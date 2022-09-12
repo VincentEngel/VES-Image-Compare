@@ -136,7 +136,6 @@ public class MainActivity extends AppCompatActivity {
     public void onNewIntent(Intent intent)
     {
         super.onNewIntent(intent);
-        Toast.makeText(getBaseContext(), "onNewIntent", Toast.LENGTH_LONG).show();
         this.handleIntent(intent);
     }
 
