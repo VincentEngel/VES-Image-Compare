@@ -410,7 +410,7 @@ public class MainActivity extends AppCompatActivity {
 
         builder.setMessage("If you like this App please support it by leaving a review in the Google PlayStore!");
 
-        builder.setNegativeButton("Open PlayStore", (dialogInterface, i) -> {
+        builder.setPositiveButton("Open PlayStore", (dialogInterface, i) -> {
             try {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" +getPackageName())));
             } catch (ActivityNotFoundException e1) {
@@ -420,7 +420,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        builder.setPositiveButton("Don't show up again", (dialogInterface, i) -> {});
+        builder.setNegativeButton("Don't show up again", (dialogInterface, i) -> {});
 
         builder.create().show();
     }
