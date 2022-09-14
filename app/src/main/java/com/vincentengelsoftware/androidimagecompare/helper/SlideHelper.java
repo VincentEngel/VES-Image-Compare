@@ -8,6 +8,8 @@ import android.widget.SeekBar;
 import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
 import com.vincentengelsoftware.androidimagecompare.viewClasses.VesImageInterface;
 
+import com.vincentengelsoftware.androidimagecompare.R;
+
 public class SlideHelper {
     public static Bitmap resizeBitmap(Bitmap image, int maxWidth, int maxHeight) {
         int width = image.getWidth();
@@ -35,6 +37,13 @@ public class SlideHelper {
     ) {
         imageButton.setOnClickListener(view -> {
             mutableBoolean.value = !mutableBoolean.value;
+
+            if (mutableBoolean.value) {
+                imageButton.setImageResource(R.drawable.ic_slide_ltr_vector);
+            } else {
+                imageButton.setImageResource(R.drawable.ic_slide_rtl_vector);
+            }
+
             int progress = 50;
             // onProgressChanged is not triggered if setProgress is called with current progress
             if (seekBar.getProgress() == progress) {
@@ -51,7 +60,8 @@ public class SlideHelper {
             SeekBar seekBar,
             VesImageInterface imageView,
             UtilMutableBoolean cutFromRightToLeft,
-            Bitmap bitmapSource
+            Bitmap bitmapSource,
+            ImageButton hideShow
     ) {
         Bitmap transparentBitmap = BitmapHelper.createTransparentBitmap(
                 bitmapSource.getWidth(),
@@ -85,6 +95,7 @@ public class SlideHelper {
                         )
                 );
 
+                hideShow.setImageResource(R.drawable.ic_unhide_vector);
                 imageView.setVisibility(View.VISIBLE);
             }
 

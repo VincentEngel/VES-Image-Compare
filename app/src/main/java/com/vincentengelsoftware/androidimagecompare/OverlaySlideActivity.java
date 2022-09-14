@@ -34,8 +34,11 @@ public class OverlaySlideActivity extends AppCompatActivity {
             VesImageInterface image_front = findViewById(R.id.overlay_slide_image_view_front);
             Bitmap bitmapSource = Images.second.getAdjustedBitmap();
 
+
+            ImageButton hideShow = findViewById(R.id.overlay_transparent_button_hide_front_image);
+
             SeekBar seekBar = findViewById(R.id.overlay_slide_seek_bar);
-            SlideHelper.addSeekbarLogic(seekBar, image_front, leftToRight, bitmapSource);
+            SlideHelper.addSeekbarLogic(seekBar, image_front, leftToRight, bitmapSource, hideShow);
             seekBar.setProgress(50);
 
             SlideHelper.setSwapSlideDirectionOnClick(
@@ -44,11 +47,12 @@ public class OverlaySlideActivity extends AppCompatActivity {
                     leftToRight
             );
 
-            ImageButton hideShow = findViewById(R.id.overlay_transparent_button_hide_front_image);
             hideShow.setOnClickListener(view -> {
                 if (image_front.getVisibility() == View.VISIBLE) {
+                    hideShow.setImageResource(R.drawable.ic_hide_vector);
                     image_front.setVisibility(View.GONE);
                 } else {
+                    hideShow.setImageResource(R.drawable.ic_unhide_vector);
                     image_front.setVisibility(View.VISIBLE);
                 }
             });

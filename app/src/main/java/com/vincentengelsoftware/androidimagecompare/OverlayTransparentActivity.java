@@ -31,17 +31,21 @@ public class OverlayTransparentActivity extends AppCompatActivity {
 
         image_transparent.bringToFront();
 
+
+        ImageButton hideShow = findViewById(R.id.overlay_transparent_button_hide_front_image);
+
         SeekBar seekBar = findViewById(R.id.overlay_slide_seek_bar);
 
-        TransparentHelper.makeTargetTransparent(seekBar, image_transparent);
+        TransparentHelper.makeTargetTransparent(seekBar, image_transparent, hideShow);
 
         seekBar.setProgress(50);
 
-        ImageButton hideShow = findViewById(R.id.overlay_transparent_button_hide_front_image);
         hideShow.setOnClickListener(view -> {
             if (image_transparent.getVisibility() == View.VISIBLE) {
+                hideShow.setImageResource(R.drawable.ic_hide_vector);
                 image_transparent.setVisibility(View.GONE);
             } else {
+                hideShow.setImageResource(R.drawable.ic_unhide_vector);
                 image_transparent.setVisibility(View.VISIBLE);
             }
         });
