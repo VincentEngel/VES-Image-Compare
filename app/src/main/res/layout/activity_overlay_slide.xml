@@ -54,7 +54,7 @@
                 android:layout_height="48dp"
                 android:backgroundTint="#F57C00"
                 android:contentDescription="@string/switch_slide_direction"
-                app:srcCompat="@android:drawable/stat_notify_sync_noanim"
+                app:srcCompat="@drawable/ic_slide_ltr_vector"
                 tools:ignore="ImageContrastCheck,DuplicateSpeakableTextCheck" />
         </FrameLayout>
 
@@ -79,9 +79,9 @@
                 android:layout_height="48dp"
                 android:backgroundTint="#F57C00"
                 android:contentDescription="@string/hide_front_image"
-                app:srcCompat="@android:drawable/ic_menu_view"
+                app:srcCompat="@drawable/ic_unhide_vector"
                 tools:ignore="ImageContrastCheck,DuplicateSpeakableTextCheck"
-                tools:srcCompat="@android:drawable/ic_menu_view" />
+                tools:srcCompat="@drawable/ic_unhide_vector" />
         </FrameLayout>
 
     </TableRow>

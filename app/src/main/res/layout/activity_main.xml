@@ -36,14 +36,14 @@
 
                 <ImageButton
                     android:id="@+id/home_button_info"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:layout_gravity="top|end"
                     android:layout_marginTop="6dp"
                     android:layout_marginEnd="6dp"
                     android:backgroundTint="#F57C00"
                     android:contentDescription="@string/show_information"
-                    app:srcCompat="@android:drawable/ic_menu_info_details"
+                    app:srcCompat="@drawable/ic_info_vector"
                     tools:ignore="DuplicateSpeakableTextCheck" />
 
             </FrameLayout>
@@ -51,7 +51,7 @@
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginVertical="12dp"
                 android:shrinkColumns="*"
                 android:stretchColumns="*">
 
@@ -68,10 +68,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
-                            android:layout_marginVertical="24dp"
+                            android:layout_marginVertical="20dp"
                             android:gravity="end"
                             android:text="@string/first_image"
-                            android:textSize="24sp" />
+                            android:textSize="22sp" />
                     </FrameLayout>
 
                     <FrameLayout
@@ -83,10 +83,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginVertical="24dp"
+                            android:layout_marginVertical="20dp"
                             android:gravity="center"
                             android:text="@string/second_image"
-                            android:textSize="24sp" />
+                            android:textSize="22sp" />
                     </FrameLayout>
 
                 </TableRow>
@@ -107,7 +107,7 @@
                             android:layout_gravity="center"
                             android:layout_margin="12dp"
                             android:contentDescription="@string/first_image"
-                            app:srcCompat="@android:drawable/ic_menu_add" />
+                            app:srcCompat="@drawable/add_image" />
 
                         <ImageButton
                             android:id="@+id/home_button_swap_images"
@@ -117,7 +117,7 @@
                             android:layout_marginEnd="-24dp"
                             android:backgroundTint="#F57C00"
                             android:contentDescription="@string/swap_images"
-                            app:srcCompat="@android:drawable/stat_notify_sync_noanim"
+                            app:srcCompat="@drawable/ic_code_vector"
                             tools:ignore="ImageContrastCheck" />
 
                     </FrameLayout>
@@ -134,7 +134,41 @@
                             android:layout_gravity="center"
                             android:layout_margin="12dp"
                             android:contentDescription="@string/second_image"
-                            app:srcCompat="@android:drawable/ic_menu_add" />
+                            app:srcCompat="@drawable/add_image" />
+                    </FrameLayout>
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/main_text_view_name_image_left"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp"
+                            android:text="@string/image_name" />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/main_text_view_name_image_right"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp"
+                            android:text="@string/image_name" />
                     </FrameLayout>
 
                 </TableRow>
@@ -147,15 +181,6 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/main_text_view_name_image_left"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:paddingStart="10dp"
-                            android:paddingEnd="10dp"
-                            android:text="@string/image_name" />
 
                         <FrameLayout
                             android:layout_width="match_parent"
@@ -188,10 +213,9 @@
                                 android:layout_gravity="bottom|center_horizontal"
                                 android:backgroundTint="#F57C00"
                                 android:contentDescription="@string/rotate_image_left"
-                                app:srcCompat="@android:drawable/stat_notify_sync_noanim"
+                                app:srcCompat="@drawable/ic_rotate_right_vector"
                                 tools:ignore="ImageContrastCheck" />
                         </FrameLayout>
-
 
                     </LinearLayout>
 
@@ -199,15 +223,6 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/main_text_view_name_image_right"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:paddingStart="10dp"
-                            android:paddingEnd="10dp"
-                            android:text="@string/image_name" />
 
                         <FrameLayout
                             android:layout_width="match_parent"
@@ -239,9 +254,10 @@
                                 android:layout_gravity="bottom|center_horizontal"
                                 android:backgroundTint="#F57C00"
                                 android:contentDescription="@string/rotate_image_right"
-                                app:srcCompat="@android:drawable/stat_notify_sync_noanim"
+                                app:srcCompat="@drawable/ic_rotate_right_vector"
                                 tools:ignore="ImageContrastCheck" />
                         </FrameLayout>
+
                     </LinearLayout>
 
                 </TableRow>
@@ -251,6 +267,7 @@
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginVertical="20dp"
                 android:gravity="bottom"
                 android:stretchColumns="*">
 
@@ -267,8 +284,7 @@
                             android:layout_width="188dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="end"
-                            android:layout_marginVertical="24dp"
-                            android:layout_marginEnd="12dp"
+                            android:layout_margin="12dp"
                             android:text="@string/overlay_slide"
                             android:textAllCaps="false"
                             android:textSize="22sp" />
@@ -283,8 +299,7 @@
                             android:layout_width="188dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="start"
-                            android:layout_marginVertical="24dp"
-                            android:layout_marginStart="12dp"
+                            android:layout_margin="12dp"
                             android:text="@string/overlay_tap"
                             android:textAllCaps="false"
                             android:textSize="22sp" />
@@ -305,8 +320,7 @@
                             android:layout_width="188dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="end"
-                            android:layout_marginVertical="24dp"
-                            android:layout_marginEnd="12dp"
+                            android:layout_margin="12dp"
                             android:text="@string/transparent"
                             android:textAllCaps="false"
                             android:textSize="22sp" />
@@ -321,8 +335,7 @@
                             android:layout_width="188dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="start"
-                            android:layout_marginVertical="24dp"
-                            android:layout_marginStart="12dp"
+                            android:layout_margin="12dp"
                             android:text="@string/side_by_side"
                             android:textAllCaps="false"
                             android:textSize="22sp" />
