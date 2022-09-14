@@ -17,7 +17,7 @@ import com.vincentengelsoftware.androidimagecompare.viewClasses.VesImageInterfac
 
 public class OverlaySlideActivity extends AppCompatActivity {
 
-    private final UtilMutableBoolean leftToRight = new UtilMutableBoolean();
+    private final static UtilMutableBoolean leftToRight = new UtilMutableBoolean();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

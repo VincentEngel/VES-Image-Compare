@@ -1,7 +1,6 @@
 package com.vincentengelsoftware.androidimagecompare.helper;
 
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
@@ -46,71 +45,47 @@ public class SlideHelper {
     }
 
     /**
-     * This is super bad with big images
      * TODO: Improve speed(?) and move it to a thread
      */
     public static void addSeekbarLogic(
             SeekBar seekBar,
             VesImageInterface imageView,
-            UtilMutableBoolean mutableBoolean,
+            UtilMutableBoolean cutFromRightToLeft,
             Bitmap bitmapSource
     ) {
+        Bitmap transparentBitmap = BitmapHelper.createTransparentBitmap(
+                bitmapSource.getWidth(),
+                bitmapSource.getHeight()
+        );
+
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                if (!cutFromRightToLeft.value && (seekBar.getProgress() >= 99)) {
+                    imageView.setVisibility(View.GONE);
+                    return;
+                }
+
                 int width = bitmapSource.getWidth() * i / 100;
 
-                if (width == 0) {
-                    width = 1;
-                }
-
-                Bitmap bitmapCopy = bitmapSource.copy(bitmapSource.getConfig(), true);
-
-                int[] pixels = new int[bitmapSource.getHeight()*bitmapSource.getWidth()];
-                bitmapSource.getPixels(
-                        pixels,
-                        0,
-                        bitmapSource.getWidth(),
-                        0,
-                        0,
-                        bitmapSource.getWidth(),
-                        bitmapSource.getHeight()
-                );
-
-                if (mutableBoolean.value) {
-                    for (int x = width; x < bitmapSource.getWidth(); x++) {
-                        for (int y = 0; y < bitmapSource.getHeight(); y++) {
-                            pixels[x + (y * bitmapSource.getWidth())] = Color.TRANSPARENT;
-                        }
-                    }
-                } else {
-                    for (int x = 0; x < width; x++) {
-                        for (int y = 0; y < bitmapSource.getHeight(); y++) {
-                            pixels[x + (y * bitmapSource.getWidth())] = Color.TRANSPARENT;
-                        }
-                    }
-                }
-
-                bitmapCopy.setPixels(
-                        pixels,
-                        0,
-                        bitmapSource.getWidth(),
-                        0,
-                        0,
-                        bitmapSource.getWidth(),
-                        bitmapSource.getHeight()
-                );
-
-                imageView.setBitmapImage(bitmapCopy);
-
                 if (
-                        (!mutableBoolean.value && seekBar.getProgress() >= 98)
-                        || (mutableBoolean.value && seekBar.getProgress() <= 2)
+                        cutFromRightToLeft.value
+                                && ((seekBar.getProgress() <= 1) || width == 0)
                 ) {
                     imageView.setVisibility(View.GONE);
-                } else {
-                    imageView.setVisibility(View.VISIBLE);
+                    return;
                 }
+
+                imageView.setBitmapImage(
+                        BitmapHelper.getCutBitmapWithTransparentBackgroundWithCanvas(
+                                bitmapSource,
+                                transparentBitmap,
+                                width,
+                                cutFromRightToLeft.value
+                        )
+                );
+
+                imageView.setVisibility(View.VISIBLE);
             }
 
             @Override
