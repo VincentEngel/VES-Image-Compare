@@ -42,10 +42,10 @@ public class OverlayTransparentActivity extends AppCompatActivity {
 
         hideShow.setOnClickListener(view -> {
             if (image_transparent.getVisibility() == View.VISIBLE) {
-                hideShow.setImageResource(R.drawable.ic_hide_vector);
+                hideShow.setImageResource(R.drawable.ic_visibility_off_vector);
                 image_transparent.setVisibility(View.GONE);
             } else {
-                hideShow.setImageResource(R.drawable.ic_unhide_vector);
+                hideShow.setImageResource(R.drawable.ic_visibility_vector);
                 image_transparent.setVisibility(View.VISIBLE);
             }
         });

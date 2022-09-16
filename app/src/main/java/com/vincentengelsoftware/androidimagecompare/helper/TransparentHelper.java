@@ -17,7 +17,7 @@ public class TransparentHelper {
                 if (seekBar.getProgress() <= 2) {
                     imageView.setVisibility(View.GONE);
                 } else {
-                    hideShow.setImageResource(R.drawable.ic_unhide_vector);
+                    hideShow.setImageResource(R.drawable.ic_visibility_vector);
                     imageView.setVisibility(View.VISIBLE);
                 }
                 imageView.setAlpha((float) seekBar.getProgress() / (float) seekBar.getMax());

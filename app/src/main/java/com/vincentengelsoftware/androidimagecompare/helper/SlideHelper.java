@@ -95,7 +95,7 @@ public class SlideHelper {
                         )
                 );
 
-                hideShow.setImageResource(R.drawable.ic_unhide_vector);
+                hideShow.setImageResource(R.drawable.ic_visibility_vector);
                 imageView.setVisibility(View.VISIBLE);
             }
 

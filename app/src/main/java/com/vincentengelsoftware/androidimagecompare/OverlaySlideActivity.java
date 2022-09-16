@@ -41,18 +41,24 @@ public class OverlaySlideActivity extends AppCompatActivity {
             SlideHelper.addSeekbarLogic(seekBar, image_front, leftToRight, bitmapSource, hideShow);
             seekBar.setProgress(50);
 
+            ImageButton swapDirection = findViewById(R.id.overlay_slide_button_swap_seekbar);
+            if (leftToRight.value) {
+                swapDirection.setImageResource(R.drawable.ic_slide_ltr_vector);
+            } else {
+                swapDirection.setImageResource(R.drawable.ic_slide_rtl_vector);
+            }
             SlideHelper.setSwapSlideDirectionOnClick(
-                    findViewById(R.id.overlay_slide_button_swap_seekbar),
-                    seekBar,
-                    leftToRight
+                swapDirection,
+                seekBar,
+                leftToRight
             );
 
             hideShow.setOnClickListener(view -> {
                 if (image_front.getVisibility() == View.VISIBLE) {
-                    hideShow.setImageResource(R.drawable.ic_hide_vector);
+                    hideShow.setImageResource(R.drawable.ic_visibility_off_vector);
                     image_front.setVisibility(View.GONE);
                 } else {
-                    hideShow.setImageResource(R.drawable.ic_unhide_vector);
+                    hideShow.setImageResource(R.drawable.ic_visibility_vector);
                     image_front.setVisibility(View.VISIBLE);
                 }
             });
