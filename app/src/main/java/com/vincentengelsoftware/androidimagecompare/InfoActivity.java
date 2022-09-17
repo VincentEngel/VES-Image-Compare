@@ -7,11 +7,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
-import android.text.method.LinkMovementMethod;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
 import com.vincentengelsoftware.androidimagecompare.helper.InfoHelper;
@@ -27,7 +24,7 @@ public class InfoActivity extends AppCompatActivity {
         InfoHelper.makeLinkClickable(findViewById(R.id.info_text_view_link_github_project));
         InfoHelper.makeLinkClickable(findViewById(R.id.info_text_view_link_library));
         InfoHelper.makeLinkClickable(findViewById(R.id.info_text_view_link_color_theme));
-        InfoHelper.makeLinkClickable(findViewById(R.id.info_text_view_link_app_icon));
+        InfoHelper.makeLinkClickable(findViewById(R.id.info_text_view_link_google_material_icons));
         InfoHelper.makeLinkClickable(findViewById(R.id.info_text_view_link_ditto_photo_comparer));
 
         TextView textViewPrivacyPolicy = findViewById(R.id.info_text_view_privacy_policy);

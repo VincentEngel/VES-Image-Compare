@@ -32,4 +32,5 @@
     <string name="playstore">PlayStore</string>
     <string name="open_playstore">Open PlayStore</string>
     <string name="sync">Sync</string>
+    <string name="icon_sources">Icon Sources</string>
 </resources>
