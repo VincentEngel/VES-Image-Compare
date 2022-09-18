@@ -26,6 +26,16 @@
             android:layout_weight="1"
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
+        <ToggleButton
+            android:id="@+id/toggleButton"
+            android:layout_width="64dp"
+            android:layout_height="48dp"
+            android:background="@drawable/ic_link"
+            android:backgroundTint="#F57C00"
+            android:text="@string/sync"
+            android:textOff=""
+            android:textOn="" />
+
         <com.vincentengelsoftware.androidimagecompare.viewClasses.ZoomImageView
             android:id="@+id/side_by_side_image_right"
             android:layout_width="match_parent"
