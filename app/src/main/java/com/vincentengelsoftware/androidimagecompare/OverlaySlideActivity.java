@@ -34,21 +34,35 @@ public class OverlaySlideActivity extends AppCompatActivity {
             VesImageInterface image_front = findViewById(R.id.overlay_slide_image_view_front);
             Bitmap bitmapSource = Images.second.getAdjustedBitmap();
 
+
+            ImageButton hideShow = findViewById(R.id.overlay_transparent_button_hide_front_image);
+
             SeekBar seekBar = findViewById(R.id.overlay_slide_seek_bar);
-            SlideHelper.addSeekbarLogic(seekBar, image_front, leftToRight, bitmapSource);
+            SlideHelper.addSeekbarLogic(seekBar, image_front, leftToRight, bitmapSource, hideShow);
             seekBar.setProgress(50);
 
+            ImageButton swapDirection = findViewById(R.id.overlay_slide_button_swap_seekbar);
+            if (leftToRight.value) {
+                swapDirection.setImageResource(R.drawable.ic_slide_ltr);
+            } else {
+                swapDirection.setImageResource(R.drawable.ic_slide_rtl);
+            }
             SlideHelper.setSwapSlideDirectionOnClick(
-                    findViewById(R.id.overlay_slide_button_swap_seekbar),
+                    swapDirection,
                     seekBar,
                     leftToRight
             );
 
-            ImageButton hideShow = findViewById(R.id.overlay_transparent_button_hide_front_image);
             hideShow.setOnClickListener(view -> {
                 if (image_front.getVisibility() == View.VISIBLE) {
+                    hideShow.setImageResource(R.drawable.ic_visibility_off);
                     image_front.setVisibility(View.GONE);
+                } else if (leftToRight.value && (seekBar.getProgress() <= 1)) {
+                    seekBar.setProgress(2);
+                } else if (!leftToRight.value && (seekBar.getProgress() >= 99)) {
+                    seekBar.setProgress(98);
                 } else {
+                    hideShow.setImageResource(R.drawable.ic_visibility);
                     image_front.setVisibility(View.VISIBLE);
                 }
             });

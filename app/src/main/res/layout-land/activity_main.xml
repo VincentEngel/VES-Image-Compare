@@ -41,14 +41,14 @@
 
                     <ImageButton
                         android:id="@+id/home_button_info"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
                         android:layout_gravity="end"
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="10dp"
                         android:backgroundTint="#F57C00"
                         android:contentDescription="@string/show_information"
-                        app:srcCompat="@android:drawable/ic_menu_info_details"
+                        app:srcCompat="@drawable/ic_info_outline"
                         tools:ignore="DuplicateSpeakableTextCheck" />
 
                 </FrameLayout>
@@ -143,7 +143,7 @@
                             android:layout_marginStart="24dp"
                             android:backgroundTint="#F57C00"
                             android:contentDescription="@string/rotate_image_left"
-                            app:srcCompat="@android:drawable/stat_notify_sync_noanim"
+                            app:srcCompat="@drawable/ic_rotate_right"
                             tools:ignore="ImageContrastCheck" />
 
                         <ImageView
@@ -153,18 +153,18 @@
                             android:layout_gravity="center"
                             android:layout_marginVertical="24dp"
                             android:contentDescription="@string/first_image"
-                            app:srcCompat="@android:drawable/ic_menu_add" />
+                            app:srcCompat="@drawable/add_image" />
 
                         <ImageButton
                             android:id="@+id/home_button_swap_images"
-                            android:layout_width="96dp"
-                            android:layout_height="96dp"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
                             android:layout_gravity="center_vertical|end"
-                            android:layout_marginEnd="-48dp"
+                            android:layout_marginEnd="-24dp"
                             android:backgroundTint="#F57C00"
                             android:contentDescription="@string/swap_images"
                             android:scaleType="fitXY"
-                            app:srcCompat="@android:drawable/stat_notify_sync_noanim"
+                            app:srcCompat="@drawable/ic_swap_horiz"
                             tools:ignore="ImageContrastCheck" />
 
                     </FrameLayout>
@@ -191,7 +191,7 @@
                             android:layout_gravity="center"
                             android:layout_marginVertical="24dp"
                             android:contentDescription="@string/second_image"
-                            app:srcCompat="@android:drawable/ic_menu_add" />
+                            app:srcCompat="@drawable/add_image" />
 
                         <ImageButton
                             android:id="@+id/home_button_rotate_image_right"
@@ -201,7 +201,7 @@
                             android:layout_marginEnd="24dp"
                             android:backgroundTint="#F57C00"
                             android:contentDescription="@string/rotate_image_right"
-                            app:srcCompat="@android:drawable/stat_notify_sync_noanim"
+                            app:srcCompat="@drawable/ic_rotate_right"
                             tools:ignore="ImageContrastCheck" />
 
                     </FrameLayout>

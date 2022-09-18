@@ -8,6 +8,8 @@ import android.widget.SeekBar;
 import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
 import com.vincentengelsoftware.androidimagecompare.viewClasses.VesImageInterface;
 
+import com.vincentengelsoftware.androidimagecompare.R;
+
 public class SlideHelper {
     public static Bitmap resizeBitmap(Bitmap image, int maxWidth, int maxHeight) {
         int width = image.getWidth();
@@ -35,6 +37,13 @@ public class SlideHelper {
     ) {
         imageButton.setOnClickListener(view -> {
             mutableBoolean.value = !mutableBoolean.value;
+
+            if (mutableBoolean.value) {
+                imageButton.setImageResource(R.drawable.ic_slide_ltr);
+            } else {
+                imageButton.setImageResource(R.drawable.ic_slide_rtl);
+            }
+
             int progress = 50;
             // onProgressChanged is not triggered if setProgress is called with current progress
             if (seekBar.getProgress() == progress) {
@@ -51,7 +60,8 @@ public class SlideHelper {
             SeekBar seekBar,
             VesImageInterface imageView,
             UtilMutableBoolean cutFromRightToLeft,
-            Bitmap bitmapSource
+            Bitmap bitmapSource,
+            ImageButton hideShow
     ) {
         Bitmap transparentBitmap = BitmapHelper.createTransparentBitmap(
                 bitmapSource.getWidth(),
@@ -60,18 +70,17 @@ public class SlideHelper {
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                if (!cutFromRightToLeft.value && (seekBar.getProgress() >= 99)) {
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
+                if (!cutFromRightToLeft.value && (progress >= 99)) {
+                    hideShow.setImageResource(R.drawable.ic_visibility_off);
                     imageView.setVisibility(View.GONE);
                     return;
                 }
 
-                int width = bitmapSource.getWidth() * i / 100;
+                int width = bitmapSource.getWidth() * progress / 100;
 
-                if (
-                        cutFromRightToLeft.value
-                                && ((seekBar.getProgress() <= 1) || width == 0)
-                ) {
+                if (cutFromRightToLeft.value && ((progress <= 1) || width == 0)) {
+                    hideShow.setImageResource(R.drawable.ic_visibility_off);
                     imageView.setVisibility(View.GONE);
                     return;
                 }
@@ -85,6 +94,7 @@ public class SlideHelper {
                         )
                 );
 
+                hideShow.setImageResource(R.drawable.ic_visibility);
                 imageView.setVisibility(View.VISIBLE);
             }
 

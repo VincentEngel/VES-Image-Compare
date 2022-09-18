@@ -48,6 +48,11 @@
         app:layout_constraintTop_toBottomOf="@+id/frameLaout">
 
         <FrameLayout
+            android:layout_width="48dp"
+            android:layout_height="match_parent">
+        </FrameLayout>
+
+        <FrameLayout
             android:layout_width="0dip"
             android:layout_height="fill_parent"
             android:layout_weight="1">
@@ -68,10 +73,11 @@
                 android:layout_height="48dp"
                 android:backgroundTint="#F57C00"
                 android:contentDescription="@string/hide_front_image"
-                app:srcCompat="@android:drawable/ic_menu_view"
+                app:srcCompat="@drawable/ic_visibility"
                 tools:ignore="ImageContrastCheck,DuplicateSpeakableTextCheck"
-                tools:srcCompat="@android:drawable/ic_menu_view" />
+                tools:srcCompat="@drawable/ic_visibility" />
         </FrameLayout>
 
     </TableRow>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
