@@ -39,9 +39,9 @@ public class SlideHelper {
             mutableBoolean.value = !mutableBoolean.value;
 
             if (mutableBoolean.value) {
-                imageButton.setImageResource(R.drawable.ic_slide_ltr_vector);
+                imageButton.setImageResource(R.drawable.ic_slide_ltr);
             } else {
-                imageButton.setImageResource(R.drawable.ic_slide_rtl_vector);
+                imageButton.setImageResource(R.drawable.ic_slide_rtl);
             }
 
             int progress = 50;
@@ -70,18 +70,17 @@ public class SlideHelper {
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                if (!cutFromRightToLeft.value && (seekBar.getProgress() >= 99)) {
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
+                if (!cutFromRightToLeft.value && (progress >= 99)) {
+                    hideShow.setImageResource(R.drawable.ic_visibility_off);
                     imageView.setVisibility(View.GONE);
                     return;
                 }
 
-                int width = bitmapSource.getWidth() * i / 100;
+                int width = bitmapSource.getWidth() * progress / 100;
 
-                if (
-                        cutFromRightToLeft.value
-                                && ((seekBar.getProgress() <= 1) || width == 0)
-                ) {
+                if (cutFromRightToLeft.value && ((progress <= 1) || width == 0)) {
+                    hideShow.setImageResource(R.drawable.ic_visibility_off);
                     imageView.setVisibility(View.GONE);
                     return;
                 }
@@ -95,7 +94,7 @@ public class SlideHelper {
                         )
                 );
 
-                hideShow.setImageResource(R.drawable.ic_visibility_vector);
+                hideShow.setImageResource(R.drawable.ic_visibility);
                 imageView.setVisibility(View.VISIBLE);
             }
 

@@ -73,9 +73,9 @@
                 android:layout_height="48dp"
                 android:backgroundTint="#F57C00"
                 android:contentDescription="@string/hide_front_image"
-                app:srcCompat="@drawable/ic_visibility_vector"
+                app:srcCompat="@drawable/ic_visibility"
                 tools:ignore="ImageContrastCheck,DuplicateSpeakableTextCheck"
-                tools:srcCompat="@drawable/ic_visibility_vector" />
+                tools:srcCompat="@drawable/ic_visibility" />
         </FrameLayout>
 
     </TableRow>

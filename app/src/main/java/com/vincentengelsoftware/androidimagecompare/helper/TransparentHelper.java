@@ -13,14 +13,17 @@ public class TransparentHelper {
     {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                if (seekBar.getProgress() <= 2) {
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
+                if (progress <= 2) {
+                    hideShow.setImageResource(R.drawable.ic_visibility_off);
                     imageView.setVisibility(View.GONE);
-                } else {
-                    hideShow.setImageResource(R.drawable.ic_visibility_vector);
-                    imageView.setVisibility(View.VISIBLE);
+                    return;
                 }
-                imageView.setAlpha((float) seekBar.getProgress() / (float) seekBar.getMax());
+
+                imageView.setAlpha((float) progress / (float) seekBar.getMax());
+
+                hideShow.setImageResource(R.drawable.ic_visibility);
+                imageView.setVisibility(View.VISIBLE);
             }
 
             @Override

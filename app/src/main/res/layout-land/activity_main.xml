@@ -48,7 +48,7 @@
                         android:layout_marginEnd="10dp"
                         android:backgroundTint="#F57C00"
                         android:contentDescription="@string/show_information"
-                        app:srcCompat="@drawable/ic_info_outline_vector"
+                        app:srcCompat="@drawable/ic_info_outline"
                         tools:ignore="DuplicateSpeakableTextCheck" />
 
                 </FrameLayout>
@@ -143,7 +143,7 @@
                             android:layout_marginStart="24dp"
                             android:backgroundTint="#F57C00"
                             android:contentDescription="@string/rotate_image_left"
-                            app:srcCompat="@drawable/ic_rotate_right_vector"
+                            app:srcCompat="@drawable/ic_rotate_right"
                             tools:ignore="ImageContrastCheck" />
 
                         <ImageView
@@ -164,7 +164,7 @@
                             android:backgroundTint="#F57C00"
                             android:contentDescription="@string/swap_images"
                             android:scaleType="fitXY"
-                            app:srcCompat="@drawable/ic_code_vector"
+                            app:srcCompat="@drawable/ic_swap_horiz"
                             tools:ignore="ImageContrastCheck" />
 
                     </FrameLayout>
@@ -201,7 +201,7 @@
                             android:layout_marginEnd="24dp"
                             android:backgroundTint="#F57C00"
                             android:contentDescription="@string/rotate_image_right"
-                            app:srcCompat="@drawable/ic_rotate_right_vector"
+                            app:srcCompat="@drawable/ic_rotate_right"
                             tools:ignore="ImageContrastCheck" />
 
                     </FrameLayout>
