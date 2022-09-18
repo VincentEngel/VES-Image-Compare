@@ -1,0 +1,6 @@
+* Add synchronized zoom option in Side-by-Side
+* Add Icon Sources to Info
+
+Thanks to https://github.com/bigConifer
+* Greatly improve UI design
+* Add Icons to make UI more intuitive

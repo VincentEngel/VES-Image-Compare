@@ -151,7 +151,6 @@
                             android:id="@+id/main_text_view_name_image_left"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:paddingStart="10dp"
                             android:paddingEnd="10dp"
                             android:text="@string/image_name" />
@@ -165,7 +164,6 @@
                             android:id="@+id/main_text_view_name_image_right"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:paddingStart="10dp"
                             android:paddingEnd="10dp"
                             android:text="@string/image_name" />

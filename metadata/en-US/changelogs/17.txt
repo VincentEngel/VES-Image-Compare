@@ -1,2 +1,0 @@
-* Add synchronized zoom option in Side-by-Side
-* Add Icon Sources to Info
