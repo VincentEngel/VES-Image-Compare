@@ -182,8 +182,8 @@
                         android:layout_height="wrap_content"
                         android:paddingTop="20dp"
                         android:paddingBottom="20dp"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="12dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
                         android:orientation="horizontal">
 
                         <Space
@@ -198,6 +198,8 @@
                             android:layout_height="48dp"
                             android:gravity="center"
                             android:text="@string/resize"
+                            android:textColor="#EEEEEE"
+                            android:textSize="18sp"
                             tools:ignore="DuplicateSpeakableTextCheck" />
 
                         <Space
@@ -228,8 +230,8 @@
                         android:layout_height="wrap_content"
                         android:paddingTop="20dp"
                         android:paddingBottom="20dp"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="12dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
                         android:orientation="horizontal">
 
                         <Space
@@ -243,7 +245,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="48dp"
                             android:gravity="center"
-                            android:text="@string/resize" />
+                            android:text="@string/resize"
+                            android:textColor="#EEEEEE"
+                            android:textSize="18sp" />
 
                         <Space
                             android:layout_width="0dp"
