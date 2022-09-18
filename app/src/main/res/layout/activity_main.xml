@@ -51,43 +51,31 @@
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:shrinkColumns="*"
-                android:stretchColumns="*">
+                android:layout_marginTop="10dp">
 
                 <TableRow
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent">
 
-                    <FrameLayout
+                    <TextView
+                        android:id="@+id/home_text_image_first"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:layout_marginVertical="20dp"
+                        android:layout_marginEnd="24dp"
+                        android:layout_weight="1"
+                        android:text="@string/first_image"
+                        android:textSize="22sp" />
 
-                        <TextView
-                            android:id="@+id/home_text_image_first"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:layout_marginVertical="20dp"
-                            android:gravity="end"
-                            android:text="@string/first_image"
-                            android:textSize="22sp" />
-                    </FrameLayout>
-
-                    <FrameLayout
+                    <TextView
+                        android:id="@+id/home_text_image_second"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent">
-
-                        <TextView
-                            android:id="@+id/home_text_image_second"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginVertical="20dp"
-                            android:gravity="center"
-                            android:text="@string/second_image"
-                            android:textSize="22sp" />
-                    </FrameLayout>
+                        android:layout_height="match_parent"
+                        android:layout_marginVertical="20dp"
+                        android:layout_marginStart="24dp"
+                        android:layout_weight="1"
+                        android:text="@string/second_image"
+                        android:textSize="22sp" />
 
                 </TableRow>
 
@@ -97,41 +85,40 @@
                     android:clipChildren="false">
 
                     <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
 
                         <ImageView
                             android:id="@+id/home_image_first"
                             android:layout_width="148dp"
                             android:layout_height="148dp"
-                            android:layout_gravity="center"
+                            android:layout_gravity="center_horizontal"
                             android:layout_margin="12dp"
                             android:contentDescription="@string/first_image"
                             app:srcCompat="@drawable/add_image" />
-
-                        <ImageButton
-                            android:id="@+id/home_button_swap_images"
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:layout_gravity="center_vertical|end"
-                            android:layout_marginEnd="-24dp"
-                            android:backgroundTint="#F57C00"
-                            android:contentDescription="@string/swap_images"
-                            app:srcCompat="@drawable/ic_swap_horiz"
-                            tools:ignore="ImageContrastCheck" />
-
                     </FrameLayout>
 
+                    <ImageButton
+                        android:id="@+id/home_button_swap_images"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center_vertical"
+                        android:backgroundTint="#F57C00"
+                        android:contentDescription="@string/swap_images"
+                        app:srcCompat="@drawable/ic_swap_horiz"
+                        tools:ignore="ImageContrastCheck" />
+
                     <FrameLayout
-                        android:id="@+id/frame_layout_image_right"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
 
                         <ImageView
                             android:id="@+id/home_image_second"
                             android:layout_width="148dp"
                             android:layout_height="148dp"
-                            android:layout_gravity="center"
+                            android:layout_gravity="center_horizontal"
                             android:layout_margin="12dp"
                             android:contentDescription="@string/second_image"
                             app:srcCompat="@drawable/add_image" />
@@ -143,31 +130,23 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <FrameLayout
+                    <TextView
+                        android:id="@+id/main_text_view_name_image_left"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent">
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="24dp"
+                        android:layout_weight="1"
+                        android:paddingHorizontal="8dp"
+                        android:text="@string/image_name" />
 
-                        <TextView
-                            android:id="@+id/main_text_view_name_image_left"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingStart="10dp"
-                            android:paddingEnd="10dp"
-                            android:text="@string/image_name" />
-                    </FrameLayout>
-
-                    <FrameLayout
+                    <TextView
+                        android:id="@+id/main_text_view_name_image_right"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent">
-
-                        <TextView
-                            android:id="@+id/main_text_view_name_image_right"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingStart="10dp"
-                            android:paddingEnd="10dp"
-                            android:text="@string/image_name" />
-                    </FrameLayout>
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_weight="1"
+                        android:paddingHorizontal="8dp"
+                        android:text="@string/image_name" />
 
                 </TableRow>
 
@@ -178,17 +157,13 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:paddingTop="20dp"
-                        android:paddingBottom="20dp"
+                        android:layout_marginEnd="24dp"
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
                         android:paddingStart="10dp"
+                        android:paddingTop="20dp"
                         android:paddingEnd="10dp"
-                        android:orientation="horizontal">
-
-                        <Space
-                            android:layout_width="0dp"
-                            android:layout_height="1dp"
-                            android:layout_weight="1">
-                        </Space>
+                        android:paddingBottom="20dp">
 
                         <androidx.appcompat.widget.SwitchCompat
                             android:id="@+id/main_switch_resize_image_left"
@@ -200,43 +175,28 @@
                             android:textSize="18sp"
                             tools:ignore="DuplicateSpeakableTextCheck" />
 
-                        <Space
-                            android:layout_width="0dp"
-                            android:layout_height="1dp"
-                            android:layout_weight="1">
-                        </Space>
-
                         <ImageButton
                             android:id="@+id/home_button_rotate_image_left"
                             android:layout_width="48dp"
                             android:layout_height="48dp"
-                            android:gravity="center"
+                            android:layout_marginStart="12dp"
                             android:backgroundTint="#F57C00"
                             android:contentDescription="@string/rotate_image_left"
+                            android:gravity="center"
                             app:srcCompat="@drawable/ic_rotate_right"
                             tools:ignore="ImageContrastCheck" />
-
-                        <Space
-                            android:layout_width="0dp"
-                            android:layout_height="1dp"
-                            android:layout_weight="1">
-                        </Space>
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:paddingTop="20dp"
-                        android:paddingBottom="20dp"
+                        android:layout_marginStart="24dp"
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
                         android:paddingStart="10dp"
+                        android:paddingTop="20dp"
                         android:paddingEnd="10dp"
-                        android:orientation="horizontal">
-
-                        <Space
-                            android:layout_width="0dp"
-                            android:layout_height="1dp"
-                            android:layout_weight="1">
-                        </Space>
+                        android:paddingBottom="20dp">
 
                         <androidx.appcompat.widget.SwitchCompat
                             android:id="@+id/main_switch_resize_image_right"
@@ -247,27 +207,16 @@
                             android:textColor="#EEEEEE"
                             android:textSize="18sp" />
 
-                        <Space
-                            android:layout_width="0dp"
-                            android:layout_height="1dp"
-                            android:layout_weight="1">
-                        </Space>
-
                         <ImageButton
                             android:id="@+id/home_button_rotate_image_right"
                             android:layout_width="48dp"
                             android:layout_height="48dp"
-                            android:gravity="center"
+                            android:layout_marginStart="12dp"
                             android:backgroundTint="#F57C00"
                             android:contentDescription="@string/rotate_image_right"
+                            android:gravity="center"
                             app:srcCompat="@drawable/ic_rotate_right"
                             tools:ignore="ImageContrastCheck" />
-
-                        <Space
-                            android:layout_width="0dp"
-                            android:layout_height="1dp"
-                            android:layout_weight="1">
-                        </Space>
                     </LinearLayout>
 
                 </TableRow>
@@ -286,14 +235,15 @@
                     android:layout_height="match_parent">
 
                     <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
 
                         <Button
                             android:id="@+id/button_overlay_slide"
                             android:layout_width="188dp"
                             android:layout_height="match_parent"
-                            android:layout_gravity="end"
+                            android:layout_gravity="center"
                             android:layout_margin="12dp"
                             android:text="@string/overlay_slide"
                             android:textAllCaps="false"
@@ -301,14 +251,15 @@
                     </FrameLayout>
 
                     <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
 
                         <Button
                             android:id="@+id/button_overlay_tap"
                             android:layout_width="188dp"
                             android:layout_height="match_parent"
-                            android:layout_gravity="start"
+                            android:layout_gravity="center"
                             android:layout_margin="12dp"
                             android:text="@string/overlay_tap"
                             android:textAllCaps="false"
@@ -322,14 +273,15 @@
                     android:layout_height="match_parent">
 
                     <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
 
                         <Button
                             android:id="@+id/button_overlay_transparent"
                             android:layout_width="188dp"
                             android:layout_height="match_parent"
-                            android:layout_gravity="end"
+                            android:layout_gravity="center"
                             android:layout_margin="12dp"
                             android:text="@string/transparent"
                             android:textAllCaps="false"
@@ -337,14 +289,15 @@
                     </FrameLayout>
 
                     <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
 
                         <Button
                             android:id="@+id/button_side_by_side"
                             android:layout_width="188dp"
                             android:layout_height="match_parent"
-                            android:layout_gravity="start"
+                            android:layout_gravity="center"
                             android:layout_margin="12dp"
                             android:text="@string/side_by_side"
                             android:textAllCaps="false"

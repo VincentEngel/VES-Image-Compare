@@ -250,11 +250,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        MainHelper.passClickToUnderlyingView(
-                findViewById(R.id.frame_layout_image_right),
-                findViewById(R.id.home_button_swap_images)
-        );
-
         MainHelper.addSwapImageLogic(
                 findViewById(R.id.home_button_swap_images),
                 Images.first,

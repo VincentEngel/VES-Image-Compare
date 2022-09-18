@@ -29,38 +29,6 @@ import com.vincentengelsoftware.androidimagecompare.globals.Status;
 import com.vincentengelsoftware.androidimagecompare.util.ImageHolder;
 
 public class MainHelper {
-    // TODO improve UI to get rid of this method
-    @SuppressLint("ClickableViewAccessibility")
-    public static void passClickToUnderlyingView(FrameLayout frameLayout, ImageButton imageButton)
-    {
-        frameLayout.setOnTouchListener((v, event) -> {
-            if (event.getAction() == MotionEvent.ACTION_DOWN){
-                int x = (int) event.getX();
-                int y = (int) event.getY();
-
-                int[] imageButtonLocation = new int[2];
-                imageButton.getLocationOnScreen(imageButtonLocation);
-
-                int[] viewLocation = new int[2];
-                v.getLocationOnScreen(viewLocation);
-
-
-                imageButtonLocation[0] = imageButtonLocation[0] - viewLocation[0];
-                imageButtonLocation[1] = imageButtonLocation[1] - viewLocation[1];
-
-                if (
-                        x >= imageButtonLocation[0]
-                                && x <= (imageButtonLocation[0] + imageButton.getWidth())
-                                && y >= imageButtonLocation[1]
-                                && y <= (imageButtonLocation[1] + imageButton.getHeight())
-                ) {
-                    imageButton.callOnClick();
-                }
-            }
-            return true;
-        });
-    }
-
     public static void addRotateImageLogic(
             ImageButton imageButton,
             ImageHolder imageHolder,
