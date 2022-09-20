@@ -1,0 +1,2 @@
+* Change Images and Video for StorePage
+* Refactor main_activity xml

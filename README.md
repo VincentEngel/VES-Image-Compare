@@ -32,7 +32,7 @@
      alt="Get it on Google Play"
      height="80">](https://play.google.com/store/apps/details?id=com.vincentengelsoftware.vesandroidimagecompare)
 
-Watch the intro video on YouTube: https://www.youtube.com/watch?v=0vR4UDTbB9k
+Watch the intro video on YouTube: https://www.youtube.com/watch?v=ECVB3Lx1VEE
 
 ## Available comparisons
 <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/01_menu.png" width=20% height=20%> <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/06_main_2.png" width=70% height=20%>
