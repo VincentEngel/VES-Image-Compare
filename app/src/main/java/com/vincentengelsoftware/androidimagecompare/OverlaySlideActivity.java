@@ -10,12 +10,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
+import com.vincentengelsoftware.androidimagecompare.helper.BitmapHelper;
 import com.vincentengelsoftware.androidimagecompare.helper.FullScreenHelper;
 import com.vincentengelsoftware.androidimagecompare.helper.SlideHelper;
 import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
 import com.vincentengelsoftware.androidimagecompare.viewClasses.VesImageInterface;
 
 public class OverlaySlideActivity extends AppCompatActivity {
+    /**
+     * If problematic, add a single synced access method for both of them
+     */
+    private static Thread currentThread;
+    private static Thread nextThread;
 
     private final static UtilMutableBoolean leftToRight = new UtilMutableBoolean();
 
@@ -23,6 +29,17 @@ public class OverlaySlideActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         try {
             super.onCreate(savedInstanceState);
+
+            if (nextThread != null) {
+                nextThread.interrupt();
+                nextThread = null;
+            }
+
+            if (currentThread != null) {
+                currentThread.interrupt();
+                nextThread = null;
+            }
+
             Status.activityIsOpening = false;
 
             FullScreenHelper.setFullScreenFlags(this.getWindow());
@@ -38,7 +55,7 @@ public class OverlaySlideActivity extends AppCompatActivity {
             ImageButton hideShow = findViewById(R.id.overlay_transparent_button_hide_front_image);
 
             SeekBar seekBar = findViewById(R.id.overlay_slide_seek_bar);
-            SlideHelper.addSeekbarLogic(seekBar, image_front, leftToRight, bitmapSource, hideShow);
+            this.addSeekbarLogic(seekBar, image_front, leftToRight, bitmapSource, hideShow);
             seekBar.setProgress(50);
 
             ImageButton swapDirection = findViewById(R.id.overlay_slide_button_swap_seekbar);
@@ -67,5 +84,91 @@ public class OverlaySlideActivity extends AppCompatActivity {
                 }
             });
         } catch (Exception ignored) {}
+    }
+
+    private void addSeekbarLogic(
+            SeekBar seekBar,
+            VesImageInterface imageView,
+            UtilMutableBoolean cutFromRightToLeft,
+            Bitmap bitmapSource,
+            ImageButton hideShow
+    ) {
+        Bitmap transparentBitmap = BitmapHelper.createTransparentBitmap(
+                bitmapSource.getWidth(),
+                bitmapSource.getHeight()
+        );
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
+                if (!cutFromRightToLeft.value && (progress >= 99)) {
+                    hideShow.setImageResource(R.drawable.ic_visibility_off);
+                    imageView.setVisibility(View.GONE);
+                    return;
+                }
+
+                int width = bitmapSource.getWidth() * progress / 100;
+
+                if (cutFromRightToLeft.value && ((progress <= 1) || width == 0)) {
+                    hideShow.setImageResource(R.drawable.ic_visibility_off);
+                    imageView.setVisibility(View.GONE);
+                    return;
+                }
+
+                processNextThread(
+                        new Thread(() -> {
+                            if (Thread.currentThread().isInterrupted()) {
+                                return;
+                            }
+
+                            Bitmap bitmap = BitmapHelper.getCutBitmapWithTransparentBackgroundWithCanvas(
+                                    bitmapSource,
+                                    transparentBitmap,
+                                    width,
+                                    cutFromRightToLeft.value
+                            );
+
+                            if (Thread.currentThread().isInterrupted()) {
+                                return;
+                            }
+
+                            runOnUiThread(() -> {
+                                imageView.setBitmapImage(bitmap);
+                                hideShow.setImageResource(R.drawable.ic_visibility);
+                                imageView.setVisibility(View.VISIBLE);
+                            });
+
+                            currentThread = null;
+
+                            processNextThread();
+                        })
+                );
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+    }
+
+    private synchronized void processNextThread(Thread thread)
+    {
+        if (currentThread == null) {
+            currentThread = thread;
+            currentThread.start();
+        } else {
+            nextThread = thread;
+        }
+    }
+
+    private synchronized void processNextThread()
+    {
+        if (nextThread != null) {
+            currentThread = nextThread;
+            nextThread = null;
+            currentThread.start();
+        }
     }
 }
