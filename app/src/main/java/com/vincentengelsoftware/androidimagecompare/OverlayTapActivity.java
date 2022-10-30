@@ -4,14 +4,18 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
 import com.vincentengelsoftware.androidimagecompare.helper.FullScreenHelper;
+import com.vincentengelsoftware.androidimagecompare.helper.SyncZoom;
 import com.vincentengelsoftware.androidimagecompare.helper.TapHelper;
+import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
 import com.vincentengelsoftware.androidimagecompare.viewClasses.VesImageInterface;
 
 public class OverlayTapActivity extends AppCompatActivity {
+    public static UtilMutableBoolean sync = new UtilMutableBoolean();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,5 +35,14 @@ public class OverlayTapActivity extends AppCompatActivity {
 
         TapHelper.setOnClickListener(image_first, image_second);
         TapHelper.setOnClickListener(image_second, image_first);
+
+        SyncZoom.setUpSyncZoom(
+                image_first,
+                image_second,
+                findViewById(R.id.overlay_tap_button_zoom_sync),
+                ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_link),
+                ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_link_off),
+                OverlayTapActivity.sync
+        );
     }
 }

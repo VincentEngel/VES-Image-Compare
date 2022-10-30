@@ -10,12 +10,15 @@ import androidx.annotation.NonNull;
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.vincentengelsoftware.androidimagecompare.SideBySideActivity;
+import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
 
 public class ZoomImageView extends SubsamplingScaleImageView implements VesImageInterface {
     private VesImageInterface linkedTarget;
+    private UtilMutableBoolean sync;
 
-    public void setLinkedTarget(VesImageInterface linkedTarget) {
+    public void setLinkedTarget(VesImageInterface linkedTarget, UtilMutableBoolean sync) {
         this.linkedTarget = linkedTarget;
+        this.sync = sync;
     }
 
     public ZoomImageView(Context context, AttributeSet attr) {
@@ -33,7 +36,7 @@ public class ZoomImageView extends SubsamplingScaleImageView implements VesImage
 
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
-        if (SideBySideActivity.sync && linkedTarget != null) {
+        if (sync != null && sync.value && linkedTarget != null) {
             linkedTarget.triggerLinkedTargetTouchEvent(event);
         }
         return super.onTouchEvent(event);

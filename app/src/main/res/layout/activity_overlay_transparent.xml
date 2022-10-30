@@ -48,8 +48,18 @@
         app:layout_constraintTop_toBottomOf="@+id/frameLaout">
 
         <FrameLayout
-            android:layout_width="48dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent">
+
+            <ToggleButton
+                android:id="@+id/overlay_transparent_button_zoom_sync"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/ic_link"
+                android:backgroundTint="#F57C00"
+                android:text="@string/sync"
+                android:textOff=""
+                android:textOn="" />
         </FrameLayout>
 
         <FrameLayout

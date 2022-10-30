@@ -9,9 +9,9 @@
     tools:context=".OverlayTapActivity">
 
     <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/tableRow"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -32,5 +32,24 @@
             android:contentDescription="@string/second_image"
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
     </FrameLayout>
+
+    <TableRow
+        android:id="@+id/tableRow"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ToggleButton
+            android:id="@+id/overlay_tap_button_zoom_sync"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/ic_link"
+            android:backgroundTint="#F57C00"
+            android:text="@string/sync"
+            android:textOff=""
+            android:textOn="" />
+    </TableRow>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
