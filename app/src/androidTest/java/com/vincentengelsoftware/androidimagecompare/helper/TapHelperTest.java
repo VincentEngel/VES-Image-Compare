@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 
 import static org.junit.Assert.*;
 
+import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
 import com.vincentengelsoftware.androidimagecompare.viewClasses.ZoomImageView;
 
 @RunWith(AndroidJUnit4.class)
@@ -23,8 +24,10 @@ public class TapHelperTest {
         imageViewOne.setVisibility(View.VISIBLE);
         imageViewTwo.setVisibility(View.INVISIBLE);
 
-        TapHelper.setOnClickListener(imageViewOne, imageViewTwo);
-        TapHelper.setOnClickListener(imageViewTwo, imageViewOne);
+        UtilMutableBoolean utilMutableBoolean = new UtilMutableBoolean();
+
+        TapHelper.setOnClickListener(imageViewOne, imageViewTwo, utilMutableBoolean);
+        TapHelper.setOnClickListener(imageViewTwo, imageViewOne, utilMutableBoolean);
 
         imageViewOne.callOnClick();
 

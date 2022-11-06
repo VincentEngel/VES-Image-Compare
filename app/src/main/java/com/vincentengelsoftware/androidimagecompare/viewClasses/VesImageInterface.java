@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
 
 public interface VesImageInterface {
@@ -16,4 +17,5 @@ public interface VesImageInterface {
     void setLinkedTarget(VesImageInterface linkedTarget, UtilMutableBoolean sync);
     void triggerLinkedTargetTouchEvent(MotionEvent event);
     void resetScaleAndCenter();
+    void applyScaleAndCenter(SubsamplingScaleImageView imageView);
 }

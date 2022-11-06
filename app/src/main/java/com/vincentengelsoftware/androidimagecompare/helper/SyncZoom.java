@@ -18,6 +18,26 @@ public class SyncZoom {
     {
         imageOne.setLinkedTarget(imageTwo, sync);
         imageTwo.setLinkedTarget(imageOne, sync);
+
+        SyncZoom.setUpSyncZoomToggleButton(
+                imageOne,
+                imageTwo,
+                toggleButton,
+                iconLinkedOn,
+                iconLinkedOff,
+                sync
+        );
+    }
+
+    public static void setUpSyncZoomToggleButton(
+            VesImageInterface imageOne,
+            VesImageInterface imageTwo,
+            ToggleButton toggleButton,
+            Drawable iconLinkedOn,
+            Drawable iconLinkedOff,
+            UtilMutableBoolean sync
+    )
+    {
         toggleButton.setChecked(sync.value);
         if (sync.value) {
             toggleButton.setBackgroundDrawable(iconLinkedOn);

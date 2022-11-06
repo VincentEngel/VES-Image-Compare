@@ -33,10 +33,10 @@ public class OverlayTapActivity extends AppCompatActivity {
 
         image_second.setVisibility(View.INVISIBLE);
 
-        TapHelper.setOnClickListener(image_first, image_second);
-        TapHelper.setOnClickListener(image_second, image_first);
+        TapHelper.setOnClickListener(image_first, image_second, OverlayTapActivity.sync);
+        TapHelper.setOnClickListener(image_second, image_first, OverlayTapActivity.sync);
 
-        SyncZoom.setUpSyncZoom(
+        SyncZoom.setUpSyncZoomToggleButton(
                 image_first,
                 image_second,
                 findViewById(R.id.overlay_tap_button_zoom_sync),

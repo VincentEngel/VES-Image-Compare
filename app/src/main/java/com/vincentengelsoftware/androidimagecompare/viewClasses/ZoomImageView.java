@@ -42,6 +42,10 @@ public class ZoomImageView extends SubsamplingScaleImageView implements VesImage
         return super.onTouchEvent(event);
     }
 
+    public void applyScaleAndCenter(SubsamplingScaleImageView imageView) {
+        super.setScaleAndCenter(imageView.getScale(), imageView.getCenter());
+    }
+
     public void triggerLinkedTargetTouchEvent(MotionEvent event) {
         super.onTouchEvent(event);
     }
