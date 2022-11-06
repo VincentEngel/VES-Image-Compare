@@ -57,7 +57,12 @@ public class OverlayTransparentActivity extends AppCompatActivity {
             }
         });
 
-        SyncZoom.setUpSyncZoom(
+        SyncZoom.setLinkedTargets(
+                base,
+                image_transparent,
+                OverlayTransparentActivity.sync
+        );
+        SyncZoom.setUpSyncZoomToggleButton(
                 base,
                 image_transparent,
                 findViewById(R.id.overlay_transparent_button_zoom_sync),

@@ -7,26 +7,13 @@ import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
 import com.vincentengelsoftware.androidimagecompare.viewClasses.VesImageInterface;
 
 public class SyncZoom {
-    public static void setUpSyncZoom(
+    public static void setLinkedTargets(
             VesImageInterface imageOne,
             VesImageInterface imageTwo,
-            ToggleButton toggleButton,
-            Drawable iconLinkedOn,
-            Drawable iconLinkedOff,
             UtilMutableBoolean sync
-    )
-    {
+    ) {
         imageOne.setLinkedTarget(imageTwo, sync);
         imageTwo.setLinkedTarget(imageOne, sync);
-
-        SyncZoom.setUpSyncZoomToggleButton(
-                imageOne,
-                imageTwo,
-                toggleButton,
-                iconLinkedOn,
-                iconLinkedOff,
-                sync
-        );
     }
 
     public static void setUpSyncZoomToggleButton(

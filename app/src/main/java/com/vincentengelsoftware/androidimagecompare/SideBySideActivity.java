@@ -26,7 +26,12 @@ public class SideBySideActivity extends AppCompatActivity {
         VesImageInterface first = findViewById(R.id.side_by_side_image_left);
         VesImageInterface second = findViewById(R.id.side_by_side_image_right);
 
-        SyncZoom.setUpSyncZoom(
+        SyncZoom.setLinkedTargets(
+                first,
+                second,
+                SideBySideActivity.sync
+        );
+        SyncZoom.setUpSyncZoomToggleButton(
                 first,
                 second,
                 findViewById(R.id.toggleButton),
