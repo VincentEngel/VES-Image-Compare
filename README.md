@@ -10,7 +10,7 @@
 
 * Resize the images to fit them to the screen
 
-* Zoom into each image individually
+* Zoom into each image individually or synced
 
 <b>Comparison modes:</b>
 * <b>Side by Side:</b> Show the images side by side
