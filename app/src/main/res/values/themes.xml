@@ -2,21 +2,21 @@
     <!-- Base application theme. -->
     <style name="Theme.VesAndroidImageCompare" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#F57C00</item>
-        <item name="colorPrimaryVariant">#D76D00</item>
-        <item name="colorOnPrimary">#303030</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryVariant">@color/primary_variant</item>
+        <item name="colorOnPrimary">@color/on_primary</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">#F57C00</item>
-        <item name="colorSecondaryVariant">#D76D00</item>
-        <item name="colorOnSecondary">#303030</item>
+        <item name="colorSecondary">@color/secondary</item>
+        <item name="colorSecondaryVariant">@color/secondary_variant</item>
+        <item name="colorOnSecondary">@color/on_secondary</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/primary</item>
         <!-- Customize your theme here. -->
         <item name="windowNoTitle">true</item>
 
         <item name="android:textStyle">bold</item>
         <item name="android:gravity">top|center_horizontal</item>
-        <item name="android:textColor">#EEEEEE</item>
+        <item name="android:textColor">@color/text_color</item>
         <item name="android:fontFamily">sans-serif-light</item>
     </style>
 </resources>
