@@ -11,7 +11,7 @@ Hast du Bilder, die sich ähnlich sehen und du kannst dich nicht entscheiden, we
 
 * Passen Sie die Größe der Bilder an den Bildschirm an
 
-* Zoomen Sie in das Bild. In jedem Vergleichsmodi besteht die Möglichkeit in jedes Bild individuel zu zoomen
+* Zoomen Sie in das Bild. In jedem Vergleichsmodi besteht die Möglichkeit in jedes Bild individuel und synchron zu zoomen
 
 <b>Vergleichsmodi:</b>
 

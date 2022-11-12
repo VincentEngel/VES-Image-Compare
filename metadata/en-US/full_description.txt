@@ -11,7 +11,7 @@ Do you have pictures that look similar and you can't decide which one you like b
 
 * Resize the images to fit them to the screen
 
-* Zoom into each image individually
+* Zoom into each image individually or synchronously
 
 <b>Comparison modes:</b>
 
