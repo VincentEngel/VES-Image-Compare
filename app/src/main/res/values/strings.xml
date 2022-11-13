@@ -33,4 +33,7 @@
     <string name="open_playstore">Open PlayStore</string>
     <string name="sync">Sync</string>
     <string name="icon_sources">Icon Sources</string>
+    <string name="theme">Theme</string>
+    <string name="light">Light</string>
+    <string name="dark">Dark</string>
 </resources>

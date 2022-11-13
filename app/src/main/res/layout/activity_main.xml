@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#303030"
+    android:background="@color/background"
     tools:context=".MainActivity">
 
     <ScrollView
@@ -24,6 +24,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+                <ToggleButton
+                    android:id="@+id/home_theme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/theme"
+                    android:textOff="@string/light"
+                    android:textOn="@string/dark"
+                    android:textSize="16sp" />
+
                 <TextView
                     android:id="@+id/info_text_view_color_theme"
                     android:layout_width="match_parent"
@@ -31,6 +40,7 @@
                     android:gravity="center"
                     android:paddingTop="52dp"
                     android:paddingBottom="24dp"
+                    android:textColor="@color/text_color"
                     android:text="@string/ves_image_compare"
                     android:textSize="22sp" />
 
@@ -41,7 +51,6 @@
                     android:layout_gravity="top|end"
                     android:layout_marginTop="6dp"
                     android:layout_marginEnd="6dp"
-                    android:backgroundTint="#F57C00"
                     android:contentDescription="@string/show_information"
                     app:srcCompat="@drawable/ic_info_outline"
                     tools:ignore="DuplicateSpeakableTextCheck" />
@@ -104,7 +113,6 @@
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:layout_gravity="center_vertical"
-                        android:backgroundTint="#F57C00"
                         android:contentDescription="@string/swap_images"
                         app:srcCompat="@drawable/ic_swap_horiz"
                         tools:ignore="ImageContrastCheck" />
@@ -171,7 +179,7 @@
                             android:layout_height="48dp"
                             android:gravity="center"
                             android:text="@string/resize"
-                            android:textColor="#EEEEEE"
+                            android:textColor="@color/text_color"
                             android:textSize="18sp"
                             tools:ignore="DuplicateSpeakableTextCheck" />
 
@@ -180,7 +188,6 @@
                             android:layout_width="48dp"
                             android:layout_height="48dp"
                             android:layout_marginStart="12dp"
-                            android:backgroundTint="#F57C00"
                             android:contentDescription="@string/rotate_image_left"
                             android:gravity="center"
                             app:srcCompat="@drawable/ic_rotate_right"
@@ -204,7 +211,7 @@
                             android:layout_height="48dp"
                             android:gravity="center"
                             android:text="@string/resize"
-                            android:textColor="#EEEEEE"
+                            android:textColor="@color/text_color"
                             android:textSize="18sp" />
 
                         <ImageButton
@@ -212,7 +219,6 @@
                             android:layout_width="48dp"
                             android:layout_height="48dp"
                             android:layout_marginStart="12dp"
-                            android:backgroundTint="#F57C00"
                             android:contentDescription="@string/rotate_image_right"
                             android:gravity="center"
                             app:srcCompat="@drawable/ic_rotate_right"
@@ -241,6 +247,7 @@
 
                         <Button
                             android:id="@+id/button_overlay_slide"
+                            style="@style/buttonStyles"
                             android:layout_width="188dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
@@ -257,6 +264,7 @@
 
                         <Button
                             android:id="@+id/button_overlay_tap"
+                            style="@style/buttonStyles"
                             android:layout_width="188dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
@@ -279,6 +287,7 @@
 
                         <Button
                             android:id="@+id/button_overlay_transparent"
+                            style="@style/buttonStyles"
                             android:layout_width="188dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
@@ -295,6 +304,7 @@
 
                         <Button
                             android:id="@+id/button_side_by_side"
+                            style="@style/buttonStyles"
                             android:layout_width="188dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"

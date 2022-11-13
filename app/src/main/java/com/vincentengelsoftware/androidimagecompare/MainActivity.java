@@ -9,10 +9,12 @@ import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -299,16 +301,26 @@ public class MainActivity extends AppCompatActivity {
                 findViewById(R.id.main_text_view_name_image_right)
         );
 
-        setUpThemeToggleButton();
+        setUpThemeToggleButton(findViewById(R.id.home_theme));
     }
 
-    private void setUpThemeToggleButton()
+    private void setUpThemeToggleButton(ToggleButton themeToggleButton)
     {
+        themeToggleButton.setChecked(Status.THEME);
         if (Status.THEME == Status.THEME_LIGHT) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }
+
+        themeToggleButton.setOnCheckedChangeListener((compoundButton, b) -> {
+            Status.THEME = b;
+            if (Status.THEME == Status.THEME_LIGHT) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            }
+        });
     }
     private void addButtonChangeActivityLogic(Button btn, Class<?> targetActivity)
     {

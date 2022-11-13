@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#303030"
+    android:background="@color/background"
     android:keepScreenOn="true"
     tools:context=".SideBySideActivity">
 
@@ -31,7 +31,7 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="0"
             android:background="@drawable/ic_link"
-            android:backgroundTint="#F57C00"
+            android:backgroundTint="@color/button"
             android:text="@string/sync"
             android:textOff=""
             android:textOn="" />

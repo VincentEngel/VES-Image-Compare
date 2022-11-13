@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#303030"
+    android:background="@color/background"
     android:keepScreenOn="true"
     tools:context=".OverlayTapActivity">
 
@@ -46,7 +46,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:background="@drawable/ic_link"
-            android:backgroundTint="#F57C00"
+            android:backgroundTint="@color/button"
             android:text="@string/sync"
             android:textOff=""
             android:textOn="" />

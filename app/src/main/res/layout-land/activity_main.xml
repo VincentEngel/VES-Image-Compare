@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#303030"
+    android:background="@color/background"
     tools:context=".MainActivity">
 
     <ScrollView
@@ -30,6 +30,14 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1">
 
+                    <ToggleButton
+                        android:id="@+id/home_theme"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/theme"
+                        android:textOff="@string/light"
+                        android:textOn="@string/dark" />
+
                     <TextView
                         android:id="@+id/info_text_view_color_theme"
                         android:layout_width="match_parent"
@@ -46,7 +54,6 @@
                         android:layout_gravity="end"
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="10dp"
-                        android:backgroundTint="#F57C00"
                         android:contentDescription="@string/show_information"
                         app:srcCompat="@drawable/ic_info_outline"
                         tools:ignore="DuplicateSpeakableTextCheck" />
@@ -135,7 +142,7 @@
                             android:layout_gravity="start|top"
                             android:layout_marginStart="10dp"
                             android:text="@string/resize"
-                            android:textColor="#EEEEEE"
+                            android:textColor="@color/text_color"
                             android:textSize="18sp"
                             tools:ignore="DuplicateSpeakableTextCheck" />
 
@@ -145,7 +152,6 @@
                             android:layout_height="48dp"
                             android:layout_gravity="start|center_vertical"
                             android:layout_marginStart="24dp"
-                            android:backgroundTint="#F57C00"
                             android:contentDescription="@string/rotate_image_left"
                             app:srcCompat="@drawable/ic_rotate_right"
                             tools:ignore="ImageContrastCheck" />
@@ -167,7 +173,6 @@
                         android:layout_height="48dp"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="0"
-                        android:backgroundTint="#F57C00"
                         android:contentDescription="@string/swap_images"
                         android:scaleType="fitXY"
                         app:srcCompat="@drawable/ic_swap_horiz"
@@ -185,7 +190,7 @@
                             android:layout_gravity="top|end"
                             android:layout_marginEnd="10dp"
                             android:text="@string/resize"
-                            android:textColor="#EEEEEE"
+                            android:textColor="@color/text_color"
                             android:textSize="18sp" />
 
                         <ImageView
@@ -203,7 +208,6 @@
                             android:layout_height="48dp"
                             android:layout_gravity="center_vertical|end"
                             android:layout_marginEnd="24dp"
-                            android:backgroundTint="#F57C00"
                             android:contentDescription="@string/rotate_image_right"
                             app:srcCompat="@drawable/ic_rotate_right"
                             tools:ignore="ImageContrastCheck" />
@@ -228,6 +232,7 @@
 
                     <Button
                         android:id="@+id/button_overlay_slide"
+                        style="@style/buttonStyles"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -238,6 +243,7 @@
 
                     <Button
                         android:id="@+id/button_side_by_side"
+                        style="@style/buttonStyles"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -248,6 +254,7 @@
 
                     <Button
                         android:id="@+id/button_overlay_tap"
+                        style="@style/buttonStyles"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -258,6 +265,7 @@
 
                     <Button
                         android:id="@+id/button_overlay_transparent"
+                        style="@style/buttonStyles"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"

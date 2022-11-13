@@ -10,7 +10,7 @@
         <item name="colorSecondaryVariant">@color/secondary_variant</item>
         <item name="colorOnSecondary">@color/on_secondary</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">@color/primary</item>
+        <item name="android:statusBarColor">@color/primary</item>
         <!-- Customize your theme here. -->
         <item name="windowNoTitle">true</item>
 
@@ -18,5 +18,21 @@
         <item name="android:gravity">top|center_horizontal</item>
         <item name="android:textColor">@color/text_color</item>
         <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:navigationBarColor">@color/background</item>
+        <item name="android:windowLightNavigationBar">@bool/navigation_bar_light</item>
+
+        <item name="android:buttonStyle">@style/buttonStyles</item>
+        <item name="android:imageButtonStyle">@style/imageButtonStyles</item>
+        <item name="buttonStyle">@style/buttonStyles</item>
+        <item name="imageButtonStyle">@style/imageButtonStyles</item>
+    </style>
+    
+    <style name="imageButtonStyles" parent="Widget.AppCompat.ImageButton">
+        <item name="android:backgroundTint">@color/button</item>
+        <item name="android:textColor">@color/text_button</item>
+    </style>
+    <style name="buttonStyles" parent="Widget.MaterialComponents.Button">
+        <item name="android:backgroundTint">@color/button</item>
+        <item name="android:textColor">@color/text_button</item>
     </style>
 </resources>

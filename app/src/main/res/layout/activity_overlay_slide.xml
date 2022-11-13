@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#303030"
+    android:background="@color/background"
     android:keepScreenOn="true"
     tools:context=".OverlaySlideActivity">
 
@@ -52,7 +52,6 @@
                 android:id="@+id/overlay_slide_button_swap_seekbar"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:backgroundTint="#F57C00"
                 android:contentDescription="@string/switch_slide_direction"
                 app:srcCompat="@drawable/ic_slide_ltr"
                 tools:ignore="ImageContrastCheck,DuplicateSpeakableTextCheck" />
@@ -77,7 +76,6 @@
                 android:id="@+id/overlay_transparent_button_hide_front_image"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:backgroundTint="#F57C00"
                 android:contentDescription="@string/hide_front_image"
                 app:srcCompat="@drawable/ic_visibility"
                 tools:ignore="ImageContrastCheck,DuplicateSpeakableTextCheck"
