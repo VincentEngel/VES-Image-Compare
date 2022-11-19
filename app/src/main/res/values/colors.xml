@@ -21,7 +21,7 @@
     <color name="dark_orange">#D76D00</color>
 
     <color name="button">@color/orange</color>
-    <color name="primary">@color/orange</color>
+    <color name="primary">@color/background</color>
     <color name="primary_variant">@color/dark_orange</color>
     <color name="on_primary">#303030</color>
     <!-- Secondary brand color. -->

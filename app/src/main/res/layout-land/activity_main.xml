@@ -64,8 +64,7 @@
 
             <TableLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_height="wrap_content">
 
                 <TableRow
                     android:layout_width="match_parent"
@@ -91,8 +90,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingStart="10dp"
-                            android:paddingTop="10dp"
+                            android:paddingTop="5dp"
                             android:paddingEnd="10dp"
+                            android:paddingBottom="5dp"
                             android:text="@string/image_name" />
 
                     </LinearLayout>
@@ -117,8 +117,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingStart="10dp"
-                            android:paddingTop="10dp"
+                            android:paddingTop="5dp"
                             android:paddingEnd="10dp"
+                            android:paddingBottom="5dp"
                             android:text="@string/image_name" />
 
                     </LinearLayout>
@@ -161,7 +162,6 @@
                             android:layout_width="164dp"
                             android:layout_height="164dp"
                             android:layout_gravity="center"
-                            android:layout_marginVertical="24dp"
                             android:contentDescription="@string/first_image"
                             app:srcCompat="@drawable/add_image" />
 
@@ -198,7 +198,6 @@
                             android:layout_width="164dp"
                             android:layout_height="164dp"
                             android:layout_gravity="center"
-                            android:layout_marginVertical="24dp"
                             android:contentDescription="@string/second_image"
                             app:srcCompat="@drawable/add_image" />
 

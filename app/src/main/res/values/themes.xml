@@ -20,6 +20,7 @@
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:navigationBarColor">@color/background</item>
         <item name="android:windowLightNavigationBar">@bool/navigation_bar_light</item>
+        <item name="android:windowLightStatusBar">@bool/navigation_bar_light</item>
 
         <item name="android:buttonStyle">@style/buttonStyles</item>
         <item name="android:imageButtonStyle">@style/imageButtonStyles</item>
