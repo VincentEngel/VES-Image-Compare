@@ -60,7 +60,8 @@
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp">
+                android:layout_weight="1"
+                android:gravity="center_vertical">
 
                 <TableRow
                     android:layout_width="match_parent"
@@ -206,8 +207,8 @@
 
             <TableLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginVertical="20dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:gravity="bottom"
                 android:stretchColumns="*">
 
