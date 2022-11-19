@@ -433,7 +433,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void askForReview()
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.alertDialog);
 
         builder.setCancelable(false);
 

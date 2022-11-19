@@ -36,4 +36,17 @@
         <item name="android:backgroundTint">@color/button</item>
         <item name="android:textColor">@color/text_button</item>
     </style>
+    <style name="alertDialog" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:background">@color/background</item>
+        <item name="android:textColor">@color/text_color</item>
+        <item name="android:textColorPrimary">@color/text_color</item>
+        <item name="android:textColorSecondary">@color/text_color</item>
+        <item name="android:titleTextColor">@color/text_color</item>
+        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+        <item name="buttonBarPositiveButtonStyle">@style/NegativeButtonStyle</item>
+    </style>
+
+    <style name="NegativeButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/text_color</item>
+    </style>
 </resources>
