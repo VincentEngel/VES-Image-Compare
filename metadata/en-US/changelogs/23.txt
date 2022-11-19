@@ -1,0 +1,1 @@
+* Remove "First Image" and "Second Image" from main activity
