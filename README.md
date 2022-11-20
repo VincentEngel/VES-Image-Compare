@@ -48,7 +48,7 @@ Watch the intro video on YouTube: https://www.youtube.com/watch?v=ECVB3Lx1VEE
 </div>
 
 ### Overlay Tap
-<p>Tap on the screen to switch the images being shown</p>
+<p>Tap on the screen to switch the image being shown</p>
 <div>
   <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/09_tap_1.png" width=22% height=20%>
   <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/10_tap_2.png" width=22% height=20%>
