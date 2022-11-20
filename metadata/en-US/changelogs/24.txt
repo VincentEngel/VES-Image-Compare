@@ -1,1 +1,2 @@
 * Minor UI improvement for landscape
+* Improve theme change button

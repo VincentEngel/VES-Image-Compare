@@ -3,7 +3,7 @@
     <color name="add_image_fill_color">#757575</color>
     <color name="background">#FFFFFF</color>
     <color name="text_color">#FF000000</color>
-    <color name="text_button">#FF000000</color>
+    <color name="text_button">#424242</color>
 
     <bool name="navigation_bar_light">true</bool>
 

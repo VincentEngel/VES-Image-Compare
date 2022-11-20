@@ -24,14 +24,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <ToggleButton
+                <Button
                     android:id="@+id/home_theme"
-                    android:layout_width="wrap_content"
+                    android:layout_width="108dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/theme"
-                    android:textOff="@string/light"
-                    android:textOn="@string/dark"
-                    android:textSize="16sp" />
+                    android:layout_margin="12dp"
+                    android:text="@string/system"
+                    android:textColor="@color/text_color"
+                    android:textSize="16sp"
+                    app:cornerRadius="8dp"
+                    app:strokeColor="@color/text_color"
+                    app:strokeWidth="1dp" />
 
                 <TextView
                     android:id="@+id/info_text_view_color_theme"
@@ -49,8 +52,7 @@
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_gravity="top|end"
-                    android:layout_marginTop="6dp"
-                    android:layout_marginEnd="6dp"
+                    android:layout_margin="12dp"
                     android:contentDescription="@string/show_information"
                     app:srcCompat="@drawable/ic_info_outline"
                     tools:ignore="DuplicateSpeakableTextCheck" />

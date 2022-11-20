@@ -2,25 +2,21 @@ package com.vincentengelsoftware.androidimagecompare;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.FileProvider;
 
@@ -31,6 +27,7 @@ import com.vincentengelsoftware.androidimagecompare.helper.ShouldAskForReview;
 import com.vincentengelsoftware.androidimagecompare.helper.CacheClearer;
 import com.vincentengelsoftware.androidimagecompare.helper.KeyValueStorage;
 import com.vincentengelsoftware.androidimagecompare.helper.MainHelper;
+import com.vincentengelsoftware.androidimagecompare.helper.Theme;
 import com.vincentengelsoftware.androidimagecompare.helper.UriHelper;
 import com.vincentengelsoftware.androidimagecompare.util.ImageHolder;
 
@@ -51,14 +48,7 @@ public class MainActivity extends AppCompatActivity {
         if (Status.isFirstStart) {
             Status.isFirstStart = false;
             CacheClearer.clear(getApplicationContext());
-
-            int currentNightMode = getResources().getConfiguration().uiMode
-                    & Configuration.UI_MODE_NIGHT_MASK;
-            if (currentNightMode == Configuration.UI_MODE_NIGHT_NO) {
-                Status.THEME = Status.THEME_LIGHT;
-            } else {
-                Status.THEME = Status.THEME_DARK;
-            }
+            Status.THEME_DEFAULT_SYSTEM = Theme.getCurrentTheme(getResources());
         }
         
         if (Dimensions.maxSide == 0) {
@@ -304,22 +294,14 @@ public class MainActivity extends AppCompatActivity {
         setUpThemeToggleButton(findViewById(R.id.home_theme));
     }
 
-    private void setUpThemeToggleButton(ToggleButton themeToggleButton)
+    private void setUpThemeToggleButton(Button button)
     {
-        themeToggleButton.setChecked(Status.THEME);
-        if (Status.THEME == Status.THEME_LIGHT) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        }
+        Theme.updateButtonText(button, Status.THEME);
 
-        themeToggleButton.setOnCheckedChangeListener((compoundButton, b) -> {
-            Status.THEME = b;
-            if (Status.THEME == Status.THEME_LIGHT) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            }
+        button.setOnClickListener(view -> {
+            Status.THEME = (Status.THEME + 1) % 3;
+            Theme.updateButtonText(button, Status.THEME);
+            Theme.updateTheme(Theme.map(Status.THEME), Theme.getCurrentTheme(getResources()));
         });
     }
     private void addButtonChangeActivityLogic(Button btn, Class<?> targetActivity)
