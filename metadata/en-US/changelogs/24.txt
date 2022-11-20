@@ -2,3 +2,4 @@
 * Improve theme change button
 * Update com.google.android.material:material to 1.7.0
 * Update AppStore images
+* Update YouTube Video

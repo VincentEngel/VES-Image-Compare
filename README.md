@@ -32,7 +32,7 @@
      alt="Get it on Google Play"
      height="80">](https://play.google.com/store/apps/details?id=com.vincentengelsoftware.vesandroidimagecompare)
 
-Watch the intro video on YouTube: https://www.youtube.com/watch?v=ECVB3Lx1VEE
+Watch the intro video on YouTube: https://www.youtube.com/watch?v=UE4rmjhEs4U
 
 ## Available comparisons
 <div>
