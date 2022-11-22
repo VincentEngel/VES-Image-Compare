@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
@@ -23,19 +24,23 @@ import androidx.core.content.FileProvider;
 import com.vincentengelsoftware.androidimagecompare.globals.Dimensions;
 import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
-import com.vincentengelsoftware.androidimagecompare.helper.ShouldAskForReview;
-import com.vincentengelsoftware.androidimagecompare.helper.CacheClearer;
 import com.vincentengelsoftware.androidimagecompare.helper.KeyValueStorage;
 import com.vincentengelsoftware.androidimagecompare.helper.MainHelper;
+import com.vincentengelsoftware.androidimagecompare.helper.ShouldAskForReview;
 import com.vincentengelsoftware.androidimagecompare.helper.Theme;
 import com.vincentengelsoftware.androidimagecompare.helper.UriHelper;
 import com.vincentengelsoftware.androidimagecompare.util.ImageHolder;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     private long pressedTime;
+    public static final String lastImageForFirstFromCameraKey = "lastImageForFirstFromCamera";
+    public static final String lastImageForSecondFromCameraKey = "lastImageForSecondFromCamera";
+    public static boolean lastImageForFirstFromCamera = false;
+    public static boolean lastImageForSecondFromCamera = false;
 
     /**
      * TODO clear / refactor onCreate
@@ -44,11 +49,30 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        if (Status.isFirstStart) {
+        if (Status.THEME_DEFAULT_SYSTEM == -1) {
             Status.isFirstStart = false;
-            CacheClearer.clear(getApplicationContext());
             Status.THEME_DEFAULT_SYSTEM = Theme.getCurrentTheme(getResources());
+        }
+
+        if (Images.fileUriFirst == null) {
+            try {
+                Images.fileUriFirst = FileProvider.getUriForFile(
+                        this,
+                        getApplicationContext().getPackageName() + ".fileprovider",
+                        new File(this.getCacheDir(), "camera_image_first.png")
+                );
+            } catch (Exception ignored) {
+            }
+        }
+        if (Images.fileUriSecond == null) {
+            try {
+                Images.fileUriSecond = FileProvider.getUriForFile(
+                        this,
+                        getApplicationContext().getPackageName() + ".fileprovider",
+                        new File(this.getCacheDir(), "camera_image_second.png")
+                );
+            } catch (Exception ignored) {
+            }
         }
         
         if (Dimensions.maxSide == 0) {
@@ -65,6 +89,33 @@ public class MainActivity extends AppCompatActivity {
                             getResources().getDisplayMetrics()
                     )
             );
+        }
+        if (savedInstanceState != null) {
+            lastImageForFirstFromCamera = savedInstanceState.getBoolean(lastImageForFirstFromCameraKey, false);
+            lastImageForSecondFromCamera = savedInstanceState.getBoolean(lastImageForSecondFromCameraKey, false);
+        }
+
+        if (savedInstanceState != null && lastImageForFirstFromCamera && Images.first.getBitmap() == null) {
+            try {
+                Images.first.updateFromBitmap(
+                        UriHelper.getBitmap(this.getContentResolver(), Images.fileUriFirst),
+                        Dimensions.maxSide,
+                        Dimensions.maxSideForPreview,
+                        MainHelper.getImageName(this, Images.fileUriFirst)
+                );
+            } catch (Exception ignored) {
+            }
+        }
+        if (savedInstanceState != null && lastImageForSecondFromCamera && Images.second.getBitmap() == null) {
+            try {
+                Images.second.updateFromBitmap(
+                        UriHelper.getBitmap(this.getContentResolver(), Images.fileUriSecond),
+                        Dimensions.maxSide,
+                        Dimensions.maxSideForPreview,
+                        MainHelper.getImageName(this, Images.fileUriSecond)
+                );
+            } catch (Exception ignored) {
+            }
         }
 
         setUpActions();
@@ -87,17 +138,6 @@ public class MainActivity extends AppCompatActivity {
             imageNameRight.setText(Images.second.getImageName());
         }
 
-        if (Images.fileUri == null) {
-            try {
-                Images.fileUri = FileProvider.getUriForFile(
-                        this,
-                        getApplicationContext().getPackageName() + ".fileprovider",
-                        File.createTempFile("camera_image_", null, this.getCacheDir())
-                );
-            } catch (Exception ignored) {
-            }
-        }
-
         SwitchCompat resizeLeftImage = findViewById(R.id.main_switch_resize_image_left);
         resizeLeftImage.setChecked(Images.first.isResizeImageToScreen());
         resizeLeftImage.setOnCheckedChangeListener((compoundButton, b) -> Images.first.setResizeImageToScreen(b));
@@ -111,6 +151,14 @@ public class MainActivity extends AppCompatActivity {
             Status.handleIntentOnCreate = false;
             this.handleIntent(getIntent());
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putBoolean(lastImageForFirstFromCameraKey, lastImageForFirstFromCamera);
+        outState.putBoolean(lastImageForSecondFromCameraKey, lastImageForSecondFromCamera);
+
+        super.onSaveInstanceState(outState);
     }
 
     private void handleIntent(Intent intent)
@@ -156,10 +204,12 @@ public class MainActivity extends AppCompatActivity {
                 imageHolder = Images.first;
                 imageView = findViewById(R.id.home_image_first);
                 imageName = findViewById(R.id.main_text_view_name_image_left);
+                lastImageForFirstFromCamera = false;
             } else {
                 imageHolder = Images.second;
                 imageView = findViewById(R.id.home_image_second);
                 imageName = findViewById(R.id.main_text_view_name_image_right);
+                lastImageForSecondFromCamera = false;
             }
 
             MainHelper.updateImageFromIntent(
@@ -188,6 +238,7 @@ public class MainActivity extends AppCompatActivity {
                         findViewById(R.id.home_image_first),
                         findViewById(R.id.main_text_view_name_image_left)
                 );
+                lastImageForFirstFromCamera = false;
             }
 
             if (imageUris.get(1) != null) {
@@ -200,10 +251,11 @@ public class MainActivity extends AppCompatActivity {
                         findViewById(R.id.home_image_second),
                         findViewById(R.id.main_text_view_name_image_right)
                 );
+                lastImageForSecondFromCamera = false;
             }
 
             if (imageUris.size() > 2) {
-                Toast.makeText(getBaseContext(), "You can only compare two images at once", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "You can only compare two images at once", Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -215,7 +267,7 @@ public class MainActivity extends AppCompatActivity {
             super.onBackPressed();
             this.finishAndRemoveTask();
         } else {
-            Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
         }
         pressedTime = System.currentTimeMillis();
     }
@@ -276,19 +328,18 @@ public class MainActivity extends AppCompatActivity {
                 findViewById(R.id.home_image_second)
         );
 
-        ImageView first = findViewById(R.id.home_image_first);
-        ImageView second = findViewById(R.id.home_image_second);
-
         addLoadImageLogic(
-                first,
-                Images.first,
-                findViewById(R.id.main_text_view_name_image_left)
+                R.id.home_image_first,
+                "first",
+                R.id.main_text_view_name_image_left,
+                Images.fileUriFirst.getPath()
         );
 
         addLoadImageLogic(
-                second,
-                Images.second,
-                findViewById(R.id.main_text_view_name_image_right)
+                R.id.home_image_second,
+                "second",
+                R.id.main_text_view_name_image_right,
+                Images.fileUriSecond.getPath()
         );
 
         setUpThemeToggleButton(findViewById(R.id.home_theme));
@@ -340,22 +391,42 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void addLoadImageLogic(ImageView imageView, ImageHolder imageHolder, TextView imageNameText) {
+    private void addLoadImageLogic(int imageViewId , String imageHolderName, int imageNameTextId, String UriPath) {
         ActivityResultLauncher<String> mGetContentGallery = registerForActivityResult(
                 new ActivityResultContracts.GetContent(),
                 uri -> {
                     if (uri == null) {
+                        Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
-                    imageHolder.updateFromBitmap(
-                            UriHelper.getBitmap(this.getContentResolver(), uri),
-                            Dimensions.maxSide,
-                            Dimensions.maxSideForPreview,
-                            MainHelper.getImageName(this, uri)
-                    );
-                    imageHolder.updateImageViewPreviewImage(imageView);
-                    imageNameText.setText(imageHolder.getImageName());
+                    runOnUiThread(() -> {
+                        try {
+                            ImageHolder imageHolder;
+                            if (Objects.equals(imageHolderName, "first")) {
+                                imageHolder = Images.first;
+                            } else {
+                                imageHolder = Images.second;
+                            }
+
+                            imageHolder.updateFromBitmap(
+                                    UriHelper.getBitmap(this.getContentResolver(), uri),
+                                    Dimensions.maxSide,
+                                    Dimensions.maxSideForPreview,
+                                    MainHelper.getImageName(this, uri)
+                            );
+                            ImageView imageView = findViewById(imageViewId);
+                            imageHolder.updateImageViewPreviewImage(imageView);
+                            TextView imageNameText = findViewById(imageNameTextId);
+                            imageNameText.setText(imageHolder.getImageName());
+                            if (Objects.equals(imageHolderName, "first")) {
+                                lastImageForFirstFromCamera = false;
+                            } else {
+                                lastImageForSecondFromCamera = false;
+                            }
+                        } catch (Exception ignored) {
+                        }
+                    });
                 });
 
         try {
@@ -363,26 +434,54 @@ public class MainActivity extends AppCompatActivity {
                     new ActivityResultContracts.TakePicture(),
                     result -> {
                         if (!result) {
-                            Toast.makeText(getBaseContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
                             return;
                         }
 
-                        try {
-                            imageHolder.updateFromBitmap(
-                                    UriHelper.getBitmap(this.getContentResolver(), Images.fileUri),
-                                    Dimensions.maxSide,
-                                    Dimensions.maxSideForPreview,
-                                    MainHelper.getImageName(this, Images.fileUri)
-                            );
-                            imageHolder.updateImageViewPreviewImage(imageView);
+                        runOnUiThread(() -> {
+                            try {
+                                Uri uri;
+                                if (Objects.equals(Images.fileUriFirst.getPath(), UriPath)) {
+                                    uri = Images.fileUriFirst;
+                                } else {
+                                    uri = Images.fileUriSecond;
+                                }
 
-                            imageNameText.setText(imageHolder.getImageName());
-                        } catch (Exception ignored) {
-                            Toast.makeText(getBaseContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
-                        }
+                                ImageHolder imageHolder;
+                                if (Objects.equals(imageHolderName, "first")) {
+                                    imageHolder = Images.first;
+                                } else {
+                                    imageHolder = Images.second;
+                                }
+
+                                imageHolder.updateFromBitmap(
+                                        UriHelper.getBitmap(this.getContentResolver(), uri),
+                                        Dimensions.maxSide,
+                                        Dimensions.maxSideForPreview,
+                                        MainHelper.getImageName(this, uri)
+                                );
+                                ImageView imageView = findViewById(imageViewId);
+                                imageHolder.updateImageViewPreviewImage(imageView);
+                                TextView imageNameText = findViewById(imageNameTextId);
+                                imageNameText.setText(imageHolder.getImageName());
+                                if (Objects.equals(imageHolderName, "first")) {
+                                    lastImageForFirstFromCamera = true;
+                                } else {
+                                    lastImageForSecondFromCamera = true;
+                                }
+                            } catch (Exception ignored) {
+                            }
+                        });
                     }
             );
 
+            ImageView imageView = findViewById(imageViewId);
+            Uri uri;
+            if (Objects.equals(Images.fileUriFirst.getPath(), UriPath)) {
+                uri = Images.fileUriFirst;
+            } else {
+                uri = Images.fileUriSecond;
+            }
             imageView.setOnClickListener(view -> {
                 if (Status.activityIsOpening) {
                     return;
@@ -395,7 +494,7 @@ public class MainActivity extends AppCompatActivity {
                 builder.setItems(optionsMenu, (dialogInterface, i) -> {
                     if (optionsMenu[i].equals("Take Photo")) {
                         if (MainHelper.checkPermission(MainActivity.this)) {
-                            mGetContentCamera.launch(Images.fileUri);
+                            mGetContentCamera.launch(uri);
                         } else {
                             MainHelper.requestPermission(MainActivity.this);
                             imageView.callOnClick();

@@ -9,5 +9,6 @@ public class Images {
     public static ImageHolder second = new ImageHolder();
     public final static String DEFAULT_IMAGE_NAME = "Unknown";
 
-    public static Uri fileUri;
+    public static Uri fileUriFirst;
+    public static Uri fileUriSecond;
 }
