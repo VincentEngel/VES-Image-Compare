@@ -37,6 +37,7 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     private long pressedTime;
+    public static final String lastUsedTheme = "lastUsedTheme";
     public static final String lastImageForFirstFromCameraKey = "lastImageForFirstFromCamera";
     public static final String lastImageForSecondFromCameraKey = "lastImageForSecondFromCamera";
     public static boolean lastImageForFirstFromCamera = false;
@@ -93,6 +94,8 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState != null) {
             lastImageForFirstFromCamera = savedInstanceState.getBoolean(lastImageForFirstFromCameraKey, false);
             lastImageForSecondFromCamera = savedInstanceState.getBoolean(lastImageForSecondFromCameraKey, false);
+            Status.THEME = savedInstanceState.getInt(lastUsedTheme, Status.THEME_SYSTEM);
+            Theme.updateTheme(Theme.map(Status.THEME), Theme.getCurrentTheme(getResources()));
         }
 
         if (savedInstanceState != null && lastImageForFirstFromCamera && Images.first.getBitmap() == null) {
@@ -157,6 +160,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putBoolean(lastImageForFirstFromCameraKey, lastImageForFirstFromCamera);
         outState.putBoolean(lastImageForSecondFromCameraKey, lastImageForSecondFromCamera);
+        outState.putInt(lastUsedTheme, Status.THEME);
 
         super.onSaveInstanceState(outState);
     }
