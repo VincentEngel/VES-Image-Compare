@@ -1,9 +1,13 @@
 package com.vincentengelsoftware.androidimagecompare;
 
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.graphics.Point;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
@@ -37,30 +41,43 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     private long pressedTime;
-    public static final String lastUsedTheme = "lastUsedTheme";
-    public static final String lastImageForFirstFromCameraKey = "lastImageForFirstFromCamera";
-    public static final String lastImageForSecondFromCameraKey = "lastImageForSecondFromCamera";
-    public static boolean lastImageForFirstFromCamera = false;
-    public static boolean lastImageForSecondFromCamera = false;
+
+    public static String leftImageUri;
+    public static String rightImageUri;
+    public static final String leftImageUriKey = "leftImageUriKey";
+    public static final String rightImageUriKey = "rightImageUriKey";
 
     /**
      * TODO clear / refactor onCreate
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        int currentTheme = Theme.getCurrentTheme(getResources());
         if (Status.THEME_DEFAULT_SYSTEM == -1) {
-            Status.isFirstStart = false;
-            Status.THEME_DEFAULT_SYSTEM = Theme.getCurrentTheme(getResources());
+            Status.THEME_DEFAULT_SYSTEM = currentTheme;
         }
+        int userTheme = KeyValueStorage.getInt(getApplicationContext(), KeyValueStorage.USER_THEME, Status.THEME_DARK);
+        Theme.updateTheme(Theme.map(userTheme), currentTheme);
+        Status.THEME = userTheme;
+
+        super.onCreate(savedInstanceState);
+
+        if (savedInstanceState == null) {
+            try {
+                KeyValueStorage.setString(getApplicationContext(), MainActivity.leftImageUriKey, null);
+                KeyValueStorage.setString(getApplicationContext(), MainActivity.rightImageUriKey, null);
+            } catch (Exception ignored) {
+            }
+        }
+
+        setContentView(R.layout.activity_main);
 
         if (Images.fileUriFirst == null) {
             try {
                 Images.fileUriFirst = FileProvider.getUriForFile(
                         this,
                         getApplicationContext().getPackageName() + ".fileprovider",
-                        new File(this.getCacheDir(), "camera_image_first.png")
+                        new File(this.getCacheDir(), "camera_image_one.png")
                 );
             } catch (Exception ignored) {
             }
@@ -70,18 +87,18 @@ public class MainActivity extends AppCompatActivity {
                 Images.fileUriSecond = FileProvider.getUriForFile(
                         this,
                         getApplicationContext().getPackageName() + ".fileprovider",
-                        new File(this.getCacheDir(), "camera_image_second.png")
+                        new File(this.getCacheDir(), "camera_image_two.png")
                 );
             } catch (Exception ignored) {
             }
         }
-        
+
         if (Dimensions.maxSide == 0) {
             Point point = new Point();
             getWindowManager().getDefaultDisplay().getSize(point);
             Dimensions.maxSide = Math.max(point.x, point.y);
         }
-        
+
         if (Dimensions.maxSideForPreview == 0) {
             Dimensions.maxSideForPreview = Math.round(
                     TypedValue.applyDimension(
@@ -91,35 +108,11 @@ public class MainActivity extends AppCompatActivity {
                     )
             );
         }
-        if (savedInstanceState != null) {
-            lastImageForFirstFromCamera = savedInstanceState.getBoolean(lastImageForFirstFromCameraKey, false);
-            lastImageForSecondFromCamera = savedInstanceState.getBoolean(lastImageForSecondFromCameraKey, false);
-            Status.THEME = savedInstanceState.getInt(lastUsedTheme, Status.THEME_SYSTEM);
-            Theme.updateTheme(Theme.map(Status.THEME), Theme.getCurrentTheme(getResources()));
-        }
 
-        if (savedInstanceState != null && lastImageForFirstFromCamera && Images.first.getBitmap() == null) {
-            try {
-                Images.first.updateFromBitmap(
-                        UriHelper.getBitmap(this.getContentResolver(), Images.fileUriFirst),
-                        Dimensions.maxSide,
-                        Dimensions.maxSideForPreview,
-                        MainHelper.getImageName(this, Images.fileUriFirst)
-                );
-            } catch (Exception ignored) {
-            }
+        if (savedInstanceState != null) {
+            restoreImages();
         }
-        if (savedInstanceState != null && lastImageForSecondFromCamera && Images.second.getBitmap() == null) {
-            try {
-                Images.second.updateFromBitmap(
-                        UriHelper.getBitmap(this.getContentResolver(), Images.fileUriSecond),
-                        Dimensions.maxSide,
-                        Dimensions.maxSideForPreview,
-                        MainHelper.getImageName(this, Images.fileUriSecond)
-                );
-            } catch (Exception ignored) {
-            }
-        }
+        restoreImageViews();
 
         setUpActions();
 
@@ -127,18 +120,6 @@ public class MainActivity extends AppCompatActivity {
         {
             askForReview();
             KeyValueStorage.setBoolean(getApplicationContext(), KeyValueStorage.ASKED_FOR_REVIEW, true);
-        }
-
-        if (Images.first.getBitmap() != null) {
-            Images.first.updateImageViewPreviewImage(findViewById(R.id.home_image_first));
-            TextView imageNameLeft = findViewById(R.id.main_text_view_name_image_left);
-            imageNameLeft.setText(Images.first.getImageName());
-        }
-
-        if (Images.second.getBitmap() != null) {
-            Images.second.updateImageViewPreviewImage(findViewById(R.id.home_image_second));
-            TextView imageNameRight = findViewById(R.id.main_text_view_name_image_right);
-            imageNameRight.setText(Images.second.getImageName());
         }
 
         SwitchCompat resizeLeftImage = findViewById(R.id.main_switch_resize_image_left);
@@ -157,12 +138,65 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putBoolean(lastImageForFirstFromCameraKey, lastImageForFirstFromCamera);
-        outState.putBoolean(lastImageForSecondFromCameraKey, lastImageForSecondFromCamera);
-        outState.putInt(lastUsedTheme, Status.THEME);
+    protected void onResume() {
+        super.onResume();
+        unlockOrientation();
+    }
 
-        super.onSaveInstanceState(outState);
+    @Override
+    protected void onStop() {
+        if (MainActivity.leftImageUri != null) {
+            KeyValueStorage.setString(getApplicationContext(), MainActivity.leftImageUriKey, MainActivity.leftImageUri);
+        }
+        if (MainActivity.rightImageUri != null) {
+            KeyValueStorage.setString(getApplicationContext(), MainActivity.rightImageUriKey, MainActivity.rightImageUri);
+        }
+        super.onStop();
+    }
+
+    public void restoreImages()
+    {
+        if (Images.first.getBitmap() == null) {
+            try {
+                Uri uri = Uri.parse(KeyValueStorage.getString(getApplicationContext(), MainActivity.leftImageUriKey, null));
+                Images.first.updateFromBitmap(
+                        UriHelper.getBitmap(this.getContentResolver(), uri),
+                        Dimensions.maxSide,
+                        Dimensions.maxSideForPreview,
+                        MainHelper.getImageName(this, uri)
+                );
+            } catch (Exception ignored) {
+            }
+        }
+        if (Images.second.getBitmap() == null) {
+            try {
+                Uri uri = Uri.parse(KeyValueStorage.getString(getApplicationContext(), MainActivity.rightImageUriKey, null));
+                Images.second.updateFromBitmap(
+                        UriHelper.getBitmap(this.getContentResolver(), uri),
+                        Dimensions.maxSide,
+                        Dimensions.maxSideForPreview,
+                        MainHelper.getImageName(this, uri)
+                );
+            } catch (Exception ignored) {
+            }
+        }
+    }
+
+    public void restoreImageViews()
+    {
+        if (Images.first.getBitmap() != null) {
+            ImageView imageView = findViewById(R.id.home_image_first);
+            Images.first.updateImageViewPreviewImage(imageView);
+            TextView imageNameLeft = findViewById(R.id.main_text_view_name_image_left);
+            imageNameLeft.setText(Images.first.getImageName());
+        }
+
+        if (Images.second.getBitmap() != null) {
+            ImageView imageView = findViewById(R.id.home_image_second);
+            Images.second.updateImageViewPreviewImage(imageView);
+            TextView imageNameRight = findViewById(R.id.main_text_view_name_image_right);
+            imageNameRight.setText(Images.second.getImageName());
+        }
     }
 
     private void handleIntent(Intent intent)
@@ -208,12 +242,12 @@ public class MainActivity extends AppCompatActivity {
                 imageHolder = Images.first;
                 imageView = findViewById(R.id.home_image_first);
                 imageName = findViewById(R.id.main_text_view_name_image_left);
-                lastImageForFirstFromCamera = false;
+                MainActivity.leftImageUri = imageUri.toString();
             } else {
                 imageHolder = Images.second;
                 imageView = findViewById(R.id.home_image_second);
                 imageName = findViewById(R.id.main_text_view_name_image_right);
-                lastImageForSecondFromCamera = false;
+                MainActivity.rightImageUri = imageUri.toString();
             }
 
             MainHelper.updateImageFromIntent(
@@ -242,7 +276,7 @@ public class MainActivity extends AppCompatActivity {
                         findViewById(R.id.home_image_first),
                         findViewById(R.id.main_text_view_name_image_left)
                 );
-                lastImageForFirstFromCamera = false;
+                MainActivity.leftImageUri = imageUris.get(0).toString();
             }
 
             if (imageUris.get(1) != null) {
@@ -255,7 +289,7 @@ public class MainActivity extends AppCompatActivity {
                         findViewById(R.id.home_image_second),
                         findViewById(R.id.main_text_view_name_image_right)
                 );
-                lastImageForSecondFromCamera = false;
+                MainActivity.rightImageUri = imageUris.get(1).toString();
             }
 
             if (imageUris.size() > 2) {
@@ -355,6 +389,7 @@ public class MainActivity extends AppCompatActivity {
 
         button.setOnClickListener(view -> {
             Status.THEME = (Status.THEME + 1) % 3;
+            KeyValueStorage.putInt(getApplicationContext(), KeyValueStorage.USER_THEME, Status.THEME);
             Theme.updateButtonText(button, Status.THEME);
             Theme.updateTheme(Theme.map(Status.THEME), Theme.getCurrentTheme(getResources()));
         });
@@ -408,9 +443,11 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             ImageHolder imageHolder;
                             if (Objects.equals(imageHolderName, "first")) {
+                                MainActivity.leftImageUri = uri.toString();
                                 imageHolder = Images.first;
                             } else {
                                 imageHolder = Images.second;
+                                MainActivity.rightImageUri = uri.toString();
                             }
 
                             imageHolder.updateFromBitmap(
@@ -423,11 +460,6 @@ public class MainActivity extends AppCompatActivity {
                             imageHolder.updateImageViewPreviewImage(imageView);
                             TextView imageNameText = findViewById(imageNameTextId);
                             imageNameText.setText(imageHolder.getImageName());
-                            if (Objects.equals(imageHolderName, "first")) {
-                                lastImageForFirstFromCamera = false;
-                            } else {
-                                lastImageForSecondFromCamera = false;
-                            }
                         } catch (Exception ignored) {
                         }
                     });
@@ -442,39 +474,30 @@ public class MainActivity extends AppCompatActivity {
                             return;
                         }
 
-                        runOnUiThread(() -> {
-                            try {
-                                Uri uri;
-                                if (Objects.equals(Images.fileUriFirst.getPath(), UriPath)) {
-                                    uri = Images.fileUriFirst;
-                                } else {
-                                    uri = Images.fileUriSecond;
-                                }
-
-                                ImageHolder imageHolder;
-                                if (Objects.equals(imageHolderName, "first")) {
-                                    imageHolder = Images.first;
-                                } else {
-                                    imageHolder = Images.second;
-                                }
-
-                                imageHolder.updateFromBitmap(
-                                        UriHelper.getBitmap(this.getContentResolver(), uri),
-                                        Dimensions.maxSide,
-                                        Dimensions.maxSideForPreview,
-                                        MainHelper.getImageName(this, uri)
-                                );
-                                ImageView imageView = findViewById(imageViewId);
-                                imageHolder.updateImageViewPreviewImage(imageView);
-                                TextView imageNameText = findViewById(imageNameTextId);
-                                imageNameText.setText(imageHolder.getImageName());
-                                if (Objects.equals(imageHolderName, "first")) {
-                                    lastImageForFirstFromCamera = true;
-                                } else {
-                                    lastImageForSecondFromCamera = true;
-                                }
-                            } catch (Exception ignored) {
+                        try {
+                            ImageHolder imageHolder;
+                            Uri uri;
+                            if (Objects.equals(Images.fileUriFirst.getPath(), UriPath)) {
+                                uri = Images.fileUriFirst;
+                                imageHolder = Images.first;
+                                MainActivity.leftImageUri = uri.toString();
+                            } else {
+                                uri = Images.fileUriSecond;
+                                imageHolder = Images.second;
+                                MainActivity.rightImageUri = uri.toString();
                             }
+
+                            imageHolder.updateFromBitmap(
+                                    UriHelper.getBitmap(this.getContentResolver(), uri),
+                                    Dimensions.maxSide,
+                                    Dimensions.maxSideForPreview,
+                                    MainHelper.getImageName(this, uri)
+                            );
+                        } catch (Exception ignored) {
+                        }
+
+                        runOnUiThread(() -> {
+                            restoreImageViews();
                         });
                     }
             );
@@ -498,6 +521,7 @@ public class MainActivity extends AppCompatActivity {
                 builder.setItems(optionsMenu, (dialogInterface, i) -> {
                     if (optionsMenu[i].equals("Take Photo")) {
                         if (MainHelper.checkPermission(MainActivity.this)) {
+                            lockOrientation();
                             mGetContentCamera.launch(uri);
                         } else {
                             MainHelper.requestPermission(MainActivity.this);
@@ -512,6 +536,39 @@ public class MainActivity extends AppCompatActivity {
 
                 builder.create().show();
             });
+        } catch (Exception ignored) {
+        }
+    }
+
+    private void unlockOrientation()
+    {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+    }
+
+    private void lockOrientation()
+    {
+
+        try {
+            switch (getResources().getConfiguration().orientation){
+                case Configuration.ORIENTATION_PORTRAIT: {
+                    int rotation = getWindowManager().getDefaultDisplay().getRotation();
+                    if(rotation == android.view.Surface.ROTATION_90|| rotation == android.view.Surface.ROTATION_180){
+                        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT);
+                    } else {
+                        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                    }
+                }
+                break;
+
+                case Configuration.ORIENTATION_LANDSCAPE:
+                    int rotation = getWindowManager().getDefaultDisplay().getRotation();
+                    if(rotation == android.view.Surface.ROTATION_0 || rotation == android.view.Surface.ROTATION_90){
+                        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                    } else {
+                        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
+                    }
+                    break;
+            }
         } catch (Exception ignored) {
         }
     }

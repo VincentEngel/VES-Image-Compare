@@ -21,6 +21,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.documentfile.provider.DocumentFile;
 
+import com.vincentengelsoftware.androidimagecompare.MainActivity;
 import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.globals.Dimensions;
 import com.vincentengelsoftware.androidimagecompare.globals.Images;
@@ -71,6 +72,15 @@ public class MainHelper {
 
             resizeImageLeft.setChecked(imageHolderOne.isResizeImageToScreen());
             resizeImageRight.setChecked(imageHolderTwo.isResizeImageToScreen());
+
+            // Take two camera pictures => swap them once
+            // Take another camera picture
+            // App crashes
+            // App restores last state
+            // Same Image on both sides => Wrong image was loaded because they have the same path
+            String temp = MainActivity.leftImageUri;
+            MainActivity.leftImageUri = MainActivity.rightImageUri;
+            MainActivity.rightImageUri = temp;
         });
     }
 
