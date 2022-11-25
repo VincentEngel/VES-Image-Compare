@@ -21,6 +21,11 @@ public class OverlayTransparentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (Status.activityIsOpening) {
+            sync.value = Status.SYNCED_ZOOM;
+        }
+
         Status.activityIsOpening = false;
 
         FullScreenHelper.setFullScreenFlags(this.getWindow());

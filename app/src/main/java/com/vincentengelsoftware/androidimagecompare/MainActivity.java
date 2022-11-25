@@ -1,17 +1,16 @@
 package com.vincentengelsoftware.androidimagecompare;
 
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Point;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -19,10 +18,10 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import com.vincentengelsoftware.androidimagecompare.globals.Dimensions;
@@ -64,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             try {
+                Status.SHOW_EXTENSIONS = KeyValueStorage.getBoolean(getApplicationContext(), KeyValueStorage.SHOW_EXTENSIONS, Status.SHOW_EXTENSIONS);
+                Status.SYNCED_ZOOM = KeyValueStorage.getBoolean(getApplicationContext(), KeyValueStorage.SYNCED_ZOOM, Status.SYNCED_ZOOM);
                 KeyValueStorage.setString(getApplicationContext(), MainActivity.leftImageUriKey, null);
                 KeyValueStorage.setString(getApplicationContext(), MainActivity.rightImageUriKey, null);
             } catch (Exception ignored) {
@@ -353,6 +354,38 @@ public class MainActivity extends AppCompatActivity {
                 findViewById(R.id.main_switch_resize_image_left),
                 findViewById(R.id.main_switch_resize_image_right)
         );
+
+        ImageButton extensions = findViewById(R.id.home_button_extensions);
+        if (Status.SHOW_EXTENSIONS) {
+            extensions.setImageDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_extension_on));
+        } else {
+            extensions.setImageDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_extension_off));
+        }
+        extensions.setOnClickListener(view -> {
+            Status.SHOW_EXTENSIONS = !Status.SHOW_EXTENSIONS;
+            KeyValueStorage.setBoolean(getApplicationContext(), KeyValueStorage.SHOW_EXTENSIONS, Status.SHOW_EXTENSIONS);
+            if (Status.SHOW_EXTENSIONS) {
+                extensions.setImageDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_extension_on));
+            } else {
+                extensions.setImageDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_extension_off));
+            }
+        });
+
+        ImageButton linkedZoom = findViewById(R.id.home_button_link_zoom);
+        if (Status.SYNCED_ZOOM) {
+            linkedZoom.setImageDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_link));
+        } else {
+            linkedZoom.setImageDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_link_off));
+        }
+        linkedZoom.setOnClickListener(view -> {
+            Status.SYNCED_ZOOM = !Status.SYNCED_ZOOM;
+            KeyValueStorage.setBoolean(getApplicationContext(), KeyValueStorage.SYNCED_ZOOM, Status.SYNCED_ZOOM);
+            if (Status.SYNCED_ZOOM) {
+                linkedZoom.setImageDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_link));
+            } else {
+                linkedZoom.setImageDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_link_off));
+            }
+        });
 
         MainHelper.addRotateImageLogic(
                 findViewById(R.id.home_button_rotate_image_left),

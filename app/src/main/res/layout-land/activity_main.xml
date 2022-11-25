@@ -165,16 +165,55 @@
 
                     </FrameLayout>
 
-                    <ImageButton
-                        android:id="@+id/home_button_swap_images"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="0"
-                        android:contentDescription="@string/swap_images"
-                        android:scaleType="fitXY"
-                        app:srcCompat="@drawable/ic_swap_horiz"
-                        tools:ignore="ImageContrastCheck" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="fill_parent"
+                        android:orientation="vertical">
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <ImageButton
+                                android:id="@+id/home_button_link_zoom"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:layout_gravity="top"
+                                android:contentDescription="@string/globally_enable_or_disable_linked_zoom"
+                                app:srcCompat="@drawable/ic_link" />
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <ImageButton
+                                android:id="@+id/home_button_swap_images"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:layout_gravity="center"
+                                android:contentDescription="@string/swap_images"
+                                app:srcCompat="@drawable/ic_swap_horiz"
+                                tools:ignore="ImageContrastCheck" />
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <ImageButton
+                                android:id="@+id/home_button_extensions"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:layout_gravity="bottom"
+                                android:contentDescription="@string/show_extensions_in_compare_modes"
+                                app:srcCompat="@drawable/ic_extension_on" />
+                        </FrameLayout>
+
+                    </LinearLayout>
 
                     <FrameLayout
                         android:layout_width="0dp"

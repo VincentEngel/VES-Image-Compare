@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
@@ -45,5 +46,15 @@ public class InfoActivity extends AppCompatActivity {
                 }
             }
         });
+
+        String version = "Unbekannt";
+        try {
+            PackageInfo pinfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            version = "v" + pinfo.versionName;
+        } catch (Exception ignored) {
+        }
+
+        TextView versionText = findViewById(R.id.info_version);
+        versionText.setText(version);
     }
 }

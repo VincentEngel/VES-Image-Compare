@@ -1,1 +1,4 @@
-* Add caption text, but don't show it yet
+* Add caption text
+* Add default option for synced zoom
+* Add enable/disable "extensions" for some comparison modes
+* Improve fullscreen, thanks to https://github.com/bigConifer

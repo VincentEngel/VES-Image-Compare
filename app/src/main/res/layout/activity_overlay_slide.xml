@@ -12,7 +12,7 @@
         android:id="@+id/frameLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/tableRow"
+        app:layout_constraintBottom_toTopOf="@+id/overlay_tap_extensions"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -36,7 +36,7 @@
     </FrameLayout>
 
     <TableRow
-        android:id="@+id/tableRow"
+        android:id="@+id/overlay_tap_extensions"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"

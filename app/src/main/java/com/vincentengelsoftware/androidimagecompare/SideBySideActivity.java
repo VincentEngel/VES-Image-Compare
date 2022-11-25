@@ -1,6 +1,9 @@
 package com.vincentengelsoftware.androidimagecompare;
 
 import android.os.Bundle;
+import android.view.View;
+import android.view.Window;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +21,11 @@ public class SideBySideActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (Status.activityIsOpening) {
+            sync.value = Status.SYNCED_ZOOM;
+        }
+
         Status.activityIsOpening = false;
 
         FullScreenHelper.setFullScreenFlags(this.getWindow());
@@ -48,5 +56,12 @@ public class SideBySideActivity extends AppCompatActivity {
         Images.second.updateVesImageViewWithAdjustedImage(findViewById(R.id.side_by_side_image_right));
         TextView imageSecond = findViewById(R.id.side_by_side_image_name_second);
         imageSecond.setText(Images.second.getImageName());
+
+        LinearLayout extensions = findViewById(R.id.side_by_side_extensions);
+        if (Status.SHOW_EXTENSIONS) {
+            extensions.setVisibility(View.VISIBLE);
+        } else {
+            extensions.setVisibility(View.GONE);
+        }
     }
 }

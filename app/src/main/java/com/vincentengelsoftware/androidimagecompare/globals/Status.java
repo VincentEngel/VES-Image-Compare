@@ -10,4 +10,7 @@ public class Status {
     public static final int THEME_SYSTEM = 0;
     public static final int THEME_LIGHT = 1;
     public static final int THEME_DARK = 2;
+
+    public static boolean SYNCED_ZOOM = true;
+    public static boolean SHOW_EXTENSIONS = true;
 }

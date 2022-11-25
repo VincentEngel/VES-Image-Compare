@@ -25,6 +25,7 @@
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
         <LinearLayout
+            android:id="@+id/side_by_side_extensions"
             android:layout_width="48dp"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -42,7 +43,6 @@
                     android:paddingBottom="100dp"
                     android:rotation="-90"
                     android:text="@string/image_name"
-                    android:visibility="invisible"
                     app:drawableEndCompat="@drawable/ic_arrow_down" />
             </FrameLayout>
 
@@ -76,7 +76,6 @@
                     android:paddingBottom="100dp"
                     android:rotation="-90"
                     android:text="@string/image_name"
-                    android:visibility="invisible"
                     app:drawableLeftCompat="@drawable/ic_arrow_up" />
             </FrameLayout>
 

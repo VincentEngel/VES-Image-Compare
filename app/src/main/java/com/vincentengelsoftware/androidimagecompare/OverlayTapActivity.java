@@ -2,6 +2,7 @@ package com.vincentengelsoftware.androidimagecompare;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +21,10 @@ public class OverlayTapActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (Status.activityIsOpening) {
+            sync.value = Status.SYNCED_ZOOM;
+        }
         Status.activityIsOpening = false;
 
         FullScreenHelper.setFullScreenFlags(this.getWindow());
@@ -48,5 +53,12 @@ public class OverlayTapActivity extends AppCompatActivity {
                 ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_link_off),
                 OverlayTapActivity.sync
         );
+
+        TableRow extensions = findViewById(R.id.overlay_tap_extensions);
+        if (Status.SHOW_EXTENSIONS) {
+            extensions.setVisibility(View.VISIBLE);
+        } else {
+            extensions.setVisibility(View.GONE);
+        }
     }
 }

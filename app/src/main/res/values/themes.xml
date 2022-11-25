@@ -10,7 +10,7 @@
         <item name="colorSecondaryVariant">@color/secondary_variant</item>
         <item name="colorOnSecondary">@color/on_secondary</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">@color/primary</item>
+        <item name="android:statusBarColor">@color/background</item>
         <!-- Customize your theme here. -->
         <item name="windowNoTitle">true</item>
 
@@ -26,6 +26,7 @@
         <item name="android:imageButtonStyle">@style/imageButtonStyles</item>
         <item name="buttonStyle">@style/buttonStyles</item>
         <item name="imageButtonStyle">@style/imageButtonStyles</item>
+        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
     </style>
     
     <style name="imageButtonStyles" parent="Widget.AppCompat.ImageButton">

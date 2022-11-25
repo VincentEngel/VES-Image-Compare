@@ -6,6 +6,9 @@ import android.content.SharedPreferences;
 public class KeyValueStorage {
     public static final String ASKED_FOR_REVIEW = "ASKED_FOR_REVIEW";
     public static final String USER_THEME = "USER_THEME";
+    public static final String SYNCED_ZOOM = "SYNCED_ZOOM";
+    public static final String SHOW_EXTENSIONS = "SHOW_EXTENSIONS";
+
     public static boolean getBoolean(Context context, String key, boolean defaultValue)
     {
         try {
