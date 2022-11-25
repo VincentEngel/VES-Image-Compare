@@ -1,6 +1,7 @@
 package com.vincentengelsoftware.androidimagecompare;
 
 import android.os.Bundle;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -41,7 +42,11 @@ public class SideBySideActivity extends AppCompatActivity {
         );
 
         Images.first.updateVesImageViewWithAdjustedImage(findViewById(R.id.side_by_side_image_left));
+        TextView imageFirst = findViewById(R.id.side_by_side_image_name_first);
+        imageFirst.setText(Images.first.getImageName());
 
         Images.second.updateVesImageViewWithAdjustedImage(findViewById(R.id.side_by_side_image_right));
+        TextView imageSecond = findViewById(R.id.side_by_side_image_name_second);
+        imageSecond.setText(Images.second.getImageName());
     }
 }

@@ -26,15 +26,61 @@
             android:layout_weight="1"
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
-        <ToggleButton
-            android:id="@+id/toggleButton"
-            android:layout_width="64dp"
-            android:layout_height="48dp"
-            android:background="@drawable/ic_link"
-            android:backgroundTint="@color/button"
-            android:text="@string/sync"
-            android:textOff=""
-            android:textOn="" />
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <FrameLayout
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/side_by_side_image_name_first"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/image_name"
+                    android:visibility="invisible"
+                    app:drawableStartCompat="@drawable/ic_arrow_up" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0">
+
+                <ToggleButton
+                    android:id="@+id/toggleButton"
+                    android:layout_width="64dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_link"
+                    android:backgroundTint="@color/button"
+                    android:gravity="center"
+                    android:text="@string/sync"
+                    android:textOff=""
+                    android:textOn="" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/side_by_side_image_name_second"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/image_name"
+                    android:visibility="invisible"
+                    app:drawableEndCompat="@drawable/ic_arrow_down" />
+            </FrameLayout>
+
+        </TableRow>
 
         <com.vincentengelsoftware.androidimagecompare.viewClasses.ZoomImageView
             android:id="@+id/side_by_side_image_right"

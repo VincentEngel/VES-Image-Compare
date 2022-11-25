@@ -41,15 +41,36 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <ToggleButton
-            android:id="@+id/overlay_tap_button_zoom_sync"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="@drawable/ic_link"
-            android:backgroundTint="@color/button"
-            android:text="@string/sync"
-            android:textOff=""
-            android:textOn="" />
+        <FrameLayout
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/overlay_tap_image_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/image_name" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="24dp">
+
+            <ToggleButton
+                android:id="@+id/overlay_tap_button_zoom_sync"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/ic_link"
+                android:backgroundTint="@color/button"
+                android:text="@string/sync"
+                android:textOff=""
+                android:textOn="" />
+        </FrameLayout>
+
     </TableRow>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
