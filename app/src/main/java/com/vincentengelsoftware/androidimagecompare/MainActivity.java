@@ -139,12 +139,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        unlockOrientation();
-    }
-
-    @Override
     protected void onStop() {
         if (MainActivity.leftImageUri != null) {
             KeyValueStorage.setString(getApplicationContext(), MainActivity.leftImageUriKey, MainActivity.leftImageUri);
@@ -153,6 +147,19 @@ public class MainActivity extends AppCompatActivity {
             KeyValueStorage.setString(getApplicationContext(), MainActivity.rightImageUriKey, MainActivity.rightImageUri);
         }
         super.onStop();
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+
+        if (hasFocus && !Status.isTakingPicture) {
+            if (android.provider.Settings.System.getInt(getContentResolver(), android.provider.Settings.System.ACCELEROMETER_ROTATION, 0) == 1) {
+                unlockOrientation();
+            } else {
+                lockOrientation();
+            }
+        }
     }
 
     public void restoreImages()
@@ -504,6 +511,8 @@ public class MainActivity extends AppCompatActivity {
                     result -> {
                         if (!result) {
                             Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                            Status.isTakingPicture = false;
+                            unlockOrientation();
                             return;
                         }
 
@@ -531,6 +540,8 @@ public class MainActivity extends AppCompatActivity {
 
                         runOnUiThread(() -> {
                             restoreImageViews();
+                            Status.isTakingPicture = false;
+                            unlockOrientation();
                         });
                     }
             );
@@ -556,6 +567,7 @@ public class MainActivity extends AppCompatActivity {
                         if (MainHelper.checkPermission(MainActivity.this)) {
                             lockOrientation();
                             mGetContentCamera.launch(uri);
+                            Status.isTakingPicture = true;
                         } else {
                             MainHelper.requestPermission(MainActivity.this);
                             imageView.callOnClick();
@@ -575,7 +587,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void unlockOrientation()
     {
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+        if (android.provider.Settings.System.getInt(getContentResolver(), android.provider.Settings.System.ACCELEROMETER_ROTATION, 0) == 1) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+        }
     }
 
     private void lockOrientation()

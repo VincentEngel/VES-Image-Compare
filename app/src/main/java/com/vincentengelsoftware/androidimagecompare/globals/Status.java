@@ -13,4 +13,6 @@ public class Status {
 
     public static boolean SYNCED_ZOOM = true;
     public static boolean SHOW_EXTENSIONS = true;
+
+    public static boolean isTakingPicture = false;
 }
