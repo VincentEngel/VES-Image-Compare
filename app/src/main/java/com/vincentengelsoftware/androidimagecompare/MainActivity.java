@@ -153,13 +153,14 @@ public class MainActivity extends AppCompatActivity {
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
 
+        /**
         if (hasFocus && !Status.isTakingPicture) {
             if (android.provider.Settings.System.getInt(getContentResolver(), android.provider.Settings.System.ACCELEROMETER_ROTATION, 0) == 1) {
-                unlockOrientation();
+                //unlockOrientation();
             } else {
-                lockOrientation();
+                //lockOrientation();
             }
-        }
+        }*/
     }
 
     public void restoreImages()
@@ -512,7 +513,7 @@ public class MainActivity extends AppCompatActivity {
                         if (!result) {
                             Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
                             Status.isTakingPicture = false;
-                            unlockOrientation();
+                            //unlockOrientation();
                             return;
                         }
 
@@ -541,7 +542,7 @@ public class MainActivity extends AppCompatActivity {
                         runOnUiThread(() -> {
                             restoreImageViews();
                             Status.isTakingPicture = false;
-                            unlockOrientation();
+                            //unlockOrientation();
                         });
                     }
             );
@@ -565,7 +566,7 @@ public class MainActivity extends AppCompatActivity {
                 builder.setItems(optionsMenu, (dialogInterface, i) -> {
                     if (optionsMenu[i].equals("Take Photo")) {
                         if (MainHelper.checkPermission(MainActivity.this)) {
-                            lockOrientation();
+                            //lockOrientation();
                             mGetContentCamera.launch(uri);
                             Status.isTakingPicture = true;
                         } else {
