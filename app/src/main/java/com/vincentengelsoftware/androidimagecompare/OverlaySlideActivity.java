@@ -13,6 +13,7 @@ import com.vincentengelsoftware.androidimagecompare.globals.Status;
 import com.vincentengelsoftware.androidimagecompare.helper.BitmapHelper;
 import com.vincentengelsoftware.androidimagecompare.helper.FullScreenHelper;
 import com.vincentengelsoftware.androidimagecompare.helper.SlideHelper;
+import com.vincentengelsoftware.androidimagecompare.helper.SyncZoom;
 import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
 import com.vincentengelsoftware.androidimagecompare.viewClasses.VesImageInterface;
 
@@ -22,6 +23,8 @@ public class OverlaySlideActivity extends AppCompatActivity {
      */
     private static Thread currentThread;
     private static Thread nextThread;
+
+    public static UtilMutableBoolean sync = new UtilMutableBoolean();
 
     private final static UtilMutableBoolean leftToRight = new UtilMutableBoolean();
 
@@ -40,22 +43,28 @@ public class OverlaySlideActivity extends AppCompatActivity {
                 nextThread = null;
             }
 
+            if (Status.activityIsOpening) {
+                sync.value = Status.SYNCED_ZOOM;
+            }
+
             Status.activityIsOpening = false;
 
             FullScreenHelper.setFullScreenFlags(this.getWindow());
 
             setContentView(R.layout.activity_overlay_slide);
 
-            Images.first.updateVesImageViewWithAdjustedImage(findViewById(R.id.overlay_slide_image_view_base));
+            VesImageInterface image_back = findViewById(R.id.overlay_slide_image_view_base);
+            Images.first.updateVesImageViewWithAdjustedImage(image_back);
 
             VesImageInterface image_front = findViewById(R.id.overlay_slide_image_view_front);
             Bitmap bitmapSource = Images.second.getAdjustedBitmap();
 
+            SyncZoom.setLinkedTargets(image_front, image_back, OverlaySlideActivity.sync);
 
             ImageButton hideShow = findViewById(R.id.overlay_transparent_button_hide_front_image);
 
             SeekBar seekBar = findViewById(R.id.overlay_slide_seek_bar);
-            this.addSeekbarLogic(seekBar, image_front, leftToRight, bitmapSource, hideShow);
+            this.addSeekbarLogic(seekBar, image_front, leftToRight, bitmapSource, hideShow, image_back);
             seekBar.setProgress(50);
 
             ImageButton swapDirection = findViewById(R.id.overlay_slide_button_swap_seekbar);
@@ -91,7 +100,8 @@ public class OverlaySlideActivity extends AppCompatActivity {
             VesImageInterface imageView,
             UtilMutableBoolean cutFromRightToLeft,
             Bitmap bitmapSource,
-            ImageButton hideShow
+            ImageButton hideShow,
+            VesImageInterface imageBack
     ) {
         Bitmap transparentBitmap = BitmapHelper.createTransparentBitmap(
                 bitmapSource.getWidth(),
@@ -133,6 +143,9 @@ public class OverlaySlideActivity extends AppCompatActivity {
                             }
 
                             runOnUiThread(() -> {
+                                if (OverlaySlideActivity.sync.value) {
+                                    imageBack.resetScaleAndCenter();
+                                }
                                 imageView.setBitmapImage(bitmap);
                                 hideShow.setImageResource(R.drawable.ic_visibility);
                                 imageView.setVisibility(View.VISIBLE);

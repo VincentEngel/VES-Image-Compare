@@ -1,1 +1,2 @@
 * Fix orientation lock/unlock
+* Add synced zoom ot OverlaySlide
