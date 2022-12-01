@@ -1,19 +1,16 @@
 package com.vincentengelsoftware.androidimagecompare;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.res.ResourcesCompat;
-
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.util.DisplayMetrics;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.SeekBar;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
+import com.vincentengelsoftware.androidimagecompare.helper.BitmapHelper;
 import com.vincentengelsoftware.androidimagecompare.helper.Calculator;
 import com.vincentengelsoftware.androidimagecompare.helper.FullScreenHelper;
 import com.vincentengelsoftware.androidimagecompare.helper.SyncZoom;
@@ -24,16 +21,33 @@ public class FullSliderActivity extends AppCompatActivity {
     public SeekBar recentSeekBar;
     public SeekBar currentSeekBar;
 
+    private static Thread currentThread;
+    private static Thread nextThread;
+
     public static UtilMutableBoolean sync = new UtilMutableBoolean();
 
     private static int color_active;
     private static int color_inactive;
 
+    public static Bitmap nextCalculatedBitmap;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (nextThread != null) {
+            nextThread.interrupt();
+            nextThread = null;
+        }
+
+        if (currentThread != null) {
+            currentThread.interrupt();
+            nextThread = null;
+        }
+
+        FullSliderActivity.nextCalculatedBitmap = null;
+
         super.onCreate(savedInstanceState);
         if (Status.activityIsOpening) {
-            sync.value = Status.SYNCED_ZOOM;
+            FullSliderActivity.sync.value = Status.SYNCED_ZOOM;
         }
         Status.activityIsOpening = false;
         setContentView(R.layout.activity_full_slider);
@@ -47,9 +61,8 @@ public class FullSliderActivity extends AppCompatActivity {
 
         VesImageInterface image_front = findViewById(R.id.full_slide_image_view_front);
         Images.second.updateVesImageViewWithAdjustedImage(image_front);
-        Bitmap bitmapSource = Images.second.getAdjustedBitmap();
 
-        SyncZoom.setLinkedTargets(image_front, image_back, OverlaySlideActivity.sync);
+        SyncZoom.setLinkedTargets(image_front, image_back, FullSliderActivity.sync);
 
         SeekBar seekBarLeft = findViewById(R.id.full_slider_seekbar_left);
         ViewGroup.LayoutParams layoutParamsSeekbarLeft = seekBarLeft.getLayoutParams();
@@ -62,19 +75,99 @@ public class FullSliderActivity extends AppCompatActivity {
         SeekBar seekBarTop = findViewById(R.id.full_slider_seekbar_top);
         SeekBar seekBarBottom = findViewById(R.id.full_slider_seekbar_bottom);
 
+
         this.addSeekbarLogic(seekBarTop);
         this.addSeekbarLogic(seekBarLeft);
         this.addSeekbarLogic(seekBarRight);
         this.addSeekbarLogic(seekBarBottom);
+
+        seekBarLeft.setProgress(100);
+        seekBarRight.setProgress(1);
     }
 
-    private void updateImage()
+    private void updateImage(Bitmap bitmapSource)
     {
+        if (currentSeekBar == null || recentSeekBar == null) {
+            return;
+        }
 
+        boolean topSeekBarActive = false;
+        int topSeekBarProgress = 0;
+        boolean leftSeekBarActive = false;
+        int leftSeekBarProgress = 0;
+        boolean rightSeekBarActive = false;
+        int rightSeekBarProgress = 0;
+        boolean bottomSeekBarActive = false;
+        int bottomSeekBarProgress = 0;
+
+        SeekBar seekBarTop = findViewById(R.id.full_slider_seekbar_top);
+        SeekBar seekBarLeft = findViewById(R.id.full_slider_seekbar_left);
+        SeekBar seekBarRight = findViewById(R.id.full_slider_seekbar_right);
+        SeekBar seekBarBottom = findViewById(R.id.full_slider_seekbar_bottom);
+
+        if (currentSeekBar.getId() == seekBarTop.getId() || recentSeekBar.getId() == seekBarTop.getId()) {
+            topSeekBarActive = true;
+            topSeekBarProgress = seekBarTop.getProgress();
+        }
+
+        if (currentSeekBar.getId() == seekBarLeft.getId() || recentSeekBar.getId() == seekBarLeft.getId()) {
+            leftSeekBarActive = true;
+            leftSeekBarProgress = seekBarLeft.getProgress();
+        }
+
+        if (currentSeekBar.getId() == seekBarRight.getId() || recentSeekBar.getId() == seekBarRight.getId()) {
+            rightSeekBarActive = true;
+            rightSeekBarProgress = seekBarRight.getProgress();
+        }
+
+        if (currentSeekBar.getId() == seekBarBottom.getId() || recentSeekBar.getId() == seekBarBottom.getId()) {
+            bottomSeekBarActive = true;
+            bottomSeekBarProgress = seekBarBottom.getProgress();
+        }
+
+        processNextThread(
+                new Thread(() -> {
+                    if (Thread.currentThread().isInterrupted()) {
+                        return;
+                    }
+
+                    Bitmap bitmap = BitmapHelper.cutBitmapBetweenFromLeft(
+                            bitmapSource,
+                            0,
+                            0,
+                            0,
+                            0
+                    );
+
+                    if (Thread.currentThread().isInterrupted()) {
+                        return;
+                    }
+
+                    FullSliderActivity.nextCalculatedBitmap = bitmap;
+
+                    runOnUiThread(() -> {
+                        if (FullSliderActivity.nextCalculatedBitmap != null) {
+                            if (FullSliderActivity.sync.value) {
+                                VesImageInterface image_back = findViewById(R.id.full_slide_image_view_base);
+                                image_back.resetScaleAndCenter();
+                            }
+
+                            VesImageInterface image_front = findViewById(R.id.full_slide_image_view_front);
+                            //image_front.setBitmapImage(FullSliderActivity.nextCalculatedBitmap);
+                        }
+                    });
+
+                    currentThread = null;
+
+                    processNextThread();
+                })
+        );
     }
 
     private void addSeekbarLogic(SeekBar seekBarView)
     {
+        Bitmap bitmapSource = Images.second.getAdjustedBitmap();
+
         seekBarView.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
@@ -94,7 +187,7 @@ public class FullSliderActivity extends AppCompatActivity {
                         currentSeekBar = seekBar;
                     }
 
-                    updateImage();
+                    updateImage(bitmapSource);
                 } catch (Exception ignored) {
                 }
             }
@@ -107,5 +200,24 @@ public class FullSliderActivity extends AppCompatActivity {
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
         });
+    }
+
+    private synchronized void processNextThread(Thread thread)
+    {
+        if (currentThread == null) {
+            currentThread = thread;
+            currentThread.start();
+        } else {
+            nextThread = thread;
+        }
+    }
+
+    private synchronized void processNextThread()
+    {
+        if (nextThread != null) {
+            currentThread = nextThread;
+            nextThread = null;
+            currentThread.start();
+        }
     }
 }

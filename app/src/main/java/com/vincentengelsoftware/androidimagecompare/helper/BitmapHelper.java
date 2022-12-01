@@ -149,4 +149,14 @@ public class BitmapHelper {
 
         return bitmapCopy;
     }
+
+    public static Bitmap cutBitmapBetweenFromLeft(
+            Bitmap bitmapSource,
+            int startX,
+            int startY,
+            int endX,
+            int endY
+    ) {
+        return bitmapSource;
+    }
 }
