@@ -23,6 +23,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+import androidx.window.layout.WindowMetrics;
+import androidx.window.layout.WindowMetricsCalculator;
 
 import com.vincentengelsoftware.androidimagecompare.globals.Dimensions;
 import com.vincentengelsoftware.androidimagecompare.globals.Images;
@@ -95,9 +97,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (Dimensions.maxSide == 0) {
-            Point point = new Point();
-            getWindowManager().getDefaultDisplay().getSize(point);
-            Dimensions.maxSide = Math.max(point.x, point.y);
+            WindowMetrics windowMetrics = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(this);
+            Dimensions.maxSide = Math.max(windowMetrics.getBounds().height(), windowMetrics.getBounds().width());
         }
 
         if (Dimensions.maxSideForPreview == 0) {
@@ -147,20 +148,6 @@ public class MainActivity extends AppCompatActivity {
             KeyValueStorage.setString(getApplicationContext(), MainActivity.rightImageUriKey, MainActivity.rightImageUri);
         }
         super.onStop();
-    }
-
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-
-        /**
-        if (hasFocus && !Status.isTakingPicture) {
-            if (android.provider.Settings.System.getInt(getContentResolver(), android.provider.Settings.System.ACCELEROMETER_ROTATION, 0) == 1) {
-                //unlockOrientation();
-            } else {
-                //lockOrientation();
-            }
-        }*/
     }
 
     public void restoreImages()
@@ -582,41 +569,6 @@ public class MainActivity extends AppCompatActivity {
 
                 builder.create().show();
             });
-        } catch (Exception ignored) {
-        }
-    }
-
-    private void unlockOrientation()
-    {
-        if (android.provider.Settings.System.getInt(getContentResolver(), android.provider.Settings.System.ACCELEROMETER_ROTATION, 0) == 1) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
-        }
-    }
-
-    private void lockOrientation()
-    {
-
-        try {
-            switch (getResources().getConfiguration().orientation){
-                case Configuration.ORIENTATION_PORTRAIT: {
-                    int rotation = getWindowManager().getDefaultDisplay().getRotation();
-                    if(rotation == android.view.Surface.ROTATION_90|| rotation == android.view.Surface.ROTATION_180){
-                        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT);
-                    } else {
-                        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                    }
-                }
-                break;
-
-                case Configuration.ORIENTATION_LANDSCAPE:
-                    int rotation = getWindowManager().getDefaultDisplay().getRotation();
-                    if(rotation == android.view.Surface.ROTATION_0 || rotation == android.view.Surface.ROTATION_90){
-                        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-                    } else {
-                        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
-                    }
-                    break;
-            }
         } catch (Exception ignored) {
         }
     }
