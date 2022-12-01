@@ -51,7 +51,8 @@ public class OverlayTapActivity extends AppCompatActivity {
                 findViewById(R.id.overlay_tap_button_zoom_sync),
                 ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_link),
                 ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_link_off),
-                OverlayTapActivity.sync
+                OverlayTapActivity.sync,
+                null
         );
 
         TableRow extensions = findViewById(R.id.overlay_tap_extensions);

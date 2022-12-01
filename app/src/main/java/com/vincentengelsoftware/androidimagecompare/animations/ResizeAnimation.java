@@ -12,6 +12,8 @@ public class ResizeAnimation extends Animation {
     private final View view;
     private final boolean targetDimension;
 
+    public final static int DURATION_LONG = 2000;
+
     public final static boolean CHANGE_WIDTH = true;
     public final static boolean CHANGE_HEIGHT = false;
     public final static int DURATION_SHORT = 500;

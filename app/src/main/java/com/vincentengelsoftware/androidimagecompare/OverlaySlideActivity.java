@@ -1,21 +1,13 @@
 package com.vincentengelsoftware.androidimagecompare;
 
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.Animation;
-import android.view.animation.DecelerateInterpolator;
-import android.view.animation.Transformation;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.SeekBar;
-import android.widget.TableRow;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -43,11 +35,8 @@ public class OverlaySlideActivity extends AppCompatActivity implements FadeActiv
     private final static UtilMutableBoolean leftToRight = new UtilMutableBoolean();
 
     private final static UtilMutableBoolean continueHiding = new UtilMutableBoolean();
-
     private static Thread fadeOutThread;
     private static Thread fadeInThread;
-
-    private final int FADE_OUT_TIME = 2000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -180,7 +169,7 @@ public class OverlaySlideActivity extends AppCompatActivity implements FadeActiv
         }
 
         fadeOutThread = new Thread(() -> {
-            SystemClock.sleep(FADE_OUT_TIME);
+            SystemClock.sleep(ResizeAnimation.DURATION_LONG);
             if (Thread.currentThread().isInterrupted()) {
                 return;
             }

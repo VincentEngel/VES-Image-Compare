@@ -3,6 +3,8 @@ package com.vincentengelsoftware.androidimagecompare.helper;
 import android.graphics.drawable.Drawable;
 import android.widget.ToggleButton;
 
+import com.vincentengelsoftware.androidimagecompare.OverlayTransparentActivity;
+import com.vincentengelsoftware.androidimagecompare.animations.FadeActivity;
 import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
 import com.vincentengelsoftware.androidimagecompare.viewClasses.VesImageInterface;
 
@@ -22,7 +24,8 @@ public class SyncZoom {
             ToggleButton toggleButton,
             Drawable iconLinkedOn,
             Drawable iconLinkedOff,
-            UtilMutableBoolean sync
+            UtilMutableBoolean sync,
+            FadeActivity activity
     )
     {
         toggleButton.setChecked(sync.value);
@@ -33,6 +36,9 @@ public class SyncZoom {
         }
 
         toggleButton.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (activity != null) {
+                activity.instantFadeIn();
+            }
             if (b) {
                 imageOne.resetScaleAndCenter();
                 imageTwo.resetScaleAndCenter();
@@ -41,6 +47,9 @@ public class SyncZoom {
                 toggleButton.setBackgroundDrawable(iconLinkedOff);
             }
             sync.value = !sync.value;
+            if (activity != null) {
+                activity.triggerFadeOutThread();
+            }
         });
     }
 }

@@ -11,8 +11,8 @@
     <FrameLayout
         android:id="@+id/frameLaout"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/overlay_tap_extensions"
+        android:layout_height="fill_parent"
+        app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -38,14 +38,15 @@
 
     </FrameLayout>
 
-    <TableRow
+    <LinearLayout
         android:id="@+id/overlay_tap_extensions"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="48dp"
+        android:baselineAligned="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameLaout">
+        app:layout_constraintStart_toStartOf="parent">
 
         <FrameLayout
             android:layout_width="wrap_content"
@@ -88,6 +89,6 @@
                 tools:srcCompat="@drawable/ic_visibility" />
         </FrameLayout>
 
-    </TableRow>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

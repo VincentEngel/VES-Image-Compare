@@ -1,1 +1,3 @@
 * Improve UI
+* Add fadeOut for extensions in OverlaySlideActivity
+* Add fadeOut for extensions in TransparentActivity

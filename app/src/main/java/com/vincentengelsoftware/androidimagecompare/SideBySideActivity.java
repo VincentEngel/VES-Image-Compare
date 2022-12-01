@@ -2,7 +2,6 @@ package com.vincentengelsoftware.androidimagecompare;
 
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -46,7 +45,8 @@ public class SideBySideActivity extends AppCompatActivity {
                 findViewById(R.id.toggleButton),
                 ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_link),
                 ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_link_off),
-                SideBySideActivity.sync
+                SideBySideActivity.sync,
+                null
         );
 
         Images.first.updateVesImageViewWithAdjustedImage(findViewById(R.id.side_by_side_image_left));

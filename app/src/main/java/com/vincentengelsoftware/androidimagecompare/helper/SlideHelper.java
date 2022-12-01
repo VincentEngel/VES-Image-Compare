@@ -6,6 +6,7 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 
 import com.vincentengelsoftware.androidimagecompare.OverlaySlideActivity;
+import com.vincentengelsoftware.androidimagecompare.animations.FadeActivity;
 import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
 import com.vincentengelsoftware.androidimagecompare.viewClasses.VesImageInterface;
 
@@ -35,7 +36,7 @@ public class SlideHelper {
             ImageButton imageButton,
             SeekBar seekBar,
             UtilMutableBoolean mutableBoolean,
-            OverlaySlideActivity activity
+            FadeActivity activity
     ) {
         imageButton.setOnClickListener(view -> {
             activity.instantFadeIn();
