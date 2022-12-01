@@ -7,7 +7,6 @@
     <uses-feature android:name="android.hardware.camera.any" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
-    <!-- android:fitsSystemWindows="false" test if needed -->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -16,6 +15,10 @@
         android:supportsRtl="true"
         android:fitsSystemWindows="false"
         android:theme="@style/Theme.VesAndroidImageCompare">
+        <activity
+            android:name=".FullSliderActivity"
+            android:exported="false">
+        </activity>
         <activity
             android:name=".SideBySideActivity"
             android:exported="false" />

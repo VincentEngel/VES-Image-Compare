@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:keepScreenOn="true"
+    tools:context=".FullSliderActivity">
+
+    <FrameLayout
+        android:id="@+id/full_slider_frame_layout_top"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <SeekBar
+            android:id="@+id/full_slider_seekbar_top"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="48dp"
+            android:progressTint="@android:color/transparent"
+            android:thumbTint="@color/light_grey" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/full_slider_frame_layout_left"
+        android:layout_width="48dp"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <SeekBar
+            android:id="@+id/full_slider_seekbar_left"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginVertical="48dp"
+            android:progressTint="@android:color/transparent"
+            android:rotation="90"
+            android:thumbTint="@color/light_grey" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/full_slider_frame_layout_bottom"
+        app:layout_constraintEnd_toStartOf="@+id/full_slider_frame_layout_right"
+        app:layout_constraintStart_toEndOf="@+id/full_slider_frame_layout_left"
+        app:layout_constraintTop_toBottomOf="@+id/full_slider_frame_layout_top">
+
+        <com.vincentengelsoftware.androidimagecompare.viewClasses.ZoomImageView
+            android:id="@+id/full_slide_image_view_base"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:contentDescription="@string/background_image"
+            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+        <com.vincentengelsoftware.androidimagecompare.viewClasses.ZoomImageView
+            android:id="@+id/full_slide_image_view_front"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:contentDescription="@string/front_image"
+            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/full_slider_frame_layout_right"
+        android:layout_width="48dp"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <SeekBar
+            android:id="@+id/full_slider_seekbar_right"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginVertical="48dp"
+            android:progressTint="@android:color/transparent"
+            android:rotation="90"
+            android:thumbTint="@color/light_grey" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/full_slider_frame_layout_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <SeekBar
+            android:id="@+id/full_slider_seekbar_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="48dp"
+            android:progressTint="@android:color/transparent"
+            android:thumbTint="@color/light_grey" />
+    </FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
