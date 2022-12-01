@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 
+import com.vincentengelsoftware.androidimagecompare.OverlaySlideActivity;
 import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
 import com.vincentengelsoftware.androidimagecompare.viewClasses.VesImageInterface;
 
@@ -33,9 +34,11 @@ public class SlideHelper {
     public static void setSwapSlideDirectionOnClick(
             ImageButton imageButton,
             SeekBar seekBar,
-            UtilMutableBoolean mutableBoolean
+            UtilMutableBoolean mutableBoolean,
+            OverlaySlideActivity activity
     ) {
         imageButton.setOnClickListener(view -> {
+            activity.instantFadeIn();
             mutableBoolean.value = !mutableBoolean.value;
 
             if (mutableBoolean.value) {
@@ -50,6 +53,7 @@ public class SlideHelper {
                 progress = 51;
             }
             seekBar.setProgress(progress);
+            activity.triggerFadeOutThread();
         });
     }
 

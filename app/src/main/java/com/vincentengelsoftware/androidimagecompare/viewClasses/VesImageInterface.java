@@ -5,6 +5,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
+import com.vincentengelsoftware.androidimagecompare.animations.FadeActivity;
 import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
 
 public interface VesImageInterface {
@@ -18,4 +19,5 @@ public interface VesImageInterface {
     void triggerLinkedTargetTouchEvent(MotionEvent event);
     void resetScaleAndCenter();
     void applyScaleAndCenter(SubsamplingScaleImageView imageView);
+    void setFadeActivity(FadeActivity fadeActivity);
 }
