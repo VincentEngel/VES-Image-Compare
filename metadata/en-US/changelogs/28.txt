@@ -1,3 +1,4 @@
 * Improve UI
 * Add fadeOut for extensions in OverlaySlideActivity
 * Add fadeOut for extensions in TransparentActivity
+* Improve Theme change code, thanks to @bigConifer
