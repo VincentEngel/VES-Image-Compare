@@ -5,7 +5,6 @@ public class Status {
     public static boolean handleIntentOnCreate = true;
     public static boolean activityIsOpening = false;
     public static int THEME = Status.THEME_SYSTEM;
-    public static int THEME_DEFAULT_SYSTEM = -1;
 
     public static final int THEME_SYSTEM = 0;
     public static final int THEME_LIGHT = 1;

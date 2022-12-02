@@ -53,13 +53,8 @@ public class MainActivity extends AppCompatActivity {
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        int currentTheme = Theme.getCurrentTheme(getResources());
-        if (Status.THEME_DEFAULT_SYSTEM == -1) {
-            Status.THEME_DEFAULT_SYSTEM = currentTheme;
-        }
-        int userTheme = KeyValueStorage.getInt(getApplicationContext(), KeyValueStorage.USER_THEME, Status.THEME_DARK);
-        Theme.updateTheme(Theme.map(userTheme), currentTheme);
-        Status.THEME = userTheme;
+        Status.THEME = KeyValueStorage.getInt(getApplicationContext(), KeyValueStorage.USER_THEME, Status.THEME_DARK);
+        Theme.updateTheme(Status.THEME);
 
         super.onCreate(savedInstanceState);
 
@@ -419,7 +414,7 @@ public class MainActivity extends AppCompatActivity {
             Status.THEME = (Status.THEME + 1) % 3;
             KeyValueStorage.putInt(getApplicationContext(), KeyValueStorage.USER_THEME, Status.THEME);
             Theme.updateButtonText(button, Status.THEME);
-            Theme.updateTheme(Theme.map(Status.THEME), Theme.getCurrentTheme(getResources()));
+            Theme.updateTheme(Status.THEME);
         });
     }
     private void addButtonChangeActivityLogic(Button btn, Class<?> targetActivity)
