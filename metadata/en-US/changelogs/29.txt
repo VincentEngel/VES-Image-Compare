@@ -1,0 +1,1 @@
+* Show info on long button press in MainActivity

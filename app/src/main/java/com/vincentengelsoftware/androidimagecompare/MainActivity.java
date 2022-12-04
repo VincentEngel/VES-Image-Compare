@@ -122,11 +122,18 @@ public class MainActivity extends AppCompatActivity {
         SwitchCompat resizeLeftImage = findViewById(R.id.main_switch_resize_image_left);
         resizeLeftImage.setChecked(Images.first.isResizeImageToScreen());
         resizeLeftImage.setOnCheckedChangeListener((compoundButton, b) -> Images.first.setResizeImageToScreen(b));
+        resizeLeftImage.setOnLongClickListener(view -> {
+            Toast.makeText(getApplicationContext(), "Resize left image to screen size", Toast.LENGTH_SHORT).show();
+            return false;
+        });
 
         SwitchCompat resizeRightImage = findViewById(R.id.main_switch_resize_image_right);
         resizeRightImage.setChecked(Images.second.isResizeImageToScreen());
         resizeRightImage.setOnCheckedChangeListener((compoundButton, b) -> Images.second.setResizeImageToScreen(b));
-
+        resizeRightImage.setOnLongClickListener(view -> {
+            Toast.makeText(getApplicationContext(), "Resize right image to screen size", Toast.LENGTH_SHORT).show();
+            return false;
+        });
 
         if (Status.handleIntentOnCreate) {
             Status.handleIntentOnCreate = false;
@@ -333,8 +340,9 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        ImageButton swapImages = findViewById(R.id.home_button_swap_images);
         MainHelper.addSwapImageLogic(
-                findViewById(R.id.home_button_swap_images),
+                swapImages,
                 Images.first,
                 Images.second,
                 findViewById(R.id.home_image_first),
@@ -344,6 +352,10 @@ public class MainActivity extends AppCompatActivity {
                 findViewById(R.id.main_switch_resize_image_left),
                 findViewById(R.id.main_switch_resize_image_right)
         );
+        swapImages.setOnLongClickListener(view -> {
+            Toast.makeText(getApplicationContext(), "Swap Images", Toast.LENGTH_SHORT).show();
+            return false;
+        });
 
         ImageButton extensions = findViewById(R.id.home_button_extensions);
         if (Status.SHOW_EXTENSIONS) {
@@ -359,6 +371,10 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 extensions.setImageDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_extension_off));
             }
+        });
+        extensions.setOnLongClickListener(view -> {
+            Toast.makeText(getApplicationContext(), "Show details in Tap and Side-by-Side", Toast.LENGTH_SHORT).show();
+            return false;
         });
 
         ImageButton linkedZoom = findViewById(R.id.home_button_link_zoom);
@@ -376,18 +392,32 @@ public class MainActivity extends AppCompatActivity {
                 linkedZoom.setImageDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_link_off));
             }
         });
+        linkedZoom.setOnLongClickListener(view -> {
+            Toast.makeText(getApplicationContext(), "Sync zoom between images in comparison modes", Toast.LENGTH_SHORT).show();
+            return false;
+        });
 
+        ImageButton rotateImageLeft = findViewById(R.id.home_button_rotate_image_left);
         MainHelper.addRotateImageLogic(
-                findViewById(R.id.home_button_rotate_image_left),
+                rotateImageLeft,
                 Images.first,
                 findViewById(R.id.home_image_first)
         );
+        rotateImageLeft.setOnLongClickListener(view -> {
+            Toast.makeText(getApplicationContext(), "Rotate the left image", Toast.LENGTH_SHORT).show();
+            return false;
+        });
 
+        ImageButton rotateImageRight = findViewById(R.id.home_button_rotate_image_right);
         MainHelper.addRotateImageLogic(
-                findViewById(R.id.home_button_rotate_image_right),
+                rotateImageRight,
                 Images.second,
                 findViewById(R.id.home_image_second)
         );
+        rotateImageRight.setOnLongClickListener(view -> {
+            Toast.makeText(getApplicationContext(), "Rotate the right image", Toast.LENGTH_SHORT).show();
+            return false;
+        });
 
         addLoadImageLogic(
                 R.id.home_image_first,
