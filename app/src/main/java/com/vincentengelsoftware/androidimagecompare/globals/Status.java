@@ -1,7 +1,6 @@
 package com.vincentengelsoftware.androidimagecompare.globals;
 
 public class Status {
-    public static boolean isFirstStart = true;
     public static boolean handleIntentOnCreate = true;
     public static boolean activityIsOpening = false;
     public static int THEME = Status.THEME_SYSTEM;
@@ -14,4 +13,6 @@ public class Status {
     public static boolean SHOW_EXTENSIONS = true;
 
     public static boolean isTakingPicture = false;
+
+    public static boolean hasHardwareKey = false;
 }

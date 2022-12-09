@@ -2,13 +2,11 @@ package com.vincentengelsoftware.androidimagecompare;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
-import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -139,6 +137,8 @@ public class MainActivity extends AppCompatActivity {
             Status.handleIntentOnCreate = false;
             this.handleIntent(getIntent());
         }
+
+        Status.hasHardwareKey = ViewConfiguration.get(this).hasPermanentMenuKey();
     }
 
     @Override

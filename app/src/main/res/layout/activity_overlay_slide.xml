@@ -36,7 +36,7 @@
     </FrameLayout>
 
     <LinearLayout
-        android:id="@+id/overlay_tap_extensions"
+        android:id="@+id/overlay_slide_extensions"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="48dp"
