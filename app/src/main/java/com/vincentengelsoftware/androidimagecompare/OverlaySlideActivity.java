@@ -117,6 +117,13 @@ public class OverlaySlideActivity extends AppCompatActivity implements FadeActiv
                 }
                 triggerFadeOutThread();
             });
+
+            if (Status.hasHardwareKey) {
+                LinearLayout linearLayout = findViewById(R.id.overlay_slide_extensions);
+                ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) linearLayout.getLayoutParams();
+                layoutParams.setMargins(0, 0, 0, 0);
+                linearLayout.setLayoutParams(layoutParams);
+            }
         } catch (Exception ignored) {}
     }
 
@@ -140,7 +147,7 @@ public class OverlaySlideActivity extends AppCompatActivity implements FadeActiv
         fadeInThread = new Thread(() -> {
             runOnUiThread(() -> {
                 try {
-                    LinearLayout linearLayout = findViewById(R.id.overlay_tap_extensions);
+                    LinearLayout linearLayout = findViewById(R.id.overlay_slide_extensions);
 
                     ResizeAnimation anim = new ResizeAnimation(
                             linearLayout,
@@ -176,7 +183,7 @@ public class OverlaySlideActivity extends AppCompatActivity implements FadeActiv
 
             runOnUiThread(() -> {
                 try {
-                    LinearLayout linearLayout = findViewById(R.id.overlay_tap_extensions);
+                    LinearLayout linearLayout = findViewById(R.id.overlay_slide_extensions);
 
                     continueHiding.value = true;
                     ResizeAnimation anim = new ResizeAnimation(
@@ -202,7 +209,7 @@ public class OverlaySlideActivity extends AppCompatActivity implements FadeActiv
         continueHiding.value = false;
         runOnUiThread(() -> {
             try {
-                LinearLayout linearLayout = findViewById(R.id.overlay_tap_extensions);
+                LinearLayout linearLayout = findViewById(R.id.overlay_slide_extensions);
                 linearLayout.clearAnimation();
                 ViewGroup.LayoutParams layoutParams = linearLayout.getLayoutParams();
                 linearLayout.setVisibility(View.VISIBLE);
