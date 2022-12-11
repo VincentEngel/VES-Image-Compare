@@ -1,1 +1,2 @@
 * Show info on long button press in MainActivity
+* Improve layout for devices with a hardware navigationbar
