@@ -68,4 +68,7 @@ Watch the intro video on YouTube: https://www.youtube.com/watch?v=UE4rmjhEs4U
   <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/08_side_by_side_2.png" width=70% height=75%>
 </div>
 
-You can contact me using this E-Mail address: vincentengelsoftware@gmail.com
+# Contact
+<div>
+  <p>You can contact me using this E-Mail address: <a href="mailto:vincentengelsoftware@gmail.com">vincentengelsoftware@gmail.com</a></p>
+</div>
