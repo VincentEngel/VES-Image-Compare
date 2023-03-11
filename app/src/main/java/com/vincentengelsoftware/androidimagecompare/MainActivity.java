@@ -2,6 +2,7 @@ package com.vincentengelsoftware.androidimagecompare;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -27,6 +28,7 @@ import androidx.window.layout.WindowMetricsCalculator;
 import com.vincentengelsoftware.androidimagecompare.globals.Dimensions;
 import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
+import com.vincentengelsoftware.androidimagecompare.helper.Calculator;
 import com.vincentengelsoftware.androidimagecompare.helper.KeyValueStorage;
 import com.vincentengelsoftware.androidimagecompare.helper.MainHelper;
 import com.vincentengelsoftware.androidimagecompare.helper.ShouldAskForReview;
@@ -94,6 +96,10 @@ public class MainActivity extends AppCompatActivity {
             Dimensions.maxSide = Math.max(windowMetrics.getBounds().height(), windowMetrics.getBounds().width());
         }
 
+        if (Dimensions.maxSide <= 640) {
+            this.smallScreenAdjustment();
+        }
+
         if (Dimensions.maxSideForPreview == 0) {
             Dimensions.maxSideForPreview = Math.round(
                     TypedValue.applyDimension(
@@ -122,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
         resizeLeftImage.setOnCheckedChangeListener((compoundButton, b) -> Images.first.setResizeImageToScreen(b));
         resizeLeftImage.setOnLongClickListener(view -> {
             Toast.makeText(getApplicationContext(), "Resize left image to screen size", Toast.LENGTH_SHORT).show();
-            return false;
+            return true;
         });
 
         SwitchCompat resizeRightImage = findViewById(R.id.main_switch_resize_image_right);
@@ -130,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
         resizeRightImage.setOnCheckedChangeListener((compoundButton, b) -> Images.second.setResizeImageToScreen(b));
         resizeRightImage.setOnLongClickListener(view -> {
             Toast.makeText(getApplicationContext(), "Resize right image to screen size", Toast.LENGTH_SHORT).show();
-            return false;
+            return true;
         });
 
         if (Status.handleIntentOnCreate) {
@@ -139,6 +145,19 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Status.hasHardwareKey = ViewConfiguration.get(this).hasPermanentMenuKey();
+    }
+
+    private void smallScreenAdjustment() {
+        if (getResources().getConfiguration().orientation != Configuration.ORIENTATION_PORTRAIT) {
+            return;
+        }
+
+        TextView title = findViewById(R.id.main_text_view_title);
+        title.setPadding(0, Calculator.DpToPx2(64, getResources()), 0, 0);
+        SwitchCompat resizeLeft = findViewById(R.id.main_switch_resize_image_left);
+        resizeLeft.setTextSize((float) 10);
+        SwitchCompat resizeRight = findViewById(R.id.main_switch_resize_image_right);
+        resizeRight.setTextSize((float) 10);
     }
 
     @Override
@@ -354,7 +373,7 @@ public class MainActivity extends AppCompatActivity {
         );
         swapImages.setOnLongClickListener(view -> {
             Toast.makeText(getApplicationContext(), "Swap Images", Toast.LENGTH_SHORT).show();
-            return false;
+            return true;
         });
 
         ImageButton extensions = findViewById(R.id.home_button_extensions);
@@ -374,7 +393,7 @@ public class MainActivity extends AppCompatActivity {
         });
         extensions.setOnLongClickListener(view -> {
             Toast.makeText(getApplicationContext(), "Show details in Tap and Side-by-Side", Toast.LENGTH_SHORT).show();
-            return false;
+            return true;
         });
 
         ImageButton linkedZoom = findViewById(R.id.home_button_link_zoom);
@@ -394,7 +413,7 @@ public class MainActivity extends AppCompatActivity {
         });
         linkedZoom.setOnLongClickListener(view -> {
             Toast.makeText(getApplicationContext(), "Sync zoom between images in comparison modes", Toast.LENGTH_SHORT).show();
-            return false;
+            return true;
         });
 
         ImageButton rotateImageLeft = findViewById(R.id.home_button_rotate_image_left);
@@ -405,7 +424,7 @@ public class MainActivity extends AppCompatActivity {
         );
         rotateImageLeft.setOnLongClickListener(view -> {
             Toast.makeText(getApplicationContext(), "Rotate the left image", Toast.LENGTH_SHORT).show();
-            return false;
+            return true;
         });
 
         ImageButton rotateImageRight = findViewById(R.id.home_button_rotate_image_right);
@@ -416,7 +435,7 @@ public class MainActivity extends AppCompatActivity {
         );
         rotateImageRight.setOnLongClickListener(view -> {
             Toast.makeText(getApplicationContext(), "Rotate the right image", Toast.LENGTH_SHORT).show();
-            return false;
+            return true;
         });
 
         addLoadImageLogic(

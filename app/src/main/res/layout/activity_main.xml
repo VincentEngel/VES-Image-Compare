@@ -37,7 +37,7 @@
                     app:strokeWidth="1dp" />
 
                 <TextView
-                    android:id="@+id/info_text_view_color_theme"
+                    android:id="@+id/main_text_view_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"

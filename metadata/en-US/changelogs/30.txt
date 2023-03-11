@@ -1,0 +1,7 @@
+* Slightly improve small screen main activity
+* Don' trigger onClick if onLongClick triggered in main_activity for info
+* upgrade compileSdk and targetSdk from 32 to 33
+* upgrade androidx.appcompat from 1.5.1 to 1.6.1
+* upgrade com.google.android.material from 1.7.0 to 1.8.0
+* upgrade androidx.core from 1.8.0 to 1.9.0
+* switch to maintained fork of subsampling-scale-image-view: com.github.tibbi:subsampling-scale-image-view:3a11e90

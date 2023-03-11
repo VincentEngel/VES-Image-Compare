@@ -4,11 +4,6 @@ import android.content.res.Resources;
 import android.util.TypedValue;
 
 public class Calculator {
-    public static int DpToPx(int dp, Resources resources)
-    {
-        return (int) (dp * resources.getDisplayMetrics().density);
-    }
-
     public static int DpToPx2(int dp, Resources resources)
     {
         return (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, resources.getDisplayMetrics()));
