@@ -39,7 +39,7 @@ public class ZoomImageView extends SubsamplingScaleImageView implements VesImage
 
     @Override
     public void setBitmapImage(Bitmap bitmap) {
-        super.setImage(ImageSource.bitmap(bitmap));
+        super.setImage(ImageSource.Companion.bitmap(bitmap));
     }
 
     @Override
