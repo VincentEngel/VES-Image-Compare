@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">VES - Image and Photo Compare</string>
-    <string name="link_github_subsampling_scale_image_view"><a href="https://github.com/davemorrissey/subsampling-scale-image-view">Subsampling Scale Image View</a></string>
+    <string name="link_github_subsampling_scale_image_view"><a href="https://github.com/tibbi/subsampling-scale-image-view">Subsampling Scale Image View</a></string>
     <string name="link_github_project"><a href="https://github.com/VincentEngel/VES-Image-Compare">VES - Image and Photo Compare</a></string>
     <string name="ves_image_compare">VES - Image and Photo Compare</string>
     <string name="github_project">GitHub Project</string>
