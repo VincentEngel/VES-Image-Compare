@@ -315,18 +315,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-    @Override
-    public void onBackPressed() {
-        if (pressedTime + 2000 > System.currentTimeMillis()) {
-            super.onBackPressed();
-            this.finishAndRemoveTask();
-        } else {
-            Toast.makeText(getApplicationContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
-        }
-        pressedTime = System.currentTimeMillis();
-    }
-
     private void setUpActions()
     {
         addButtonChangeActivityLogic(

@@ -1,1 +1,2 @@
 * Adjust long description for AppStores
+* Fix bug when sharing images to closed app (via back button)
