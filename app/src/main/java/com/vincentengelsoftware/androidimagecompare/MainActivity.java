@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
             Dimensions.maxSide = Math.max(windowMetrics.getBounds().height(), windowMetrics.getBounds().width());
         }
 
-        if (Dimensions.maxSide <= 640) {
+        if (Dimensions.maxSide <= 854) {
             this.smallScreenAdjustment();
         }
 
