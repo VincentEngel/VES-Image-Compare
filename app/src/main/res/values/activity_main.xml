@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="system_button_padding_top">112dp</dimen>
+    <dimen name="system_button_padding_bot">48dp</dimen>
+    <dimen name="system_button_layout_width">118dp</dimen>
+    <dimen name="system_button_layout_margin">12dp</dimen>
+    <dimen name="info_button_layout_margin">12dp</dimen>
+    <dimen name="text_size">16sp</dimen>
+    <dimen name="title_text_size">24sp</dimen>
+    <dimen name="title_padding_top">112dp</dimen>
+    <dimen name="title_padding_bot">48dp</dimen>
+    <dimen name="title_padding_start">0dp</dimen>
+    <dimen name="image_layout_side">148dp</dimen>
+    <dimen name="image_name_container_padding_vertical">12dp</dimen>
+    <dimen name="image_modifier_container_padding_start">10dp</dimen>
+    <dimen name="image_modifier_container_padding_top">20dp</dimen>
+    <dimen name="image_modifier_container_padding_end">10dp</dimen>
+    <dimen name="image_modifier_container_padding_bottom">20dp</dimen>
+    <dimen name="image_modifier_container_margin">12dp</dimen>
+    <dimen name="activity_button_text_size">22sp</dimen>
+    <dimen name="activity_button_margin">12dp</dimen>
+    <dimen name="activity_button_width">188dp</dimen>
+</resources>

@@ -96,10 +96,6 @@ public class MainActivity extends AppCompatActivity {
             Dimensions.maxSide = Math.max(windowMetrics.getBounds().height(), windowMetrics.getBounds().width());
         }
 
-        if (Dimensions.maxSide <= 854) {
-            this.smallScreenAdjustment();
-        }
-
         if (Dimensions.maxSideForPreview == 0) {
             Dimensions.maxSideForPreview = Math.round(
                     TypedValue.applyDimension(
@@ -145,30 +141,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Status.hasHardwareKey = ViewConfiguration.get(this).hasPermanentMenuKey();
-    }
-
-    // TODO remove this and instead create layout for small screens
-    private void smallScreenAdjustment() {
-        SwitchCompat resizeLeft = findViewById(R.id.main_switch_resize_image_left);
-        resizeLeft.setTextSize((float) 10);
-        SwitchCompat resizeRight = findViewById(R.id.main_switch_resize_image_right);
-        resizeRight.setTextSize((float) 10);
-
-        if (getResources().getConfiguration().orientation != Configuration.ORIENTATION_PORTRAIT) {
-            Button btnSlide = findViewById(R.id.button_overlay_slide);
-            btnSlide.setTextSize(18);
-            Button btnSide = findViewById(R.id.button_side_by_side);
-            btnSide.setTextSize(18);
-            Button btnTap = findViewById(R.id.button_overlay_tap);
-            btnTap.setTextSize(18);
-            Button btnTrans = findViewById(R.id.button_overlay_transparent);
-            btnTrans.setTextSize(18);
-
-            return;
-        }
-
-        TextView title = findViewById(R.id.main_text_view_title);
-        title.setPadding(0, Calculator.DpToPx2(64, getResources()), 0, 0);
     }
 
     @Override

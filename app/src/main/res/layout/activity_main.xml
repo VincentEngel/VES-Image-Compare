@@ -26,12 +26,12 @@
 
                 <Button
                     android:id="@+id/home_theme"
-                    android:layout_width="118dp"
+                    android:layout_width="@dimen/system_button_layout_width"
                     android:layout_height="wrap_content"
-                    android:layout_margin="12dp"
+                    android:layout_margin="@dimen/system_button_layout_margin"
                     android:text="@string/system"
                     android:textColor="@color/text_color"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/text_size"
                     app:cornerRadius="8dp"
                     app:strokeColor="@color/text_color"
                     app:strokeWidth="1dp" />
@@ -41,18 +41,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:paddingTop="112dp"
-                    android:paddingBottom="48dp"
+                    android:paddingStart="@dimen/title_padding_start"
+                    android:paddingTop="@dimen/title_padding_top"
+                    android:paddingBottom="@dimen/title_padding_bot"
                     android:text="@string/ves_image_compare"
                     android:textColor="@color/text_color"
-                    android:textSize="24sp" />
+                    android:textSize="@dimen/title_text_size"
+                    tools:ignore="RtlSymmetry" />
 
                 <ImageButton
                     android:id="@+id/home_button_info"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_gravity="top|end"
-                    android:layout_margin="12dp"
+                    android:layout_margin="@dimen/info_button_layout_margin"
                     android:contentDescription="@string/show_information"
                     app:srcCompat="@drawable/ic_info_outline"
                     tools:ignore="DuplicateSpeakableTextCheck" />
@@ -77,8 +79,8 @@
 
                         <ImageView
                             android:id="@+id/home_image_first"
-                            android:layout_width="148dp"
-                            android:layout_height="148dp"
+                            android:layout_width="@dimen/image_layout_side"
+                            android:layout_height="@dimen/image_layout_side"
                             android:layout_gravity="center_horizontal"
                             android:layout_margin="12dp"
                             android:contentDescription="@string/first_image"
@@ -142,8 +144,8 @@
 
                         <ImageView
                             android:id="@+id/home_image_second"
-                            android:layout_width="148dp"
-                            android:layout_height="148dp"
+                            android:layout_width="@dimen/image_layout_side"
+                            android:layout_height="@dimen/image_layout_side"
                             android:layout_gravity="center_horizontal"
                             android:layout_margin="12dp"
                             android:contentDescription="@string/second_image"
@@ -155,7 +157,7 @@
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:paddingVertical="12dp">
+                    android:paddingVertical="@dimen/image_name_container_padding_vertical">
 
                     <TextView
                         android:id="@+id/main_text_view_name_image_left"
@@ -164,7 +166,8 @@
                         android:layout_marginEnd="24dp"
                         android:layout_weight="1"
                         android:paddingHorizontal="8dp"
-                        android:text="@string/image_name" />
+                        android:text="@string/image_name"
+                        android:textSize="@dimen/text_size" />
 
                     <TextView
                         android:id="@+id/main_text_view_name_image_right"
@@ -173,7 +176,8 @@
                         android:layout_marginStart="24dp"
                         android:layout_weight="1"
                         android:paddingHorizontal="8dp"
-                        android:text="@string/image_name" />
+                        android:text="@string/image_name"
+                        android:textSize="@dimen/text_size" />
 
                 </TableRow>
 
@@ -184,13 +188,13 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="24dp"
+                        android:layout_marginEnd="@dimen/image_modifier_container_margin"
                         android:layout_weight="1"
                         android:orientation="horizontal"
-                        android:paddingStart="10dp"
-                        android:paddingTop="20dp"
-                        android:paddingEnd="10dp"
-                        android:paddingBottom="20dp">
+                        android:paddingStart="@dimen/image_modifier_container_padding_start"
+                        android:paddingTop="@dimen/image_modifier_container_padding_top"
+                        android:paddingEnd="@dimen/image_modifier_container_padding_end"
+                        android:paddingBottom="@dimen/image_modifier_container_padding_bottom">
 
                         <androidx.appcompat.widget.SwitchCompat
                             android:id="@+id/main_switch_resize_image_left"
@@ -199,7 +203,7 @@
                             android:gravity="center"
                             android:text="@string/resize"
                             android:textColor="@color/text_color"
-                            android:textSize="18sp"
+                            android:textSize="@dimen/text_size"
                             tools:ignore="DuplicateSpeakableTextCheck" />
 
                         <ImageButton
@@ -216,13 +220,13 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
+                        android:layout_marginStart="@dimen/image_modifier_container_margin"
                         android:layout_weight="1"
                         android:orientation="horizontal"
-                        android:paddingStart="10dp"
-                        android:paddingTop="20dp"
-                        android:paddingEnd="10dp"
-                        android:paddingBottom="20dp">
+                        android:paddingStart="@dimen/image_modifier_container_padding_start"
+                        android:paddingTop="@dimen/image_modifier_container_padding_top"
+                        android:paddingEnd="@dimen/image_modifier_container_padding_end"
+                        android:paddingBottom="@dimen/image_modifier_container_padding_bottom">
 
                         <androidx.appcompat.widget.SwitchCompat
                             android:id="@+id/main_switch_resize_image_right"
@@ -231,7 +235,7 @@
                             android:gravity="center"
                             android:text="@string/resize"
                             android:textColor="@color/text_color"
-                            android:textSize="18sp" />
+                            android:textSize="@dimen/text_size" />
 
                         <ImageButton
                             android:id="@+id/home_button_rotate_image_right"
@@ -267,13 +271,13 @@
                         <Button
                             android:id="@+id/button_overlay_slide"
                             style="@style/buttonStyles"
-                            android:layout_width="188dp"
+                            android:layout_width="@dimen/activity_button_width"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
-                            android:layout_margin="12dp"
+                            android:layout_margin="@dimen/activity_button_margin"
                             android:text="@string/overlay_slide"
                             android:textAllCaps="false"
-                            android:textSize="22sp" />
+                            android:textSize="@dimen/activity_button_text_size" />
                     </FrameLayout>
 
                     <FrameLayout
@@ -284,13 +288,13 @@
                         <Button
                             android:id="@+id/button_overlay_tap"
                             style="@style/buttonStyles"
-                            android:layout_width="188dp"
+                            android:layout_width="@dimen/activity_button_width"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
-                            android:layout_margin="12dp"
+                            android:layout_margin="@dimen/activity_button_margin"
                             android:text="@string/overlay_tap"
                             android:textAllCaps="false"
-                            android:textSize="22sp" />
+                            android:textSize="@dimen/activity_button_text_size" />
                     </FrameLayout>
 
                 </TableRow>
@@ -307,13 +311,13 @@
                         <Button
                             android:id="@+id/button_overlay_transparent"
                             style="@style/buttonStyles"
-                            android:layout_width="188dp"
+                            android:layout_width="@dimen/activity_button_width"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
-                            android:layout_margin="12dp"
+                            android:layout_margin="@dimen/activity_button_margin"
                             android:text="@string/transparent"
                             android:textAllCaps="false"
-                            android:textSize="22sp" />
+                            android:textSize="@dimen/activity_button_text_size" />
                     </FrameLayout>
 
                     <FrameLayout
@@ -324,13 +328,13 @@
                         <Button
                             android:id="@+id/button_side_by_side"
                             style="@style/buttonStyles"
-                            android:layout_width="188dp"
+                            android:layout_width="@dimen/activity_button_width"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
-                            android:layout_margin="12dp"
+                            android:layout_margin="@dimen/activity_button_margin"
                             android:text="@string/side_by_side"
                             android:textAllCaps="false"
-                            android:textSize="22sp" />
+                            android:textSize="@dimen/activity_button_text_size" />
                     </FrameLayout>
 
                 </TableRow>
