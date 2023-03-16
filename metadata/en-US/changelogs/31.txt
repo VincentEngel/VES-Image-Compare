@@ -1,3 +1,4 @@
 * Rework all screen layouts
 * Fix bug when sharing images to closed app (via back button)
 * Adjust long description for AppStores
+* Fix bugs

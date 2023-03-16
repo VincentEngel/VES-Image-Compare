@@ -2,6 +2,8 @@ package com.vincentengelsoftware.androidimagecompare;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
@@ -112,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
         restoreImageViews();
 
         setUpActions();
-
+        askForReview();
         if (ShouldAskForReview.check(getApplicationContext()))
         {
             askForReview();
@@ -598,11 +600,13 @@ public class MainActivity extends AppCompatActivity {
 
         builder.setPositiveButton("Open PlayStore", (dialogInterface, i) -> {
             try {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" +getPackageName())));
-            } catch (ActivityNotFoundException e1) {
+                // Will throw exception if the Google Play Store App is not installed
+                getPackageManager().getPackageInfo("com.android.vending", PackageManager.GET_META_DATA);
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getPackageName())));
+            } catch (Exception e1) {
                 try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" +getPackageName())));
-                } catch (ActivityNotFoundException ignored) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName())));
+                } catch (Exception ignored) {
                 }
             }
         });
