@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
         restoreImageViews();
 
         setUpActions();
-        askForReview();
+
         if (ShouldAskForReview.check(getApplicationContext()))
         {
             askForReview();
