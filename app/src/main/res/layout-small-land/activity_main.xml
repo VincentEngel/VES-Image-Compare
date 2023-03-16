@@ -8,6 +8,7 @@
     tools:context=".MainActivity">
 
     <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
@@ -26,12 +27,12 @@
 
                 <Button
                     android:id="@+id/home_theme"
-                    android:layout_width="@dimen/system_button_layout_width"
+                    android:layout_width="118dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/system_button_layout_margin"
+                    android:layout_margin="1dp"
                     android:text="@string/system"
                     android:textColor="@color/text_color"
-                    android:textSize="@dimen/text_size"
+                    android:textSize="16sp"
                     app:cornerRadius="8dp"
                     app:strokeColor="@color/text_color"
                     app:strokeWidth="1dp" />
@@ -41,20 +42,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:paddingStart="@dimen/title_padding_start"
-                    android:paddingTop="@dimen/title_padding_top"
-                    android:paddingBottom="@dimen/title_padding_bot"
+                    android:paddingStart="64dp"
+                    android:paddingTop="14dp"
                     android:text="@string/ves_image_compare"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/title_text_size"
-                    tools:ignore="RtlSymmetry" />
+                    android:textSize="16sp" />
 
                 <ImageButton
                     android:id="@+id/home_button_info"
-                    android:layout_width="@dimen/button_size"
-                    android:layout_height="@dimen/button_size"
-                    android:layout_gravity="top|end"
-                    android:layout_margin="@dimen/info_button_layout_margin"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="end"
+                    android:layout_margin="1dp"
                     android:contentDescription="@string/show_information"
                     app:srcCompat="@drawable/ic_info_outline"
                     tools:ignore="DuplicateSpeakableTextCheck" />
@@ -79,12 +77,12 @@
 
                         <ImageView
                             android:id="@+id/home_image_first"
-                            android:layout_width="@dimen/image_layout_side"
-                            android:layout_height="@dimen/image_layout_side"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_margin="12dp"
+                            android:layout_width="124dp"
+                            android:layout_height="124dp"
+                            android:layout_gravity="center"
                             android:contentDescription="@string/first_image"
                             app:srcCompat="@drawable/add_image" />
+
                     </FrameLayout>
 
                     <LinearLayout
@@ -99,8 +97,8 @@
 
                             <ImageButton
                                 android:id="@+id/home_button_link_zoom"
-                                android:layout_width="@dimen/button_size"
-                                android:layout_height="@dimen/button_size"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
                                 android:layout_gravity="top"
                                 android:contentDescription="@string/globally_enable_or_disable_linked_zoom"
                                 app:srcCompat="@drawable/ic_link" />
@@ -113,8 +111,8 @@
 
                             <ImageButton
                                 android:id="@+id/home_button_swap_images"
-                                android:layout_width="@dimen/button_size"
-                                android:layout_height="@dimen/button_size"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
                                 android:layout_gravity="center"
                                 android:contentDescription="@string/swap_images"
                                 app:srcCompat="@drawable/ic_swap_horiz"
@@ -128,8 +126,8 @@
 
                             <ImageButton
                                 android:id="@+id/home_button_extensions"
-                                android:layout_width="@dimen/button_size"
-                                android:layout_height="@dimen/button_size"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
                                 android:layout_gravity="bottom"
                                 android:contentDescription="@string/show_extensions_in_compare_modes"
                                 app:srcCompat="@drawable/ic_extension_on" />
@@ -144,40 +142,13 @@
 
                         <ImageView
                             android:id="@+id/home_image_second"
-                            android:layout_width="@dimen/image_layout_side"
-                            android:layout_height="@dimen/image_layout_side"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_margin="12dp"
+                            android:layout_width="124dp"
+                            android:layout_height="124dp"
+                            android:layout_gravity="center"
                             android:contentDescription="@string/second_image"
                             app:srcCompat="@drawable/add_image" />
+
                     </FrameLayout>
-
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:paddingVertical="@dimen/image_name_container_padding_vertical">
-
-                    <TextView
-                        android:id="@+id/main_text_view_name_image_left"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="24dp"
-                        android:layout_weight="1"
-                        android:paddingHorizontal="8dp"
-                        android:text="@string/image_name"
-                        android:textSize="@dimen/text_size" />
-
-                    <TextView
-                        android:id="@+id/main_text_view_name_image_right"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:layout_weight="1"
-                        android:paddingHorizontal="8dp"
-                        android:text="@string/image_name"
-                        android:textSize="@dimen/text_size" />
 
                 </TableRow>
 
@@ -185,157 +156,150 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <LinearLayout
-                        android:layout_width="0dp"
+                    <TextView
+                        android:id="@+id/main_text_view_name_image_left"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/image_modifier_container_margin"
                         android:layout_weight="1"
-                        android:orientation="horizontal"
-                        android:paddingStart="@dimen/image_modifier_container_padding_start"
-                        android:paddingTop="@dimen/image_modifier_container_padding_top"
-                        android:paddingEnd="@dimen/image_modifier_container_padding_end"
-                        android:paddingBottom="@dimen/image_modifier_container_padding_bottom">
+                        android:paddingVertical="1dp"
+                        android:text="@string/image_name"
+                        android:textSize="11sp" />
+
+                    <Space
+                        android:layout_width="48dp"
+                        android:layout_height="match_parent" />
+
+                    <TextView
+                        android:id="@+id/main_text_view_name_image_right"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingVertical="1dp"
+                        android:text="@string/image_name"
+                        android:textSize="11sp" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
 
                         <androidx.appcompat.widget.SwitchCompat
                             android:id="@+id/main_switch_resize_image_left"
                             android:layout_width="wrap_content"
-                            android:layout_height="48dp"
-                            android:gravity="center"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="24dp"
+                            android:gravity="start|center_vertical"
                             android:text="@string/resize"
                             android:textColor="@color/text_color"
-                            android:textSize="@dimen/text_size"
+                            android:textSize="18sp"
                             tools:ignore="DuplicateSpeakableTextCheck" />
 
                         <ImageButton
                             android:id="@+id/home_button_rotate_image_left"
-                            android:layout_width="@dimen/button_size"
-                            android:layout_height="@dimen/button_size"
-                            android:layout_marginStart="12dp"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_gravity="end"
                             android:contentDescription="@string/rotate_image_left"
-                            android:gravity="center"
                             app:srcCompat="@drawable/ic_rotate_right"
                             tools:ignore="ImageContrastCheck" />
-                    </LinearLayout>
+                    </FrameLayout>
 
-                    <LinearLayout
+                    <Space
+                        android:layout_width="48dp"
+                        android:layout_height="match_parent" />
+
+                    <FrameLayout
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/image_modifier_container_margin"
-                        android:layout_weight="1"
-                        android:orientation="horizontal"
-                        android:paddingStart="@dimen/image_modifier_container_padding_start"
-                        android:paddingTop="@dimen/image_modifier_container_padding_top"
-                        android:paddingEnd="@dimen/image_modifier_container_padding_end"
-                        android:paddingBottom="@dimen/image_modifier_container_padding_bottom">
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
 
                         <androidx.appcompat.widget.SwitchCompat
                             android:id="@+id/main_switch_resize_image_right"
                             android:layout_width="wrap_content"
                             android:layout_height="48dp"
-                            android:gravity="center"
+                            android:layout_gravity="start"
                             android:text="@string/resize"
                             android:textColor="@color/text_color"
-                            android:textSize="@dimen/text_size" />
+                            android:textSize="18sp" />
 
                         <ImageButton
                             android:id="@+id/home_button_rotate_image_right"
-                            android:layout_width="@dimen/button_size"
-                            android:layout_height="@dimen/button_size"
-                            android:layout_marginStart="12dp"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_gravity="center_vertical|end"
+                            android:layout_marginEnd="24dp"
                             android:contentDescription="@string/rotate_image_right"
-                            android:gravity="center"
                             app:srcCompat="@drawable/ic_rotate_right"
                             tools:ignore="ImageContrastCheck" />
-                    </LinearLayout>
-
+                    </FrameLayout>
                 </TableRow>
 
             </TableLayout>
 
             <TableLayout
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0.2"
+                android:collapseColumns="*"
                 android:gravity="bottom"
                 android:stretchColumns="*">
 
                 <TableRow
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent">
 
-                    <FrameLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1">
+                    <Button
+                        android:id="@+id/button_overlay_slide"
+                        style="@style/buttonStyles"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:layout_marginHorizontal="4dp"
+                        android:text="@string/overlay_slide"
+                        android:textAllCaps="false"
+                        android:textSize="22sp" />
 
-                        <Button
-                            android:id="@+id/button_overlay_slide"
-                            style="@style/buttonStyles"
-                            android:layout_width="@dimen/activity_button_width"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:layout_margin="@dimen/activity_button_margin"
-                            android:text="@string/overlay_slide"
-                            android:textAllCaps="false"
-                            android:textSize="@dimen/activity_button_text_size" />
-                    </FrameLayout>
-
-                    <FrameLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1">
-
-                        <Button
-                            android:id="@+id/button_overlay_tap"
-                            style="@style/buttonStyles"
-                            android:layout_width="@dimen/activity_button_width"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:layout_margin="@dimen/activity_button_margin"
-                            android:text="@string/overlay_tap"
-                            android:textAllCaps="false"
-                            android:textSize="@dimen/activity_button_text_size" />
-                    </FrameLayout>
-
+                    <Button
+                        android:id="@+id/button_overlay_tap"
+                        style="@style/buttonStyles"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:layout_marginHorizontal="4dp"
+                        android:text="@string/overlay_tap"
+                        android:textAllCaps="false"
+                        android:textSize="22sp" />
                 </TableRow>
 
                 <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:gravity="bottom"
+                    android:paddingBottom="2dp">
 
-                    <FrameLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1">
+                    <Button
+                        android:id="@+id/button_side_by_side"
+                        style="@style/buttonStyles"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:layout_marginHorizontal="4dp"
+                        android:text="@string/side_by_side"
+                        android:textAllCaps="false"
+                        android:textSize="22sp" />
 
-                        <Button
-                            android:id="@+id/button_overlay_transparent"
-                            style="@style/buttonStyles"
-                            android:layout_width="@dimen/activity_button_width"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:layout_margin="@dimen/activity_button_margin"
-                            android:text="@string/transparent"
-                            android:textAllCaps="false"
-                            android:textSize="@dimen/activity_button_text_size" />
-                    </FrameLayout>
-
-                    <FrameLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1">
-
-                        <Button
-                            android:id="@+id/button_side_by_side"
-                            style="@style/buttonStyles"
-                            android:layout_width="@dimen/activity_button_width"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:layout_margin="@dimen/activity_button_margin"
-                            android:text="@string/side_by_side"
-                            android:textAllCaps="false"
-                            android:textSize="@dimen/activity_button_text_size" />
-                    </FrameLayout>
+                    <Button
+                        android:id="@+id/button_overlay_transparent"
+                        style="@style/buttonStyles"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:layout_marginHorizontal="4dp"
+                        android:text="@string/transparent"
+                        android:textAllCaps="false"
+                        android:textSize="22sp" />
 
                 </TableRow>
 

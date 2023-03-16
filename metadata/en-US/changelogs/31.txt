@@ -1,3 +1,3 @@
-* Adjust long description for AppStores
+* Rework all screen layouts
 * Fix bug when sharing images to closed app (via back button)
-* Improve small screen layout
+* Adjust long description for AppStores
