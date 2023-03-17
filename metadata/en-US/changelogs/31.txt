@@ -2,3 +2,4 @@
 * Fix bug when sharing images to closed app (via back button)
 * Adjust long description for AppStores
 * Fix bugs
+* Update store images and video
