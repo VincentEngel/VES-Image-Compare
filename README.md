@@ -36,7 +36,7 @@ Watch the intro video on YouTube: https://www.youtube.com/watch?v=UE4rmjhEs4U
 
 ## Available comparisons
 <div>
-  <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/01_main.png" width=22% height=20%>
+  <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/01_main_1.png" width=22% height=20%>
   <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/06_main_2.png" width=70% height=20%>
 </div>
 
