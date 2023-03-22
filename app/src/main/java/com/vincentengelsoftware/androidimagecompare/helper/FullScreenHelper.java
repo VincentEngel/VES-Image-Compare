@@ -10,11 +10,6 @@ import androidx.core.view.WindowInsetsControllerCompat;
 public class FullScreenHelper {
     public static void setFullScreenFlags(Window window)
     {
-        window.setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN
-        );
-
         WindowCompat.setDecorFitsSystemWindows(window, false);
         WindowInsetsControllerCompat a = new WindowInsetsControllerCompat(window, window.getDecorView());
         a.hide(WindowInsetsCompat.Type.systemBars());
