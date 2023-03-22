@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="activity_button_text_size">28sp</dimen>
-    <dimen name="text_size">24sp</dimen>
+    <dimen name="text_size">22sp</dimen>
     <dimen name="image_layout_side">244dp</dimen>
     <dimen name="button_size">64dp</dimen>
     <dimen name="button_resize_margin_default">12dp</dimen>
