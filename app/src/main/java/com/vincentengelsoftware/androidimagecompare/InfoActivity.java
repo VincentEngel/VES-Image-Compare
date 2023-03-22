@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
@@ -49,7 +50,7 @@ public class InfoActivity extends AppCompatActivity {
 
         String version = "Unbekannt";
         try {
-            PackageInfo pinfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            PackageInfo pinfo = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_META_DATA);
             version = "v" + pinfo.versionName;
         } catch (Exception ignored) {
         }

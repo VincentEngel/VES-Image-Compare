@@ -8,6 +8,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 
 public class FullScreenHelper {
+    // Maybe this can be moved to a config file???
     public static void setFullScreenFlags(Window window)
     {
         WindowCompat.setDecorFitsSystemWindows(window, false);
