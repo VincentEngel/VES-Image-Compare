@@ -1,10 +1,7 @@
 package com.vincentengelsoftware.androidimagecompare;
 
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -30,7 +27,7 @@ import androidx.window.layout.WindowMetricsCalculator;
 import com.vincentengelsoftware.androidimagecompare.globals.Dimensions;
 import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
-import com.vincentengelsoftware.androidimagecompare.helper.Calculator;
+import com.vincentengelsoftware.androidimagecompare.helper.IntentHelper;
 import com.vincentengelsoftware.androidimagecompare.helper.KeyValueStorage;
 import com.vincentengelsoftware.androidimagecompare.helper.MainHelper;
 import com.vincentengelsoftware.androidimagecompare.helper.ShouldAskForReview;
@@ -43,8 +40,6 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
-    private long pressedTime;
-
     public static String leftImageUri;
     public static String rightImageUri;
     public static final String leftImageUriKey = "leftImageUriKey";
@@ -233,7 +228,7 @@ public class MainActivity extends AppCompatActivity {
      * TODO: Combine with handleSendMultipleImages by getting the urls and then passing them to a single handler method
      */
     void handleSendImage(Intent intent) {
-        Uri imageUri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
+        Uri imageUri = IntentHelper.getOutOfParcelableExtra(intent);
 
         if (imageUri != null) {
             ImageHolder imageHolder;
@@ -264,8 +259,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * TODO: Combine with handleSendImage by getting the urls and then passing them to a single handler method
+     */
     void handleSendMultipleImages(Intent intent) {
-        ArrayList<Uri> imageUris = intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
+        ArrayList<Uri> imageUris = IntentHelper.getOutOfParcelableArrayListExtra(intent);
 
         if (imageUris != null) {
             if (imageUris.get(0) != null) {
