@@ -21,37 +21,37 @@ public class BitmapHelperTest {
 
         bitmap = getBitmap(5, 10);
 
-        bitmap = SlideHelper.resizeBitmap(bitmap, 2, 5);
+        bitmap = BitmapHelper.resizeBitmap(bitmap, 2, 5);
         assertEquals(2, bitmap.getWidth());
         assertEquals(4, bitmap.getHeight());
 
         bitmap = getBitmap(5, 10);
 
-        bitmap = SlideHelper.resizeBitmap(bitmap, 5, 5);
+        bitmap = BitmapHelper.resizeBitmap(bitmap, 5, 5);
         assertEquals(2, bitmap.getWidth(), 1);
         assertEquals(5, bitmap.getHeight());
 
         bitmap = getBitmap(10, 10);
 
-        bitmap = SlideHelper.resizeBitmap(bitmap, 2, 5);
+        bitmap = BitmapHelper.resizeBitmap(bitmap, 2, 5);
         assertEquals(2, bitmap.getWidth());
         assertEquals(2, bitmap.getHeight());
 
         bitmap = getBitmap(10, 10);
 
-        bitmap = SlideHelper.resizeBitmap(bitmap, 5, 5);
+        bitmap = BitmapHelper.resizeBitmap(bitmap, 5, 5);
         assertEquals(5, bitmap.getWidth());
         assertEquals(5, bitmap.getHeight());
 
         bitmap = getBitmap(10, 5);
 
-        bitmap = SlideHelper.resizeBitmap(bitmap, 2, 5);
+        bitmap = BitmapHelper.resizeBitmap(bitmap, 2, 5);
         assertEquals(2, bitmap.getWidth());
         assertEquals(1, bitmap.getHeight());
 
         bitmap = getBitmap(10, 5);
 
-        bitmap = SlideHelper.resizeBitmap(bitmap, 5, 5);
+        bitmap = BitmapHelper.resizeBitmap(bitmap, 5, 5);
         assertEquals(5, bitmap.getWidth());
         assertEquals(3, bitmap.getHeight(), 1);
     }

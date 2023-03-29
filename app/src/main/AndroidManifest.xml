@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.any" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <application
         android:allowBackup="true"
+        android:fitsSystemWindows="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:fitsSystemWindows="false"
         android:theme="@style/Theme.VesAndroidImageCompare">
         <activity
+            android:name=".ExifDataActivity"
+            android:exported="false" />
+        <activity
             android:name=".FullSliderActivity"
-            android:exported="false">
-        </activity>
+            android:exported="false"/>
         <activity
             android:name=".SideBySideActivity"
             android:exported="false" />
@@ -35,20 +39,25 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:launchMode="singleTask"
-            android:exported="true"><!-- singleTask = Only allow one instance of this app -->
-            <intent-filter><!-- WHAT IS THIS FOR? -->
+            android:exported="true"
+            android:launchMode="singleTask"> <!-- singleTask = Only allow one instance of this app -->
+            <intent-filter> <!-- WHAT IS THIS FOR? -->
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="image/*" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.SEND_MULTIPLE" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="image/*" />
             </intent-filter>
         </activity>
@@ -58,12 +67,10 @@
             android:authorities="com.vincentengelsoftware.vesandroidimagecompare.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
-
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-
     </application>
 
 </manifest>

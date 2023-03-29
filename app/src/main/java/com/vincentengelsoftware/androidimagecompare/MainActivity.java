@@ -27,12 +27,12 @@ import androidx.window.layout.WindowMetricsCalculator;
 import com.vincentengelsoftware.androidimagecompare.globals.Dimensions;
 import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
-import com.vincentengelsoftware.androidimagecompare.helper.IntentHelper;
+import com.vincentengelsoftware.androidimagecompare.helper.UriExtractor;
 import com.vincentengelsoftware.androidimagecompare.helper.KeyValueStorage;
 import com.vincentengelsoftware.androidimagecompare.helper.MainHelper;
-import com.vincentengelsoftware.androidimagecompare.helper.ShouldAskForReview;
+import com.vincentengelsoftware.androidimagecompare.helper.AskForReview;
 import com.vincentengelsoftware.androidimagecompare.helper.Theme;
-import com.vincentengelsoftware.androidimagecompare.helper.UriHelper;
+import com.vincentengelsoftware.androidimagecompare.helper.BitmapExtractor;
 import com.vincentengelsoftware.androidimagecompare.util.ImageHolder;
 
 import java.io.File;
@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
 
         setUpActions();
 
-        if (ShouldAskForReview.check(getApplicationContext()))
+        if (AskForReview.isItTimeToAsk(getApplicationContext()))
         {
             askForReview();
             KeyValueStorage.setBoolean(getApplicationContext(), KeyValueStorage.ASKED_FOR_REVIEW, true);
@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
             try {
                 Uri uri = Uri.parse(KeyValueStorage.getString(getApplicationContext(), MainActivity.leftImageUriKey, null));
                 Images.first.updateFromBitmap(
-                        UriHelper.getBitmap(this.getContentResolver(), uri),
+                        BitmapExtractor.fromUri(this.getContentResolver(), uri),
                         Dimensions.maxSide,
                         Dimensions.maxSideForPreview,
                         MainHelper.getImageName(this, uri)
@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
             try {
                 Uri uri = Uri.parse(KeyValueStorage.getString(getApplicationContext(), MainActivity.rightImageUriKey, null));
                 Images.second.updateFromBitmap(
-                        UriHelper.getBitmap(this.getContentResolver(), uri),
+                        BitmapExtractor.fromUri(this.getContentResolver(), uri),
                         Dimensions.maxSide,
                         Dimensions.maxSideForPreview,
                         MainHelper.getImageName(this, uri)
@@ -228,7 +228,7 @@ public class MainActivity extends AppCompatActivity {
      * TODO: Combine with handleSendMultipleImages by getting the urls and then passing them to a single handler method
      */
     void handleSendImage(Intent intent) {
-        Uri imageUri = IntentHelper.getOutOfParcelableExtra(intent);
+        Uri imageUri = UriExtractor.getOutOfParcelableExtra(intent);
 
         if (imageUri != null) {
             ImageHolder imageHolder;
@@ -249,7 +249,7 @@ public class MainActivity extends AppCompatActivity {
 
             MainHelper.updateImageFromIntent(
                     imageHolder,
-                    UriHelper.getBitmap(this.getContentResolver(), imageUri),
+                    BitmapExtractor.fromUri(this.getContentResolver(), imageUri),
                     Dimensions.maxSide,
                     Dimensions.maxSideForPreview,
                     MainHelper.getImageName(this, imageUri),
@@ -263,13 +263,13 @@ public class MainActivity extends AppCompatActivity {
      * TODO: Combine with handleSendImage by getting the urls and then passing them to a single handler method
      */
     void handleSendMultipleImages(Intent intent) {
-        ArrayList<Uri> imageUris = IntentHelper.getOutOfParcelableArrayListExtra(intent);
+        ArrayList<Uri> imageUris = UriExtractor.getOutOfParcelableArrayListExtra(intent);
 
         if (imageUris != null) {
             if (imageUris.get(0) != null) {
                 MainHelper.updateImageFromIntent(
                         Images.first,
-                        UriHelper.getBitmap(this.getContentResolver(), imageUris.get(0)),
+                        BitmapExtractor.fromUri(this.getContentResolver(), imageUris.get(0)),
                         Dimensions.maxSide,
                         Dimensions.maxSideForPreview,
                         MainHelper.getImageName(this, imageUris.get(0)),
@@ -282,7 +282,7 @@ public class MainActivity extends AppCompatActivity {
             if (imageUris.get(1) != null) {
                 MainHelper.updateImageFromIntent(
                         Images.second,
-                        UriHelper.getBitmap(this.getContentResolver(), imageUris.get(1)),
+                        BitmapExtractor.fromUri(this.getContentResolver(), imageUris.get(1)),
                         Dimensions.maxSide,
                         Dimensions.maxSideForPreview,
                         MainHelper.getImageName(this, imageUris.get(1)),
@@ -494,7 +494,7 @@ public class MainActivity extends AppCompatActivity {
                             }
 
                             imageHolder.updateFromBitmap(
-                                    UriHelper.getBitmap(this.getContentResolver(), uri),
+                                    BitmapExtractor.fromUri(this.getContentResolver(), uri),
                                     Dimensions.maxSide,
                                     Dimensions.maxSideForPreview,
                                     MainHelper.getImageName(this, uri)
@@ -533,7 +533,7 @@ public class MainActivity extends AppCompatActivity {
                             }
 
                             imageHolder.updateFromBitmap(
-                                    UriHelper.getBitmap(this.getContentResolver(), uri),
+                                    BitmapExtractor.fromUri(this.getContentResolver(), uri),
                                     Dimensions.maxSide,
                                     Dimensions.maxSideForPreview,
                                     MainHelper.getImageName(this, uri)

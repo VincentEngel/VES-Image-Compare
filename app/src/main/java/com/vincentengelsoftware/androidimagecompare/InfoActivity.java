@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
-import com.vincentengelsoftware.androidimagecompare.helper.InfoHelper;
+import com.vincentengelsoftware.androidimagecompare.helper.TextViewModifier;
 
 public class InfoActivity extends AppCompatActivity {
 
@@ -23,18 +23,18 @@ public class InfoActivity extends AppCompatActivity {
         Status.activityIsOpening = false;
         setContentView(R.layout.activity_info);
 
-        InfoHelper.makeLinkClickable(findViewById(R.id.info_text_view_link_github_project));
-        InfoHelper.makeLinkClickable(findViewById(R.id.info_text_view_link_library));
-        InfoHelper.makeLinkClickable(findViewById(R.id.info_text_view_link_color_theme));
-        InfoHelper.makeLinkClickable(findViewById(R.id.info_text_view_link_google_material_icons));
-        InfoHelper.makeLinkClickable(findViewById(R.id.info_text_view_link_ditto_photo_comparer));
+        TextViewModifier.makeLinkClickable(findViewById(R.id.info_text_view_link_github_project));
+        TextViewModifier.makeLinkClickable(findViewById(R.id.info_text_view_link_library));
+        TextViewModifier.makeLinkClickable(findViewById(R.id.info_text_view_link_color_theme));
+        TextViewModifier.makeLinkClickable(findViewById(R.id.info_text_view_link_google_material_icons));
+        TextViewModifier.makeLinkClickable(findViewById(R.id.info_text_view_link_ditto_photo_comparer));
 
         TextView textViewPrivacyPolicy = findViewById(R.id.info_text_view_privacy_policy);
         textViewPrivacyPolicy.setText(Html.fromHtml(
                 getString(R.string.privacy_policy),
                 Html.FROM_HTML_MODE_LEGACY
         ));
-        InfoHelper.makeLinkClickable(textViewPrivacyPolicy);
+        TextViewModifier.makeLinkClickable(textViewPrivacyPolicy);
 
         Button playStore = findViewById(R.id.info_btn_open_playstore);
         playStore.setOnClickListener(view -> {

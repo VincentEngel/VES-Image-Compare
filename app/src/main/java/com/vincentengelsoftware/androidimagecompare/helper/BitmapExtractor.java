@@ -7,8 +7,8 @@ import android.net.Uri;
 
 import java.io.InputStream;
 
-public class UriHelper {
-    public static Bitmap getBitmap(ContentResolver cr, Uri uri)
+public class BitmapExtractor {
+    public static Bitmap fromUri(ContentResolver cr, Uri uri)
     {
         Bitmap bitmap;
 

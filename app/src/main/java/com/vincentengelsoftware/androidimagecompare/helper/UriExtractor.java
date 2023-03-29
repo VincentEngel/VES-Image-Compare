@@ -6,7 +6,7 @@ import android.os.Build;
 
 import java.util.ArrayList;
 
-public class IntentHelper {
+public class UriExtractor {
     @SuppressWarnings("deprecation")
     public static Uri getOutOfParcelableExtra(Intent intent) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {

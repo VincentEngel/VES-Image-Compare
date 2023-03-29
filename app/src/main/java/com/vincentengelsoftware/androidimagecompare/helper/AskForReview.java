@@ -5,12 +5,12 @@ import android.content.pm.PackageManager;
 
 import java.util.concurrent.TimeUnit;
 
-public class ShouldAskForReview {
+public class AskForReview {
     public static final int INSTALLED_FOR_AT_LEAST_DAYS = 30;
-    public static boolean check(Context context)
+    public static boolean isItTimeToAsk(Context context)
     {
         return !KeyValueStorage.getBoolean(context, KeyValueStorage.ASKED_FOR_REVIEW, false)
-                && isAppInstalledForDays(context, ShouldAskForReview.INSTALLED_FOR_AT_LEAST_DAYS);
+                && isAppInstalledForDays(context, AskForReview.INSTALLED_FOR_AT_LEAST_DAYS);
     }
 
     private static boolean isAppInstalledForDays(Context context, int days)

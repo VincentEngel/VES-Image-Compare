@@ -1,37 +1,13 @@
 package com.vincentengelsoftware.androidimagecompare.helper;
 
-import android.graphics.Bitmap;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 
-import com.vincentengelsoftware.androidimagecompare.OverlaySlideActivity;
+import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.animations.FadeActivity;
 import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
-import com.vincentengelsoftware.androidimagecompare.viewClasses.VesImageInterface;
-
-import com.vincentengelsoftware.androidimagecompare.R;
 
 public class SlideHelper {
-    public static Bitmap resizeBitmap(Bitmap image, int maxWidth, int maxHeight) {
-        int width = image.getWidth();
-        int height = image.getHeight();
-
-        float ratioBitmap = (float) width / (float) height;
-        float ratioMax = (float) maxWidth / (float) maxHeight;
-
-        int finalWidth = maxWidth;
-        int finalHeight = maxHeight;
-
-        if (ratioMax > ratioBitmap) {
-            finalWidth = (int) ((float)maxHeight * ratioBitmap);
-        } else {
-            finalHeight = (int) ((float)maxWidth / ratioBitmap);
-        }
-        image = Bitmap.createScaledBitmap(image, finalWidth, finalHeight, true);
-        return image;
-    }
-
     public static void setSwapSlideDirectionOnClick(
             ImageButton imageButton,
             SeekBar seekBar,
@@ -55,59 +31,6 @@ public class SlideHelper {
             }
             seekBar.setProgress(progress);
             activity.triggerFadeOutThread();
-        });
-    }
-
-    /**
-     * TODO: Improve speed(?) and move it to a thread
-     */
-    public static void addSeekbarLogic(
-            SeekBar seekBar,
-            VesImageInterface imageView,
-            UtilMutableBoolean cutFromRightToLeft,
-            Bitmap bitmapSource,
-            ImageButton hideShow
-    ) {
-        Bitmap transparentBitmap = BitmapHelper.createTransparentBitmap(
-                bitmapSource.getWidth(),
-                bitmapSource.getHeight()
-        );
-
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                if (!cutFromRightToLeft.value && (progress >= 99)) {
-                    hideShow.setImageResource(R.drawable.ic_visibility_off);
-                    imageView.setVisibility(View.GONE);
-                    return;
-                }
-
-                int width = bitmapSource.getWidth() * progress / 100;
-
-                if (cutFromRightToLeft.value && ((progress <= 1) || width == 0)) {
-                    hideShow.setImageResource(R.drawable.ic_visibility_off);
-                    imageView.setVisibility(View.GONE);
-                    return;
-                }
-
-                imageView.setBitmapImage(
-                        BitmapHelper.getCutBitmapWithTransparentBackgroundWithCanvas(
-                                bitmapSource,
-                                transparentBitmap,
-                                width,
-                                cutFromRightToLeft.value
-                        )
-                );
-
-                hideShow.setImageResource(R.drawable.ic_visibility);
-                imageView.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
         });
     }
 }
