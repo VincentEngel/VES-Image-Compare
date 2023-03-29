@@ -1,4 +1,4 @@
-package com.vincentengelsoftware.androidimagecompare.helper;
+package com.vincentengelsoftware.androidimagecompare.MetaData;
 
 import android.content.ContentResolver;
 import android.net.Uri;
@@ -10,7 +10,7 @@ import com.drew.metadata.Tag;
 
 import java.io.InputStream;
 
-public class MetaDataExtractor {
+public class Extractor {
     public static String[] getMetaData(ContentResolver cr, String path) {
         try {
             InputStream input = cr.openInputStream(Uri.parse(path));
@@ -18,8 +18,9 @@ public class MetaDataExtractor {
 
             for (Directory directory : metadata.getDirectories()) {
                 for (Tag tag : directory.getTags()) {
-                    tag.getTagType();
                     String name = tag.getTagName();
+                    String value = tag.getDescription();
+                    String directoryName = tag.getDirectoryName();
                 }
             }
 

@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.VesAndroidImageCompare">
         <activity
-            android:name=".ExifDataActivity"
+            android:name=".MetaDataActivity"
             android:exported="false" />
         <activity
             android:name=".FullSliderActivity"
