@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:keepScreenOn="true"
+    android:background="@color/background"
     tools:context=".MetaDataActivity">
 
     <ScrollView
@@ -17,6 +19,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingBottom="8dp"
             android:orientation="vertical">
 
             <TableLayout
@@ -90,7 +93,9 @@
                 android:id="@+id/MetaDataTable"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"></TableLayout>
+                android:shrinkColumns="*"
+                android:gravity="center_vertical">
+            </TableLayout>
         </LinearLayout>
     </ScrollView>
 

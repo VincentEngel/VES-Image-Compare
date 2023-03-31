@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="meta_data_title_text">
+        <item name="android:textSize">32sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="meta_data_subtitle_text">
+        <item name="android:textSize">24sp</item>
+    </style>
+    <style name="meta_data_value_text">
+        <item name="android:textSize">24sp</item>
+        <item name="android:paddingHorizontal">4dp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+</resources>

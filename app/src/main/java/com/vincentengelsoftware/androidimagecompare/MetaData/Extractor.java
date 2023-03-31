@@ -9,7 +9,6 @@ import com.drew.metadata.Metadata;
 import com.drew.metadata.Tag;
 
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Extractor {
