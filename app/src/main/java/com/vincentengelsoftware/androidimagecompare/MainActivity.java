@@ -162,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
                         Dimensions.maxSideForPreview,
                         MainHelper.getImageName(this, uri)
                 );
+                MainActivity.leftImageUri = uri.toString();
             } catch (Exception ignored) {
             }
         }
@@ -174,6 +175,7 @@ public class MainActivity extends AppCompatActivity {
                         Dimensions.maxSideForPreview,
                         MainHelper.getImageName(this, uri)
                 );
+                MainActivity.rightImageUri = uri.toString();
             } catch (Exception ignored) {
             }
         }

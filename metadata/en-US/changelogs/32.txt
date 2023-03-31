@@ -1,3 +1,5 @@
 * Improve layout for big screens
 * Improve Code
 * Support monochrome icon
+* Add MetaDataExtractor
+* Improve crash recovery

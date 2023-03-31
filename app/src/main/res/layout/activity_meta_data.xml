@@ -39,7 +39,7 @@
                             android:layout_width="122dp"
                             android:layout_height="122dp"
                             android:layout_gravity="center_horizontal"
-                            android:layout_margin="12dp"
+                            android:layout_marginTop="12dp"
                             android:contentDescription="@string/first_image"
                             app:srcCompat="@drawable/add_image" />
                     </FrameLayout>
@@ -54,7 +54,7 @@
                             android:layout_width="122dp"
                             android:layout_height="122dp"
                             android:layout_gravity="center_horizontal"
-                            android:layout_margin="12dp"
+                            android:layout_marginTop="12dp"
                             android:contentDescription="@string/second_image"
                             app:srcCompat="@drawable/add_image" />
                     </FrameLayout>
