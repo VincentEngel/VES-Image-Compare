@@ -40,4 +40,5 @@
     <string name="globally_enable_or_disable_linked_zoom">Globally enable or disable linked zoom</string>
     <string name="show_extensions_in_compare_modes">Show extensions in compare modes</string>
     <string name="version">Version</string>
+    <string name="compare">Compare</string>
 </resources>

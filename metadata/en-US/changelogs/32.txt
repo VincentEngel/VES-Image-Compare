@@ -3,3 +3,4 @@
 * Support monochrome icon
 * Add MetaDataExtractor
 * Improve crash recovery
+* Rework MainActivity compare modes opening

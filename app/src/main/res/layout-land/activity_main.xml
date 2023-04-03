@@ -60,7 +60,7 @@
 
             <TableLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_weight="1"
                 android:gravity="center_vertical">
 
@@ -250,63 +250,16 @@
 
             </TableLayout>
 
-            <TableLayout
-                android:layout_width="match_parent"
+            <Button
+                android:id="@+id/main_button_compare"
+                style="@style/buttonStyles"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.2"
-                android:collapseColumns="*"
-                android:gravity="bottom"
-                android:stretchColumns="*">
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="bottom"
-                    android:paddingBottom="12dp">
-
-                    <Button
-                        android:id="@+id/button_overlay_slide"
-                        style="@style/buttonStyles"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="@string/overlay_slide"
-                        android:textAllCaps="false"
-                        android:textSize="@dimen/activity_button_text_size" />
-
-                    <Button
-                        android:id="@+id/button_side_by_side"
-                        style="@style/buttonStyles"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="@string/side_by_side"
-                        android:textAllCaps="false"
-                        android:textSize="@dimen/activity_button_text_size" />
-
-                    <Button
-                        android:id="@+id/button_overlay_tap"
-                        style="@style/buttonStyles"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="@string/overlay_tap"
-                        android:textAllCaps="false"
-                        android:textSize="@dimen/activity_button_text_size" />
-
-                    <Button
-                        android:id="@+id/button_overlay_transparent"
-                        style="@style/buttonStyles"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="@string/transparent"
-                        android:textAllCaps="false"
-                        android:textSize="@dimen/activity_button_text_size" />
-
-                </TableRow>
-
-            </TableLayout>
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/activity_button_margin"
+                android:text="@string/compare"
+                android:textAllCaps="false"
+                android:textSize="@dimen/activity_button_text_size" />
 
         </LinearLayout>
     </ScrollView>

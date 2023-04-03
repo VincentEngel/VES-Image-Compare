@@ -24,15 +24,16 @@ import androidx.core.content.FileProvider;
 import androidx.window.layout.WindowMetrics;
 import androidx.window.layout.WindowMetricsCalculator;
 
+import com.vincentengelsoftware.androidimagecompare.globals.Activities;
 import com.vincentengelsoftware.androidimagecompare.globals.Dimensions;
 import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
-import com.vincentengelsoftware.androidimagecompare.helper.UriExtractor;
+import com.vincentengelsoftware.androidimagecompare.helper.AskForReview;
+import com.vincentengelsoftware.androidimagecompare.helper.BitmapExtractor;
 import com.vincentengelsoftware.androidimagecompare.helper.KeyValueStorage;
 import com.vincentengelsoftware.androidimagecompare.helper.MainHelper;
-import com.vincentengelsoftware.androidimagecompare.helper.AskForReview;
 import com.vincentengelsoftware.androidimagecompare.helper.Theme;
-import com.vincentengelsoftware.androidimagecompare.helper.BitmapExtractor;
+import com.vincentengelsoftware.androidimagecompare.helper.UriExtractor;
 import com.vincentengelsoftware.androidimagecompare.util.ImageHolder;
 
 import java.io.File;
@@ -302,25 +303,33 @@ public class MainActivity extends AppCompatActivity {
 
     private void setUpActions()
     {
-        addButtonChangeActivityLogic(
-                findViewById(R.id.button_side_by_side),
-                SideBySideActivity.class
-        );
+        findViewById(R.id.main_button_compare).setOnClickListener(view -> {
+            String[] compareActivities = {
+                    Activities.OVERLAY_SLIDE,
+                    Activities.SIDE_BY_SIDE,
+                    Activities.OVERLAY_TAP,
+                    Activities.TRANSPARENT,
+                    Activities.META_DATA
+            };
 
-        addButtonChangeActivityLogic(
-                findViewById(R.id.button_overlay_tap),
-                OverlayTapActivity.class
-        );
-
-        addButtonChangeActivityLogic(
-                findViewById(R.id.button_overlay_slide),
-                OverlaySlideActivity.class
-        );
-
-        addButtonChangeActivityLogic(
-                findViewById(R.id.button_overlay_transparent),
-                OverlayTransparentActivity.class
-        );
+            // TODO make dialog look better
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Pick Compare Mode");
+            builder.setItems(compareActivities, (dialog, activity) -> {
+                if (Activities.OVERLAY_SLIDE.equals(compareActivities[activity])) {
+                    openCompareActivity(OverlaySlideActivity.class);
+                } else if (Activities.SIDE_BY_SIDE.equals(compareActivities[activity])) {
+                    openCompareActivity(SideBySideActivity.class);
+                } else if (Activities.OVERLAY_TAP.equals(compareActivities[activity])) {
+                    openCompareActivity(OverlayTapActivity.class);
+                } else if (Activities.TRANSPARENT.equals(compareActivities[activity])) {
+                    openCompareActivity(OverlayTransparentActivity.class);
+                } else if (Activities.META_DATA.equals(compareActivities[activity])) {
+                    openCompareActivity(MetaDataActivity.class);
+                }
+            });
+            builder.show();
+        });
 
         findViewById(R.id.home_button_info).setOnClickListener(view -> {
             if (Status.activityIsOpening) {
@@ -439,40 +448,40 @@ public class MainActivity extends AppCompatActivity {
             Theme.updateTheme(Status.THEME);
         });
     }
-    private void addButtonChangeActivityLogic(Button btn, Class<?> targetActivity)
+
+    private void openCompareActivity(Class<?> targetActivity)
     {
-        btn.setOnClickListener(view -> {
-            if (
-                    Images.first.getBitmap() == null
-                            || Images.second.getBitmap() == null
-                            || Status.activityIsOpening
-            ) {
-                return;
-            }
+        if (
+                Images.first.getBitmap() == null
+                        || Images.second.getBitmap() == null
+                        || Status.activityIsOpening
+        ) {
+            Toast.makeText(getApplicationContext(), "Select two pictures first", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-            Status.activityIsOpening = true;
+        Status.activityIsOpening = true;
 
-            Intent intent = new Intent(getApplicationContext(), targetActivity);
+        Intent intent = new Intent(getApplicationContext(), targetActivity);
 
-            Thread t = new Thread(() -> {
-                runOnUiThread(() -> {
-                    ProgressBar spinner = findViewById(R.id.pbProgess);
-                    spinner.setVisibility(View.VISIBLE);
-                });
-
-                Images.first.calculateRotatedBitmap();
-                Images.second.calculateRotatedBitmap();
-
-                runOnUiThread(() -> {
-                    ProgressBar spinner = findViewById(R.id.pbProgess);
-                    spinner.setVisibility(View.GONE);
-                });
-
-                startActivity(intent);
+        Thread t = new Thread(() -> {
+            runOnUiThread(() -> {
+                ProgressBar spinner = findViewById(R.id.pbProgess);
+                spinner.setVisibility(View.VISIBLE);
             });
 
-            t.start();
+            Images.first.calculateRotatedBitmap();
+            Images.second.calculateRotatedBitmap();
+
+            runOnUiThread(() -> {
+                ProgressBar spinner = findViewById(R.id.pbProgess);
+                spinner.setVisibility(View.GONE);
+            });
+
+            startActivity(intent);
         });
+
+        t.start();
     }
 
     private void addLoadImageLogic(int imageViewId , String imageHolderName, int imageNameTextId, String UriPath) {
@@ -612,6 +621,6 @@ public class MainActivity extends AppCompatActivity {
         });
         builder.setNegativeButton("Don't show up again", (dialogInterface, i) -> {});
 
-        builder.create().show();
+        builder.show();
     }
 }
