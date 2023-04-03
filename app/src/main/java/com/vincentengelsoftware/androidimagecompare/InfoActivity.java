@@ -24,7 +24,8 @@ public class InfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_info);
 
         TextViewModifier.makeLinkClickable(findViewById(R.id.info_text_view_link_github_project));
-        TextViewModifier.makeLinkClickable(findViewById(R.id.info_text_view_link_library));
+        TextViewModifier.makeLinkClickable(findViewById(R.id.info_text_view_link_library_subsampling_scale_image_view));
+        TextViewModifier.makeLinkClickable(findViewById(R.id.info_text_view_link_library_metadata_extractor));
         TextViewModifier.makeLinkClickable(findViewById(R.id.info_text_view_link_color_theme));
         TextViewModifier.makeLinkClickable(findViewById(R.id.info_text_view_link_google_material_icons));
         TextViewModifier.makeLinkClickable(findViewById(R.id.info_text_view_link_ditto_photo_comparer));

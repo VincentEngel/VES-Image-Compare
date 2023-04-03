@@ -4,7 +4,7 @@
     <string name="link_github_project"><a href="https://github.com/VincentEngel/VES-Image-Compare">VES - Image and Photo Compare</a></string>
     <string name="ves_image_compare">VES - Image and Photo Compare</string>
     <string name="github_project">GitHub Project</string>
-    <string name="used_library">Used Library</string>
+    <string name="used_libraries">Used Libraries</string>
     <string name="first_image">First Image</string>
     <string name="second_image">Second Image</string>
     <string name="transparent">Transparent</string>
@@ -41,4 +41,5 @@
     <string name="show_extensions_in_compare_modes">Show extensions in compare modes</string>
     <string name="version">Version</string>
     <string name="compare">Compare</string>
+    <string name="metadata_extractor"><a href="https://github.com/drewnoakes/metadata-extractor">Metadata Extractor</a></string>
 </resources>

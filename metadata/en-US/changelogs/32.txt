@@ -4,3 +4,4 @@
 * Add MetaDataExtractor
 * Improve crash recovery
 * Rework MainActivity compare modes opening
+* Add Metadata Extractor Library to InfoActivity

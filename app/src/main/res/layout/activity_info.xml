@@ -114,23 +114,36 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="15dp"
-                            android:text="@string/used_library"
+                            android:text="@string/used_libraries"
                             android:textSize="16sp" />
                     </FrameLayout>
 
-                    <FrameLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/info_text_view_link_library"
+                            android:id="@+id/info_text_view_link_library_subsampling_scale_image_view"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="start"
                             android:paddingTop="15dp"
                             android:paddingBottom="15dp"
                             android:text="@string/link_github_subsampling_scale_image_view"
                             android:textSize="16sp" />
-                    </FrameLayout>
+
+                        <TextView
+                            android:id="@+id/info_text_view_link_library_metadata_extractor"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:paddingTop="15dp"
+                            android:paddingBottom="15dp"
+                            android:text="@string/metadata_extractor"
+                            android:textSize="16sp" />
+
+                    </LinearLayout>
                 </TableRow>
 
                 <TableRow
