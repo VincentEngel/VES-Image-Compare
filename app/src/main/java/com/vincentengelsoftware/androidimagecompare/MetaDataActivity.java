@@ -90,13 +90,12 @@ public class MetaDataActivity extends AppCompatActivity {
 
                             valueTextFirst.setText(valueFirst);
                             valueTextFirst.setTextAppearance(R.style.meta_data_value_text);
-                            valueTextFirst.setBackground(ContextCompat.getDrawable(this.getApplicationContext(), R.drawable.meta_data_text_view_value_border_second));
                             valueTextSecond.setText(valueSecond);
                             valueTextSecond.setTextAppearance(R.style.meta_data_value_text);
-                            valueTextSecond.setBackground(ContextCompat.getDrawable(this.getApplicationContext(), R.drawable.meta_data_text_view_value_border_first));
 
                             valueRow.addView(valueTextFirst);
                             valueRow.addView(valueTextSecond);
+                            valueRow.setBackgroundResource(R.drawable.meta_data_table_row_value_border_bottom);
                             metaDataTable.addView(valueRow);
                         });
                     }
