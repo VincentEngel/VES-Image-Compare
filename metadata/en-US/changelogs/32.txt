@@ -5,3 +5,4 @@
 * Improve crash recovery
 * Rework MainActivity compare modes opening
 * Add Metadata Extractor Library to InfoActivity
+* Use custom dialog for "select compare mode"

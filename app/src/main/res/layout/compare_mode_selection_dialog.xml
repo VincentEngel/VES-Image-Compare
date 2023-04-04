@@ -22,8 +22,9 @@
                 android:textSize="@dimen/title_text_size" />
 
             <TableLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:paddingHorizontal="12dp"
                 android:paddingBottom="12dp">
 
                 <TableRow
