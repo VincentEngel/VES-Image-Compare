@@ -1,5 +1,6 @@
 package com.vincentengelsoftware.androidimagecompare;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.IdRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
@@ -303,33 +305,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setUpActions()
     {
-        findViewById(R.id.main_button_compare).setOnClickListener(view -> {
-            String[] compareActivities = {
-                    Activities.OVERLAY_SLIDE,
-                    Activities.SIDE_BY_SIDE,
-                    Activities.OVERLAY_TAP,
-                    Activities.TRANSPARENT,
-                    Activities.META_DATA
-            };
-
-            // TODO make dialog look better
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Pick Compare Mode");
-            builder.setItems(compareActivities, (dialog, activity) -> {
-                if (Activities.OVERLAY_SLIDE.equals(compareActivities[activity])) {
-                    openCompareActivity(OverlaySlideActivity.class);
-                } else if (Activities.SIDE_BY_SIDE.equals(compareActivities[activity])) {
-                    openCompareActivity(SideBySideActivity.class);
-                } else if (Activities.OVERLAY_TAP.equals(compareActivities[activity])) {
-                    openCompareActivity(OverlayTapActivity.class);
-                } else if (Activities.TRANSPARENT.equals(compareActivities[activity])) {
-                    openCompareActivity(OverlayTransparentActivity.class);
-                } else if (Activities.META_DATA.equals(compareActivities[activity])) {
-                    openCompareActivity(MetaDataActivity.class);
-                }
-            });
-            builder.show();
-        });
+        findViewById(R.id.main_button_compare).setOnClickListener(view -> openCompareDialog());
 
         findViewById(R.id.home_button_info).setOnClickListener(view -> {
             if (Status.activityIsOpening) {
@@ -446,6 +422,52 @@ public class MainActivity extends AppCompatActivity {
             KeyValueStorage.putInt(getApplicationContext(), KeyValueStorage.USER_THEME, Status.THEME);
             Theme.updateButtonText(button, Status.THEME);
             Theme.updateTheme(Status.THEME);
+        });
+    }
+
+    private void openCompareDialog()
+    {
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.compare_mode_selection_dialog);
+
+        addCompareDialogButtonOnClickLogic(
+                R.id.select_compare_mode_dialog_btn_side_by_side,
+                SideBySideActivity.class,
+                dialog
+        );
+        addCompareDialogButtonOnClickLogic(
+                R.id.select_compare_mode_dialog_btn_overlay_slide,
+                OverlaySlideActivity.class,
+                dialog
+        );
+        addCompareDialogButtonOnClickLogic(
+                R.id.select_compare_mode_dialog_btn_transparent,
+                OverlayTransparentActivity.class,
+                dialog
+        );
+        addCompareDialogButtonOnClickLogic(
+                R.id.select_compare_mode_dialog_btn_overlay_tap,
+                OverlayTapActivity.class,
+                dialog
+        );
+        addCompareDialogButtonOnClickLogic(
+                R.id.select_compare_mode_dialog_btn_metadata,
+                MetaDataActivity.class,
+                dialog
+        );
+
+        dialog.show();
+    }
+
+    private void addCompareDialogButtonOnClickLogic(
+            @IdRes int id,
+            Class<?> targetActivity,
+            Dialog dialog
+    ) {
+        Button button = dialog.findViewById(id);
+        button.setOnClickListener(view -> {
+            openCompareActivity(targetActivity);
+            dialog.dismiss();
         });
     }
 

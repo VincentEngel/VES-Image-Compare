@@ -42,4 +42,6 @@
     <string name="version">Version</string>
     <string name="compare">Compare</string>
     <string name="metadata_extractor"><a href="https://github.com/drewnoakes/metadata-extractor">Metadata Extractor</a></string>
+    <string name="select_compare_mode_title">Select Compare Mode</string>
+    <string name="metadata">MetaData (Experimental)</string>
 </resources>
