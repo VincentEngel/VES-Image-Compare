@@ -2,6 +2,7 @@ package com.vincentengelsoftware.androidimagecompare.viewClasses;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.PointF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
@@ -55,6 +56,18 @@ public class ZoomImageView extends SubsamplingScaleImageView implements VesImage
 
     public void applyScaleAndCenter(SubsamplingScaleImageView imageView) {
         super.setScaleAndCenter(imageView.getScale(), imageView.getCenter());
+    }
+
+    public void applyScaleAndCenter(float scale, PointF center) {
+        super.setScaleAndCenter(scale, center);
+    }
+
+    public float getZoomScale() {
+        return super.getScale();
+    }
+
+    public PointF getImageCenter() {
+        return super.getCenter();
     }
 
     public void triggerLinkedTargetTouchEvent(MotionEvent event) {

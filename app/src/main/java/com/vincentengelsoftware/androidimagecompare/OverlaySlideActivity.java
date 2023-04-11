@@ -1,6 +1,7 @@
 package com.vincentengelsoftware.androidimagecompare;
 
 import android.graphics.Bitmap;
+import android.graphics.PointF;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.View;
@@ -144,27 +145,25 @@ public class OverlaySlideActivity extends AppCompatActivity implements FadeActiv
             return;
         }
 
-        fadeInThread = new Thread(() -> {
-            runOnUiThread(() -> {
-                try {
-                    LinearLayout linearLayout = findViewById(R.id.overlay_slide_extensions);
+        fadeInThread = new Thread(() -> runOnUiThread(() -> {
+            try {
+                LinearLayout linearLayout = findViewById(R.id.overlay_slide_extensions);
 
-                    ResizeAnimation anim = new ResizeAnimation(
-                            linearLayout,
-                            Calculator.DpToPx2(48, getResources()),
-                            ResizeAnimation.CHANGE_HEIGHT,
-                            ResizeAnimation.IS_SHOWING_ANIMATION,
-                            continueHiding
-                    );
-                    anim.setDuration(ResizeAnimation.DURATION_SHORT);
-                    linearLayout.clearAnimation();
-                    linearLayout.startAnimation(anim);
-                    fadeInThread = null;
-                    triggerFadeOutThread();
-                } catch (Exception ignored) {
-                }
-            });
-        });
+                ResizeAnimation anim = new ResizeAnimation(
+                        linearLayout,
+                        Calculator.DpToPx2(48, getResources()),
+                        ResizeAnimation.CHANGE_HEIGHT,
+                        ResizeAnimation.IS_SHOWING_ANIMATION,
+                        continueHiding
+                );
+                anim.setDuration(ResizeAnimation.DURATION_SHORT);
+                linearLayout.clearAnimation();
+                linearLayout.startAnimation(anim);
+                fadeInThread = null;
+                triggerFadeOutThread();
+            } catch (Exception ignored) {
+            }
+        }));
 
         fadeInThread.start();
     }
@@ -272,10 +271,10 @@ public class OverlaySlideActivity extends AppCompatActivity implements FadeActiv
                             }
 
                             runOnUiThread(() -> {
-                                if (OverlaySlideActivity.sync.value) {
-                                    imageBack.resetScaleAndCenter();
-                                }
+                                float scale = imageView.getScale();
+                                PointF center = imageView.getImageCenter();
                                 imageView.setBitmapImage(bitmap);
+                                imageView.applyScaleAndCenter(scale, center);
                                 hideShow.setImageResource(R.drawable.ic_visibility);
                                 imageView.setVisibility(View.VISIBLE);
                                 triggerFadeOutThread();

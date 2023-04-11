@@ -627,7 +627,7 @@ public class MainActivity extends AppCompatActivity {
 
         builder.setCancelable(false);
 
-        builder.setMessage("If you like this App please support it by leaving a review in the Google PlayStore!");
+        builder.setMessage("If you like this App, please support it by leaving a review on the Google PlayStore!");
 
         builder.setPositiveButton("Open PlayStore", (dialogInterface, i) -> {
             try {

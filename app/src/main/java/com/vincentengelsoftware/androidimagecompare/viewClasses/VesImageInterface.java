@@ -1,6 +1,7 @@
 package com.vincentengelsoftware.androidimagecompare.viewClasses;
 
 import android.graphics.Bitmap;
+import android.graphics.PointF;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -19,5 +20,8 @@ public interface VesImageInterface {
     void triggerLinkedTargetTouchEvent(MotionEvent event);
     void resetScaleAndCenter();
     void applyScaleAndCenter(SubsamplingScaleImageView imageView);
+    void applyScaleAndCenter(float scale, PointF center);
     void setFadeActivity(FadeActivity fadeActivity);
+    float getScale();
+    PointF getImageCenter();
 }
