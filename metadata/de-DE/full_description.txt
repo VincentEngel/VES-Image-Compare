@@ -1,6 +1,8 @@
-Foto vergleich. Bild vergleich. Hast du Bilder, die sich ähnlich sehen und du kannst dich nicht entscheiden, welches dir besser gefällt? Mit dieser App kannst du auf verschiedene Arten zwei Bilder miteinander vergleichen, um herauszufinden, welches das bessere ist. Durch die verschiedenen Vergleichsmöglichkeiten kannst du schnell und einfach auch kleinere Unterschiede in den Bildern feststellen.
+Fotovergleich App. Bildvergleich App. Fotos vergleichen. Bilder vergleichen. Vorher Nachher vergleich App.
 
-<b>Perfekt um Vorher Nachher Bilder zu vergleichen.</b>
+Hast du Bilder und Fotos, die sich ähnlich sehen und du kannst dich nicht entscheiden, welches dir besser gefällt? Mit dieser App kannst du auf verschiedene Arten zwei Bilder miteinander vergleichen, um herauszufinden, welches das bessere ist. Durch die verschiedenen Vergleichsmöglichkeiten kannst du schnell und einfach auch kleinere Unterschiede in den Bildern feststellen.
+
+<b>Perfekt um Vorher Nachher Bilder und Vorher Nachher Fotos zu vergleichen.</b>
 
 
 <b>Die App bietet die folgenden Features:</b>
@@ -25,4 +27,8 @@ Foto vergleich. Bild vergleich. Hast du Bilder, die sich ähnlich sehen und du k
 
 * <b>Transparent:</b> Platzieren Sie die Bilder hintereinander und passen Sie die Transparenz des vorderen Bildes an
 
+* <b>MetaData:</b> (Experimentell) Vergleich alle Metadaten, wie z.B. Exif Daten, nebeneinander
+
 <b>KEINE WERBUNG und Privatsphärefreundlich.</b> Diese App benötigt keinen Zugang zum Internet. Alle Informationen werden lokal im Cache der App gespeichert und können jederzeit in den Geräteeinstellungen gelöscht werden.
+
+Sie können unter folgender E-Mail mit mir in Kontakt treten: vincentengelsoftware@gmail.com

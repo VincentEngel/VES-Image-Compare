@@ -1,1 +1,2 @@
 * Don't reset image zoom and scale in OverlaySlide when sliding
+* Adjust AppStore description
