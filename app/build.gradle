@@ -9,8 +9,8 @@ android {
         applicationId 'com.vincentengelsoftware.vesandroidimagecompare'
         minSdk 28
         targetSdk 33
-        versionCode 32
-        versionName "2.1.7"
+        versionCode 33
+        versionName "2.1.8"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
