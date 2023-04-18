@@ -21,10 +21,7 @@ public class AskForReview {
     private static int getInstalledTimeInDays(Context context)
     {
         try {
-            long firstInstallTime = context
-                    .getPackageManager()
-                    .getPackageInfo(context.getPackageName(), PackageManager.GET_META_DATA)
-                    .firstInstallTime;
+            long firstInstallTime = getFirstInstallTime(context);
 
             long currentTime = System.currentTimeMillis();
 
@@ -34,5 +31,20 @@ public class AskForReview {
         } catch (Exception ignored) {}
 
         return 0;
+    }
+
+    @SuppressWarnings("deprecation")
+    private static long getFirstInstallTime(Context context) throws PackageManager.NameNotFoundException {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            return context
+                    .getPackageManager()
+                    .getPackageInfo(context.getPackageName(), PackageManager.PackageInfoFlags.of(PackageManager.GET_META_DATA))
+                    .firstInstallTime;
+        }
+
+        return context
+                .getPackageManager()
+                .getPackageInfo(context.getPackageName(), PackageManager.GET_META_DATA)
+                .firstInstallTime;
     }
 }

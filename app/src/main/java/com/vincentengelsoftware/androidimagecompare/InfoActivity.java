@@ -51,12 +51,21 @@ public class InfoActivity extends AppCompatActivity {
 
         String version = "Unbekannt";
         try {
-            PackageInfo pinfo = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_META_DATA);
+            PackageInfo pinfo = getPackageInfo();
             version = "v" + pinfo.versionName;
         } catch (Exception ignored) {
         }
 
         TextView versionText = findViewById(R.id.info_version);
         versionText.setText(version);
+    }
+
+    @SuppressWarnings("deprecation")
+    private PackageInfo getPackageInfo() throws PackageManager.NameNotFoundException {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            return getPackageManager().getPackageInfo(getPackageName(), PackageManager.PackageInfoFlags.of(PackageManager.GET_META_DATA));
+        }
+
+        return getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_META_DATA);
     }
 }

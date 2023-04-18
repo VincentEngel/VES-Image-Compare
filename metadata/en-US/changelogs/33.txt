@@ -1,2 +1,5 @@
 * Don't reset image zoom and scale in OverlaySlide when sliding
 * Adjust AppStore description
+* Update getPackageInfo() to use Flags since SDK 33
+* Update gradle from 7.4.2 to 8.0.0
+* Update Java Version from 11 to 17

@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
@@ -26,7 +27,6 @@ import androidx.core.content.FileProvider;
 import androidx.window.layout.WindowMetrics;
 import androidx.window.layout.WindowMetricsCalculator;
 
-import com.vincentengelsoftware.androidimagecompare.globals.Activities;
 import com.vincentengelsoftware.androidimagecompare.globals.Dimensions;
 import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
@@ -620,7 +620,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception ignored) {
         }
     }
-
     private void askForReview()
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.alertDialog);
@@ -630,19 +629,31 @@ public class MainActivity extends AppCompatActivity {
         builder.setMessage("If you like this App, please support it by leaving a review on the Google PlayStore!");
 
         builder.setPositiveButton("Open PlayStore", (dialogInterface, i) -> {
-            try {
-                // Will throw exception if the Google Play Store App is not installed
-                getPackageManager().getPackageInfo("com.android.vending", PackageManager.GET_META_DATA);
+            if (isPlayStoreInstalled()) {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getPackageName())));
-            } catch (Exception e1) {
-                try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName())));
-                } catch (Exception ignored) {
-                }
+            } else {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName())));
             }
         });
+
         builder.setNegativeButton("Don't show up again", (dialogInterface, i) -> {});
 
         builder.show();
+    }
+
+    @SuppressWarnings("deprecation")
+    private boolean isPlayStoreInstalled() {
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                getPackageManager().getPackageInfo("com.android.vending", PackageManager.PackageInfoFlags.of(PackageManager.GET_META_DATA));
+            } else {
+                getPackageManager().getPackageInfo("com.android.vending", PackageManager.GET_META_DATA);
+            }
+
+            return true;
+        } catch (Exception ignored) {
+        }
+
+        return false;
     }
 }
