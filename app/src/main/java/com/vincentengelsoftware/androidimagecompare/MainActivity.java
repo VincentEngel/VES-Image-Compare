@@ -32,10 +32,10 @@ import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
 import com.vincentengelsoftware.androidimagecompare.helper.AskForReview;
 import com.vincentengelsoftware.androidimagecompare.helper.BitmapExtractor;
-import com.vincentengelsoftware.androidimagecompare.helper.KeyValueStorage;
 import com.vincentengelsoftware.androidimagecompare.helper.MainHelper;
 import com.vincentengelsoftware.androidimagecompare.helper.Theme;
 import com.vincentengelsoftware.androidimagecompare.helper.UriExtractor;
+import com.vincentengelsoftware.androidimagecompare.services.KeyValueStorage;
 import com.vincentengelsoftware.androidimagecompare.util.ImageHolder;
 
 import java.io.File;
@@ -48,22 +48,26 @@ public class MainActivity extends AppCompatActivity {
     public static final String leftImageUriKey = "leftImageUriKey";
     public static final String rightImageUriKey = "rightImageUriKey";
 
+    private KeyValueStorage keyValueStorage;
+
     /**
      * TODO clear / refactor onCreate
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Status.THEME = KeyValueStorage.getInt(getApplicationContext(), KeyValueStorage.USER_THEME, Status.THEME_DARK);
+        this.keyValueStorage = new KeyValueStorage(getApplicationContext());
+
+        Status.THEME = this.keyValueStorage.getInt(KeyValueStorage.USER_THEME, Status.THEME_DARK);
         Theme.updateTheme(Status.THEME);
 
         super.onCreate(savedInstanceState);
 
         if (savedInstanceState == null) {
             try {
-                Status.SHOW_EXTENSIONS = KeyValueStorage.getBoolean(getApplicationContext(), KeyValueStorage.SHOW_EXTENSIONS, Status.SHOW_EXTENSIONS);
-                Status.SYNCED_ZOOM = KeyValueStorage.getBoolean(getApplicationContext(), KeyValueStorage.SYNCED_ZOOM, Status.SYNCED_ZOOM);
-                KeyValueStorage.setString(getApplicationContext(), MainActivity.leftImageUriKey, null);
-                KeyValueStorage.setString(getApplicationContext(), MainActivity.rightImageUriKey, null);
+                Status.SHOW_EXTENSIONS = this.keyValueStorage.getBoolean(KeyValueStorage.SHOW_EXTENSIONS, Status.SHOW_EXTENSIONS);
+                Status.SYNCED_ZOOM = this.keyValueStorage.getBoolean(KeyValueStorage.SYNCED_ZOOM, Status.SYNCED_ZOOM);
+                this.keyValueStorage.setString(MainActivity.leftImageUriKey, null);
+                this.keyValueStorage.setString(MainActivity.rightImageUriKey, null);
             } catch (Exception ignored) {
             }
         }
@@ -113,10 +117,10 @@ public class MainActivity extends AppCompatActivity {
 
         setUpActions();
 
-        if (AskForReview.isItTimeToAsk(getApplicationContext()))
+        if (AskForReview.isItTimeToAsk(getApplicationContext(), this.keyValueStorage))
         {
             askForReview();
-            KeyValueStorage.setBoolean(getApplicationContext(), KeyValueStorage.ASKED_FOR_REVIEW, true);
+            this.keyValueStorage.setBoolean(KeyValueStorage.ASKED_FOR_REVIEW, true);
         }
 
         SwitchCompat resizeLeftImage = findViewById(R.id.main_switch_resize_image_left);
@@ -146,10 +150,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         if (MainActivity.leftImageUri != null) {
-            KeyValueStorage.setString(getApplicationContext(), MainActivity.leftImageUriKey, MainActivity.leftImageUri);
+            this.keyValueStorage.setString(MainActivity.leftImageUriKey, MainActivity.leftImageUri);
         }
         if (MainActivity.rightImageUri != null) {
-            KeyValueStorage.setString(getApplicationContext(), MainActivity.rightImageUriKey, MainActivity.rightImageUri);
+            this.keyValueStorage.setString(MainActivity.rightImageUriKey, MainActivity.rightImageUri);
         }
         super.onStop();
     }
@@ -158,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
     {
         if (Images.first.getBitmap() == null) {
             try {
-                Uri uri = Uri.parse(KeyValueStorage.getString(getApplicationContext(), MainActivity.leftImageUriKey, null));
+                Uri uri = Uri.parse(this.keyValueStorage.getString(MainActivity.leftImageUriKey, null));
                 Images.first.updateFromBitmap(
                         BitmapExtractor.fromUri(this.getContentResolver(), uri),
                         Dimensions.maxSide,
@@ -171,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
         }
         if (Images.second.getBitmap() == null) {
             try {
-                Uri uri = Uri.parse(KeyValueStorage.getString(getApplicationContext(), MainActivity.rightImageUriKey, null));
+                Uri uri = Uri.parse(this.keyValueStorage.getString(MainActivity.rightImageUriKey, null));
                 Images.second.updateFromBitmap(
                         BitmapExtractor.fromUri(this.getContentResolver(), uri),
                         Dimensions.maxSide,
@@ -342,7 +346,7 @@ public class MainActivity extends AppCompatActivity {
         }
         extensions.setOnClickListener(view -> {
             Status.SHOW_EXTENSIONS = !Status.SHOW_EXTENSIONS;
-            KeyValueStorage.setBoolean(getApplicationContext(), KeyValueStorage.SHOW_EXTENSIONS, Status.SHOW_EXTENSIONS);
+            this.keyValueStorage.setBoolean(KeyValueStorage.SHOW_EXTENSIONS, Status.SHOW_EXTENSIONS);
             if (Status.SHOW_EXTENSIONS) {
                 extensions.setImageDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_extension_on));
             } else {
@@ -362,7 +366,7 @@ public class MainActivity extends AppCompatActivity {
         }
         linkedZoom.setOnClickListener(view -> {
             Status.SYNCED_ZOOM = !Status.SYNCED_ZOOM;
-            KeyValueStorage.setBoolean(getApplicationContext(), KeyValueStorage.SYNCED_ZOOM, Status.SYNCED_ZOOM);
+            this.keyValueStorage.setBoolean(KeyValueStorage.SYNCED_ZOOM, Status.SYNCED_ZOOM);
             if (Status.SYNCED_ZOOM) {
                 linkedZoom.setImageDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_link));
             } else {
@@ -419,7 +423,7 @@ public class MainActivity extends AppCompatActivity {
 
         button.setOnClickListener(view -> {
             Status.THEME = (Status.THEME + 1) % 3;
-            KeyValueStorage.putInt(getApplicationContext(), KeyValueStorage.USER_THEME, Status.THEME);
+            this.keyValueStorage.putInt(KeyValueStorage.USER_THEME, Status.THEME);
             Theme.updateButtonText(button, Status.THEME);
             Theme.updateTheme(Status.THEME);
         });

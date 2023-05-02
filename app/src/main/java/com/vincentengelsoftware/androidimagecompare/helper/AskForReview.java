@@ -3,13 +3,15 @@ package com.vincentengelsoftware.androidimagecompare.helper;
 import android.content.Context;
 import android.content.pm.PackageManager;
 
+import com.vincentengelsoftware.androidimagecompare.services.KeyValueStorage;
+
 import java.util.concurrent.TimeUnit;
 
 public class AskForReview {
     public static final int INSTALLED_FOR_AT_LEAST_DAYS = 30;
-    public static boolean isItTimeToAsk(Context context)
+    public static boolean isItTimeToAsk(Context context, KeyValueStorage keyValueStorage)
     {
-        return !KeyValueStorage.getBoolean(context, KeyValueStorage.ASKED_FOR_REVIEW, false)
+        return !keyValueStorage.getBoolean(KeyValueStorage.ASKED_FOR_REVIEW, false)
                 && isAppInstalledForDays(context, AskForReview.INSTALLED_FOR_AT_LEAST_DAYS);
     }
 
