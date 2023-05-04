@@ -1,1 +1,2 @@
 * Refactor KeyValueStorage
+* Add new button in MainActivity that shows the last used compare mode

@@ -252,16 +252,31 @@
 
             </TableLayout>
 
-            <Button
-                android:id="@+id/main_button_compare"
-                style="@style/buttonStyles"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="@dimen/activity_button_margin"
-                android:text="@string/compare"
-                android:textAllCaps="false"
-                android:textSize="@dimen/activity_button_text_size" />
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/main_button_compare"
+                    style="@style/buttonStyles"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/activity_button_margin"
+                    android:text="@string/compare"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/activity_button_text_size" />
+
+                <Button
+                    android:id="@+id/main_button_last_compare"
+                    style="@style/buttonStyles"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/activity_button_margin"
+                    android:text="@string/last_compare"
+                    android:textAllCaps="true"
+                    android:textSize="@dimen/activity_button_text_size" />
+
+            </TableRow>
 
         </LinearLayout>
     </ScrollView>

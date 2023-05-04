@@ -27,6 +27,7 @@ import androidx.core.content.FileProvider;
 import androidx.window.layout.WindowMetrics;
 import androidx.window.layout.WindowMetricsCalculator;
 
+import com.vincentengelsoftware.androidimagecompare.Activities.CompareModes.CompareModeNames;
 import com.vincentengelsoftware.androidimagecompare.globals.Dimensions;
 import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
@@ -309,6 +310,25 @@ public class MainActivity extends AppCompatActivity {
 
     private void setUpActions()
     {
+        Button lastCompareMode = findViewById(R.id.main_button_last_compare);
+        lastCompareMode.setText(
+                CompareModeNames.getUserCompareModeNameFromInternalName(
+                        this.keyValueStorage.getString(
+                                KeyValueStorage.LAST_COMPARE_MODE,
+                                CompareModeNames.SIDE_BY_SIDE)
+                )
+        );
+        lastCompareMode.setOnClickListener(view -> {
+            switch (CompareModeNames.getInternalCompareModeNameFromUserCompareModeName(lastCompareMode.getText().toString())) {
+                case CompareModeNames.SIDE_BY_SIDE -> openCompareActivity(SideBySideActivity.class);
+                case CompareModeNames.OVERLAY_SLIDE -> openCompareActivity(OverlaySlideActivity.class);
+                case CompareModeNames.OVERLAY_TAP -> openCompareActivity(OverlayTapActivity.class);
+                case CompareModeNames.OVERLAY_TRANSPARENT -> openCompareActivity(OverlayTransparentActivity.class);
+                case CompareModeNames.META_DATA -> openCompareActivity(MetaDataActivity.class);
+                default -> openCompareDialog();
+            }
+        });
+
         findViewById(R.id.main_button_compare).setOnClickListener(view -> openCompareDialog());
 
         findViewById(R.id.home_button_info).setOnClickListener(view -> {
@@ -485,6 +505,12 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Select two pictures first", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        String activityName = targetActivity.toString().substring(targetActivity.toString().lastIndexOf(".")+1);
+        String internalCompareModeName = CompareModeNames.getInternalCompareModeNameFromActivityName(activityName);
+        this.keyValueStorage.setString(KeyValueStorage.LAST_COMPARE_MODE, internalCompareModeName);
+        Button button = findViewById(R.id.main_button_last_compare);
+        button.setText(CompareModeNames.getUserCompareModeNameFromInternalName(internalCompareModeName));
 
         Status.activityIsOpening = true;
 

@@ -9,6 +9,11 @@ public class KeyValueStorage {
     public static final String SYNCED_ZOOM = "SYNCED_ZOOM";
     public static final String SHOW_EXTENSIONS = "SHOW_EXTENSIONS";
 
+    public static final String LAST_COMPARE_MODE = "LAST_COMPARE_MODE";
+
+    public static final String LEFT_RESIZE = "LEFT_RESIZE";
+    public static final String RIGHT_RESIZE = "RIGHT_RESIZE";
+
     private final Context context;
 
     public KeyValueStorage(Context context) {
