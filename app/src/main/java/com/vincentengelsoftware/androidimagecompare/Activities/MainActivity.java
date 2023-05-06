@@ -497,47 +497,58 @@ public class MainActivity extends AppCompatActivity {
 
     private void openCompareActivity(Class<?> targetActivity)
     {
-        if (
-                Images.first.getBitmap() == null
-                        || Images.second.getBitmap() == null
-                        || Status.activityIsOpening
-        ) {
-            Toast.makeText(getApplicationContext(), "Select two pictures first", Toast.LENGTH_SHORT).show();
-            return;
+        try {
+            if (
+                    Images.first.getBitmap() == null
+                            || Images.second.getBitmap() == null
+                            || Status.activityIsOpening
+            ) {
+                Toast.makeText(getApplicationContext(), "Select two pictures first", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            Status.activityIsOpening = true;
+
+            String activityName = targetActivity.toString().substring(targetActivity.toString().lastIndexOf(".")+1);
+            String internalCompareModeName = CompareModeNames.getInternalCompareModeNameFromActivityName(activityName);
+            this.userSettings.setLastCompareMode(internalCompareModeName);
+            Button button = findViewById(R.id.main_button_last_compare);
+            button.setText(CompareModeNames.getUserCompareModeNameFromInternalName(internalCompareModeName));
+
+            Intent intent = new Intent(getApplicationContext(), targetActivity);
+            intent.putExtra(IntentExtras.SHOW_EXTENSIONS, this.userSettings.isShowExtensions());
+            intent.putExtra(IntentExtras.SYNCED_ZOOM, this.userSettings.isSyncedZoom());
+            intent.putExtra(IntentExtras.HAS_HARDWARE_KEY, Status.HAS_HARDWARE_KEY);
+
+            Thread t = new Thread(() -> {
+                try {
+                    runOnUiThread(() -> {
+                        ProgressBar spinner = findViewById(R.id.pbProgess);
+                        spinner.setVisibility(View.VISIBLE);
+                    });
+
+                    Images.first.setResizeImageToScreen(this.userSettings.isResizeLeftImage());
+                    Images.first.calculateRotatedBitmap();
+                    Images.second.setResizeImageToScreen(this.userSettings.isResizeRightImage());
+                    Images.second.calculateRotatedBitmap();
+
+                    runOnUiThread(() -> {
+                        ProgressBar spinner = findViewById(R.id.pbProgess);
+                        spinner.setVisibility(View.GONE);
+                    });
+
+                    startActivity(intent);
+                } catch (Exception ignored) {
+                    Status.activityIsOpening = false;
+                    Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            t.start();
+        } catch (Exception ignored) {
+            Status.activityIsOpening = false;
+            Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
         }
-        Status.activityIsOpening = true;
 
-        String activityName = targetActivity.toString().substring(targetActivity.toString().lastIndexOf(".")+1);
-        String internalCompareModeName = CompareModeNames.getInternalCompareModeNameFromActivityName(activityName);
-        this.userSettings.setLastCompareMode(internalCompareModeName);
-        Button button = findViewById(R.id.main_button_last_compare);
-        button.setText(CompareModeNames.getUserCompareModeNameFromInternalName(internalCompareModeName));
-
-        Intent intent = new Intent(getApplicationContext(), targetActivity);
-        intent.putExtra(IntentExtras.SHOW_EXTENSIONS, this.userSettings.isShowExtensions());
-        intent.putExtra(IntentExtras.SYNCED_ZOOM, this.userSettings.isSyncedZoom());
-        intent.putExtra(IntentExtras.HAS_HARDWARE_KEY, Status.HAS_HARDWARE_KEY);
-
-        Thread t = new Thread(() -> {
-            runOnUiThread(() -> {
-                ProgressBar spinner = findViewById(R.id.pbProgess);
-                spinner.setVisibility(View.VISIBLE);
-            });
-
-            Images.first.setResizeImageToScreen(this.userSettings.isResizeLeftImage());
-            Images.first.calculateRotatedBitmap();
-            Images.second.setResizeImageToScreen(this.userSettings.isResizeRightImage());
-            Images.second.calculateRotatedBitmap();
-
-            runOnUiThread(() -> {
-                ProgressBar spinner = findViewById(R.id.pbProgess);
-                spinner.setVisibility(View.GONE);
-            });
-
-            startActivity(intent);
-        });
-
-        t.start();
     }
 
     private void addLoadImageLogic(int imageViewId , String imageHolderName, int imageNameTextId, String UriPath) {
