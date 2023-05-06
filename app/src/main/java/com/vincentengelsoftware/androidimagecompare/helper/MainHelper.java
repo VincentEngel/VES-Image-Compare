@@ -1,19 +1,13 @@
 package com.vincentengelsoftware.androidimagecompare.helper;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.Point;
 import android.net.Uri;
-import android.view.MotionEvent;
-import android.view.WindowManager;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.SwitchCompat;
@@ -22,8 +16,6 @@ import androidx.core.content.ContextCompat;
 import androidx.documentfile.provider.DocumentFile;
 
 import com.vincentengelsoftware.androidimagecompare.MainActivity;
-import com.vincentengelsoftware.androidimagecompare.R;
-import com.vincentengelsoftware.androidimagecompare.globals.Dimensions;
 import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.globals.RequestPermissionCodes;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
@@ -55,6 +47,7 @@ public class MainHelper {
             SwitchCompat resizeImageLeft,
             SwitchCompat resizeImageRight
     ) {
+        // Just replace imageHolders <.<
         imageButton.setOnClickListener(view -> {
             if (imageHolderOne.getBitmap() == null || imageHolderTwo.getBitmap() == null || Status.activityIsOpening) {
                 return;

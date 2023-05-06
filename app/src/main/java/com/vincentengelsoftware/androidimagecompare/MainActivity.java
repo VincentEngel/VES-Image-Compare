@@ -65,13 +65,17 @@ public class MainActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             try {
-                Status.SHOW_EXTENSIONS = this.keyValueStorage.getBoolean(KeyValueStorage.SHOW_EXTENSIONS, Status.SHOW_EXTENSIONS);
-                Status.SYNCED_ZOOM = this.keyValueStorage.getBoolean(KeyValueStorage.SYNCED_ZOOM, Status.SYNCED_ZOOM);
                 this.keyValueStorage.setString(MainActivity.leftImageUriKey, null);
                 this.keyValueStorage.setString(MainActivity.rightImageUriKey, null);
             } catch (Exception ignored) {
             }
         }
+
+        // Set last options
+        Status.SHOW_EXTENSIONS = this.keyValueStorage.getBoolean(KeyValueStorage.SHOW_EXTENSIONS, Status.SHOW_EXTENSIONS);
+        Status.SYNCED_ZOOM = this.keyValueStorage.getBoolean(KeyValueStorage.SYNCED_ZOOM, Status.SYNCED_ZOOM);
+        Status.RESIZE_LEFT_IMAGE = this.keyValueStorage.getBoolean(KeyValueStorage.RESIZE_LEFT_IMAGE, true);
+        Status.RESIZE_RIGHT_IMAGE = this.keyValueStorage.getBoolean(KeyValueStorage.RESIZE_RIGHT_IMAGE, true);
 
         setContentView(R.layout.activity_main);
 
@@ -125,16 +129,24 @@ public class MainActivity extends AppCompatActivity {
         }
 
         SwitchCompat resizeLeftImage = findViewById(R.id.main_switch_resize_image_left);
-        resizeLeftImage.setChecked(Images.first.isResizeImageToScreen());
-        resizeLeftImage.setOnCheckedChangeListener((compoundButton, b) -> Images.first.setResizeImageToScreen(b));
+        resizeLeftImage.setChecked(Status.RESIZE_LEFT_IMAGE);
+        resizeLeftImage.setOnCheckedChangeListener((compoundButton, b) -> {
+                    Status.RESIZE_LEFT_IMAGE = b;
+                    this.keyValueStorage.setBoolean(KeyValueStorage.RESIZE_LEFT_IMAGE, Status.RESIZE_LEFT_IMAGE);
+                    Images.first.setResizeImageToScreen(Status.RESIZE_LEFT_IMAGE);
+                });
         resizeLeftImage.setOnLongClickListener(view -> {
             Toast.makeText(getApplicationContext(), "Resize left image to screen size", Toast.LENGTH_SHORT).show();
             return true;
         });
 
         SwitchCompat resizeRightImage = findViewById(R.id.main_switch_resize_image_right);
-        resizeRightImage.setChecked(Images.second.isResizeImageToScreen());
-        resizeRightImage.setOnCheckedChangeListener((compoundButton, b) -> Images.second.setResizeImageToScreen(b));
+        resizeRightImage.setChecked(Status.RESIZE_RIGHT_IMAGE);
+        resizeRightImage.setOnCheckedChangeListener((compoundButton, b) -> {
+                    Status.RESIZE_RIGHT_IMAGE = b;
+                    this.keyValueStorage.setBoolean(KeyValueStorage.RESIZE_RIGHT_IMAGE, Status.RESIZE_RIGHT_IMAGE);
+                    Images.second.setResizeImageToScreen(Status.RESIZE_RIGHT_IMAGE);
+                });
         resizeRightImage.setOnLongClickListener(view -> {
             Toast.makeText(getApplicationContext(), "Resize right image to screen size", Toast.LENGTH_SHORT).show();
             return true;
@@ -578,7 +590,6 @@ public class MainActivity extends AppCompatActivity {
                         if (!result) {
                             Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
                             Status.isTakingPicture = false;
-                            //unlockOrientation();
                             return;
                         }
 
@@ -607,7 +618,6 @@ public class MainActivity extends AppCompatActivity {
                         runOnUiThread(() -> {
                             restoreImageViews();
                             Status.isTakingPicture = false;
-                            //unlockOrientation();
                         });
                     }
             );
@@ -631,7 +641,6 @@ public class MainActivity extends AppCompatActivity {
                 builder.setItems(optionsMenu, (dialogInterface, i) -> {
                     if (optionsMenu[i].equals("Take Photo")) {
                         if (MainHelper.checkPermission(MainActivity.this)) {
-                            //lockOrientation();
                             mGetContentCamera.launch(uri);
                             Status.isTakingPicture = true;
                         } else {

@@ -11,8 +11,8 @@ public class KeyValueStorage {
 
     public static final String LAST_COMPARE_MODE = "LAST_COMPARE_MODE";
 
-    public static final String LEFT_RESIZE = "LEFT_RESIZE";
-    public static final String RIGHT_RESIZE = "RIGHT_RESIZE";
+    public static final String RESIZE_LEFT_IMAGE = "LEFT_RESIZE";
+    public static final String RESIZE_RIGHT_IMAGE = "RIGHT_RESIZE";
 
     private final Context context;
 

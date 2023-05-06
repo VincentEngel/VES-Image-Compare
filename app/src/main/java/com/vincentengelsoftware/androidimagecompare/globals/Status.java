@@ -12,6 +12,10 @@ public class Status {
     public static boolean SYNCED_ZOOM = true;
     public static boolean SHOW_EXTENSIONS = true;
 
+    public static boolean RESIZE_LEFT_IMAGE;
+
+    public static boolean RESIZE_RIGHT_IMAGE;
+
     public static boolean isTakingPicture = false;
 
     public static boolean hasHardwareKey = false;
