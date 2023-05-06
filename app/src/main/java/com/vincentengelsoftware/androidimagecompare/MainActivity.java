@@ -28,6 +28,7 @@ import androidx.window.layout.WindowMetrics;
 import androidx.window.layout.WindowMetricsCalculator;
 
 import com.vincentengelsoftware.androidimagecompare.Activities.CompareModes.CompareModeNames;
+import com.vincentengelsoftware.androidimagecompare.Activities.IntentExtras;
 import com.vincentengelsoftware.androidimagecompare.globals.Dimensions;
 import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
@@ -37,6 +38,7 @@ import com.vincentengelsoftware.androidimagecompare.helper.MainHelper;
 import com.vincentengelsoftware.androidimagecompare.helper.Theme;
 import com.vincentengelsoftware.androidimagecompare.helper.UriExtractor;
 import com.vincentengelsoftware.androidimagecompare.services.KeyValueStorage;
+import com.vincentengelsoftware.androidimagecompare.services.UserSettings;
 import com.vincentengelsoftware.androidimagecompare.util.ImageHolder;
 
 import java.io.File;
@@ -51,17 +53,20 @@ public class MainActivity extends AppCompatActivity {
 
     private KeyValueStorage keyValueStorage;
 
+    private UserSettings userSettings;
+
     /**
      * TODO clear / refactor onCreate
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         this.keyValueStorage = new KeyValueStorage(getApplicationContext());
+        this.userSettings = new UserSettings(this.keyValueStorage);
 
-        Status.THEME = this.keyValueStorage.getInt(KeyValueStorage.USER_THEME, Status.THEME_DARK);
-        Theme.updateTheme(Status.THEME);
+        Theme.updateTheme(this.userSettings.getTheme());
 
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
         if (savedInstanceState == null) {
             try {
@@ -71,13 +76,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        // Set last options
-        Status.SHOW_EXTENSIONS = this.keyValueStorage.getBoolean(KeyValueStorage.SHOW_EXTENSIONS, Status.SHOW_EXTENSIONS);
-        Status.SYNCED_ZOOM = this.keyValueStorage.getBoolean(KeyValueStorage.SYNCED_ZOOM, Status.SYNCED_ZOOM);
-        Status.RESIZE_LEFT_IMAGE = this.keyValueStorage.getBoolean(KeyValueStorage.RESIZE_LEFT_IMAGE, true);
-        Status.RESIZE_RIGHT_IMAGE = this.keyValueStorage.getBoolean(KeyValueStorage.RESIZE_RIGHT_IMAGE, true);
-
-        setContentView(R.layout.activity_main);
+        Status.HAS_HARDWARE_KEY = ViewConfiguration.get(this).hasPermanentMenuKey();
 
         if (Images.fileUriFirst == null) {
             try {
@@ -122,42 +121,16 @@ public class MainActivity extends AppCompatActivity {
 
         setUpActions();
 
-        if (AskForReview.isItTimeToAsk(getApplicationContext(), this.keyValueStorage))
-        {
-            askForReview();
-            this.keyValueStorage.setBoolean(KeyValueStorage.ASKED_FOR_REVIEW, true);
-        }
-
-        SwitchCompat resizeLeftImage = findViewById(R.id.main_switch_resize_image_left);
-        resizeLeftImage.setChecked(Status.RESIZE_LEFT_IMAGE);
-        resizeLeftImage.setOnCheckedChangeListener((compoundButton, b) -> {
-                    Status.RESIZE_LEFT_IMAGE = b;
-                    this.keyValueStorage.setBoolean(KeyValueStorage.RESIZE_LEFT_IMAGE, Status.RESIZE_LEFT_IMAGE);
-                    Images.first.setResizeImageToScreen(Status.RESIZE_LEFT_IMAGE);
-                });
-        resizeLeftImage.setOnLongClickListener(view -> {
-            Toast.makeText(getApplicationContext(), "Resize left image to screen size", Toast.LENGTH_SHORT).show();
-            return true;
-        });
-
-        SwitchCompat resizeRightImage = findViewById(R.id.main_switch_resize_image_right);
-        resizeRightImage.setChecked(Status.RESIZE_RIGHT_IMAGE);
-        resizeRightImage.setOnCheckedChangeListener((compoundButton, b) -> {
-                    Status.RESIZE_RIGHT_IMAGE = b;
-                    this.keyValueStorage.setBoolean(KeyValueStorage.RESIZE_RIGHT_IMAGE, Status.RESIZE_RIGHT_IMAGE);
-                    Images.second.setResizeImageToScreen(Status.RESIZE_RIGHT_IMAGE);
-                });
-        resizeRightImage.setOnLongClickListener(view -> {
-            Toast.makeText(getApplicationContext(), "Resize right image to screen size", Toast.LENGTH_SHORT).show();
-            return true;
-        });
-
         if (Status.handleIntentOnCreate) {
             Status.handleIntentOnCreate = false;
             this.handleIntent(getIntent());
         }
 
-        Status.hasHardwareKey = ViewConfiguration.get(this).hasPermanentMenuKey();
+        if (AskForReview.isItTimeToAsk(getApplicationContext(), this.keyValueStorage))
+        {
+            askForReview();
+            this.keyValueStorage.setBoolean(KeyValueStorage.ASKED_FOR_REVIEW, true);
+        }
     }
 
     @Override
@@ -322,13 +295,31 @@ public class MainActivity extends AppCompatActivity {
 
     private void setUpActions()
     {
+        SwitchCompat resizeLeftImage = findViewById(R.id.main_switch_resize_image_left);
+        resizeLeftImage.setChecked(this.userSettings.isResizeLeftImage());
+        resizeLeftImage.setOnCheckedChangeListener((compoundButton, b) -> {
+            this.userSettings.setResizeLeftImage(b);
+            Images.first.setResizeImageToScreen(this.userSettings.isResizeLeftImage());
+        });
+        resizeLeftImage.setOnLongClickListener(view -> {
+            Toast.makeText(getApplicationContext(), "Resize left image to screen size", Toast.LENGTH_SHORT).show();
+            return true;
+        });
+
+        SwitchCompat resizeRightImage = findViewById(R.id.main_switch_resize_image_right);
+        resizeRightImage.setChecked(this.userSettings.isResizeRightImage());
+        resizeRightImage.setOnCheckedChangeListener((compoundButton, b) -> {
+            this.userSettings.setResizeRightImage(b);
+            Images.second.setResizeImageToScreen(this.userSettings.isResizeRightImage());
+        });
+        resizeRightImage.setOnLongClickListener(view -> {
+            Toast.makeText(getApplicationContext(), "Resize right image to screen size", Toast.LENGTH_SHORT).show();
+            return true;
+        });
+
         Button lastCompareMode = findViewById(R.id.main_button_last_compare);
         lastCompareMode.setText(
-                CompareModeNames.getUserCompareModeNameFromInternalName(
-                        this.keyValueStorage.getString(
-                                KeyValueStorage.LAST_COMPARE_MODE,
-                                CompareModeNames.SIDE_BY_SIDE)
-                )
+                CompareModeNames.getUserCompareModeNameFromInternalName(this.userSettings.getLastCompareMode())
         );
         lastCompareMode.setOnClickListener(view -> {
             switch (CompareModeNames.getInternalCompareModeNameFromUserCompareModeName(lastCompareMode.getText().toString())) {
@@ -371,15 +362,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
         ImageButton extensions = findViewById(R.id.home_button_extensions);
-        if (Status.SHOW_EXTENSIONS) {
+        if (this.userSettings.isShowExtensions()) {
             extensions.setImageDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_extension_on));
         } else {
             extensions.setImageDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_extension_off));
         }
         extensions.setOnClickListener(view -> {
-            Status.SHOW_EXTENSIONS = !Status.SHOW_EXTENSIONS;
-            this.keyValueStorage.setBoolean(KeyValueStorage.SHOW_EXTENSIONS, Status.SHOW_EXTENSIONS);
-            if (Status.SHOW_EXTENSIONS) {
+            this.userSettings.setShowExtensions(!this.userSettings.isShowExtensions());
+            if (this.userSettings.isShowExtensions()) {
                 extensions.setImageDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_extension_on));
             } else {
                 extensions.setImageDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_extension_off));
@@ -391,15 +381,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
         ImageButton linkedZoom = findViewById(R.id.home_button_link_zoom);
-        if (Status.SYNCED_ZOOM) {
+        if (this.userSettings.isSyncedZoom()) {
             linkedZoom.setImageDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_link));
         } else {
             linkedZoom.setImageDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_link_off));
         }
         linkedZoom.setOnClickListener(view -> {
-            Status.SYNCED_ZOOM = !Status.SYNCED_ZOOM;
-            this.keyValueStorage.setBoolean(KeyValueStorage.SYNCED_ZOOM, Status.SYNCED_ZOOM);
-            if (Status.SYNCED_ZOOM) {
+            this.userSettings.setSyncedZoom(!this.userSettings.isSyncedZoom());
+            if (this.userSettings.isSyncedZoom()) {
                 linkedZoom.setImageDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_link));
             } else {
                 linkedZoom.setImageDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_link_off));
@@ -451,13 +440,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void setUpThemeToggleButton(Button button)
     {
-        Theme.updateButtonText(button, Status.THEME);
+        Theme.updateButtonText(button, this.userSettings.getTheme());
 
         button.setOnClickListener(view -> {
-            Status.THEME = (Status.THEME + 1) % 3;
-            this.keyValueStorage.putInt(KeyValueStorage.USER_THEME, Status.THEME);
-            Theme.updateButtonText(button, Status.THEME);
-            Theme.updateTheme(Status.THEME);
+            this.userSettings.setTheme((this.userSettings.getTheme() + 1) % 3);
+            Theme.updateButtonText(button, this.userSettings.getTheme());
+            Theme.updateTheme(this.userSettings.getTheme());
         });
     }
 
@@ -520,13 +508,16 @@ public class MainActivity extends AppCompatActivity {
 
         String activityName = targetActivity.toString().substring(targetActivity.toString().lastIndexOf(".")+1);
         String internalCompareModeName = CompareModeNames.getInternalCompareModeNameFromActivityName(activityName);
-        this.keyValueStorage.setString(KeyValueStorage.LAST_COMPARE_MODE, internalCompareModeName);
+        this.userSettings.setLastCompareMode(internalCompareModeName);
         Button button = findViewById(R.id.main_button_last_compare);
         button.setText(CompareModeNames.getUserCompareModeNameFromInternalName(internalCompareModeName));
 
         Status.activityIsOpening = true;
 
         Intent intent = new Intent(getApplicationContext(), targetActivity);
+        intent.putExtra(IntentExtras.SHOW_EXTENSIONS, this.userSettings.isShowExtensions());
+        intent.putExtra(IntentExtras.SYNCED_ZOOM, this.userSettings.isSyncedZoom());
+        intent.putExtra(IntentExtras.HAS_HARDWARE_KEY, Status.HAS_HARDWARE_KEY);
 
         Thread t = new Thread(() -> {
             runOnUiThread(() -> {
@@ -680,7 +671,6 @@ public class MainActivity extends AppCompatActivity {
         builder.show();
     }
 
-    @SuppressWarnings("deprecation")
     private boolean isPlayStoreInstalled() {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {

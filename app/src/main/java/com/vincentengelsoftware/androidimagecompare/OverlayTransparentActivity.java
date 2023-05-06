@@ -11,6 +11,7 @@ import android.widget.SeekBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.vincentengelsoftware.androidimagecompare.Activities.IntentExtras;
 import com.vincentengelsoftware.androidimagecompare.animations.FadeActivity;
 import com.vincentengelsoftware.androidimagecompare.animations.ResizeAnimation;
 import com.vincentengelsoftware.androidimagecompare.globals.Images;
@@ -44,7 +45,7 @@ public class OverlayTransparentActivity extends AppCompatActivity implements Fad
         }
 
         if (Status.activityIsOpening) {
-            sync.value = Status.SYNCED_ZOOM;
+            sync.value = getIntent().getBooleanExtra(IntentExtras.SYNCED_ZOOM, true);
         }
 
         Status.activityIsOpening = false;
@@ -102,7 +103,7 @@ public class OverlayTransparentActivity extends AppCompatActivity implements Fad
                 this
         );
 
-        if (Status.hasHardwareKey) {
+        if (getIntent().getBooleanExtra(IntentExtras.HAS_HARDWARE_KEY, false)) {
             LinearLayout linearLayout = findViewById(R.id.overlay_transparent_extensions);
             ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) linearLayout.getLayoutParams();
             layoutParams.setMargins(0, 0, 0, 0);

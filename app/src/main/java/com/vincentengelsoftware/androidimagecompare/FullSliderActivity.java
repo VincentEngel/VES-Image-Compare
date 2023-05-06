@@ -8,6 +8,7 @@ import android.widget.SeekBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.vincentengelsoftware.androidimagecompare.Activities.IntentExtras;
 import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
 import com.vincentengelsoftware.androidimagecompare.helper.BitmapHelper;
@@ -47,7 +48,7 @@ public class FullSliderActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         if (Status.activityIsOpening) {
-            FullSliderActivity.sync.value = Status.SYNCED_ZOOM;
+            FullSliderActivity.sync.value = getIntent().getBooleanExtra(IntentExtras.SYNCED_ZOOM, true);
         }
         Status.activityIsOpening = false;
         setContentView(R.layout.activity_full_slider);

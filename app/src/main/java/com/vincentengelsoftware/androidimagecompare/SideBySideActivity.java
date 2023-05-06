@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.vincentengelsoftware.androidimagecompare.Activities.IntentExtras;
 import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
 import com.vincentengelsoftware.androidimagecompare.helper.FullScreenHelper;
@@ -22,7 +23,7 @@ public class SideBySideActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         if (Status.activityIsOpening) {
-            sync.value = Status.SYNCED_ZOOM;
+            sync.value = getIntent().getBooleanExtra(IntentExtras.SYNCED_ZOOM, true);
         }
 
         Status.activityIsOpening = false;
@@ -58,7 +59,7 @@ public class SideBySideActivity extends AppCompatActivity {
         imageSecond.setText(Images.second.getImageName());
 
         LinearLayout extensions = findViewById(R.id.side_by_side_extensions);
-        if (Status.SHOW_EXTENSIONS) {
+        if (getIntent().getBooleanExtra(IntentExtras.SHOW_EXTENSIONS, false)) {
             extensions.setVisibility(View.VISIBLE);
         } else {
             extensions.setVisibility(View.GONE);

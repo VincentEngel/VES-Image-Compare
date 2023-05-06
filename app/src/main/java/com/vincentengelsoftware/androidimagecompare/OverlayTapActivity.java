@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.vincentengelsoftware.androidimagecompare.Activities.IntentExtras;
 import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
 import com.vincentengelsoftware.androidimagecompare.helper.FullScreenHelper;
@@ -23,7 +24,7 @@ public class OverlayTapActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         if (Status.activityIsOpening) {
-            sync.value = Status.SYNCED_ZOOM;
+            sync.value = getIntent().getBooleanExtra(IntentExtras.SYNCED_ZOOM, true);
         }
         Status.activityIsOpening = false;
 
@@ -56,7 +57,7 @@ public class OverlayTapActivity extends AppCompatActivity {
         );
 
         TableRow extensions = findViewById(R.id.overlay_tap_extensions);
-        if (Status.SHOW_EXTENSIONS) {
+        if (getIntent().getBooleanExtra(IntentExtras.SHOW_EXTENSIONS, false)) {
             extensions.setVisibility(View.VISIBLE);
         } else {
             extensions.setVisibility(View.GONE);

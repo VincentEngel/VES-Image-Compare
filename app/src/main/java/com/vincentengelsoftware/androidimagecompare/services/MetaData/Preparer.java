@@ -1,4 +1,4 @@
-package com.vincentengelsoftware.androidimagecompare.MetaData;
+package com.vincentengelsoftware.androidimagecompare.services.MetaData;
 
 import android.content.ContentResolver;
 

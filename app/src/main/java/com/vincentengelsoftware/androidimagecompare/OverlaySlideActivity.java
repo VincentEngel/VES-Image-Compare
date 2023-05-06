@@ -12,6 +12,7 @@ import android.widget.SeekBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.vincentengelsoftware.androidimagecompare.Activities.IntentExtras;
 import com.vincentengelsoftware.androidimagecompare.animations.FadeActivity;
 import com.vincentengelsoftware.androidimagecompare.animations.ResizeAnimation;
 import com.vincentengelsoftware.androidimagecompare.globals.Images;
@@ -65,7 +66,7 @@ public class OverlaySlideActivity extends AppCompatActivity implements FadeActiv
             }
 
             if (Status.activityIsOpening) {
-                sync.value = Status.SYNCED_ZOOM;
+                sync.value = getIntent().getBooleanExtra(IntentExtras.SYNCED_ZOOM, true);
             }
 
             Status.activityIsOpening = false;
@@ -87,7 +88,7 @@ public class OverlaySlideActivity extends AppCompatActivity implements FadeActiv
             ImageButton hideShow = findViewById(R.id.overlay_transparent_button_hide_front_image);
 
             SeekBar seekBar = findViewById(R.id.overlay_slide_seek_bar);
-            this.addSeekbarLogic(seekBar, image_front, leftToRight, bitmapSource, hideShow, image_back);
+            this.addSeekbarLogic(seekBar, image_front, leftToRight, bitmapSource, hideShow);
             seekBar.setProgress(50);
 
             ImageButton swapDirection = findViewById(R.id.overlay_slide_button_swap_seekbar);
@@ -119,7 +120,7 @@ public class OverlaySlideActivity extends AppCompatActivity implements FadeActiv
                 triggerFadeOutThread();
             });
 
-            if (Status.hasHardwareKey) {
+            if (getIntent().getBooleanExtra(IntentExtras.HAS_HARDWARE_KEY, false)) {
                 LinearLayout linearLayout = findViewById(R.id.overlay_slide_extensions);
                 ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) linearLayout.getLayoutParams();
                 layoutParams.setMargins(0, 0, 0, 0);
@@ -225,8 +226,7 @@ public class OverlaySlideActivity extends AppCompatActivity implements FadeActiv
             VesImageInterface imageView,
             UtilMutableBoolean cutFromRightToLeft,
             Bitmap bitmapSource,
-            ImageButton hideShow,
-            VesImageInterface imageBack
+            ImageButton hideShow
     ) {
         Bitmap transparentBitmap = BitmapHelper.createTransparentBitmap(
                 bitmapSource.getWidth(),
