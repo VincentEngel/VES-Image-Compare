@@ -1,3 +1,4 @@
 * Refactor KeyValueStorage
 * Add new button in MainActivity that shows the last used compare mode
 * Remember last resize option
+* Upgrade material from 1.8.0 to 1.9.0
