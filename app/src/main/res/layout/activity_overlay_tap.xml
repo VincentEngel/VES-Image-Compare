@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/background"
     android:keepScreenOn="true"
-    tools:context=".OverlayTapActivity">
+    tools:context=".Activities.OverlayTapActivity">
 
     <FrameLayout
         android:layout_width="0dp"

@@ -15,7 +15,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.documentfile.provider.DocumentFile;
 
-import com.vincentengelsoftware.androidimagecompare.MainActivity;
+import com.vincentengelsoftware.androidimagecompare.Activities.MainActivity;
 import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.globals.RequestPermissionCodes;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;

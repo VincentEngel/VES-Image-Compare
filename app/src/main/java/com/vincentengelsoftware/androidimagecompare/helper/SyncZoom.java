@@ -3,7 +3,6 @@ package com.vincentengelsoftware.androidimagecompare.helper;
 import android.graphics.drawable.Drawable;
 import android.widget.ToggleButton;
 
-import com.vincentengelsoftware.androidimagecompare.OverlayTransparentActivity;
 import com.vincentengelsoftware.androidimagecompare.animations.FadeActivity;
 import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
 import com.vincentengelsoftware.androidimagecompare.viewClasses.VesImageInterface;

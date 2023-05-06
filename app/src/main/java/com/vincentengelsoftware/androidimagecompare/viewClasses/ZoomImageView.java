@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
-import com.vincentengelsoftware.androidimagecompare.SideBySideActivity;
 import com.vincentengelsoftware.androidimagecompare.animations.FadeActivity;
 import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
 

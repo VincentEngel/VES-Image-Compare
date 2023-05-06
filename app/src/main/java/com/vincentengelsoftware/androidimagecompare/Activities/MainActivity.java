@@ -1,4 +1,4 @@
-package com.vincentengelsoftware.androidimagecompare;
+package com.vincentengelsoftware.androidimagecompare.Activities;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -28,7 +28,7 @@ import androidx.window.layout.WindowMetrics;
 import androidx.window.layout.WindowMetricsCalculator;
 
 import com.vincentengelsoftware.androidimagecompare.Activities.CompareModes.CompareModeNames;
-import com.vincentengelsoftware.androidimagecompare.Activities.IntentExtras;
+import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.globals.Dimensions;
 import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;

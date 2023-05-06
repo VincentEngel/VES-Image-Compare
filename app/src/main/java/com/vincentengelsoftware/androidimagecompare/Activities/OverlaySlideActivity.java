@@ -1,4 +1,4 @@
-package com.vincentengelsoftware.androidimagecompare;
+package com.vincentengelsoftware.androidimagecompare.Activities;
 
 import android.graphics.Bitmap;
 import android.graphics.PointF;
@@ -12,7 +12,7 @@ import android.widget.SeekBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.vincentengelsoftware.androidimagecompare.Activities.IntentExtras;
+import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.animations.FadeActivity;
 import com.vincentengelsoftware.androidimagecompare.animations.ResizeAnimation;
 import com.vincentengelsoftware.androidimagecompare.globals.Images;

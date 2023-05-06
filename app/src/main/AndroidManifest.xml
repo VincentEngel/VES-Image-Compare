@@ -18,28 +18,28 @@
         android:largeHeap="true"
         android:theme="@style/Theme.VesAndroidImageCompare">
         <activity
-            android:name=".MetaDataActivity"
+            android:name=".Activities.MetaDataActivity"
             android:exported="false" />
         <activity
-            android:name=".FullSliderActivity"
+            android:name=".Activities.FullSliderActivity"
             android:exported="false"/>
         <activity
-            android:name=".SideBySideActivity"
+            android:name=".Activities.SideBySideActivity"
             android:exported="false" />
         <activity
-            android:name=".OverlayTransparentActivity"
+            android:name=".Activities.OverlayTransparentActivity"
             android:exported="false" />
         <activity
-            android:name=".OverlayTapActivity"
+            android:name=".Activities.OverlayTapActivity"
             android:exported="false" />
         <activity
-            android:name=".OverlaySlideActivity"
+            android:name=".Activities.OverlaySlideActivity"
             android:exported="false" />
         <activity
-            android:name=".InfoActivity"
+            android:name=".Activities.InfoActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Activities.MainActivity"
             android:exported="true"
             android:launchMode="singleTask"> <!-- singleTask = Only allow one instance of this app -->
             <intent-filter> <!-- WHAT IS THIS FOR? -->

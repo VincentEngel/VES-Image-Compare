@@ -1,23 +1,22 @@
-package com.vincentengelsoftware.androidimagecompare;
+package com.vincentengelsoftware.androidimagecompare.Activities;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TableRow;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import com.vincentengelsoftware.androidimagecompare.Activities.IntentExtras;
+import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
 import com.vincentengelsoftware.androidimagecompare.helper.FullScreenHelper;
 import com.vincentengelsoftware.androidimagecompare.helper.SyncZoom;
-import com.vincentengelsoftware.androidimagecompare.helper.TapHelper;
 import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
 import com.vincentengelsoftware.androidimagecompare.viewClasses.VesImageInterface;
 
-public class OverlayTapActivity extends AppCompatActivity {
+public class SideBySideActivity extends AppCompatActivity {
     public static UtilMutableBoolean sync = new UtilMutableBoolean();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,37 +25,40 @@ public class OverlayTapActivity extends AppCompatActivity {
         if (Status.activityIsOpening) {
             sync.value = getIntent().getBooleanExtra(IntentExtras.SYNCED_ZOOM, true);
         }
+
         Status.activityIsOpening = false;
 
         FullScreenHelper.setFullScreenFlags(this.getWindow());
 
-        setContentView(R.layout.activity_overlay_tap);
+        setContentView(R.layout.activity_side_by_side);
 
-        VesImageInterface image_first = findViewById(R.id.overlay_tap_image_view_one);
-        Images.first.updateVesImageViewWithAdjustedImage(image_first);
+        VesImageInterface first = findViewById(R.id.side_by_side_image_left);
+        VesImageInterface second = findViewById(R.id.side_by_side_image_right);
 
-        TextView textView = findViewById(R.id.overlay_tap_image_name);
-        textView.setText(Images.first.getImageName());
-
-        VesImageInterface image_second = findViewById(R.id.overlay_tap_image_view_two);
-        Images.second.updateVesImageViewWithAdjustedImage(image_second);
-
-        image_second.setVisibility(View.INVISIBLE);
-
-        TapHelper.setOnClickListener(image_first, image_second, OverlayTapActivity.sync, textView, Images.second);
-        TapHelper.setOnClickListener(image_second, image_first, OverlayTapActivity.sync, textView, Images.first);
-
+        SyncZoom.setLinkedTargets(
+                first,
+                second,
+                SideBySideActivity.sync
+        );
         SyncZoom.setUpSyncZoomToggleButton(
-                image_first,
-                image_second,
-                findViewById(R.id.overlay_tap_button_zoom_sync),
+                first,
+                second,
+                findViewById(R.id.toggleButton),
                 ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_link),
                 ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_link_off),
-                OverlayTapActivity.sync,
+                SideBySideActivity.sync,
                 null
         );
 
-        TableRow extensions = findViewById(R.id.overlay_tap_extensions);
+        Images.first.updateVesImageViewWithAdjustedImage(findViewById(R.id.side_by_side_image_left));
+        TextView imageFirst = findViewById(R.id.side_by_side_image_name_first);
+        imageFirst.setText(Images.first.getImageName());
+
+        Images.second.updateVesImageViewWithAdjustedImage(findViewById(R.id.side_by_side_image_right));
+        TextView imageSecond = findViewById(R.id.side_by_side_image_name_second);
+        imageSecond.setText(Images.second.getImageName());
+
+        LinearLayout extensions = findViewById(R.id.side_by_side_extensions);
         if (getIntent().getBooleanExtra(IntentExtras.SHOW_EXTENSIONS, false)) {
             extensions.setVisibility(View.VISIBLE);
         } else {

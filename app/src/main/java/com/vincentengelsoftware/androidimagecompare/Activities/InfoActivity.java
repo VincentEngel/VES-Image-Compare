@@ -1,4 +1,4 @@
-package com.vincentengelsoftware.androidimagecompare;
+package com.vincentengelsoftware.androidimagecompare.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,6 +12,7 @@ import android.text.Html;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
 import com.vincentengelsoftware.androidimagecompare.helper.TextViewModifier;
 

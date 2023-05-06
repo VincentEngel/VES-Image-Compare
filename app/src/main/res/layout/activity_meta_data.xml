@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:keepScreenOn="true"
     android:background="@color/background"
-    tools:context=".MetaDataActivity">
+    tools:context=".Activities.MetaDataActivity">
 
     <ScrollView
         android:layout_width="match_parent"
