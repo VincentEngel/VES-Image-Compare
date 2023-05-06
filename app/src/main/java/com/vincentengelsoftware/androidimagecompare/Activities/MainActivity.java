@@ -505,14 +505,13 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Select two pictures first", Toast.LENGTH_SHORT).show();
             return;
         }
+        Status.activityIsOpening = true;
 
         String activityName = targetActivity.toString().substring(targetActivity.toString().lastIndexOf(".")+1);
         String internalCompareModeName = CompareModeNames.getInternalCompareModeNameFromActivityName(activityName);
         this.userSettings.setLastCompareMode(internalCompareModeName);
         Button button = findViewById(R.id.main_button_last_compare);
         button.setText(CompareModeNames.getUserCompareModeNameFromInternalName(internalCompareModeName));
-
-        Status.activityIsOpening = true;
 
         Intent intent = new Intent(getApplicationContext(), targetActivity);
         intent.putExtra(IntentExtras.SHOW_EXTENSIONS, this.userSettings.isShowExtensions());
@@ -525,7 +524,9 @@ public class MainActivity extends AppCompatActivity {
                 spinner.setVisibility(View.VISIBLE);
             });
 
+            Images.first.setResizeImageToScreen(this.userSettings.isResizeLeftImage());
             Images.first.calculateRotatedBitmap();
+            Images.second.setResizeImageToScreen(this.userSettings.isResizeRightImage());
             Images.second.calculateRotatedBitmap();
 
             runOnUiThread(() -> {

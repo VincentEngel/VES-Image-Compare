@@ -17,7 +17,7 @@ public class ImageHolder {
 
     private String imageName;
 
-    private boolean resizeImageToScreen = true;
+    private boolean resizeImageToScreen;
 
     // Should be part of the constructor as they never change
     private int maxSideSize;
@@ -48,8 +48,6 @@ public class ImageHolder {
         this.currentBitmapRotation = imageHolder.currentBitmapRotation;
 
         this.imageName = imageHolder.imageName;
-
-        this.resizeImageToScreen = imageHolder.resizeImageToScreen;
     }
 
     /**
@@ -139,10 +137,6 @@ public class ImageHolder {
                 this.getBitmapSmall(),
                 BASE_DEGREE
         );
-    }
-
-    public boolean isResizeImageToScreen() {
-        return this.resizeImageToScreen;
     }
 
     public void setResizeImageToScreen(boolean resizeImageToScreen) {

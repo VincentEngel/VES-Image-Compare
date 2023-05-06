@@ -63,8 +63,9 @@ public class MainHelper {
             imageTextViewNameLeft.setText(imageHolderOne.getImageName());
             imageTextViewNameRight.setText(imageHolderTwo.getImageName());
 
-            resizeImageLeft.setChecked(imageHolderOne.isResizeImageToScreen());
-            resizeImageRight.setChecked(imageHolderTwo.isResizeImageToScreen());
+            boolean tempResizeImageLeftChecked = resizeImageLeft.isChecked();
+            resizeImageLeft.setChecked(resizeImageRight.isChecked());
+            resizeImageRight.setChecked(tempResizeImageLeftChecked);
 
             // Take two camera pictures => swap them once
             // Take another camera picture

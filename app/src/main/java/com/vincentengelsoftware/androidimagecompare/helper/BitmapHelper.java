@@ -8,22 +8,26 @@ import android.graphics.Paint;
 
 public class BitmapHelper {
     public static Bitmap resizeBitmap(Bitmap image, int maxWidth, int maxHeight) {
-        int width = image.getWidth();
-        int height = image.getHeight();
+        try {
+            int width = image.getWidth();
+            int height = image.getHeight();
 
-        float ratioBitmap = (float) width / (float) height;
-        float ratioMax = (float) maxWidth / (float) maxHeight;
+            float ratioBitmap = (float) width / (float) height;
+            float ratioMax = (float) maxWidth / (float) maxHeight;
 
-        int finalWidth = maxWidth;
-        int finalHeight = maxHeight;
+            int finalWidth = maxWidth;
+            int finalHeight = maxHeight;
 
-        if (ratioMax > ratioBitmap) {
-            finalWidth = (int) ((float) maxHeight * ratioBitmap);
-        } else {
-            finalHeight = (int) ((float) maxWidth / ratioBitmap);
-        }
+            if (ratioMax > ratioBitmap) {
+                finalWidth = (int) ((float) maxHeight * ratioBitmap);
+            } else {
+                finalHeight = (int) ((float) maxWidth / ratioBitmap);
+            }
 
-        return Bitmap.createScaledBitmap(image, finalWidth, finalHeight, true);
+            return Bitmap.createScaledBitmap(image, finalWidth, finalHeight, true);
+        } catch (Exception ignored) {}
+
+        return image;
     }
 
     public static Bitmap rotateBitmap(Bitmap bitmap, int degree)
