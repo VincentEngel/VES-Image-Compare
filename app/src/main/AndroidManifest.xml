@@ -18,22 +18,22 @@
         android:largeHeap="true"
         android:theme="@style/Theme.VesAndroidImageCompare">
         <activity
-            android:name=".Activities.MetaDataActivity"
+            android:name=".Activities.CompareModes.MetaDataActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.FullSliderActivity"
+            android:name=".Activities.CompareModes.FullSliderActivity"
             android:exported="false"/>
         <activity
-            android:name=".Activities.SideBySideActivity"
+            android:name=".Activities.CompareModes.SideBySideActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.OverlayTransparentActivity"
+            android:name=".Activities.CompareModes.OverlayTransparentActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.OverlayTapActivity"
+            android:name=".Activities.CompareModes.OverlayTapActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.OverlaySlideActivity"
+            android:name=".Activities.CompareModes.OverlaySlideActivity"
             android:exported="false" />
         <activity
             android:name=".Activities.InfoActivity"

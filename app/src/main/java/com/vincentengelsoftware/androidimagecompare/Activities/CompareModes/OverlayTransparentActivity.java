@@ -1,4 +1,4 @@
-package com.vincentengelsoftware.androidimagecompare.Activities;
+package com.vincentengelsoftware.androidimagecompare.Activities.CompareModes;
 
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -11,6 +11,7 @@ import android.widget.SeekBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.vincentengelsoftware.androidimagecompare.Activities.IntentExtras;
 import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.animations.FadeActivity;
 import com.vincentengelsoftware.androidimagecompare.animations.ResizeAnimation;

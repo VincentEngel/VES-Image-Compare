@@ -1,4 +1,4 @@
-package com.vincentengelsoftware.androidimagecompare.Activities;
+package com.vincentengelsoftware.androidimagecompare.Activities.CompareModes;
 
 import android.os.Bundle;
 import android.view.View;
@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.vincentengelsoftware.androidimagecompare.Activities.IntentExtras;
 import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;

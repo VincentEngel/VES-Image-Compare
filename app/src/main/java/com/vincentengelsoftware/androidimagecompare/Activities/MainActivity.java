@@ -28,6 +28,11 @@ import androidx.window.layout.WindowMetrics;
 import androidx.window.layout.WindowMetricsCalculator;
 
 import com.vincentengelsoftware.androidimagecompare.Activities.CompareModes.CompareModeNames;
+import com.vincentengelsoftware.androidimagecompare.Activities.CompareModes.MetaDataActivity;
+import com.vincentengelsoftware.androidimagecompare.Activities.CompareModes.OverlaySlideActivity;
+import com.vincentengelsoftware.androidimagecompare.Activities.CompareModes.OverlayTapActivity;
+import com.vincentengelsoftware.androidimagecompare.Activities.CompareModes.OverlayTransparentActivity;
+import com.vincentengelsoftware.androidimagecompare.Activities.CompareModes.SideBySideActivity;
 import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.globals.Dimensions;
 import com.vincentengelsoftware.androidimagecompare.globals.Images;

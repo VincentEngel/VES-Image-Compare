@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/background"
     android:keepScreenOn="true"
-    tools:context=".Activities.SideBySideActivity">
+    tools:context=".Activities.CompareModes.SideBySideActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

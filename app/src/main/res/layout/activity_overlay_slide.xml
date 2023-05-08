@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/background"
     android:keepScreenOn="true"
-    tools:context=".Activities.OverlaySlideActivity">
+    tools:context=".Activities.CompareModes.OverlaySlideActivity">
 
     <FrameLayout
         android:id="@+id/frameLayout"
