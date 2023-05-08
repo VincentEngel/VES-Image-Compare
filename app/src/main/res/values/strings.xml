@@ -45,4 +45,11 @@
     <string name="select_compare_mode_title">Select Compare Mode</string>
     <string name="metadata">MetaData (Experimental)</string>
     <string name="last_compare">Last Compare</string>
+    <string name="ask_for_review_text">If you like this App, please support it by leaving a review on the Google PlayStore!</string>
+    <string name="ask_for_review_positive">Open PlayStore</string>
+    <string name="ask_for_review_negative">Don\'t show up again</string>
+    <string name="load_image_camera">Take Photo</string>
+    <string name="load_image_gallery">Choose from Gallery</string>
+    <string name="error_message_general">Something went wrong</string>
+    <string name="error_message_intent_more_than_two_images">You can only compare two images at once</string>
 </resources>

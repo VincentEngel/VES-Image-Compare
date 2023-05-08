@@ -288,7 +288,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             if (imageUris.size() > 2) {
-                Toast.makeText(getApplicationContext(), "You can only compare two images at once", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), R.string.error_message_intent_more_than_two_images, Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -526,6 +526,7 @@ public class MainActivity extends AppCompatActivity {
                         spinner.setVisibility(View.VISIBLE);
                     });
 
+                    // run in separate threads to improve performance
                     Images.first.setResizeImageToScreen(this.userSettings.isResizeLeftImage());
                     Images.first.calculateRotatedBitmap();
                     Images.second.setResizeImageToScreen(this.userSettings.isResizeRightImage());
@@ -539,14 +540,14 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                 } catch (Exception ignored) {
                     Status.activityIsOpening = false;
-                    Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.error_message_general, Toast.LENGTH_SHORT).show();
                 }
             });
 
             t.start();
         } catch (Exception ignored) {
             Status.activityIsOpening = false;
-            Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.error_message_general, Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -556,7 +557,7 @@ public class MainActivity extends AppCompatActivity {
                 new ActivityResultContracts.GetContent(),
                 uri -> {
                     if (uri == null) {
-                        Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), R.string.error_message_general, Toast.LENGTH_SHORT).show();
                         return;
                     }
 
@@ -591,7 +592,7 @@ public class MainActivity extends AppCompatActivity {
                     new ActivityResultContracts.TakePicture(),
                     result -> {
                         if (!result) {
-                            Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), R.string.error_message_general, Toast.LENGTH_SHORT).show();
                             Status.isTakingPicture = false;
                             return;
                         }
@@ -668,9 +669,9 @@ public class MainActivity extends AppCompatActivity {
 
         builder.setCancelable(false);
 
-        builder.setMessage("If you like this App, please support it by leaving a review on the Google PlayStore!");
+        builder.setMessage(R.string.ask_for_review_text);
 
-        builder.setPositiveButton("Open PlayStore", (dialogInterface, i) -> {
+        builder.setPositiveButton(R.string.ask_for_review_positive, (dialogInterface, i) -> {
             if (isPlayStoreInstalled()) {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getPackageName())));
             } else {
@@ -678,7 +679,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        builder.setNegativeButton("Don't show up again", (dialogInterface, i) -> {});
+        builder.setNegativeButton(R.string.ask_for_review_negative, (dialogInterface, i) -> {});
 
         builder.show();
     }

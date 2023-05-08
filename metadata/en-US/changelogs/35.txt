@@ -1,1 +1,2 @@
 * Reduce keyValueStorage access
+* Move more strings into strings.xml
