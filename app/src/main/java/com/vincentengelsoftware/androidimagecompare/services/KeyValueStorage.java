@@ -5,14 +5,6 @@ import android.content.SharedPreferences;
 
 public class KeyValueStorage {
     public static final String ASKED_FOR_REVIEW = "ASKED_FOR_REVIEW";
-    public static final String USER_THEME = "USER_THEME";
-    public static final String SYNCED_ZOOM = "SYNCED_ZOOM";
-    public static final String SHOW_EXTENSIONS = "SHOW_EXTENSIONS";
-
-    public static final String LAST_COMPARE_MODE = "LAST_COMPARE_MODE";
-
-    public static final String RESIZE_LEFT_IMAGE = "LEFT_RESIZE";
-    public static final String RESIZE_RIGHT_IMAGE = "RIGHT_RESIZE";
 
     private final Context context;
 
@@ -64,7 +56,7 @@ public class KeyValueStorage {
         } catch (Exception ignored) {}
     }
 
-    public void putInt(String key, int value)
+    public void setInt(String key, int value)
     {
         try {
             SharedPreferences.Editor editor = this.getEditor();
