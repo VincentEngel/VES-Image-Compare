@@ -11,7 +11,7 @@ android {
         targetSdk 33
         versionCode 34
         versionName "2.1.9"
-        archivesBaseName = "ves-iapc-v$versionName"
+        archivesBaseName = "vesipc_v$versionName"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
