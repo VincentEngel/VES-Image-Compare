@@ -28,15 +28,17 @@
         <item name="imageButtonStyle">@style/imageButtonStyles</item>
         <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
     </style>
-    
+
     <style name="imageButtonStyles" parent="Widget.AppCompat.ImageButton">
         <item name="android:backgroundTint">@color/button</item>
         <item name="android:textColor">@color/text_button</item>
     </style>
+
     <style name="buttonStyles" parent="Widget.MaterialComponents.Button">
         <item name="android:backgroundTint">@color/button</item>
         <item name="android:textColor">@color/text_button</item>
     </style>
+
     <style name="alertDialog" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:background">@color/background</item>
         <item name="android:textColor">@color/text_color</item>
@@ -49,5 +51,10 @@
 
     <style name="NegativeButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
         <item name="android:textColor">@color/text_color</item>
+    </style>
+    <!-- Base application theme. -->
+    <style name="Base.Theme.VesAndroidImageCompare" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 </resources>

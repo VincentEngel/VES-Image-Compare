@@ -52,4 +52,6 @@
     <string name="load_image_gallery">Choose from Gallery</string>
     <string name="error_message_general">Something went wrong</string>
     <string name="error_message_intent_more_than_two_images">You can only compare two images at once</string>
+    <string name="privacy_policy_title">Privacy Policy</string>
+    <string name="about">About</string>
 </resources>

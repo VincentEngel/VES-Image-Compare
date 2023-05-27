@@ -689,6 +689,7 @@ public class MainActivity extends AppCompatActivity {
         builder.show();
     }
 
+    @SuppressWarnings("deprecation")
     private boolean isPlayStoreInstalled() {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {

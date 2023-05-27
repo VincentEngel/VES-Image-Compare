@@ -13,16 +13,22 @@
         android:fitsSystemWindows="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:largeHeap="true"
         android:theme="@style/Theme.VesAndroidImageCompare">
+        <activity
+            android:name=".Activities.Settings.PrivacyPolicyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.Settings.SettingsActivity"
+            android:exported="false" />
         <activity
             android:name=".Activities.CompareModes.MetaDataActivity"
             android:exported="false" />
         <activity
             android:name=".Activities.CompareModes.FullSliderActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".Activities.CompareModes.SideBySideActivity"
             android:exported="false" />

@@ -1,2 +1,3 @@
 * Reduce keyValueStorage access
 * Move more strings into strings.xml
+* Upgrade gradle from 8.0.1 to 8.0.2
