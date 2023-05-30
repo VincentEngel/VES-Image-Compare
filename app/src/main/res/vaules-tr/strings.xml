@@ -1,0 +1,57 @@
+<resources>
+    <string name="app_name">VES - Görüntü ve Fotoğraf Karşılaştırma</string>
+    <string name="link_github_subsampling_scale_image_view"><a href="https://github.com/tibbi/subsampling-scale-image-view">Alt Örnekleme Ölçeği Görüntü Görünümü</a></string>
+    <string name="link_github_project"><a href="https://github.com/VincentEngel/VES-Image-Compare">VES - Görüntü ve Fotoğraf Karşılaştırma</a></string>
+    <string name="ves_image_compare">VES - Görüntü ve Fotoğraf Karşılaştırma</string>
+    <string name="github_project">GitHub Projesi</string>
+    <string name="used_libraries">Kullanılan kütüphaneler</string>
+    <string name="first_image">Birinci Resim</string>
+    <string name="second_image">İkinci Resim</string>
+    <string name="transparent">Şeffaf</string>
+    <string name="side_by_side">Yan Yana</string>
+    <string name="overlay_slide">Bindirmeli Slayt</string>
+    <string name="overlay_tap">Bindirmeli Dokunma</string>
+    <string name="app_icon">Uygulama Resmi</string>
+    <string name="link_app_icon"><a href="https://github.com/google/material-design-icons">Google - Materyal Tasarım Simgeleri</a></string>
+    <string name="color_theme">Renk Teması</string>
+    <string name="link_color_theme"><a href="https://github.com/SimpleMobileTools/Simple-Calendar">Basit Takvim</a></string>
+    <string name="switch_slide_direction">Slayt yönünü değiştir</string>
+    <string name="background_image">Arkaplan resmi</string>
+    <string name="front_image">Ön resim</string>
+    <string name="show_information">Bilgi göster</string>
+    <string name="swap_images">Resimleri değiştir</string>
+    <string name="info_text_view_inspiration">Bu uygulama, \"Ditto - Photo Comparer\" Uygulamasından büyük ölçüde esinlenmiştir.</string>
+    <string name="link_ditto_photo_comparer"><a href="https://play.google.com/store/apps/details?id=com.sasiddiqui.ditto">Ditto - Photo Comparer</a></string>
+    <string name="rotate_image_left">Sol resmi döndür</string>
+    <string name="rotate_image_right">Sağ resmi döndür</string>
+    <string name="use_original_image">Orijinal Resmi kullan</string>
+    <string name="hide_front_image">Ön resmi sakla</string>
+    <string name="image_name">Resim adı</string>
+    <string name="resize">Yeniden ölçeklendir</string>
+    <string name="privacy_policy"><![CDATA[<h1 id=\"privacy-policy\">Gizlilik Sözleşmesi</h1> <p>Son Güncelleme: 2022, Ağustos 31</p> <p>Bu Gizlilik Politikası, Hizmeti kullandığınızda bilgilerinizin toplanması, kullanılması ve ifşa edilmesine ilişkin politikalarımızı ve prosedürlerimizi açıklar ve size gizlilik haklarınız ve yasaların sizi nasıl koruduğu hakkında bilgi verir.</p> <p>Hizmeti sağlamak ve iyileştirmek için Kişisel verilerinizi kullanırız. Hizmeti kullanarak, bilgilerin bu Gizlilik Politikasına uygun olarak toplanmasını ve kullanılmasını kabul edersiniz. Bu Gizlilik Politikası, Gizlilik Politikası Oluşturucu'nun yardımıyla oluşturulmuştur.</p> <br><br><h2 id=\"interpretation-and-definitions\">Yorum ve Tanımlar</h2> <br><h3 id=\"interpretation\">Tercüme</h3> <p>Baş harfi büyük olan kelimeler aşağıdaki şartlar altında tanımlanmış anlamlara sahiptir. Aşağıdaki tanımlar, ister tekil ister çoğul olsun, aynı anlamı taşıyacaktır.</p> <br><h2 id=\"definitions\">Definitions</h2> <p>Bu Gizlilik Politikasının amaçları doğrultusunda:</p> <p><b>Uygulama</b> VES - Image and Photo Compare adlı herhangi bir elektronik cihaza Sizin tarafınızdan indirilen Şirket tarafından sağlanan yazılım programı anlamına gelir</p> <p><b>Şirket</b> (bu Sözleşmede \"Şirket\", \"Biz\", \"Bizi\" veya \"Bizim\" olarak anılacaktır.) VES - Görüntü ve Fotoğraf Karşılaştırma anlamına gelir.</p> <p><b>Cihaz</b> bilgisayar, cep telefonu veya dijital tablet gibi Hizmete erişebilen herhangi bir cihaz anlamına gelir.</p> <p><b>Kişisel veri</b> kimliği belirli veya belirlenebilir gerçek kişiye ilişkin her türlü bilgidir.</p> <p><b>Hizmet</b>, Uygulamayı ifade eder.</p> <p><b>Kullanım Verileri</b>, Hizmetin kullanımıyla veya Hizmet altyapısının kendisinden otomatik olarak toplanan verileri ifade eder (örneğin, bir sayfa ziyaretinin süresi).</p> <p><b>Siz</b>, uygun olduğu şekilde, Hizmete erişen veya Hizmet'i kullanan kişi veya söz konusu kişinin adına Hizmet'e eriştiği veya Hizmet'i kullandığı şirket veya diğer tüzel kişilik anlamına gelir.</p> p> <br><br><h2 id=\"kişisel-verilerinizi-ve-kullanım-verilerinizi-toplamak-ve-kullanmak\">Kişisel Verilerinizi ve Kullanım Verilerinizi Toplama ve Kullanma</h2> <br> <h3 id=\"types-of-data-collected\">Toplanan Veri Türleri</h3> <br><h4 id=\"uygulamayı kullanırken-bilgi-toplanan\">Uygulama sırasında Toplanan Bilgiler Uygulamayı Kullanma</h4> <p>Uygulamamızı kullanırken, Uygulamamızın özelliklerini sağlamak için, Sizin önceden izninizi alarak şunları toplayabiliriz:</p> <p>Cihazınızdan resimler ve diğer bilgiler kamera ve fotoğraf kitaplığı</p> <p>Bu bilgileri Hizmetimizin özelliklerini sağlamak için kullanırız. Bilgiler basitçe cihazınızda saklanır. Bu bilgilere erişimi istediğiniz zaman Cihaz ayarlarınızdan etkinleştirebilir veya devre dışı bırakabilirsiniz.</p> <br><h3 id=\"use-of-your-personal-data-and-usage-data\">Kullan Kişisel Verileriniz ve Kullanım Verileriniz</h3> <p>Şirket, Kişisel Verileri ve Kullanım Verilerini aşağıdaki amaçlarla kullanabilir: Hizmetimizi sağlamak ve sürdürmek.</p> <br><h3 id=\"retention- of-your-kişisel-veri-ve-kullanım-data\">Kişisel Verilerinizin ve Kullanım Verilerinizin Saklanması</h3> <p>Şirket, Kişisel Verilerinizi ve Kullanım Verilerinizi yalnızca gerekli olduğu sürece saklayacaktır. bu Gizlilik Politikasında belirtilen amaçlar. <b>Kişisel Verilerinizi ve Kullanım Verilerinizi istediğiniz zaman Cihaz ayarlarınızdan silebilirsiniz.</b></p> <br><h3 id=\"childrens-privacy\">Çocukların Gizliliği</b></p> h3> <p>Hizmetimiz 13 yaşın altındaki hiç kimseye hitap etmemektedir. 13 yaşın altındaki hiç kimseden kişisel olarak tanımlanabilir bilgileri bilerek toplamıyoruz.</p> <br><h2 id=\"links-to- other-websites\">Diğer Web Sitelerine Bağlantılar</h2> <p>Hizmetimiz, Bizim tarafımızdan işletilmeyen diğer web sitelerine bağlantılar içerebilir. Bir üçüncü şahıs bağlantısına tıklarsanız, o üçüncü şahsın sitesine yönlendirileceksiniz. Ziyaret ettiğiniz her sitenin Gizlilik Politikasını gözden geçirmenizi önemle tavsiye ederiz. Herhangi bir üçüncü şahıs sitelerinin veya hizmetlerinin içeriği, gizlilik politikaları veya uygulamaları üzerinde hiçbir kontrolümüz yoktur ve hiçbir sorumluluk kabul etmiyoruz.</p> <br><h2 id=\"contact-us\">Bize Ulaşın</h2> <p>Bu Gizlilik Politikası hakkında herhangi bir sorunuz varsa, bizimle iletişime geçebilirsiniz:</p> <p>E-posta ile: <a href=\"mailto:vincentengelsoftware@gmail.com\">vincentengelsoftware@gmail.com</a></p>]]></string>
+    <string name="playstore">PlayStore</string>
+    <string name="open_playstore">Play Store\'u Aç</string>
+    <string name="sync">Eşitle</string>
+    <string name="icon_sources">İkon kaynakları</string>
+    <string name="system">Sistem</string>
+    <string name="theme">Tema</string>
+    <string name="light">Beyaz</string>
+    <string name="dark">Karanlık</string>
+    <string name="globally_enable_or_disable_linked_zoom">Bağlantılı yakınlaştırmayı küresel olarak etkinleştirin veya devre dışı bırakın</string>
+    <string name="show_extensions_in_compare_modes">Karşılaştırma modlarında eklentileri göster</string>
+    <string name="version">Sürüm</string>
+    <string name="compare">Karşılaştır</string>
+    <string name="metadata_extractor"><a href="https://github.com/drewnoakes/metadata-extractor">Metadata Çıkarıcı</a></string>
+    <string name="select_compare_mode_title">Karşılaştırma Modu Seç</string>
+    <string name="metadata">MetaData (Deneysel)</string>
+    <string name="last_compare">Son Karşılaştırma</string>
+    <string name="ask_for_review_text">Uygulamayı beğendiysen lütfen Play Store\'da bir yorum yaparak bize destek ol!</string>
+    <string name="ask_for_review_positive">Play Store\'u aç</string>
+    <string name="ask_for_review_negative">Tekrar gösterme</string>
+    <string name="load_image_camera">Fotoğraf çek</string>
+    <string name="load_image_gallery">Galeriden Seç</string>
+    <string name="error_message_general">Bir şeyler yanlış gitti</string>
+    <string name="error_message_intent_more_than_two_images">Bir seferde sadece iki resmi karşılaştırabilirsin</string>
+    <string name="privacy_policy_title">Gizlilik Sözleşmesi</string>
+    <string name="about">Hakkında</string>
+</resources>
