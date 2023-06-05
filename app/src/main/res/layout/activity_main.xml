@@ -196,15 +196,13 @@
                         android:paddingEnd="@dimen/image_modifier_container_padding_end"
                         android:paddingBottom="@dimen/image_modifier_container_padding_bottom">
 
-                        <androidx.appcompat.widget.SwitchCompat
-                            android:id="@+id/main_switch_resize_image_left"
-                            android:layout_width="wrap_content"
-                            android:layout_height="48dp"
+                        <ImageButton
+                            android:id="@+id/main_btn_resize_image_left"
+                            android:layout_width="@dimen/button_size"
+                            android:layout_height="@dimen/button_size"
                             android:gravity="center"
-                            android:text="@string/resize"
-                            android:textColor="@color/text_color"
-                            android:textSize="@dimen/text_size"
-                            tools:ignore="DuplicateSpeakableTextCheck" />
+                            app:srcCompat="@drawable/ic_resize"
+                            android:contentDescription="@string/resize" />
 
                         <ImageButton
                             android:id="@+id/home_button_rotate_image_left"
@@ -228,14 +226,13 @@
                         android:paddingEnd="@dimen/image_modifier_container_padding_end"
                         android:paddingBottom="@dimen/image_modifier_container_padding_bottom">
 
-                        <androidx.appcompat.widget.SwitchCompat
-                            android:id="@+id/main_switch_resize_image_right"
-                            android:layout_width="wrap_content"
-                            android:layout_height="48dp"
+                        <ImageButton
+                            android:id="@+id/main_btn_resize_image_right"
+                            android:layout_width="@dimen/button_size"
+                            android:layout_height="@dimen/button_size"
+                            android:contentDescription="@string/resize"
                             android:gravity="center"
-                            android:text="@string/resize"
-                            android:textColor="@color/text_color"
-                            android:textSize="@dimen/text_size" />
+                            app:srcCompat="@drawable/ic_resize" />
 
                         <ImageButton
                             android:id="@+id/home_button_rotate_image_right"
