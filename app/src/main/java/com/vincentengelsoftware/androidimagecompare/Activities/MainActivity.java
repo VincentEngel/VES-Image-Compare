@@ -6,13 +6,18 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RadioGroup;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,7 +26,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.IdRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.window.layout.WindowMetrics;
@@ -42,6 +46,8 @@ import com.vincentengelsoftware.androidimagecompare.helper.BitmapExtractor;
 import com.vincentengelsoftware.androidimagecompare.helper.MainHelper;
 import com.vincentengelsoftware.androidimagecompare.helper.Theme;
 import com.vincentengelsoftware.androidimagecompare.helper.UriExtractor;
+import com.vincentengelsoftware.androidimagecompare.services.ApplyUserSettings;
+import com.vincentengelsoftware.androidimagecompare.services.ImageResizeSettings;
 import com.vincentengelsoftware.androidimagecompare.services.KeyValueStorage;
 import com.vincentengelsoftware.androidimagecompare.services.UserSettings;
 import com.vincentengelsoftware.androidimagecompare.util.ImageHolder;
@@ -68,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         this.keyValueStorage = new KeyValueStorage(getApplicationContext());
         this.userSettings = new UserSettings(this.keyValueStorage);
 
-        Theme.updateTheme(this.userSettings.getTheme());
+        ApplyUserSettings.apply(this.userSettings, Images.first, Images.second);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -300,27 +306,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void setUpActions()
     {
-        SwitchCompat resizeLeftImage = findViewById(R.id.main_switch_resize_image_left);
-        resizeLeftImage.setChecked(this.userSettings.isResizeLeftImage());
-        resizeLeftImage.setOnCheckedChangeListener((compoundButton, b) -> {
-            this.userSettings.setResizeLeftImage(b);
-            Images.first.setResizeImageToScreen(this.userSettings.isResizeLeftImage());
-        });
-        resizeLeftImage.setOnLongClickListener(view -> {
-            Toast.makeText(getApplicationContext(), "Resize left image to screen size", Toast.LENGTH_SHORT).show();
-            return true;
-        });
+        ImageButton resizeLeftImage = findViewById(R.id.main_btn_resize_image_left);
+        resizeLeftImage.setOnClickListener(view -> openResizeImageDialog(Images.first, this.userSettings.getLeftImageResizeSettings()));
 
-        SwitchCompat resizeRightImage = findViewById(R.id.main_switch_resize_image_right);
-        resizeRightImage.setChecked(this.userSettings.isResizeRightImage());
-        resizeRightImage.setOnCheckedChangeListener((compoundButton, b) -> {
-            this.userSettings.setResizeRightImage(b);
-            Images.second.setResizeImageToScreen(this.userSettings.isResizeRightImage());
-        });
-        resizeRightImage.setOnLongClickListener(view -> {
-            Toast.makeText(getApplicationContext(), "Resize right image to screen size", Toast.LENGTH_SHORT).show();
-            return true;
-        });
+        ImageButton resizeRightImage = findViewById(R.id.main_btn_resize_image_right);
+        resizeRightImage.setOnClickListener(view -> openResizeImageDialog(Images.second, this.userSettings.getRightImageResizeSettings()));
 
         Button lastCompareMode = findViewById(R.id.main_button_last_compare);
         lastCompareMode.setText(
@@ -357,9 +347,7 @@ public class MainActivity extends AppCompatActivity {
                 findViewById(R.id.home_image_first),
                 findViewById(R.id.home_image_second),
                 findViewById(R.id.main_text_view_name_image_left),
-                findViewById(R.id.main_text_view_name_image_right),
-                findViewById(R.id.main_switch_resize_image_left),
-                findViewById(R.id.main_switch_resize_image_right)
+                findViewById(R.id.main_text_view_name_image_right)
         );
         swapImages.setOnLongClickListener(view -> {
             Toast.makeText(getApplicationContext(), "Swap Images", Toast.LENGTH_SHORT).show();
@@ -454,10 +442,108 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void openResizeImageDialog(ImageHolder imageHolder, ImageResizeSettings imageResizeSettings)
+    {
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog_resize_image);
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int widthPixel = displayMetrics.widthPixels;
+
+        widthPixel = (int) (widthPixel * 0.9);
+
+        LinearLayout window = dialog.findViewById(R.id.dialog_resize_image_linear_layout);
+        window.setMinimumWidth(widthPixel);
+
+        RadioGroup radioGroup = dialog.findViewById(R.id.dialog_resize_image_radio_group);
+        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            TableRow original_info_text = dialog.findViewById(R.id.dialog_resize_image_original_info_text);
+            TableRow automatic_info_text = dialog.findViewById(R.id.dialog_resize_image_automatic_info_text);
+            TableRow custom_settings= dialog.findViewById(R.id.dialog_resize_image_custom_settings);
+
+            if (checkedId == R.id.dialog_resize_image_radio_button_original) {
+                original_info_text.setVisibility(View.VISIBLE);
+                automatic_info_text.setVisibility(View.GONE);
+                custom_settings.setVisibility(View.GONE);
+            } else if (checkedId == R.id.dialog_resize_image_radio_button_automatic) {
+                original_info_text.setVisibility(View.GONE);
+                automatic_info_text.setVisibility(View.VISIBLE);
+                custom_settings.setVisibility(View.GONE);
+            } else if (checkedId == R.id.dialog_resize_image_radio_button_custom) {
+                original_info_text.setVisibility(View.GONE);
+                automatic_info_text.setVisibility(View.GONE);
+                custom_settings.setVisibility(View.VISIBLE);
+            }
+        });
+
+        switch (imageResizeSettings.getImageResizeOption()) {
+            case Images.RESIZE_OPTION_ORIGINAL ->
+                    radioGroup.check(R.id.dialog_resize_image_radio_button_original);
+            case Images.RESIZE_OPTION_AUTOMATIC ->
+                    radioGroup.check(R.id.dialog_resize_image_radio_button_automatic);
+            case Images.RESIZE_OPTION_CUSTOM -> {
+                radioGroup.check(R.id.dialog_resize_image_radio_button_custom);
+                EditText inputHeight = dialog.findViewById(R.id.dialog_resize_image_input_height);
+                inputHeight.setText(String.valueOf(imageResizeSettings.getImageResizeHeight()));
+                EditText inputWidth = dialog.findViewById(R.id.dialog_resize_image_input_width);
+                inputWidth.setText(String.valueOf(imageResizeSettings.getImageResizeWidth()));
+            }
+            default ->
+                    radioGroup.check(R.id.dialog_resize_image_radio_button_automatic);
+        }
+
+        Button done = dialog.findViewById(R.id.dialog_resize_image_btn_done);
+        done.setOnClickListener(v -> {
+            int checkedId = radioGroup.getCheckedRadioButtonId();
+
+            if (checkedId == R.id.dialog_resize_image_radio_button_original) {
+                imageHolder.setResizeOption(Images.RESIZE_OPTION_ORIGINAL);
+                imageResizeSettings.setImageResizeOption(Images.RESIZE_OPTION_ORIGINAL);
+            } else if (checkedId == R.id.dialog_resize_image_radio_button_automatic) {
+                imageHolder.setResizeOption(Images.RESIZE_OPTION_AUTOMATIC);
+                imageResizeSettings.setImageResizeOption(Images.RESIZE_OPTION_AUTOMATIC);
+            } else if (checkedId == R.id.dialog_resize_image_radio_button_custom) {
+                int height;
+                int width;
+
+                EditText inputHeight = dialog.findViewById(R.id.dialog_resize_image_input_height);
+                EditText inputWidth = dialog.findViewById(R.id.dialog_resize_image_input_width);
+
+                try {
+                    height = Integer.parseInt(inputHeight.getText().toString());
+                    width = Integer.parseInt(inputWidth.getText().toString());
+                } catch (Exception e) {
+                    Toast.makeText(getApplicationContext(), "Invalid input, only numbers allowed", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (height <= 0 || width <= 0) {
+                    Toast.makeText(getApplicationContext(), "Invalid input, input values must be greater than 0", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                imageResizeSettings.setImageResizeOption(Images.RESIZE_OPTION_CUSTOM);
+                imageResizeSettings.setImageResizeHeight(height);
+                imageResizeSettings.setImageResizeWidth(width);
+
+                imageHolder.setResizeOption(Images.RESIZE_OPTION_CUSTOM);
+                imageHolder.setCustomSize(height, width);
+
+            }
+
+            imageHolder.resetBitmapResized();
+
+            dialog.dismiss();
+        });
+
+        dialog.show();
+    }
+
     private void openCompareDialog()
     {
         Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.compare_mode_selection_dialog);
+        dialog.setContentView(R.layout.dialog_compare_mode_selection);
 
         addCompareDialogButtonOnClickLogic(
                 R.id.select_compare_mode_dialog_btn_side_by_side,
@@ -532,9 +618,7 @@ public class MainActivity extends AppCompatActivity {
                     });
 
                     // run in separate threads to improve performance
-                    Images.first.setResizeImageToScreen(this.userSettings.isResizeLeftImage());
                     Images.first.calculateRotatedBitmap();
-                    Images.second.setResizeImageToScreen(this.userSettings.isResizeRightImage());
                     Images.second.calculateRotatedBitmap();
 
                     runOnUiThread(() -> {

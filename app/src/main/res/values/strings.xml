@@ -54,4 +54,13 @@
     <string name="error_message_intent_more_than_two_images">You can only compare two images at once</string>
     <string name="privacy_policy_title">Privacy Policy</string>
     <string name="about">About</string>
+    <string name="done">Done</string>
+    <string name="height_in_px">Height in px</string>
+    <string name="width_in_px">Width in px</string>
+    <string name="automatic_resize_image_info_text">Automatically reduce image size in order to improve performance. Scale the image down to screen size while keeping its proportions</string>
+    <string name="original_resize_image_info_text">Keep original image unchanged. May cause performance problems</string>
+    <string name="custom">Custom</string>
+    <string name="automatic">Automatic</string>
+    <string name="original">Original</string>
+    <string name="resize_image">Resize Image</string>
 </resources>

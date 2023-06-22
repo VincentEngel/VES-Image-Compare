@@ -11,4 +11,8 @@ public class Images {
 
     public static Uri fileUriFirst;
     public static Uri fileUriSecond;
+
+    public static final int RESIZE_OPTION_ORIGINAL = 0;
+    public static final int RESIZE_OPTION_AUTOMATIC = 1;
+    public static final int RESIZE_OPTION_CUSTOM = 2;
 }

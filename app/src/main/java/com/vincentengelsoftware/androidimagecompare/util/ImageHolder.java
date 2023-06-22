@@ -3,13 +3,14 @@ package com.vincentengelsoftware.androidimagecompare.util;
 import android.graphics.Bitmap;
 import android.widget.ImageView;
 
+import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.helper.BitmapHelper;
 import com.vincentengelsoftware.androidimagecompare.viewClasses.VesImageInterface;
 
 public class ImageHolder {
     private Bitmap bitmap;
     private Bitmap bitmapSmall;
-    private Bitmap bitmapScreenSize;
+    private Bitmap bitmapResized;
     private Bitmap rotatedBitmap;
 
     private int currentRotation = 0;
@@ -17,11 +18,14 @@ public class ImageHolder {
 
     private String imageName;
 
-    private boolean resizeImageToScreen;
+    private int resizeOption = Images.RESIZE_OPTION_AUTOMATIC;
 
     // Should be part of the constructor as they never change
     private int maxSideSize;
     private int maxSideSizeForSmallBitmap;
+
+    private int customHeight;
+    private int customWidth;
 
     private static final int BASE_DEGREE = 90;
 
@@ -41,7 +45,7 @@ public class ImageHolder {
 
         this.bitmap = imageHolder.bitmap;
         this.bitmapSmall = imageHolder.bitmapSmall;
-        this.bitmapScreenSize = imageHolder.bitmapScreenSize;
+        this.bitmapResized = null;
         this.rotatedBitmap = imageHolder.rotatedBitmap;
 
         this.currentRotation = imageHolder.currentRotation;
@@ -59,7 +63,7 @@ public class ImageHolder {
         if (
                 this.currentBitmapRotation == this.currentRotation
                         && this.rotatedBitmap != null
-                        && this.bitmapScreenSize != null
+                        && this.bitmapResized != null
         ) {
             return;
         }
@@ -70,15 +74,15 @@ public class ImageHolder {
             this.rotatedBitmap = BitmapHelper.rotateBitmap(this.bitmap, BASE_DEGREE * this.currentRotation);
         }
 
-        this.bitmapScreenSize = null;
-        this.getBitmapScreenSize();
+        this.bitmapResized = null;
+        this.getBitmapResized();
         this.currentBitmapRotation = this.currentRotation;
     }
 
     public Bitmap getBitmapSmall()
     {
         if (this.bitmapSmall ==  null) {
-            this.bitmapSmall = BitmapHelper.resizeBitmap(
+            this.bitmapSmall = BitmapHelper.createScaledBitmapToMaxLength(
                     this.bitmap,
                     this.maxSideSizeForSmallBitmap,
                     this.maxSideSizeForSmallBitmap
@@ -88,17 +92,30 @@ public class ImageHolder {
         return this.bitmapSmall;
     }
 
-    public Bitmap getBitmapScreenSize()
+    public Bitmap getBitmapResized()
     {
-        if (this.bitmapScreenSize == null) {
-            this.bitmapScreenSize = BitmapHelper.resizeBitmap(
-                    this.rotatedBitmap,
-                    this.maxSideSize,
-                    this.maxSideSize
-            );
+        if (this.bitmapResized == null) {
+            if (this.resizeOption == Images.RESIZE_OPTION_CUSTOM) {
+                this.bitmapResized = BitmapHelper.resizeBitmap(
+                        this.rotatedBitmap,
+                        this.customWidth,
+                        this.customHeight
+                );
+            } else {
+                this.bitmapResized = BitmapHelper.createScaledBitmapToMaxLength(
+                        this.rotatedBitmap,
+                        this.maxSideSize,
+                        this.maxSideSize
+                );
+            }
         }
 
-        return this.bitmapScreenSize;
+        return this.bitmapResized;
+    }
+
+    public void resetBitmapResized()
+    {
+        this.bitmapResized = null;
     }
 
     public void updateFromBitmap(
@@ -115,10 +132,15 @@ public class ImageHolder {
         this.maxSideSizeForSmallBitmap = maxSideSizeForSmallBitmap;
     }
 
+    public void setResizeOption(int resizeOption)
+    {
+        this.resizeOption = resizeOption;
+    }
+
     private void resetProperties()
     {
         this.bitmapSmall = null;
-        this.bitmapScreenSize = null;
+        this.bitmapResized = null;
         this.rotatedBitmap = null;
 
         this.currentRotation = 0;
@@ -139,14 +161,19 @@ public class ImageHolder {
         );
     }
 
-    public void setResizeImageToScreen(boolean resizeImageToScreen) {
-        this.resizeImageToScreen = resizeImageToScreen;
+    public void setCustomSize(int height, int width)
+    {
+        this.customHeight = height;
+        this.customWidth = width;
     }
 
     public Bitmap getAdjustedBitmap()
     {
-        if (this.resizeImageToScreen) {
-            return this.getBitmapScreenSize();
+        if (
+                this.resizeOption == Images.RESIZE_OPTION_AUTOMATIC
+                || this.resizeOption == Images.RESIZE_OPTION_CUSTOM
+        ) {
+            return this.getBitmapResized();
         }
 
         return this.rotatedBitmap;

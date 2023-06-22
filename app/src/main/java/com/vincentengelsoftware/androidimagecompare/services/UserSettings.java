@@ -5,7 +5,6 @@ import com.vincentengelsoftware.androidimagecompare.globals.Status;
 
 public class UserSettings {
     private final KeyValueStorage keyValueStorage;
-
     private String lastCompareMode;
     private boolean syncedZoom;
     private boolean showExtensions;
@@ -20,6 +19,9 @@ public class UserSettings {
     public static final String RESIZE_LEFT_IMAGE = "LEFT_RESIZE";
     public static final String RESIZE_RIGHT_IMAGE = "RIGHT_RESIZE";
 
+    private final ImageResizeSettings LeftImageResizeSettings;
+    private final ImageResizeSettings RightImageResizeSettings;
+
     public UserSettings(KeyValueStorage keyValueStorage) {
         this.keyValueStorage = keyValueStorage;
 
@@ -29,6 +31,17 @@ public class UserSettings {
         this.resizeLeftImage = this.keyValueStorage.getBoolean(UserSettings.RESIZE_LEFT_IMAGE, true);
         this.resizeRightImage = this.keyValueStorage.getBoolean(UserSettings.RESIZE_RIGHT_IMAGE, true);
         this.theme = this.keyValueStorage.getInt(UserSettings.USER_THEME, Status.THEME_SYSTEM);
+
+        this.LeftImageResizeSettings = new ImageResizeSettings("LEFT_", this.keyValueStorage);
+        this.RightImageResizeSettings = new ImageResizeSettings("RIGHT_", this.keyValueStorage);
+    }
+
+    public ImageResizeSettings getLeftImageResizeSettings() {
+        return this.LeftImageResizeSettings;
+    }
+
+    public ImageResizeSettings getRightImageResizeSettings() {
+        return this.RightImageResizeSettings;
     }
 
     public String getLastCompareMode() {

@@ -7,7 +7,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 
 public class BitmapHelper {
-    public static Bitmap resizeBitmap(Bitmap image, int maxWidth, int maxHeight) {
+    public static Bitmap createScaledBitmapToMaxLength(Bitmap image, int maxWidth, int maxHeight) {
         try {
             int width = image.getWidth();
             int height = image.getHeight();
@@ -25,6 +25,14 @@ public class BitmapHelper {
             }
 
             return Bitmap.createScaledBitmap(image, finalWidth, finalHeight, true);
+        } catch (Exception ignored) {}
+
+        return image;
+    }
+
+    public static Bitmap resizeBitmap(Bitmap image, int width, int height) {
+        try {
+            return Bitmap.createScaledBitmap(image, width, height, true);
         } catch (Exception ignored) {}
 
         return image;

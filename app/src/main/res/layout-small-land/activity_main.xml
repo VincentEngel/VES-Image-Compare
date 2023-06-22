@@ -189,22 +189,21 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1">
 
-                        <androidx.appcompat.widget.SwitchCompat
-                            android:id="@+id/main_switch_resize_image_left"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="24dp"
-                            android:gravity="start|center_vertical"
-                            android:text="@string/resize"
-                            android:textColor="@color/text_color"
-                            android:textSize="18sp"
-                            tools:ignore="DuplicateSpeakableTextCheck" />
+                        <ImageButton
+                            android:id="@+id/main_btn_resize_image_left"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_marginStart="-28dp"
+                            android:layout_gravity="center"
+                            app:srcCompat="@drawable/ic_resize"
+                            android:contentDescription="@string/resize" />
 
                         <ImageButton
                             android:id="@+id/home_button_rotate_image_left"
                             android:layout_width="48dp"
                             android:layout_height="48dp"
-                            android:layout_gravity="end"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="-28dp"
                             android:contentDescription="@string/rotate_image_left"
                             app:srcCompat="@drawable/ic_rotate_right"
                             tools:ignore="ImageContrastCheck" />
@@ -219,21 +218,21 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1">
 
-                        <androidx.appcompat.widget.SwitchCompat
-                            android:id="@+id/main_switch_resize_image_right"
-                            android:layout_width="wrap_content"
+                        <ImageButton
+                            android:id="@+id/main_btn_resize_image_right"
+                            android:layout_width="48dp"
                             android:layout_height="48dp"
-                            android:layout_gravity="start"
-                            android:text="@string/resize"
-                            android:textColor="@color/text_color"
-                            android:textSize="18sp" />
+                            android:contentDescription="@string/resize"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="-28dp"
+                            app:srcCompat="@drawable/ic_resize" />
 
                         <ImageButton
                             android:id="@+id/home_button_rotate_image_right"
                             android:layout_width="48dp"
                             android:layout_height="48dp"
-                            android:layout_gravity="center_vertical|end"
-                            android:layout_marginEnd="24dp"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="-28dp"
                             android:contentDescription="@string/rotate_image_right"
                             app:srcCompat="@drawable/ic_rotate_right"
                             tools:ignore="ImageContrastCheck" />

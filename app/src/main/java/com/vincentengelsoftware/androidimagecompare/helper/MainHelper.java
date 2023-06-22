@@ -43,9 +43,7 @@ public class MainHelper {
             ImageView imageViewOne,
             ImageView imageViewTwo,
             TextView imageTextViewNameLeft,
-            TextView imageTextViewNameRight,
-            SwitchCompat resizeImageLeft,
-            SwitchCompat resizeImageRight
+            TextView imageTextViewNameRight
     ) {
         // Just replace imageHolders <.<
         imageButton.setOnClickListener(view -> {
@@ -62,10 +60,6 @@ public class MainHelper {
 
             imageTextViewNameLeft.setText(imageHolderOne.getImageName());
             imageTextViewNameRight.setText(imageHolderTwo.getImageName());
-
-            boolean tempResizeImageLeftChecked = resizeImageLeft.isChecked();
-            resizeImageLeft.setChecked(resizeImageRight.isChecked());
-            resizeImageRight.setChecked(tempResizeImageLeftChecked);
 
             // Take two camera pictures => swap them once
             // Take another camera picture
