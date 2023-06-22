@@ -54,4 +54,13 @@
     <string name="error_message_intent_more_than_two_images">Bir seferde sadece iki resmi karşılaştırabilirsin</string>
     <string name="privacy_policy_title">Gizlilik Sözleşmesi</string>
     <string name="about">Hakkında</string>
+    <string name="done">Tamamlandı</string>
+    <string name="height_in_px">px yüksekliği</string>
+    <string name="width_in_px">px genişliği</string>
+    <string name="automatic_resize_image_info_text">Performansı artırmak için görüntü boyutunu otomatik olarak küçültün. Oranlarını koruyarak görüntüyü ekran boyutuna göre ölçeklendirin</string>
+    <string name="original_resize_image_info_text">Orijinal görüntüyü değiştirmeden tutun. Performans sorunlarına neden olabilir</string>
+    <string name="custom">Özel</string>
+    <string name="automatic">Otomatik</string>
+    <string name="original">Orijinal</string>
+    <string name="resize_image">Resmi  yeniden ölçeklendir</string>
 </resources>
