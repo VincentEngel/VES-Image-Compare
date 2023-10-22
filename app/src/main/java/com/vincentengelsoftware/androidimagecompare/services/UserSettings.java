@@ -4,6 +4,7 @@ import com.vincentengelsoftware.androidimagecompare.Activities.CompareModes.Comp
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
 
 public class UserSettings {
+    private static UserSettings instance;
     private final KeyValueStorage keyValueStorage;
     private String lastCompareMode;
     private boolean syncedZoom;
@@ -12,6 +13,8 @@ public class UserSettings {
     private boolean resizeRightImage;
     private int theme;
 
+    private int maxZoom;
+
     public static final String USER_THEME = "USER_THEME";
     public static final String SYNCED_ZOOM = "SYNCED_ZOOM";
     public static final String SHOW_EXTENSIONS = "SHOW_EXTENSIONS";
@@ -19,10 +22,12 @@ public class UserSettings {
     public static final String RESIZE_LEFT_IMAGE = "LEFT_RESIZE";
     public static final String RESIZE_RIGHT_IMAGE = "RIGHT_RESIZE";
 
+    public static final String MAX_ZOOM = "MAX_ZOOM";
+
     private final ImageResizeSettings LeftImageResizeSettings;
     private final ImageResizeSettings RightImageResizeSettings;
 
-    public UserSettings(KeyValueStorage keyValueStorage) {
+    private UserSettings(KeyValueStorage keyValueStorage) {
         this.keyValueStorage = keyValueStorage;
 
         this.lastCompareMode = this.keyValueStorage.getString(UserSettings.LAST_COMPARE_MODE, CompareModeNames.SIDE_BY_SIDE);
@@ -32,8 +37,18 @@ public class UserSettings {
         this.resizeRightImage = this.keyValueStorage.getBoolean(UserSettings.RESIZE_RIGHT_IMAGE, true);
         this.theme = this.keyValueStorage.getInt(UserSettings.USER_THEME, Status.THEME_SYSTEM);
 
+        this.maxZoom = this.keyValueStorage.getInt(UserSettings.MAX_ZOOM, 10);
+
         this.LeftImageResizeSettings = new ImageResizeSettings("LEFT_", this.keyValueStorage);
         this.RightImageResizeSettings = new ImageResizeSettings("RIGHT_", this.keyValueStorage);
+    }
+
+    public static UserSettings getInstance(KeyValueStorage keyValueStorage) {
+        if (instance == null) {
+            instance = new UserSettings(keyValueStorage);
+        }
+
+        return instance;
     }
 
     public ImageResizeSettings getLeftImageResizeSettings() {
@@ -120,5 +135,22 @@ public class UserSettings {
 
         this.theme = theme;
         this.keyValueStorage.setInt(UserSettings.USER_THEME, theme);
+    }
+
+    public int getMaxZoom() {
+        return this.maxZoom;
+    }
+
+    public void setMaxZoom(int maxZoom) {
+        if (this.maxZoom == maxZoom) {
+            return;
+        }
+
+        if (maxZoom < 1) {
+            maxZoom = 1;
+        }
+
+        this.maxZoom = maxZoom;
+        this.keyValueStorage.setInt(UserSettings.MAX_ZOOM, maxZoom);
     }
 }

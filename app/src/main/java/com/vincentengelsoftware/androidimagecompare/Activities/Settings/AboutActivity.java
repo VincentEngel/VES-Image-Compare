@@ -1,4 +1,4 @@
-package com.vincentengelsoftware.androidimagecompare.Activities;
+package com.vincentengelsoftware.androidimagecompare.Activities.Settings;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,7 +8,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.Html;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -16,7 +15,7 @@ import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
 import com.vincentengelsoftware.androidimagecompare.helper.TextViewModifier;
 
-public class InfoActivity extends AppCompatActivity {
+public class AboutActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,13 +30,6 @@ public class InfoActivity extends AppCompatActivity {
         TextViewModifier.makeLinkClickable(findViewById(R.id.info_text_view_link_google_material_icons));
         TextViewModifier.makeLinkClickable(findViewById(R.id.info_text_view_link_ditto_photo_comparer));
 
-        TextView textViewPrivacyPolicy = findViewById(R.id.info_text_view_privacy_policy);
-        textViewPrivacyPolicy.setText(Html.fromHtml(
-                getString(R.string.privacy_policy),
-                Html.FROM_HTML_MODE_LEGACY
-        ));
-        TextViewModifier.makeLinkClickable(textViewPrivacyPolicy);
-
         Button playStore = findViewById(R.id.info_btn_open_playstore);
         playStore.setOnClickListener(view -> {
             try {
@@ -50,7 +42,7 @@ public class InfoActivity extends AppCompatActivity {
             }
         });
 
-        String version = "Unbekannt";
+        String version = getString(R.string.unknown);
         try {
             PackageInfo pinfo = getPackageInfo();
             version = "v" + pinfo.versionName;

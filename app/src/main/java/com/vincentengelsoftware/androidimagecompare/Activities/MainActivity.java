@@ -37,6 +37,7 @@ import com.vincentengelsoftware.androidimagecompare.Activities.CompareModes.Over
 import com.vincentengelsoftware.androidimagecompare.Activities.CompareModes.OverlayTapActivity;
 import com.vincentengelsoftware.androidimagecompare.Activities.CompareModes.OverlayTransparentActivity;
 import com.vincentengelsoftware.androidimagecompare.Activities.CompareModes.SideBySideActivity;
+import com.vincentengelsoftware.androidimagecompare.Activities.Settings.ConfigActivity;
 import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.globals.Dimensions;
 import com.vincentengelsoftware.androidimagecompare.globals.Images;
@@ -44,7 +45,6 @@ import com.vincentengelsoftware.androidimagecompare.globals.Status;
 import com.vincentengelsoftware.androidimagecompare.helper.AskForReview;
 import com.vincentengelsoftware.androidimagecompare.helper.BitmapExtractor;
 import com.vincentengelsoftware.androidimagecompare.helper.MainHelper;
-import com.vincentengelsoftware.androidimagecompare.helper.Theme;
 import com.vincentengelsoftware.androidimagecompare.helper.UriExtractor;
 import com.vincentengelsoftware.androidimagecompare.services.ApplyUserSettings;
 import com.vincentengelsoftware.androidimagecompare.services.ImageResizeSettings;
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         this.keyValueStorage = new KeyValueStorage(getApplicationContext());
-        this.userSettings = new UserSettings(this.keyValueStorage);
+        this.userSettings = UserSettings.getInstance(this.keyValueStorage);
 
         ApplyUserSettings.apply(this.userSettings, Images.first, Images.second);
 
@@ -335,7 +335,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             Status.activityIsOpening = true;
-            Intent intent = new Intent(getApplicationContext(), InfoActivity.class);
+            Intent intent = new Intent(getApplicationContext(), ConfigActivity.class);
             startActivity(intent);
         });
 
@@ -427,19 +427,6 @@ public class MainActivity extends AppCompatActivity {
                 R.id.main_text_view_name_image_right,
                 Images.fileUriSecond.getPath()
         );
-
-        setUpThemeToggleButton(findViewById(R.id.home_theme));
-    }
-
-    private void setUpThemeToggleButton(Button button)
-    {
-        Theme.updateButtonText(button, this.userSettings.getTheme());
-
-        button.setOnClickListener(view -> {
-            this.userSettings.setTheme((this.userSettings.getTheme() + 1) % 3);
-            Theme.updateButtonText(button, this.userSettings.getTheme());
-            Theme.updateTheme(this.userSettings.getTheme());
-        });
     }
 
     private void openResizeImageDialog(ImageHolder imageHolder, ImageResizeSettings imageResizeSettings)

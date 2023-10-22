@@ -55,6 +55,8 @@
     <string name="privacy_policy_title">Privacy Policy</string>
     <string name="about">About</string>
     <string name="done">Done</string>
+    <string name="settings">Settings</string>
+    <string name="unknown">Unknown</string>
     <string name="height_in_px">Height in px</string>
     <string name="width_in_px">Width in px</string>
     <string name="automatic_resize_image_info_text">Automatically reduce image size in order to improve performance. Scale the image down to screen size while keeping its proportions</string>
@@ -63,4 +65,9 @@
     <string name="automatic">Automatic</string>
     <string name="original">Original</string>
     <string name="resize_image">Resize Image</string>
+    <string name="max_zoom">Max Zoom</string>
+    <string name="save">Save</string>
+    <string name="number">Number</string>
+    <string name="default_10">(default: 10)</string>
+    <string name="open_settings">Open Settings</string>
 </resources>

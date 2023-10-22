@@ -2,35 +2,47 @@ package com.vincentengelsoftware.androidimagecompare.Activities.Settings;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.widget.TextView;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.vincentengelsoftware.androidimagecompare.R;
+import com.vincentengelsoftware.androidimagecompare.globals.Status;
+import com.vincentengelsoftware.androidimagecompare.helper.Theme;
+import com.vincentengelsoftware.androidimagecompare.services.KeyValueStorage;
+import com.vincentengelsoftware.androidimagecompare.services.UserSettings;
 
 public class SettingsActivity extends AppCompatActivity {
+    private UserSettings userSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        this.userSettings = UserSettings.getInstance(new KeyValueStorage(getApplicationContext()));
+        Theme.updateTheme(userSettings.getTheme());
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
 
-        try {
-            PackageInfo pinfo = getPackageInfo();
-            String version = "v" + pinfo.versionName;
-            TextView versionText = findViewById(R.id.settings_version);
-            versionText.setText(version);
-        } catch (Exception ignored) {
-        }
+        setContentView(R.layout.activity_settings);
+        Status.activityIsOpening = false;
+
+        setUpThemeToggleButton(findViewById(R.id.home_theme));
+
+        EditText maxZoom = findViewById(R.id.settings_max_zoom);
+        maxZoom.setText(String.valueOf(this.userSettings.getMaxZoom()));
+
+        Button saveButton = findViewById(R.id.settings_save);
+        saveButton.setOnClickListener(view -> {
+            this.userSettings.setMaxZoom(Integer.parseInt(maxZoom.getText().toString()));
+        });
     }
 
-    @SuppressWarnings("deprecation")
-    private PackageInfo getPackageInfo() throws PackageManager.NameNotFoundException {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-            return getPackageManager().getPackageInfo(getPackageName(), PackageManager.PackageInfoFlags.of(PackageManager.GET_META_DATA));
-        }
+    private void setUpThemeToggleButton(Button button)
+    {
+        Theme.updateButtonText(button, this.userSettings.getTheme());
 
-        return getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_META_DATA);
+        button.setOnClickListener(view -> {
+            this.userSettings.setTheme((this.userSettings.getTheme() + 1) % 3);
+            Theme.updateButtonText(button, this.userSettings.getTheme());
+            Theme.updateTheme(this.userSettings.getTheme());
+        });
     }
 }

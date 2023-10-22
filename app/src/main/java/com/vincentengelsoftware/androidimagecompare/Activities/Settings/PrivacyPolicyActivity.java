@@ -7,6 +7,7 @@ import android.text.Html;
 import android.widget.TextView;
 
 import com.vincentengelsoftware.androidimagecompare.R;
+import com.vincentengelsoftware.androidimagecompare.globals.Status;
 import com.vincentengelsoftware.androidimagecompare.helper.TextViewModifier;
 
 public class PrivacyPolicyActivity extends AppCompatActivity {
@@ -15,6 +16,7 @@ public class PrivacyPolicyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_privacy_policy);
+        Status.activityIsOpening = false;
 
         TextView textViewPrivacyPolicy = findViewById(R.id.privacy_policy_text);
         textViewPrivacyPolicy.setText(Html.fromHtml(

@@ -25,18 +25,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <Button
-                    android:id="@+id/home_theme"
-                    android:layout_width="118dp"
-                    android:layout_height="@dimen/button_size"
-                    android:layout_margin="12dp"
-                    android:text="@string/system"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/theme_text_size"
-                    app:cornerRadius="8dp"
-                    app:strokeColor="@color/text_color"
-                    app:strokeWidth="1dp" />
-
                 <TextView
                     android:id="@+id/main_text_view_title"
                     android:layout_width="match_parent"
@@ -52,8 +40,8 @@
                     android:layout_height="@dimen/button_size"
                     android:layout_gravity="end"
                     android:layout_margin="12dp"
-                    android:contentDescription="@string/show_information"
-                    app:srcCompat="@drawable/ic_info_outline"
+                    android:contentDescription="@string/open_settings"
+                    app:srcCompat="@drawable/ic_settings"
                     tools:ignore="DuplicateSpeakableTextCheck" />
 
             </FrameLayout>

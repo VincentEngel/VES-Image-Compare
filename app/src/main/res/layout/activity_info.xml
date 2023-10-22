@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".Activities.InfoActivity">
+    tools:context=".Activities.Settings.AboutActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -248,15 +248,6 @@
                 </TableRow>
 
             </TableLayout>
-
-            <TextView
-                android:id="@+id/info_text_view_privacy_policy"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:padding="10dp"
-                android:text="@string/privacy_policy"
-                android:textAlignment="textStart" />
         </LinearLayout>
     </ScrollView>
 

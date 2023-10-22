@@ -4,73 +4,108 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     tools:context=".Activities.Settings.SettingsActivity">
+
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent">
 
-        <LinearLayout
+        <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:shrinkColumns="*">
 
-            <TextView
-                android:id="@+id/textView5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="@string/ves_image_compare"
-                android:textSize="24sp"/>
-
-            <TextView
-                android:id="@+id/settings_version"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                android:text="@string/version" />
-
-            <TableLayout
+            <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <TableRow
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" >
+                    android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/settings_action_privacy_policy"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/privacy_policy_title" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" >
-
-                    <TextView
-                        android:id="@+id/settings_action_app_info"
+                        android:id="@+id/info_text_view_github_project"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/about" />
-                </TableRow>
+                        android:text="@string/theme"
+                        android:layout_gravity="center_vertical"
+                        android:textSize="16sp" />
+                </FrameLayout>
 
-                <TableRow
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent">
 
-                <TableRow
+                    <Button
+                        android:id="@+id/home_theme"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/system_button_layout_margin"
+                        android:text="@string/system"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_size"
+                        app:cornerRadius="8dp"
+                        app:strokeColor="@color/text_color"
+                        app:strokeWidth="1dp" />
+                </FrameLayout>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </TableLayout>
+                    android:layout_height="match_parent">
 
-        </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/max_zoom"
+                        android:layout_gravity="center_vertical"
+                        android:textSize="16sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/default_10"
+                        android:layout_gravity="bottom"
+                        android:textSize="12sp" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/settings_max_zoom"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:hint="@string/number"
+                            android:inputType="number" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </FrameLayout>
+            </TableRow>
+
+            <Button
+                android:id="@+id/settings_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/system_button_layout_margin"
+                android:text="@string/save"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/text_size"
+                app:cornerRadius="8dp"
+                app:strokeColor="@color/text_color"
+                app:strokeWidth="1dp" />
+        </TableLayout>
     </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

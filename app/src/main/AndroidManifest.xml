@@ -18,10 +18,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.VesAndroidImageCompare">
         <activity
+            android:name=".Activities.Settings.SettingsActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activities.Settings.PrivacyPolicyActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.Settings.SettingsActivity"
+            android:name=".Activities.Settings.ConfigActivity"
             android:exported="false" />
         <activity
             android:name=".Activities.CompareModes.MetaDataActivity"
@@ -42,7 +45,7 @@
             android:name=".Activities.CompareModes.OverlaySlideActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.InfoActivity"
+            android:name=".Activities.Settings.AboutActivity"
             android:exported="false" />
         <activity
             android:name=".Activities.MainActivity"
