@@ -5,7 +5,7 @@ import android.widget.ImageView;
 
 import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.helper.BitmapHelper;
-import com.vincentengelsoftware.androidimagecompare.viewClasses.VesImageInterface;
+import com.vincentengelsoftware.androidimagecompare.ImageView.VesImageInterface;
 
 public class ImageHolder {
     private Bitmap bitmap;

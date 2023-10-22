@@ -17,7 +17,7 @@ import com.vincentengelsoftware.androidimagecompare.helper.Calculator;
 import com.vincentengelsoftware.androidimagecompare.helper.FullScreenHelper;
 import com.vincentengelsoftware.androidimagecompare.helper.SyncZoom;
 import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
-import com.vincentengelsoftware.androidimagecompare.viewClasses.VesImageInterface;
+import com.vincentengelsoftware.androidimagecompare.ImageView.VesImageInterface;
 
 public class FullSliderActivity extends AppCompatActivity {
     public SeekBar recentSeekBar;
@@ -151,7 +151,7 @@ public class FullSliderActivity extends AppCompatActivity {
                         if (FullSliderActivity.nextCalculatedBitmap != null) {
                             if (FullSliderActivity.sync.value) {
                                 VesImageInterface image_back = findViewById(R.id.full_slide_image_view_base);
-                                image_back.resetScaleAndCenter();
+                                image_back.resetZoom();
                             }
 
                             VesImageInterface image_front = findViewById(R.id.full_slide_image_view_front);

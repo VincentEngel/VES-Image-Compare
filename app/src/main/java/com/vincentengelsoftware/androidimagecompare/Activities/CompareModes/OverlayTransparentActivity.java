@@ -22,7 +22,7 @@ import com.vincentengelsoftware.androidimagecompare.helper.FullScreenHelper;
 import com.vincentengelsoftware.androidimagecompare.helper.SyncZoom;
 import com.vincentengelsoftware.androidimagecompare.helper.TransparentHelper;
 import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
-import com.vincentengelsoftware.androidimagecompare.viewClasses.VesImageInterface;
+import com.vincentengelsoftware.androidimagecompare.ImageView.VesImageInterface;
 
 public class OverlayTransparentActivity extends AppCompatActivity implements FadeActivity {
     public static UtilMutableBoolean sync = new UtilMutableBoolean();
@@ -56,11 +56,11 @@ public class OverlayTransparentActivity extends AppCompatActivity implements Fad
         setContentView(R.layout.activity_overlay_transparent);
 
         VesImageInterface base = findViewById(R.id.overlay_transparent_image_view_base);
-        base.setFadeActivity(this);
+        base.addFadeListener(this);
         Images.first.updateVesImageViewWithAdjustedImage(base);
 
         VesImageInterface image_transparent = findViewById(R.id.overlay_transparent_image_view_transparent);
-        image_transparent.setFadeActivity(this);
+        image_transparent.addFadeListener(this);
 
         Images.second.updateVesImageViewWithAdjustedImage(image_transparent);
 

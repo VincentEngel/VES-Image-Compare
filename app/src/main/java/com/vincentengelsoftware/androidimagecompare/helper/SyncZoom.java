@@ -5,7 +5,7 @@ import android.widget.ToggleButton;
 
 import com.vincentengelsoftware.androidimagecompare.animations.FadeActivity;
 import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
-import com.vincentengelsoftware.androidimagecompare.viewClasses.VesImageInterface;
+import com.vincentengelsoftware.androidimagecompare.ImageView.VesImageInterface;
 
 public class SyncZoom {
     public static void setLinkedTargets(
@@ -13,8 +13,8 @@ public class SyncZoom {
             VesImageInterface imageTwo,
             UtilMutableBoolean sync
     ) {
-        imageOne.setLinkedTarget(imageTwo, sync);
-        imageTwo.setLinkedTarget(imageOne, sync);
+        imageOne.addMirrorListener(imageTwo, sync);
+        imageTwo.addMirrorListener(imageOne, sync);
     }
 
     public static void setUpSyncZoomToggleButton(
@@ -39,8 +39,8 @@ public class SyncZoom {
                 activity.instantFadeIn();
             }
             if (b) {
-                imageOne.resetScaleAndCenter();
-                imageTwo.resetScaleAndCenter();
+                imageOne.resetZoom();
+                imageTwo.resetZoom();
                 toggleButton.setBackgroundDrawable(iconLinkedOn);
             } else {
                 toggleButton.setBackgroundDrawable(iconLinkedOff);

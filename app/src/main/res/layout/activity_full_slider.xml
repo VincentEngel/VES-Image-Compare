@@ -50,7 +50,7 @@
         app:layout_constraintStart_toEndOf="@+id/full_slider_frame_layout_left"
         app:layout_constraintTop_toBottomOf="@+id/full_slider_frame_layout_top">
 
-        <com.vincentengelsoftware.androidimagecompare.viewClasses.ZoomImageView
+        <com.vincentengelsoftware.androidimagecompare.ImageView.ZoomImageView
             android:id="@+id/full_slide_image_view_base"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -58,7 +58,7 @@
             android:contentDescription="@string/background_image"
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
-        <com.vincentengelsoftware.androidimagecompare.viewClasses.ZoomImageView
+        <com.vincentengelsoftware.androidimagecompare.ImageView.ZoomImageView
             android:id="@+id/full_slide_image_view_front"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

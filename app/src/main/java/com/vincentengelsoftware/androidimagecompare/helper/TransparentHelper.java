@@ -5,7 +5,7 @@ import android.widget.SeekBar;
 import android.widget.ImageButton;
 
 import com.vincentengelsoftware.androidimagecompare.animations.FadeActivity;
-import com.vincentengelsoftware.androidimagecompare.viewClasses.VesImageInterface;
+import com.vincentengelsoftware.androidimagecompare.ImageView.VesImageInterface;
 
 import com.vincentengelsoftware.androidimagecompare.R;
 

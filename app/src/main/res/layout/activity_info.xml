@@ -130,7 +130,7 @@
                             android:layout_gravity="start"
                             android:paddingTop="15dp"
                             android:paddingBottom="15dp"
-                            android:text="@string/link_github_subsampling_scale_image_view"
+                            android:text="@string/link_github_image_view_library"
                             android:textSize="16sp" />
 
                         <TextView

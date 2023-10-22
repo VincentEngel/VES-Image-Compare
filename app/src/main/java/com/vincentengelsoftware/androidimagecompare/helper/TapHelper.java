@@ -3,10 +3,9 @@ package com.vincentengelsoftware.androidimagecompare.helper;
 import android.view.View;
 import android.widget.TextView;
 
-import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.vincentengelsoftware.androidimagecompare.util.ImageHolder;
 import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
-import com.vincentengelsoftware.androidimagecompare.viewClasses.VesImageInterface;
+import com.vincentengelsoftware.androidimagecompare.ImageView.VesImageInterface;
 
 public class TapHelper {
     public static void setOnClickListener(
@@ -19,7 +18,7 @@ public class TapHelper {
     {
         imageViewListener.setOnClickListener(view -> {
             if (utilMutableBoolean.value) {
-                imageViewTarget.applyScaleAndCenter((SubsamplingScaleImageView) imageViewListener);
+                imageViewTarget.applyScaleAndCenter(imageViewListener);
             }
 
             imageViewListener.setVisibility(View.INVISIBLE);

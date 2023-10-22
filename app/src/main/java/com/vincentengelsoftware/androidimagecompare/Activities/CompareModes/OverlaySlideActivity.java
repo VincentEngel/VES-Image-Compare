@@ -1,7 +1,6 @@
 package com.vincentengelsoftware.androidimagecompare.Activities.CompareModes;
 
 import android.graphics.Bitmap;
-import android.graphics.PointF;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.View;
@@ -24,7 +23,8 @@ import com.vincentengelsoftware.androidimagecompare.helper.FullScreenHelper;
 import com.vincentengelsoftware.androidimagecompare.helper.SlideHelper;
 import com.vincentengelsoftware.androidimagecompare.helper.SyncZoom;
 import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
-import com.vincentengelsoftware.androidimagecompare.viewClasses.VesImageInterface;
+import com.vincentengelsoftware.androidimagecompare.ImageView.ImageScaleCenter;
+import com.vincentengelsoftware.androidimagecompare.ImageView.VesImageInterface;
 
 public class OverlaySlideActivity extends AppCompatActivity implements FadeActivity {
     /**
@@ -77,11 +77,11 @@ public class OverlaySlideActivity extends AppCompatActivity implements FadeActiv
             setContentView(R.layout.activity_overlay_slide);
 
             VesImageInterface image_back = findViewById(R.id.overlay_slide_image_view_base);
-            image_back.setFadeActivity(this);
+            image_back.addFadeListener(this);
             Images.first.updateVesImageViewWithAdjustedImage(image_back);
 
             VesImageInterface image_front = findViewById(R.id.overlay_slide_image_view_front);
-            image_front.setFadeActivity(this);
+            image_front.addFadeListener(this);
             Bitmap bitmapSource = Images.second.getAdjustedBitmap();
 
             SyncZoom.setLinkedTargets(image_front, image_back, OverlaySlideActivity.sync);
@@ -272,10 +272,9 @@ public class OverlaySlideActivity extends AppCompatActivity implements FadeActiv
                             }
 
                             runOnUiThread(() -> {
-                                float scale = imageView.getScale();
-                                PointF center = imageView.getImageCenter();
+                                ImageScaleCenter imageScaleCenter = imageView.getImageScaleCenter();
                                 imageView.setBitmapImage(bitmap);
-                                imageView.applyScaleAndCenter(scale, center);
+                                imageView.setImageScaleCenter(imageScaleCenter);
                                 hideShow.setImageResource(R.drawable.ic_visibility);
                                 imageView.setVisibility(View.VISIBLE);
                                 triggerFadeOutThread();

@@ -17,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.vincentengelsoftware.androidimagecompare.viewClasses.ZoomImageView
+        <com.vincentengelsoftware.androidimagecompare.ImageView.ZoomImageView
             android:id="@+id/side_by_side_image_left"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -81,7 +81,7 @@
 
         </LinearLayout>
 
-        <com.vincentengelsoftware.androidimagecompare.viewClasses.ZoomImageView
+        <com.vincentengelsoftware.androidimagecompare.ImageView.ZoomImageView
             android:id="@+id/side_by_side_image_right"
             android:layout_width="0dp"
             android:layout_height="match_parent"
