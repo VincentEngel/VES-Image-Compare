@@ -104,6 +104,7 @@
                 android:textSize="@dimen/text_size"
                 app:cornerRadius="8dp"
                 app:strokeColor="@color/text_color"
+                style="@style/buttonStyles"
                 app:strokeWidth="1dp" />
         </TableLayout>
     </ScrollView>

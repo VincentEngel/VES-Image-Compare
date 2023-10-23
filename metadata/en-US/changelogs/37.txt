@@ -1,1 +1,2 @@
 * Refactor settings / info page
+* Make max zoom configurable

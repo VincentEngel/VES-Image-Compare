@@ -1,7 +1,7 @@
-package com.vincentengelsoftware.androidimagecompare.services;
+package com.vincentengelsoftware.androidimagecompare.services.Settings;
 
-import com.vincentengelsoftware.androidimagecompare.Activities.CompareModes.CompareModeNames;
-import com.vincentengelsoftware.androidimagecompare.globals.Status;
+import com.vincentengelsoftware.androidimagecompare.globals.Settings;
+import com.vincentengelsoftware.androidimagecompare.services.KeyValueStorage;
 
 public class UserSettings {
     private static UserSettings instance;
@@ -9,8 +9,6 @@ public class UserSettings {
     private String lastCompareMode;
     private boolean syncedZoom;
     private boolean showExtensions;
-    private boolean resizeLeftImage;
-    private boolean resizeRightImage;
     private int theme;
 
     private int maxZoom;
@@ -19,9 +17,6 @@ public class UserSettings {
     public static final String SYNCED_ZOOM = "SYNCED_ZOOM";
     public static final String SHOW_EXTENSIONS = "SHOW_EXTENSIONS";
     public static final String LAST_COMPARE_MODE = "LAST_COMPARE_MODE";
-    public static final String RESIZE_LEFT_IMAGE = "LEFT_RESIZE";
-    public static final String RESIZE_RIGHT_IMAGE = "RIGHT_RESIZE";
-
     public static final String MAX_ZOOM = "MAX_ZOOM";
 
     private final ImageResizeSettings LeftImageResizeSettings;
@@ -30,14 +25,12 @@ public class UserSettings {
     private UserSettings(KeyValueStorage keyValueStorage) {
         this.keyValueStorage = keyValueStorage;
 
-        this.lastCompareMode = this.keyValueStorage.getString(UserSettings.LAST_COMPARE_MODE, CompareModeNames.SIDE_BY_SIDE);
-        this.syncedZoom = this.keyValueStorage.getBoolean(UserSettings.SYNCED_ZOOM, true);
-        this.showExtensions = this.keyValueStorage.getBoolean(UserSettings.SHOW_EXTENSIONS, true);
-        this.resizeLeftImage = this.keyValueStorage.getBoolean(UserSettings.RESIZE_LEFT_IMAGE, true);
-        this.resizeRightImage = this.keyValueStorage.getBoolean(UserSettings.RESIZE_RIGHT_IMAGE, true);
-        this.theme = this.keyValueStorage.getInt(UserSettings.USER_THEME, Status.THEME_SYSTEM);
+        this.lastCompareMode = this.keyValueStorage.getString(UserSettings.LAST_COMPARE_MODE, DefaultSettings.COMPARE_MODE);
+        this.syncedZoom = this.keyValueStorage.getBoolean(UserSettings.SYNCED_ZOOM, DefaultSettings.SYNCED_ZOOM);
+        this.showExtensions = this.keyValueStorage.getBoolean(UserSettings.SHOW_EXTENSIONS, DefaultSettings.SHOW_EXTENSIONS);
+        this.theme = this.keyValueStorage.getInt(UserSettings.USER_THEME, DefaultSettings.THEME);
 
-        this.maxZoom = this.keyValueStorage.getInt(UserSettings.MAX_ZOOM, 10);
+        this.maxZoom = this.keyValueStorage.getInt(UserSettings.MAX_ZOOM, DefaultSettings.MAX_ZOOM);
 
         this.LeftImageResizeSettings = new ImageResizeSettings("LEFT_", this.keyValueStorage);
         this.RightImageResizeSettings = new ImageResizeSettings("RIGHT_", this.keyValueStorage);
@@ -98,32 +91,6 @@ public class UserSettings {
         this.keyValueStorage.setBoolean(UserSettings.SHOW_EXTENSIONS, showExtensions);
     }
 
-    public boolean isResizeLeftImage() {
-        return this.resizeLeftImage;
-    }
-
-    public void setResizeLeftImage(boolean resizeLeftImage) {
-        if (this.resizeLeftImage == resizeLeftImage) {
-            return;
-        }
-
-        this.resizeLeftImage = resizeLeftImage;
-        this.keyValueStorage.setBoolean(UserSettings.RESIZE_LEFT_IMAGE, resizeLeftImage);
-    }
-
-    public boolean isResizeRightImage() {
-        return this.resizeRightImage;
-    }
-
-    public void setResizeRightImage(boolean resizeRightImage) {
-        if (this.resizeRightImage == resizeRightImage) {
-            return;
-        }
-
-        this.resizeRightImage = resizeRightImage;
-        this.keyValueStorage.setBoolean(UserSettings.RESIZE_RIGHT_IMAGE, resizeRightImage);
-    }
-
     public int getTheme() {
         return this.theme;
     }
@@ -151,6 +118,7 @@ public class UserSettings {
         }
 
         this.maxZoom = maxZoom;
+        Settings.MAX_ZOOM = maxZoom;
         this.keyValueStorage.setInt(UserSettings.MAX_ZOOM, maxZoom);
     }
 }

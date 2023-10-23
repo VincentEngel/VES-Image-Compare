@@ -44,8 +44,7 @@
                     android:layout_gravity="top|end"
                     android:layout_margin="@dimen/info_button_layout_margin"
                     android:contentDescription="@string/open_settings"
-                    app:srcCompat="@drawable/ic_settings"
-                    tools:ignore="DuplicateSpeakableTextCheck" />
+                    app:srcCompat="@drawable/ic_settings" />
 
             </FrameLayout>
 

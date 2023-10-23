@@ -1,4 +1,4 @@
-package com.vincentengelsoftware.androidimagecompare.services;
+package com.vincentengelsoftware.androidimagecompare.services.Settings;
 
 import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.helper.Theme;

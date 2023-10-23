@@ -10,6 +10,7 @@ import com.vincentengelsoftware.androidimagecompare.ImageView.Listeners.MirrorLi
 import com.vincentengelsoftware.androidimagecompare.ImageView.Listeners.OnTouchListenerInterface;
 import com.vincentengelsoftware.androidimagecompare.ImageView.Listeners.OnTouchListeners;
 import com.vincentengelsoftware.androidimagecompare.animations.FadeActivity;
+import com.vincentengelsoftware.androidimagecompare.globals.Settings;
 import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
 
 public class ZoomImageView extends TouchImageView implements VesImageInterface {
@@ -35,12 +36,12 @@ public class ZoomImageView extends TouchImageView implements VesImageInterface {
 
     public ZoomImageView(Context context, AttributeSet attr) {
         super(context, attr);
-        super.setMaxZoom(10);
+        super.setMaxZoom(Settings.MAX_ZOOM); // Bad practice
     }
 
     public ZoomImageView(Context context) {
         super(context);
-        super.setMaxZoom(10);
+        super.setMaxZoom(Settings.MAX_ZOOM); // Bad practice
     }
 
     @Override

@@ -1,6 +1,6 @@
-package com.vincentengelsoftware.androidimagecompare.services;
+package com.vincentengelsoftware.androidimagecompare.services.Settings;
 
-import com.vincentengelsoftware.androidimagecompare.globals.Images;
+import com.vincentengelsoftware.androidimagecompare.services.KeyValueStorage;
 
 public class ImageResizeSettings {
     private int imageResizeOption;
@@ -18,9 +18,9 @@ public class ImageResizeSettings {
         this.PREFIX = prefix;
         this.keyValueStorage = keyValueStorage;
 
-        this.imageResizeOption = this.keyValueStorage.getInt(this.PREFIX + ImageResizeSettings.IMAGE_RESIZE_OPTION, Images.RESIZE_OPTION_AUTOMATIC);
-        this.imageResizeWidth = this.keyValueStorage.getInt(this.PREFIX + ImageResizeSettings.IMAGE_RESIZE_WIDTH, 1024);
-        this.imageResizeHeight = this.keyValueStorage.getInt(this.PREFIX + ImageResizeSettings.IMAGE_RESIZE_HEIGHT, 1024);
+        this.imageResizeOption = this.keyValueStorage.getInt(this.PREFIX + ImageResizeSettings.IMAGE_RESIZE_OPTION, DefaultSettings.IMAGE_RESIZE_OPTION);
+        this.imageResizeWidth = this.keyValueStorage.getInt(this.PREFIX + ImageResizeSettings.IMAGE_RESIZE_WIDTH, DefaultSettings.IMAGE_RESIZE_WIDTH);
+        this.imageResizeHeight = this.keyValueStorage.getInt(this.PREFIX + ImageResizeSettings.IMAGE_RESIZE_HEIGHT, DefaultSettings.IMAGE_RESIZE_HEIGHT);
     }
 
     public int getImageResizeOption() {

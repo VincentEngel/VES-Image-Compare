@@ -46,10 +46,10 @@ import com.vincentengelsoftware.androidimagecompare.helper.AskForReview;
 import com.vincentengelsoftware.androidimagecompare.helper.BitmapExtractor;
 import com.vincentengelsoftware.androidimagecompare.helper.MainHelper;
 import com.vincentengelsoftware.androidimagecompare.helper.UriExtractor;
-import com.vincentengelsoftware.androidimagecompare.services.ApplyUserSettings;
-import com.vincentengelsoftware.androidimagecompare.services.ImageResizeSettings;
+import com.vincentengelsoftware.androidimagecompare.services.Settings.ApplyUserSettings;
+import com.vincentengelsoftware.androidimagecompare.services.Settings.ImageResizeSettings;
 import com.vincentengelsoftware.androidimagecompare.services.KeyValueStorage;
-import com.vincentengelsoftware.androidimagecompare.services.UserSettings;
+import com.vincentengelsoftware.androidimagecompare.services.Settings.UserSettings;
 import com.vincentengelsoftware.androidimagecompare.util.ImageHolder;
 
 import java.io.File;
