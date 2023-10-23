@@ -10,18 +10,37 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TableLayout
+            android:layout_marginHorizontal="24dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:shrinkColumns="*">
 
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/user_settings"
+                android:textSize="24sp"/>
+
             <TableRow
+                android:background="@drawable/meta_data_table_row_value_border_bottom"
+                android:paddingBottom="6dp"
+                android:layout_marginBottom="6dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <FrameLayout
+                    android:layout_weight="0"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
@@ -29,52 +48,65 @@
                         android:id="@+id/info_text_view_github_project"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/theme"
                         android:layout_gravity="center_vertical"
+                        android:text="@string/theme"
                         android:textSize="16sp" />
                 </FrameLayout>
 
+                <Button
+                    android:id="@+id/home_theme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/system"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_size"
+                    app:cornerRadius="8dp"
+                    app:strokeColor="@color/text_color"
+                    app:strokeWidth="1dp" />
+
                 <FrameLayout
+                    android:layout_marginStart="6dp"
+                    android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <Button
-                        android:id="@+id/home_theme"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/system_button_layout_margin"
-                        android:text="@string/system"
-                        android:textColor="@color/text_color"
-                        android:textSize="@dimen/text_size"
-                        app:cornerRadius="8dp"
-                        app:strokeColor="@color/text_color"
-                        app:strokeWidth="1dp" />
+                    <ImageButton
+                        android:id="@+id/settings_next_theme"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:contentDescription="@string/globally_enable_or_disable_linked_zoom"
+                        app:srcCompat="@drawable/ic_arrow_right" />
+
                 </FrameLayout>
             </TableRow>
 
             <TableRow
+                android:layout_marginTop="6dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <FrameLayout
+                    android:layout_weight="0"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/max_zoom"
                         android:layout_gravity="center_vertical"
+                        android:text="@string/max_zoom"
                         android:textSize="16sp" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/default_10"
                         android:layout_gravity="bottom"
+                        android:text="@string/default_10"
                         android:textSize="12sp" />
                 </FrameLayout>
 
                 <FrameLayout
+                    android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
@@ -87,25 +119,24 @@
                             android:id="@+id/settings_max_zoom"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="12dp"
                             android:hint="@string/number"
                             android:inputType="number" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </FrameLayout>
             </TableRow>
 
-            <Button
-                android:id="@+id/settings_save"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/system_button_layout_margin"
-                android:text="@string/save"
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/text_size"
-                app:cornerRadius="8dp"
-                app:strokeColor="@color/text_color"
-                style="@style/buttonStyles"
-                app:strokeWidth="1dp" />
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginVertical="24dp">
+
+                <Button
+                    android:id="@+id/settings_save"
+                    style="@style/buttonStyles"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/save"/>
+            </TableRow>
         </TableLayout>
     </ScrollView>
 

@@ -21,7 +21,7 @@ public class AboutActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Status.activityIsOpening = false;
-        setContentView(R.layout.activity_info);
+        setContentView(R.layout.activity_about);
 
         TextViewModifier.makeLinkClickable(findViewById(R.id.info_text_view_link_github_project));
         TextViewModifier.makeLinkClickable(findViewById(R.id.info_text_view_link_library_subsampling_scale_image_view));

@@ -1,2 +1,3 @@
 * Refactor settings / info page
 * Make max zoom configurable
+* Add explanatory text to settings page

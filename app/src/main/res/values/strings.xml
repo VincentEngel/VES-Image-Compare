@@ -70,4 +70,7 @@
     <string name="number">Number</string>
     <string name="default_10">(default: 10)</string>
     <string name="open_settings">Open Settings</string>
+    <string name="user_settings">User settings</string>
+    <string name="explanation">Explanation</string>
+    <string name="next">Next</string>
 </resources>

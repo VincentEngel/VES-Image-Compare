@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.vincentengelsoftware.androidimagecompare.R;
@@ -25,7 +26,7 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         Status.activityIsOpening = false;
 
-        setUpThemeToggleButton(findViewById(R.id.home_theme));
+        setUpThemeToggleButton(findViewById(R.id.home_theme), findViewById(R.id.settings_next_theme));
 
         EditText maxZoom = findViewById(R.id.settings_max_zoom);
         maxZoom.setText(String.valueOf(this.userSettings.getMaxZoom()));
@@ -38,13 +39,13 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
-    private void setUpThemeToggleButton(Button button)
+    private void setUpThemeToggleButton(Button buttonTheme, ImageButton nextTheme)
     {
-        Theme.updateButtonText(button, this.userSettings.getTheme());
+        Theme.updateButtonText(buttonTheme, this.userSettings.getTheme());
 
-        button.setOnClickListener(view -> {
+        nextTheme.setOnClickListener(view -> {
             this.userSettings.setTheme((this.userSettings.getTheme() + 1) % 3);
-            Theme.updateButtonText(button, this.userSettings.getTheme());
+            Theme.updateButtonText(buttonTheme, this.userSettings.getTheme());
             Theme.updateTheme(this.userSettings.getTheme());
         });
     }
