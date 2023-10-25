@@ -124,7 +124,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Links both images. When you zoom in on one image, the other image automatically zooms in too."  />
+                        android:text="@string/explanation_image_linking"  />
 
                 </TableRow>
 
@@ -149,7 +149,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Swap images with each other." />
+                        android:text="@string/explanation_swap_images" />
 
                 </TableRow>
 
@@ -174,7 +174,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Enable details in the following CompareModes: Side-by-Side, Tap." />
+                        android:text="@string/explanation_enable_extensions" />
 
                 </TableRow>
 
@@ -199,7 +199,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Edit the size of an image before comparing it." />
+                        android:text="@string/explanation_edit_image_size" />
 
                 </TableRow>
 
@@ -224,7 +224,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Rotate the image by 90 degrees." />
+                        android:text="@string/explanation_rotate_image" />
 
                 </TableRow>
 
@@ -250,7 +250,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Hide the image in the foreground to interact with the image in the background." />
+                        android:text="@string/explanation_hide_image" />
 
                 </TableRow>
 
@@ -273,7 +273,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Swap the images in the CompareMode." />
+                        android:text="@string/explanation_swap_images_inside_comparemode" />
 
                 </TableRow>
             </TableLayout>

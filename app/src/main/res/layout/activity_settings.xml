@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:gravity="center"
-                android:padding="10dp"
+                android:paddingBottom="15dp"
                 android:text="@string/user_settings"
                 android:textSize="24sp"/>
 
@@ -45,7 +45,6 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/info_text_view_github_project"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -59,7 +58,6 @@
                     android:layout_height="wrap_content"
                     android:text="@string/system"
                     android:textColor="@color/text_color"
-                    android:textSize="@dimen/text_size"
                     app:cornerRadius="8dp"
                     app:strokeColor="@color/text_color"
                     app:strokeWidth="1dp" />
@@ -77,6 +75,88 @@
                         android:contentDescription="@string/globally_enable_or_disable_linked_zoom"
                         app:srcCompat="@drawable/ic_arrow_right" />
 
+                </FrameLayout>
+            </TableRow>
+
+            <TableRow
+                android:background="@drawable/meta_data_table_row_value_border_bottom"
+                android:paddingBottom="6dp"
+                android:layout_marginBottom="6dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <FrameLayout
+                    android:layout_weight="0"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_marginEnd="6dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/reset_zoom"
+                        android:textSize="16sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:text="@string/reset_zoom_additional_info"
+                        android:textSize="16sp" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/settings_switch_reset_zoom_on_linking"
+                        android:contentDescription="@string/settings_on_linking"
+                        android:layout_gravity="start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </FrameLayout>
+            </TableRow>
+
+            <TableRow
+                android:background="@drawable/meta_data_table_row_value_border_bottom"
+                android:paddingBottom="6dp"
+                android:layout_marginBottom="6dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <FrameLayout
+                    android:layout_weight="0"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_marginEnd="6dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/loose_mirroring"
+                        android:textSize="16sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:text="@string/loose_mirroring_additional_info"
+                        android:textSize="12sp" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/settings_switch_loose_mirroring"
+                        android:contentDescription="@string/settings_loose_mirroring"
+                        android:layout_gravity="start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
                 </FrameLayout>
             </TableRow>
 
@@ -117,25 +197,40 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/settings_max_zoom"
-                            android:layout_width="match_parent"
+                            android:layout_width="100dp"
                             android:layout_height="wrap_content"
                             android:hint="@string/number"
+                            android:layout_gravity="start"
                             android:inputType="number" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </FrameLayout>
             </TableRow>
 
+            <FrameLayout
+                android:layout_marginVertical="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <Button
+                    android:layout_gravity="center"
+                    android:id="@+id/settings_save"
+                    style="@style/buttonStyles"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="24sp"
+                    android:text="@string/save"/>
+            </FrameLayout>
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginVertical="24dp">
 
                 <Button
-                    android:id="@+id/settings_save"
+                    android:id="@+id/settings_reset"
                     style="@style/buttonStyles"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/save"/>
+                    android:text="@string/reset_all_settings" />
             </TableRow>
         </TableLayout>
     </ScrollView>

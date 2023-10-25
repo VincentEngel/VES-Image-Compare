@@ -68,9 +68,23 @@
     <string name="max_zoom">Max Zoom</string>
     <string name="save">Save</string>
     <string name="number">Number</string>
-    <string name="default_10">(default: 10)</string>
+    <string name="default_10">(default: 100)</string>
     <string name="open_settings">Open Settings</string>
     <string name="user_settings">User settings</string>
     <string name="explanation">Explanation</string>
     <string name="next">Next</string>
+    <string name="reset_zoom">Reset Zoom</string>
+    <string name="reset_zoom_additional_info">on linking</string>
+    <string name="loose_mirroring">Loose Mirroring</string>
+    <string name="loose_mirroring_additional_info">(only mirror zoom)</string>
+    <string name="reset_all_settings">Reset all Settings</string>
+    <string name="explanation_image_linking">Links both images. When you zoom in on one image, the other image automatically zooms in too.</string>
+    <string name="explanation_swap_images">Swap images with each other.</string>
+    <string name="explanation_enable_extensions">Enable details in the following CompareModes: Side-by-Side, Tap.</string>
+    <string name="explanation_edit_image_size">Edit the size of an image before comparing it.</string>
+    <string name="explanation_rotate_image">Rotate the image by 90 degrees.</string>
+    <string name="explanation_hide_image">Hide the image in the foreground to interact with the image in the background.</string>
+    <string name="explanation_swap_images_inside_comparemode">Swap the images inside the CompareMode.</string>
+    <string name="settings_on_linking">Enable or Disable reset on linking zoom</string>
+    <string name="settings_loose_mirroring">Enable or disable loose mirroring</string>
 </resources>

@@ -49,4 +49,10 @@ public class ImageResizeSettings {
         this.imageResizeHeight = imageResizeHeight;
         this.keyValueStorage.setInt(this.PREFIX + ImageResizeSettings.IMAGE_RESIZE_HEIGHT, imageResizeHeight);
     }
+
+    public void resetAllSettings() {
+        this.setImageResizeOption(DefaultSettings.IMAGE_RESIZE_OPTION);
+        this.setImageResizeWidth(DefaultSettings.IMAGE_RESIZE_WIDTH);
+        this.setImageResizeHeight(DefaultSettings.IMAGE_RESIZE_HEIGHT);
+    }
 }

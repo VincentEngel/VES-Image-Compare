@@ -1,6 +1,7 @@
 package com.vincentengelsoftware.androidimagecompare.ImageView.Listeners;
 
 import com.vincentengelsoftware.androidimagecompare.ImageView.VesImageInterface;
+import com.vincentengelsoftware.androidimagecompare.globals.Settings;
 import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
 
 public class MirrorListener implements OnTouchListenerInterface
@@ -21,7 +22,11 @@ public class MirrorListener implements OnTouchListenerInterface
     public void trigger()
     {
         if (this.sync.value) {
-            this.target.applyScaleAndCenter(this.source);
+            if (Settings.LOOSE_MIRRORING) {
+                this.target.setImageScale(this.source.getImageScaleCenter());
+            } else {
+                this.target.setImageScaleCenter(this.source.getImageScaleCenter());
+            }
         }
     }
 }

@@ -22,4 +22,6 @@ public interface VesImageInterface {
 
     void addFadeListener(FadeActivity fadeActivity);
     void addMirrorListener(VesImageInterface target, UtilMutableBoolean sync);
+
+    void setImageScale(ImageScaleCenter imageScaleCenter);
 }

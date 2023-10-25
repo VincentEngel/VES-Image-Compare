@@ -41,6 +41,7 @@ import com.vincentengelsoftware.androidimagecompare.Activities.Settings.ConfigAc
 import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.globals.Dimensions;
 import com.vincentengelsoftware.androidimagecompare.globals.Images;
+import com.vincentengelsoftware.androidimagecompare.globals.Settings;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
 import com.vincentengelsoftware.androidimagecompare.helper.AskForReview;
 import com.vincentengelsoftware.androidimagecompare.helper.BitmapExtractor;
@@ -73,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         this.keyValueStorage = new KeyValueStorage(getApplicationContext());
         this.userSettings = UserSettings.getInstance(this.keyValueStorage);
+        Settings.init(userSettings);
 
         ApplyUserSettings.apply(this.userSettings, Images.first, Images.second);
 
@@ -153,6 +155,30 @@ public class MainActivity extends AppCompatActivity {
             this.keyValueStorage.setString(MainActivity.rightImageUriKey, MainActivity.rightImageUri);
         }
         super.onStop();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        Button lastCompareMode = findViewById(R.id.main_button_last_compare);
+        lastCompareMode.setText(
+                CompareModeNames.getUserCompareModeNameFromInternalName(this.userSettings.getLastCompareMode())
+        );
+
+        ImageButton extensions = findViewById(R.id.home_button_extensions);
+        if (this.userSettings.isShowExtensions()) {
+            extensions.setImageDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_extension_on));
+        } else {
+            extensions.setImageDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_extension_off));
+        }
+
+        ImageButton linkedZoom = findViewById(R.id.home_button_link_zoom);
+        if (this.userSettings.isSyncedZoom()) {
+            linkedZoom.setImageDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_link));
+        } else {
+            linkedZoom.setImageDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_link_off));
+        }
     }
 
     public void restoreImages()

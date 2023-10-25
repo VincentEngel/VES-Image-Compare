@@ -29,6 +29,15 @@ public class KeyValueStorage {
         return defaultValue;
     }
 
+    public void remove(String key)
+    {
+        try {
+            SharedPreferences.Editor editor = this.getEditor();
+            editor.remove(key);
+            editor.apply();
+        } catch (Exception ignored) {}
+    }
+
     public void setBoolean(String key, boolean value)
     {
         try {

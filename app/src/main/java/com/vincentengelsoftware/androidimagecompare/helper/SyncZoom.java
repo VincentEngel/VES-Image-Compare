@@ -4,6 +4,7 @@ import android.graphics.drawable.Drawable;
 import android.widget.ToggleButton;
 
 import com.vincentengelsoftware.androidimagecompare.animations.FadeActivity;
+import com.vincentengelsoftware.androidimagecompare.globals.Settings;
 import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
 import com.vincentengelsoftware.androidimagecompare.ImageView.VesImageInterface;
 
@@ -39,8 +40,11 @@ public class SyncZoom {
                 activity.instantFadeIn();
             }
             if (b) {
-                imageOne.resetZoom();
-                imageTwo.resetZoom();
+                if (Settings.RESET_IMAGE_ON_LINKING) {
+                    imageOne.resetZoom();
+                    imageTwo.resetZoom();
+                }
+
                 toggleButton.setBackgroundDrawable(iconLinkedOn);
             } else {
                 toggleButton.setBackgroundDrawable(iconLinkedOff);

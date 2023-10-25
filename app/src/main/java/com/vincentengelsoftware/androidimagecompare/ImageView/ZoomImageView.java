@@ -57,6 +57,11 @@ public class ZoomImageView extends TouchImageView implements VesImageInterface {
         super.setZoom(imageScaleCenter.getScale(), imageScaleCenter.getCenterX(), imageScaleCenter.getCenterY());
     }
 
+    public void setImageScale(ImageScaleCenter imageScaleCenter) {
+        PointF scrollPosition = super.getScrollPosition();
+        super.setZoom(imageScaleCenter.getScale(), scrollPosition.x, scrollPosition.y);
+    }
+
     public ImageScaleCenter getImageScaleCenter() {
         PointF scrollPosition = super.getScrollPosition();
         return new ImageScaleCenter(super.getCurrentZoom(), scrollPosition.x, scrollPosition.y);
