@@ -13,7 +13,8 @@ public class UserSettings {
     public static final String MAX_ZOOM = "MAX_ZOOM";
 
     public static final String RESET_IMAGE_ON_LINKING = "RESET_IMAGE_ON_LINKING";
-    public static final String LOOSE_MIRRORING = "LOOSE_MIRRORING";
+
+    public static final String MIRRORING_TYPE = "MIRRORING_TYPE";
 
     private final ImageResizeSettings LeftImageResizeSettings;
     private final ImageResizeSettings RightImageResizeSettings;
@@ -96,15 +97,16 @@ public class UserSettings {
         this.keyValueStorage.setBoolean(UserSettings.RESET_IMAGE_ON_LINKING, resetImageOnLinking);
     }
 
-    public boolean getLooseMirroring() {
-        return this.keyValueStorage.getBoolean(UserSettings.LOOSE_MIRRORING, DefaultSettings.LOOSE_MIRRORING);
+    public int getMirroringType() {
+        return this.keyValueStorage.getInt(UserSettings.MIRRORING_TYPE, DefaultSettings.MIRRORING_TYPE);
     }
 
-    public void setLooseMirroring(boolean looseMirroring) {
-        Settings.LOOSE_MIRRORING = looseMirroring;
+    public void setMirroringType(int mirroringType) {
+        Settings.MIRRORING_TYPE = mirroringType;
 
-        this.keyValueStorage.setBoolean(UserSettings.LOOSE_MIRRORING, looseMirroring);
+        this.keyValueStorage.setInt(UserSettings.MIRRORING_TYPE, mirroringType);
     }
+
 
     public void resetAllSettings() {
         this.keyValueStorage.remove(UserSettings.USER_THEME);
@@ -115,8 +117,8 @@ public class UserSettings {
         Settings.MAX_ZOOM = DefaultSettings.MAX_ZOOM;
         this.keyValueStorage.remove(UserSettings.RESET_IMAGE_ON_LINKING);
         Settings.RESET_IMAGE_ON_LINKING = DefaultSettings.RESET_IMAGE_ON_LINKING;
-        this.keyValueStorage.remove(UserSettings.LOOSE_MIRRORING);
-        Settings.LOOSE_MIRRORING = DefaultSettings.LOOSE_MIRRORING;
+        this.keyValueStorage.remove(UserSettings.MIRRORING_TYPE);
+        Settings.MIRRORING_TYPE = DefaultSettings.MIRRORING_TYPE;
 
         this.LeftImageResizeSettings.resetAllSettings();
         this.RightImageResizeSettings.resetAllSettings();

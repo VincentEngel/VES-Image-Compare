@@ -12,10 +12,11 @@ public class SyncZoom {
     public static void setLinkedTargets(
             VesImageInterface imageOne,
             VesImageInterface imageTwo,
-            UtilMutableBoolean sync
+            UtilMutableBoolean sync,
+            UtilMutableBoolean disabled
     ) {
-        imageOne.addMirrorListener(imageTwo, sync);
-        imageTwo.addMirrorListener(imageOne, sync);
+        imageOne.addMirrorListener(imageTwo, sync, disabled);
+        imageTwo.addMirrorListener(imageOne, sync, disabled);
     }
 
     public static void setUpSyncZoomToggleButton(

@@ -33,11 +33,11 @@ public class OverlaySlideActivity extends AppCompatActivity implements FadeActiv
     private static Thread currentThread;
     private static Thread nextThread;
 
-    public static UtilMutableBoolean sync = new UtilMutableBoolean();
+    public static UtilMutableBoolean sync = new UtilMutableBoolean(true);
 
-    private final static UtilMutableBoolean leftToRight = new UtilMutableBoolean();
+    private final static UtilMutableBoolean leftToRight = new UtilMutableBoolean(true);
 
-    private final static UtilMutableBoolean continueHiding = new UtilMutableBoolean();
+    private final static UtilMutableBoolean continueHiding = new UtilMutableBoolean(true);
     private static Thread fadeOutThread;
     private static Thread fadeInThread;
 
@@ -84,7 +84,7 @@ public class OverlaySlideActivity extends AppCompatActivity implements FadeActiv
             image_front.addFadeListener(this);
             Bitmap bitmapSource = Images.second.getAdjustedBitmap();
 
-            SyncZoom.setLinkedTargets(image_front, image_back, OverlaySlideActivity.sync);
+            SyncZoom.setLinkedTargets(image_front, image_back, OverlaySlideActivity.sync, new UtilMutableBoolean(false));
 
             ImageButton hideShow = findViewById(R.id.overlay_transparent_button_hide_front_image);
 

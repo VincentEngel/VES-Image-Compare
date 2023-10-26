@@ -75,7 +75,7 @@
     <string name="next">Next</string>
     <string name="reset_zoom">Reset Zoom</string>
     <string name="reset_zoom_additional_info">on linking</string>
-    <string name="loose_mirroring">Loose Mirroring</string>
+    <string name="settings_mirroring">Mirroring options</string>
     <string name="loose_mirroring_additional_info">(only mirror zoom)</string>
     <string name="reset_all_settings">Reset all Settings</string>
     <string name="explanation_image_linking">Links both images. When you zoom in on one image, the other image automatically zooms in too.</string>
@@ -87,4 +87,10 @@
     <string name="explanation_swap_images_inside_comparemode">Swap the images inside the CompareMode.</string>
     <string name="settings_on_linking">Enable or Disable reset on linking zoom</string>
     <string name="settings_loose_mirroring">Enable or disable loose mirroring</string>
+    <string name="settings_mirroring_natural_description">Mirror all interactions</string>
+    <string name="settings_mirroring_strict_description">Enforce identical\nzoom and position</string>
+    <string name="settings_mirroring_loose_description">Only mirror zoom</string>
+    <string name="natural">Natural</string>
+    <string name="strict">Strict</string>
+    <string name="loose">Loose</string>
 </resources>

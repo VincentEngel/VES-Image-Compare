@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -57,9 +59,21 @@ public class SettingsActivity extends AppCompatActivity {
             this.userSettings.setResetImageOnLinking(resetZoomOnLinking.isChecked());
         });
 
-        SwitchMaterial looseMirroring = findViewById(R.id.settings_switch_loose_mirroring);
+        TextView mirroringDescription = findViewById(R.id.settings_mirroring_explanation);
+        RadioButton naturalMirroring = findViewById(R.id.settings_mirroring_natural);
+        naturalMirroring.setOnClickListener(view -> {
+            this.userSettings.setMirroringType(Status.NATURAL_MIRRORING);
+            mirroringDescription.setText(R.string.settings_mirroring_natural_description);
+        });
+        RadioButton strictMirroring = findViewById(R.id.settings_mirroring_strict);
+        strictMirroring.setOnClickListener(view -> {
+            this.userSettings.setMirroringType(Status.STRICT_MIRRORING);
+            mirroringDescription.setText(R.string.settings_mirroring_strict_description);
+        });
+        RadioButton looseMirroring = findViewById(R.id.settings_mirroring_loose);
         looseMirroring.setOnClickListener(view -> {
-            this.userSettings.setLooseMirroring(looseMirroring.isChecked());
+            this.userSettings.setMirroringType(Status.LOOSE_MIRRORING);
+            mirroringDescription.setText(R.string.settings_mirroring_loose_description);
         });
 
         Button resetButton = findViewById(R.id.settings_reset);
@@ -84,8 +98,34 @@ public class SettingsActivity extends AppCompatActivity {
         SwitchMaterial resetZoomOnLinking = findViewById(R.id.settings_switch_reset_zoom_on_linking);
         resetZoomOnLinking.setChecked(this.userSettings.getResetImageOnLink());
 
-        SwitchMaterial looseMirroring = findViewById(R.id.settings_switch_loose_mirroring);
-        looseMirroring.setChecked(this.userSettings.getLooseMirroring());
+        this.applyMirroringSettings();
+    }
+
+    private void applyMirroringSettings()
+    {
+        RadioButton naturalMirroring = findViewById(R.id.settings_mirroring_natural);
+        RadioButton strictMirroring = findViewById(R.id.settings_mirroring_strict);
+        RadioButton looseMirroring = findViewById(R.id.settings_mirroring_loose);
+
+        TextView mirroringDescription = findViewById(R.id.settings_mirroring_explanation);
+        if (this.userSettings.getMirroringType() == Status.NATURAL_MIRRORING) {
+            naturalMirroring.setChecked(true);
+            strictMirroring.setChecked(false);
+            looseMirroring.setChecked(false);
+            mirroringDescription.setText(R.string.settings_mirroring_natural_description);
+        }
+        if (this.userSettings.getMirroringType() == Status.STRICT_MIRRORING) {
+            naturalMirroring.setChecked(false);
+            strictMirroring.setChecked(true);
+            looseMirroring.setChecked(false);
+            mirroringDescription.setText(R.string.settings_mirroring_strict_description);
+        }
+        if (this.userSettings.getMirroringType() == Status.LOOSE_MIRRORING) {
+            naturalMirroring.setChecked(false);
+            strictMirroring.setChecked(false);
+            looseMirroring.setChecked(true);
+            mirroringDescription.setText(R.string.settings_mirroring_loose_description);
+        }
     }
 
     private void setUpThemeToggleButton(Button buttonTheme, ImageButton nextTheme)

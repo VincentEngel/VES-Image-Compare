@@ -26,7 +26,7 @@ public class FullSliderActivity extends AppCompatActivity {
     private static Thread currentThread;
     private static Thread nextThread;
 
-    public static UtilMutableBoolean sync = new UtilMutableBoolean();
+    public static UtilMutableBoolean sync = new UtilMutableBoolean(true);
 
     private static int color_active;
     private static int color_inactive;
@@ -64,7 +64,7 @@ public class FullSliderActivity extends AppCompatActivity {
         VesImageInterface image_front = findViewById(R.id.full_slide_image_view_front);
         Images.second.updateVesImageViewWithAdjustedImage(image_front);
 
-        SyncZoom.setLinkedTargets(image_front, image_back, FullSliderActivity.sync);
+        SyncZoom.setLinkedTargets(image_front, image_back, FullSliderActivity.sync, new UtilMutableBoolean(false));
 
         SeekBar seekBarLeft = findViewById(R.id.full_slider_seekbar_left);
         ViewGroup.LayoutParams layoutParamsSeekbarLeft = seekBarLeft.getLayoutParams();

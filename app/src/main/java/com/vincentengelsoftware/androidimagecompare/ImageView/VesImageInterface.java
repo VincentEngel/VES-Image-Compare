@@ -1,6 +1,7 @@
 package com.vincentengelsoftware.androidimagecompare.ImageView;
 
 import android.graphics.Bitmap;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.vincentengelsoftware.androidimagecompare.animations.FadeActivity;
@@ -21,7 +22,8 @@ public interface VesImageInterface {
     void setImageScaleCenter(ImageScaleCenter imageScaleCenter);
 
     void addFadeListener(FadeActivity fadeActivity);
-    void addMirrorListener(VesImageInterface target, UtilMutableBoolean sync);
+    void addMirrorListener(VesImageInterface target, UtilMutableBoolean sync, UtilMutableBoolean disabled);
 
     void setImageScale(ImageScaleCenter imageScaleCenter);
+    boolean onTouchEvent(MotionEvent event);
 }

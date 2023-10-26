@@ -43,6 +43,7 @@
                     android:layout_margin="1dp"
                     android:contentDescription="@string/open_settings"
                     app:srcCompat="@drawable/ic_settings"
+                    android:background="@drawable/button_border"
                     tools:ignore="DuplicateSpeakableTextCheck" />
 
             </FrameLayout>

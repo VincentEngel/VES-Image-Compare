@@ -1,0 +1,2 @@
+* Fix Settings Icon
+* Restore better mirroring

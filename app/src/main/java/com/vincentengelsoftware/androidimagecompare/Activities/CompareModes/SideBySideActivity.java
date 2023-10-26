@@ -18,7 +18,7 @@ import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
 import com.vincentengelsoftware.androidimagecompare.ImageView.VesImageInterface;
 
 public class SideBySideActivity extends AppCompatActivity {
-    public static UtilMutableBoolean sync = new UtilMutableBoolean();
+    public static UtilMutableBoolean sync = new UtilMutableBoolean(true);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +39,8 @@ public class SideBySideActivity extends AppCompatActivity {
         SyncZoom.setLinkedTargets(
                 first,
                 second,
-                SideBySideActivity.sync
+                SideBySideActivity.sync,
+                new UtilMutableBoolean(false)
         );
         SyncZoom.setUpSyncZoomToggleButton(
                 first,

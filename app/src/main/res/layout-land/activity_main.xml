@@ -41,6 +41,7 @@
                     android:layout_gravity="end"
                     android:layout_margin="12dp"
                     android:contentDescription="@string/open_settings"
+                    android:background="@drawable/button_border"
                     app:srcCompat="@drawable/ic_settings"
                     tools:ignore="DuplicateSpeakableTextCheck" />
 

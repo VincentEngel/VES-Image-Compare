@@ -25,9 +25,9 @@ import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
 import com.vincentengelsoftware.androidimagecompare.ImageView.VesImageInterface;
 
 public class OverlayTransparentActivity extends AppCompatActivity implements FadeActivity {
-    public static UtilMutableBoolean sync = new UtilMutableBoolean();
+    public static UtilMutableBoolean sync = new UtilMutableBoolean(true);
 
-    private final static UtilMutableBoolean continueHiding = new UtilMutableBoolean();
+    private final static UtilMutableBoolean continueHiding = new UtilMutableBoolean(true);
     private static Thread fadeOutThread;
     private static Thread fadeInThread;
 
@@ -92,7 +92,8 @@ public class OverlayTransparentActivity extends AppCompatActivity implements Fad
         SyncZoom.setLinkedTargets(
                 base,
                 image_transparent,
-                OverlayTransparentActivity.sync
+                OverlayTransparentActivity.sync,
+                new UtilMutableBoolean(false)
         );
         SyncZoom.setUpSyncZoomToggleButton(
                 base,

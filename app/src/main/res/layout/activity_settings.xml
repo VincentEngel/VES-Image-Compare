@@ -135,29 +135,43 @@
                         android:layout_marginEnd="6dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="@string/loose_mirroring"
+                        android:text="@string/settings_mirroring"
                         android:textSize="16sp" />
+
                     <TextView
+                        android:textAlignment="viewStart"
+                        android:id="@+id/settings_mirroring_explanation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:text="@string/loose_mirroring_additional_info"
-                        android:textSize="12sp" />
+                        android:layout_gravity="center_vertical|start"
+                        android:layout_marginEnd="6dp"
+                        android:text="@string/settings_mirroring_natural_description"
+                        android:textSize="16sp" />
                 </FrameLayout>
 
-                <FrameLayout
+                <RadioGroup
                     android:layout_weight="1"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent" >
 
-                    <com.google.android.material.switchmaterial.SwitchMaterial
-                        android:id="@+id/settings_switch_loose_mirroring"
-                        android:contentDescription="@string/settings_loose_mirroring"
-                        android:layout_gravity="start"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </FrameLayout>
+                    <RadioButton
+                        android:id="@+id/settings_mirroring_natural"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/natural" />
+
+                    <RadioButton
+                        android:id="@+id/settings_mirroring_strict"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/strict" />
+
+                    <RadioButton
+                        android:id="@+id/settings_mirroring_loose"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/loose" />
+                </RadioGroup>
             </TableRow>
 
             <TableRow

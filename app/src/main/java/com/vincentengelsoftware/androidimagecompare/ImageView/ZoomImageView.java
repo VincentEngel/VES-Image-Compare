@@ -1,9 +1,12 @@
 package com.vincentengelsoftware.androidimagecompare.ImageView;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.PointF;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
+
 import com.ortiz.touchview.TouchImageView;
 import com.vincentengelsoftware.androidimagecompare.ImageView.Listeners.FadeListener;
 import com.vincentengelsoftware.androidimagecompare.ImageView.Listeners.MirrorListener;
@@ -16,17 +19,16 @@ import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
 public class ZoomImageView extends TouchImageView implements VesImageInterface {
     private final OnTouchListeners onTouchListeners = new OnTouchListeners();
 
+    @SuppressLint("ClickableViewAccessibility")
     private void addOnTouchEventListener(OnTouchListenerInterface touchListener) {
         onTouchListeners.add(touchListener);
 
-        super.setOnTouchImageViewListener(
-                this.onTouchListeners::trigger
-        );
+        super.setOnTouchListener(this.onTouchListeners);
     }
 
-    public void addMirrorListener(VesImageInterface target, UtilMutableBoolean sync)
+    public void addMirrorListener(VesImageInterface target, UtilMutableBoolean sync, UtilMutableBoolean disabled)
     {
-        this.addOnTouchEventListener(new MirrorListener(this, target, sync));
+        this.addOnTouchEventListener(new MirrorListener(this, target, sync, disabled));
     }
 
     public void addFadeListener(FadeActivity fadeActivity)
@@ -65,5 +67,11 @@ public class ZoomImageView extends TouchImageView implements VesImageInterface {
     public ImageScaleCenter getImageScaleCenter() {
         PointF scrollPosition = super.getScrollPosition();
         return new ImageScaleCenter(super.getCurrentZoom(), scrollPosition.x, scrollPosition.y);
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    public boolean onTouchEvent(MotionEvent event) {
+        super.dispatchTouchEvent(event);
+        return false;
     }
 }
