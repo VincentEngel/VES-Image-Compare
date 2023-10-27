@@ -27,7 +27,7 @@
                 android:layout_marginTop="20dp"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="@string/ves_image_compare"
+                android:text="@string/app_name"
                 android:textSize="24sp"/>
 
             <TextView

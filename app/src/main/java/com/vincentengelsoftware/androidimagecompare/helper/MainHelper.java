@@ -2,21 +2,22 @@ package com.vincentengelsoftware.androidimagecompare.helper;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.webkit.MimeTypeMap;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.documentfile.provider.DocumentFile;
 
 import com.vincentengelsoftware.androidimagecompare.Activities.MainActivity;
-import com.vincentengelsoftware.androidimagecompare.globals.Images;
+import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.globals.RequestPermissionCodes;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
 import com.vincentengelsoftware.androidimagecompare.util.ImageHolder;
@@ -93,10 +94,14 @@ public class MainHelper {
             if (df != null && df.getName() != null) {
                 return df.getName();
             }
+
+            ContentResolver cR = context.getContentResolver();
+            MimeTypeMap mime = MimeTypeMap.getSingleton();
+            return mime.getExtensionFromMimeType(cR.getType(uri));
         } catch (Exception ignored) {
         }
 
-        return Images.DEFAULT_IMAGE_NAME;
+        return context.getString(R.string.unknown);
     }
 
     public static void updateImageFromIntent(

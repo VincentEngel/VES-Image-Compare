@@ -26,14 +26,14 @@ public class Theme {
     {
         switch (theme) {
             case Status.THEME_SYSTEM:
-                button.setText(R.string.system);
+                button.setText(R.string.theme_system);
                 break;
             case Status.THEME_LIGHT:
-                button.setText(R.string.light);
+                button.setText(R.string.theme_light);
                 break;
             case Status.THEME_DARK:
             default:
-                button.setText(R.string.dark);
+                button.setText(R.string.theme_dark);
         }
     }
 }

@@ -47,9 +47,9 @@ import com.vincentengelsoftware.androidimagecompare.helper.AskForReview;
 import com.vincentengelsoftware.androidimagecompare.helper.BitmapExtractor;
 import com.vincentengelsoftware.androidimagecompare.helper.MainHelper;
 import com.vincentengelsoftware.androidimagecompare.helper.UriExtractor;
+import com.vincentengelsoftware.androidimagecompare.services.KeyValueStorage;
 import com.vincentengelsoftware.androidimagecompare.services.Settings.ApplyUserSettings;
 import com.vincentengelsoftware.androidimagecompare.services.Settings.ImageResizeSettings;
-import com.vincentengelsoftware.androidimagecompare.services.KeyValueStorage;
 import com.vincentengelsoftware.androidimagecompare.services.Settings.UserSettings;
 import com.vincentengelsoftware.androidimagecompare.util.ImageHolder;
 
@@ -163,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
 
         Button lastCompareMode = findViewById(R.id.main_button_last_compare);
         lastCompareMode.setText(
-                CompareModeNames.getUserCompareModeNameFromInternalName(this.userSettings.getLastCompareMode())
+                CompareModeNames.getUserCompareModeNameFromInternalName(getBaseContext(), this.userSettings.getLastCompareMode())
         );
 
         ImageButton extensions = findViewById(R.id.home_button_extensions);
@@ -340,10 +340,10 @@ public class MainActivity extends AppCompatActivity {
 
         Button lastCompareMode = findViewById(R.id.main_button_last_compare);
         lastCompareMode.setText(
-                CompareModeNames.getUserCompareModeNameFromInternalName(this.userSettings.getLastCompareMode())
+                CompareModeNames.getUserCompareModeNameFromInternalName(getBaseContext(), this.userSettings.getLastCompareMode())
         );
         lastCompareMode.setOnClickListener(view -> {
-            switch (CompareModeNames.getInternalCompareModeNameFromUserCompareModeName(lastCompareMode.getText().toString())) {
+            switch (CompareModeNames.getInternalCompareModeNameFromUserCompareModeName(getBaseContext(), lastCompareMode.getText().toString())) {
                 case CompareModeNames.SIDE_BY_SIDE -> openCompareActivity(SideBySideActivity.class);
                 case CompareModeNames.OVERLAY_SLIDE -> openCompareActivity(OverlaySlideActivity.class);
                 case CompareModeNames.OVERLAY_TAP -> openCompareActivity(OverlayTapActivity.class);
@@ -376,7 +376,7 @@ public class MainActivity extends AppCompatActivity {
                 findViewById(R.id.main_text_view_name_image_right)
         );
         swapImages.setOnLongClickListener(view -> {
-            Toast.makeText(getApplicationContext(), "Swap Images", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.swap_images), Toast.LENGTH_SHORT).show();
             return true;
         });
 
@@ -395,7 +395,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         extensions.setOnLongClickListener(view -> {
-            Toast.makeText(getApplicationContext(), "Show details in Tap and Side-by-Side", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.show_extensions_in_compare_modes), Toast.LENGTH_SHORT).show();
             return true;
         });
 
@@ -414,7 +414,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         linkedZoom.setOnLongClickListener(view -> {
-            Toast.makeText(getApplicationContext(), "Sync zoom between images in comparison modes", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.globally_enable_or_disable_linked_zoom), Toast.LENGTH_SHORT).show();
             return true;
         });
 
@@ -425,7 +425,7 @@ public class MainActivity extends AppCompatActivity {
                 findViewById(R.id.home_image_first)
         );
         rotateImageLeft.setOnLongClickListener(view -> {
-            Toast.makeText(getApplicationContext(), "Rotate the left image", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.rotate_image_left), Toast.LENGTH_SHORT).show();
             return true;
         });
 
@@ -436,7 +436,7 @@ public class MainActivity extends AppCompatActivity {
                 findViewById(R.id.home_image_second)
         );
         rotateImageRight.setOnLongClickListener(view -> {
-            Toast.makeText(getApplicationContext(), "Rotate the right image", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.rotate_image_right), Toast.LENGTH_SHORT).show();
             return true;
         });
 
@@ -527,12 +527,12 @@ public class MainActivity extends AppCompatActivity {
                     height = Integer.parseInt(inputHeight.getText().toString());
                     width = Integer.parseInt(inputWidth.getText().toString());
                 } catch (Exception e) {
-                    Toast.makeText(getApplicationContext(), "Invalid input, only numbers allowed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.error_msg_invalid_input_not_a_number), Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 if (height <= 0 || width <= 0) {
-                    Toast.makeText(getApplicationContext(), "Invalid input, input values must be greater than 0", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.error_msg_invalid_input_number_gt_zero), Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -607,7 +607,7 @@ public class MainActivity extends AppCompatActivity {
                             || Images.second.getBitmap() == null
                             || Status.activityIsOpening
             ) {
-                Toast.makeText(getApplicationContext(), "Select two pictures first", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.error_msg_missing_images), Toast.LENGTH_SHORT).show();
                 return;
             }
             Status.activityIsOpening = true;
@@ -616,7 +616,7 @@ public class MainActivity extends AppCompatActivity {
             String internalCompareModeName = CompareModeNames.getInternalCompareModeNameFromActivityName(activityName);
             this.userSettings.setLastCompareMode(internalCompareModeName);
             Button button = findViewById(R.id.main_button_last_compare);
-            button.setText(CompareModeNames.getUserCompareModeNameFromInternalName(internalCompareModeName));
+            button.setText(CompareModeNames.getUserCompareModeNameFromInternalName(getBaseContext(), internalCompareModeName));
 
             Intent intent = new Intent(getApplicationContext(), targetActivity);
             intent.putExtra(IntentExtras.SHOW_EXTENSIONS, this.userSettings.isShowExtensions());
@@ -655,7 +655,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addLoadImageLogic(int imageViewId , String imageHolderName, int imageNameTextId, String UriPath) {
-        ActivityResultLauncher<String> mGetContentGallery = registerForActivityResult(
+        ActivityResultLauncher<String> imagePicker = registerForActivityResult(
                 new ActivityResultContracts.GetContent(),
                 uri -> {
                     if (uri == null) {
@@ -695,7 +695,6 @@ public class MainActivity extends AppCompatActivity {
                     result -> {
                         if (!result) {
                             Toast.makeText(getApplicationContext(), R.string.error_message_general, Toast.LENGTH_SHORT).show();
-                            Status.isTakingPicture = false;
                             return;
                         }
 
@@ -721,10 +720,7 @@ public class MainActivity extends AppCompatActivity {
                         } catch (Exception ignored) {
                         }
 
-                        runOnUiThread(() -> {
-                            restoreImageViews();
-                            Status.isTakingPicture = false;
-                        });
+                        runOnUiThread(this::restoreImageViews);
                     }
             );
 
@@ -741,20 +737,44 @@ public class MainActivity extends AppCompatActivity {
                 }
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-                final CharSequence[] optionsMenu = {"Take Photo", "Choose from Gallery"};
+                final CharSequence[] optionsMenu = {getString(R.string.load_image_camera), getString(R.string.load_image_gallery), getString(R.string.share_image)};
 
 
                 builder.setItems(optionsMenu, (dialogInterface, i) -> {
-                    if (optionsMenu[i].equals("Take Photo")) {
+                    if (optionsMenu[i].equals(getString(R.string.load_image_camera))) {
                         if (MainHelper.checkPermission(MainActivity.this)) {
                             mGetContentCamera.launch(uri);
-                            Status.isTakingPicture = true;
                         } else {
                             MainHelper.requestPermission(MainActivity.this);
                             imageView.callOnClick();
                         }
-                    } else if (optionsMenu[i].equals("Choose from Gallery")) {
-                        mGetContentGallery.launch("image/*");
+                    } else if (optionsMenu[i].equals(getString(R.string.load_image_gallery))) {
+                        imagePicker.launch("image/*");
+                    } else if (optionsMenu[i].equals(getString(R.string.share_image))) {
+                        try {
+                            Uri imageUri;
+                            if (Objects.equals(imageHolderName, "first")) {
+                                if (MainActivity.leftImageUri == null) {
+                                    Toast.makeText(getApplicationContext(), getString(R.string.error_msg_missing_images), Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+                                imageUri = Uri.parse(MainActivity.leftImageUri);
+                            } else {
+                                if (MainActivity.rightImageUri == null) {
+                                    Toast.makeText(getApplicationContext(), getString(R.string.error_msg_missing_images), Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+                                imageUri = Uri.parse(MainActivity.rightImageUri);
+                            }
+
+                            Intent intent = new Intent(Intent.ACTION_SEND);
+                            intent.setType("image/*");
+                            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                            intent.putExtra(Intent.EXTRA_STREAM, imageUri);
+                            startActivity(Intent.createChooser(intent, getString(R.string.share_image)));
+                        } catch (Exception ignored) {
+                            Toast.makeText(getApplicationContext(), getString(R.string.error_message_general), Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     dialogInterface.dismiss();

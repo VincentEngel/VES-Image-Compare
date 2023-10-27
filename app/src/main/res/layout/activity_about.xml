@@ -22,7 +22,7 @@
                 android:layout_marginTop="20dp"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="@string/ves_image_compare"
+                android:text="@string/app_name"
                 android:textSize="24sp" />
 
             <TextView
@@ -59,6 +59,7 @@
                         android:layout_height="match_parent">
 
                         <TextView
+                            android:textAlignment="viewStart"
                             android:id="@+id/info_text_view_link_github_project"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -110,6 +111,7 @@
                         android:layout_height="match_parent">
 
                         <TextView
+                            android:textAlignment="viewStart"
                             android:id="@+id/info_text_view_library"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -124,6 +126,7 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:textAlignment="viewStart"
                             android:id="@+id/info_text_view_link_library_subsampling_scale_image_view"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -134,6 +137,7 @@
                             android:textSize="16sp" />
 
                         <TextView
+                            android:textAlignment="viewStart"
                             android:id="@+id/info_text_view_link_library_metadata_extractor"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -168,6 +172,7 @@
                         android:layout_height="match_parent">
 
                         <TextView
+                            android:textAlignment="viewStart"
                             android:id="@+id/info_text_view_link_color_theme"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -201,6 +206,7 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:textAlignment="viewStart"
                             android:id="@+id/info_text_view_link_google_material_icons"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

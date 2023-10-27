@@ -32,7 +32,7 @@
                     android:gravity="center"
                     android:paddingStart="64dp"
                     android:paddingTop="14dp"
-                    android:text="@string/ves_image_compare"
+                    android:text="@string/app_name"
                     android:textSize="16sp" />
 
                 <ImageButton
@@ -236,8 +236,12 @@
 
                 <Button
                     android:id="@+id/main_button_compare"
+                    android:autoSizeTextType="uniform"
+                    android:maxLines="1"
+                    android:layout_gravity="center"
                     style="@style/buttonStyles"
-                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/activity_button_margin"
                     android:text="@string/compare"
@@ -246,8 +250,12 @@
 
                 <Button
                     android:id="@+id/main_button_last_compare"
+                    android:autoSizeTextType="uniform"
+                    android:maxLines="1"
+                    android:layout_gravity="center"
                     style="@style/buttonStyles"
-                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/activity_button_margin"
                     android:text="@string/last_compare"

@@ -39,19 +39,19 @@
                     android:id="@+id/dialog_resize_image_radio_button_original"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/original" />
+                    android:text="@string/resize_image_mode_original" />
 
                 <RadioButton
                     android:id="@+id/dialog_resize_image_radio_button_automatic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/automatic" />
+                    android:text="@string/resize_image_mode_automatic" />
 
                 <RadioButton
                     android:id="@+id/dialog_resize_image_radio_button_custom"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/custom" />
+                    android:text="@string/resize_image_mode_custom" />
             </RadioGroup>
 
             <TableLayout
@@ -69,7 +69,7 @@
                         android:id="@+id/textView4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/original_resize_image_info_text" />
+                        android:text="@string/resize_image_info_text_original" />
                 </TableRow>
 
                 <TableRow
@@ -82,7 +82,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:maxWidth="480dp"
-                        android:text="@string/automatic_resize_image_info_text" />
+                        android:text="@string/resize_image_info_text_automatic" />
                 </TableRow>
 
                 <TableRow
@@ -103,7 +103,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="48dp"
                                 android:ems="10"
-                                android:hint="@string/width_in_px"
+                                android:hint="@string/resize_image_width_in_px"
                                 android:inputType="number" />
                         </TableRow>
 
@@ -116,7 +116,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="48dp"
                                 android:ems="10"
-                                android:hint="@string/height_in_px"
+                                android:hint="@string/resize_image_height_in_px"
                                 android:inputType="number" />
                         </TableRow>
 

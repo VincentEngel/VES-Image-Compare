@@ -37,7 +37,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/text_size"
-                        android:text="@string/side_by_side" />
+                        android:text="@string/compare_mode_side_by_side" />
                 </TableRow>
 
                 <TableRow
@@ -50,7 +50,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/text_size"
-                        android:text="@string/overlay_slide" />
+                        android:text="@string/compare_mode_overlay_slide" />
                 </TableRow>
 
                 <TableRow
@@ -63,7 +63,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/text_size"
-                        android:text="@string/overlay_tap" />
+                        android:text="@string/compare_mode_overlay_tap" />
                 </TableRow>
 
                 <TableRow
@@ -76,7 +76,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/text_size"
-                        android:text="@string/transparent" />
+                        android:text="@string/compare_mode_transparent" />
                 </TableRow>
 
                 <TableRow
@@ -89,7 +89,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/text_size"
-                        android:text="@string/metadata" />
+                        android:text="@string/compare_mode_metadata" />
                 </TableRow>
 
             </TableLayout>

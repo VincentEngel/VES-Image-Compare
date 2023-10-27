@@ -40,8 +40,8 @@
                 android:layout_height="match_parent">
 
                 <FrameLayout
-                    android:layout_weight="0"
-                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent">
 
                     <TextView
@@ -51,24 +51,24 @@
                         android:text="@string/theme"
                         android:textSize="16sp" />
                 </FrameLayout>
-
-                <Button
-                    android:id="@+id/home_theme"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/system"
-                    android:textColor="@color/text_color"
-                    app:cornerRadius="8dp"
-                    app:strokeColor="@color/text_color"
-                    app:strokeWidth="1dp" />
-
                 <FrameLayout
                     android:layout_marginStart="6dp"
                     android:layout_weight="1"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent">
 
+                    <Button
+                        android:id="@+id/home_theme"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/theme_system"
+                        android:textColor="@color/text_color"
+                        app:cornerRadius="8dp"
+                        app:strokeColor="@color/text_color"
+                        app:strokeWidth="1dp" />
+
                     <ImageButton
+                        android:layout_gravity="end|center_vertical"
                         android:id="@+id/settings_next_theme"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
@@ -86,28 +86,23 @@
                 android:layout_height="match_parent">
 
                 <FrameLayout
-                    android:layout_weight="0"
-                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent">
 
                     <TextView
+                        android:textAlignment="viewStart"
                         android:layout_marginEnd="6dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="@string/reset_zoom"
-                        android:textSize="16sp" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:text="@string/reset_zoom_additional_info"
+                        android:layout_gravity="center_vertical|start"
+                        android:text="@string/settings_reset_zoom"
                         android:textSize="16sp" />
                 </FrameLayout>
 
                 <FrameLayout
                     android:layout_weight="1"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent">
 
                     <com.google.android.material.switchmaterial.SwitchMaterial
@@ -127,8 +122,8 @@
                 android:layout_height="match_parent">
 
                 <FrameLayout
-                    android:layout_weight="0"
-                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent">
 
                     <TextView
@@ -151,26 +146,26 @@
 
                 <RadioGroup
                     android:layout_weight="1"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent" >
 
                     <RadioButton
                         android:id="@+id/settings_mirroring_natural"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/natural" />
+                        android:text="@string/mirroring_mode_natural" />
 
                     <RadioButton
                         android:id="@+id/settings_mirroring_strict"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/strict" />
+                        android:text="@string/mirroring_mode_strict" />
 
                     <RadioButton
                         android:id="@+id/settings_mirroring_loose"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/loose" />
+                        android:text="@string/mirroring_mode_loose" />
                 </RadioGroup>
             </TableRow>
 
@@ -180,8 +175,8 @@
                 android:layout_height="match_parent">
 
                 <FrameLayout
-                    android:layout_weight="0"
-                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent">
 
                     <TextView
@@ -195,13 +190,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:text="@string/default_10"
+                        android:text="@string/default_100"
                         android:textSize="12sp" />
                 </FrameLayout>
 
                 <FrameLayout
                     android:layout_weight="1"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent">
 
 
@@ -244,7 +239,7 @@
                     style="@style/buttonStyles"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/reset_all_settings" />
+                    android:text="@string/settings_reset_all_settings" />
             </TableRow>
         </TableLayout>
     </ScrollView>

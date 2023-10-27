@@ -8,8 +8,6 @@ public class Status {
     public static final int THEME_LIGHT = 1;
     public static final int THEME_DARK = 2;
 
-    public static boolean isTakingPicture = false;
-
     public static boolean HAS_HARDWARE_KEY = false;
 
     public static int NATURAL_MIRRORING = 0;

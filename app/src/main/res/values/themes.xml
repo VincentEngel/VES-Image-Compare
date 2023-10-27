@@ -37,6 +37,7 @@
     <style name="buttonStyles" parent="Widget.MaterialComponents.Button">
         <item name="android:backgroundTint">@color/button</item>
         <item name="android:textColor">@color/text_button</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="alertDialog" parent="Theme.AppCompat.Dialog.Alert">

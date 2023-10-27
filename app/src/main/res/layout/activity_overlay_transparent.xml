@@ -23,7 +23,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:background="@android:color/transparent"
-            android:contentDescription="@string/first_image"
+            android:contentDescription="@string/background_image"
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
         <com.vincentengelsoftware.androidimagecompare.ImageView.ZoomImageView
@@ -33,7 +33,7 @@
             android:layout_gravity="center"
             android:alpha="0.50"
             android:background="@android:color/transparent"
-            android:contentDescription="@string/second_image"
+            android:contentDescription="@string/front_image"
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
     </FrameLayout>
@@ -85,7 +85,6 @@
                 android:backgroundTint="@color/button"
                 android:contentDescription="@string/hide_front_image"
                 app:srcCompat="@drawable/ic_visibility"
-                tools:ignore="ImageContrastCheck,DuplicateSpeakableTextCheck"
                 tools:srcCompat="@drawable/ic_visibility" />
         </FrameLayout>
 
