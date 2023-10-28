@@ -27,7 +27,7 @@ Hast du Bilder und Fotos, die sich ähnlich sehen und du kannst dich nicht entsc
 
 * <b>Transparent:</b> Platzieren Sie die Bilder hintereinander und passen Sie die Transparenz des vorderen Bildes an
 
-* <b>MetaData:</b> (Experimentell) Vergleich alle Metadaten, wie z.B. Exif Daten, nebeneinander
+* <b>MetaData:</b> (Beta) Vergleich alle Metadaten, wie z.B. Exif Daten, nebeneinander
 
 <b>KEINE WERBUNG und Privatsphärefreundlich.</b> Diese App benötigt keinen Zugang zum Internet. Alle Informationen werden lokal im Cache der App gespeichert und können jederzeit in den Geräteeinstellungen gelöscht werden.
 

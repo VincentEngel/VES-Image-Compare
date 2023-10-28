@@ -21,7 +21,7 @@
 
 * <b>Transparent:</b> Place the images behind each other and adjust the transparency of the image in the front
 
-* <b>MetaData:</b> (Experimental) Show all Meta Data, like Exif Data, side by side
+* <b>MetaData:</b> (Beta) Show all Meta Data, like Exif Data, side by side
 
 <b>NO ADS and Privacy friendly.</b> This App does not need access to the internet. All information is saved locally in your Apps Cache and can be deleted at any time through your Device Settings.
 
@@ -35,6 +35,10 @@
      height="80">](https://play.google.com/store/apps/details?id=com.vincentengelsoftware.vesandroidimagecompare)
 
 Watch the intro video on YouTube: https://www.youtube.com/watch?v=KlXy7ZQIdQE
+
+## Developer Note
+This is an App I like to work on in my spare time. It is my first Android Java App. This Code does not reflect my professional work.
+I am always open to suggestions and improvements. Feel free to [contact](#contact) me.
 
 ## Available comparisons
 <div>
