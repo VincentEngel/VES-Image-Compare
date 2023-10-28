@@ -52,7 +52,6 @@
                         android:textSize="16sp" />
                 </FrameLayout>
                 <FrameLayout
-                    android:layout_marginStart="6dp"
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="match_parent">
@@ -66,15 +65,6 @@
                         app:cornerRadius="8dp"
                         app:strokeColor="@color/text_color"
                         app:strokeWidth="1dp" />
-
-                    <ImageButton
-                        android:layout_gravity="end|center_vertical"
-                        android:id="@+id/settings_next_theme"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:contentDescription="@string/globally_enable_or_disable_linked_zoom"
-                        app:srcCompat="@drawable/ic_arrow_right" />
-
                 </FrameLayout>
             </TableRow>
 

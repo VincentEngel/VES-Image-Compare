@@ -81,4 +81,6 @@
     <string name="error_msg_invalid_input_not_a_number">Ungültige Eingabe: Eingabe muss eine Zahl sein</string>
     <string name="error_msg_invalid_input_number_gt_zero">Ungültige Eingabe: Eingabe muss größer als 0 sein</string>
     <string name="error_msg_missing_images">Wähle zuerst Bilder aus</string>
+    <string name="settings_save_success">Erfolgreich gespeichert</string>
+    <string name="settings_reset_success">Einstellungen erfolgreich zurückgesetzt</string>
 </resources>

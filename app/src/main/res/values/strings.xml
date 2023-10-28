@@ -86,6 +86,8 @@
     <string name="max_zoom">Max Zoom</string>
     <string name="default_100">(default: 100)</string>
     <string name="open_settings">Open Settings</string>
+    <string name="settings_save_success">Successfully saved</string>
+    <string name="settings_reset_success">Successfully reset all settings</string>
 
     <!-- Explanation -->
     <string name="explanation">Explanation</string>
