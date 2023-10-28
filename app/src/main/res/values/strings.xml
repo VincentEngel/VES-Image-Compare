@@ -58,7 +58,7 @@
 
     <!-- Compare modes -->
     <string name="select_compare_mode_title">Select Compare Mode</string>
-    <string name="compare_mode_metadata">MetaData (Experimental)</string>
+    <string name="compare_mode_metadata">MetaData (Beta)</string>
     <string name="compare_mode_transparent">Transparent</string>
     <string name="compare_mode_side_by_side">Side by Side</string>
     <string name="compare_mode_overlay_slide">Overlay Slide</string>

@@ -1,2 +1,2 @@
 * Add sharing of images
-* Add germany translation
+* Add german translation
