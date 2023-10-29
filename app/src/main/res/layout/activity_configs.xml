@@ -239,8 +239,7 @@
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:contentDescription="@string/hide_front_image"
-                        app:srcCompat="@drawable/ic_visibility"
-                        tools:srcCompat="@drawable/ic_visibility" />
+                        app:srcCompat="@drawable/ic_visibility"/>
 
                     <TextView
                         android:textAlignment="textStart"
@@ -251,6 +250,56 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/explanation_hide_image" />
+
+                </TableRow>
+
+                <TableRow
+                    android:background="@drawable/meta_data_table_row_value_border_bottom"
+                    android:paddingBottom="6dp"
+                    android:layout_marginBottom="6dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageButton
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:contentDescription="@string/overlay_cut_keep_image"
+                        app:srcCompat="@drawable/ic_check" />
+
+                    <TextView
+                        android:textAlignment="textStart"
+                        android:layout_gravity="center_vertical"
+                        tools:ignore="RtlCompat"
+                        android:layout_marginHorizontal="12dp"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/explanation_keep_changes" />
+
+                </TableRow>
+
+                <TableRow
+                    android:background="@drawable/meta_data_table_row_value_border_bottom"
+                    android:paddingBottom="6dp"
+                    android:layout_marginBottom="6dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageButton
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:contentDescription="@string/reset"
+                        app:srcCompat="@drawable/ic_restart" />
+
+                    <TextView
+                        android:textAlignment="textStart"
+                        android:layout_gravity="center_vertical"
+                        tools:ignore="RtlCompat"
+                        android:layout_marginHorizontal="12dp"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/explanation_reset" />
 
                 </TableRow>
 

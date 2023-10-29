@@ -65,7 +65,7 @@
     <string name="compare_mode_side_by_side">Side by Side</string>
     <string name="compare_mode_overlay_slide">Overlay Slide</string>
     <string name="compare_mode_overlay_tap">Overlay Tap</string>
-    <string name="compare_mode_overlay_cut">Overlay Cut (Beta)</string>
+    <string name="compare_mode_overlay_cut">Overlay Cut</string>
 
     <!-- Image resize -->
     <string name="resize_image_info_text_automatic">Automatically reduce image size in order to improve performance. Scale the image down to screen size while keeping its proportions</string>
@@ -96,12 +96,14 @@
     <string name="explanation">Explanation</string>
     <string name="explanation_image_linking">Links both images. When you zoom in on one image, the other image automatically zooms in too.</string>
     <string name="explanation_swap_images">Swap images with each other.</string>
-    <string name="explanation_enable_extensions">Enable details in the following CompareModes: Side-by-Side, Tap.</string>
+    <string name="explanation_enable_extensions">Enable details in the following CompareModes: Side-by-Side, Tap and Overlay Cut.</string>
     <string name="explanation_edit_image_size">Edit the size of an image before comparing it.</string>
     <string name="explanation_rotate_image">Rotate the image by 90 degrees.</string>
     <string name="explanation_hide_image">Hide the image in the foreground to interact with the image in the background.</string>
     <string name="explanation_swap_images_inside_comparemode">Swap the images inside the CompareMode.</string>
     <string name="switch_slide_direction">Switch slide direction</string>
+    <string name="explanation_keep_changes">Keep the changes you have made and use them as a basis for further changes.</string>
+    <string name="explanation_reset">Undo all previous changes.</string>
 
     <!-- Mirroring modes -->
     <string name="mirroring_mode_natural">Natural</string>

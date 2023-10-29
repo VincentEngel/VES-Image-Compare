@@ -3,6 +3,7 @@ package com.vincentengelsoftware.androidimagecompare.Activities.CompareModes;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
@@ -84,22 +85,27 @@ public class OverlayCutActivity extends AppCompatActivity {
         SeekBar seekBarBottom = findViewById(R.id.full_slider_seekbar_bottom);
 
         ImageButton buttonReset = findViewById(R.id.overlay_cut_btn_reset);
-        buttonReset.setOnClickListener(view -> {
-            OverlayCutActivity.bitmapAdjusted = OverlayCutActivity.bitmapSource;
-            if (currentSeekBar != null) {
-                int progress = currentSeekBar.getProgress();
-                if (progress > 1) {
-                    currentSeekBar.setProgress(progress - 1);
-                } else {
-                    currentSeekBar.setProgress(1);
-                }
-            }
-        });
-
         ImageButton buttonKeep = findViewById(R.id.overlay_cut_btn_check);
-        buttonKeep.setOnClickListener(view -> {
-            OverlayCutActivity.bitmapAdjusted = image_front.getCurrentBitmap().copy(Bitmap.Config.ARGB_8888, false);
-        });
+
+        if (getIntent().getBooleanExtra(IntentExtras.SHOW_EXTENSIONS, false)) {
+            buttonReset.setOnClickListener(view -> {
+                OverlayCutActivity.bitmapAdjusted = OverlayCutActivity.bitmapSource;
+                if (currentSeekBar != null) {
+                    int progress = currentSeekBar.getProgress();
+                    if (progress > 1) {
+                        currentSeekBar.setProgress(progress - 1);
+                    } else {
+                        currentSeekBar.setProgress(1);
+                    }
+                }
+            });
+            buttonKeep.setOnClickListener(view -> {
+                OverlayCutActivity.bitmapAdjusted = image_front.getCurrentBitmap().copy(Bitmap.Config.ARGB_8888, false);
+            });
+        } else {
+            buttonReset.setVisibility(View.INVISIBLE);
+            buttonKeep.setVisibility(View.INVISIBLE);
+        }
 
         this.addSeekbarLogic(seekBarTop);
         this.addSeekbarLogic(seekBarLeft);

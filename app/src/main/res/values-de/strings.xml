@@ -66,7 +66,7 @@
     <string name="settings_reset_all_settings">Alle Einstellungen zurücksetzen</string>
     <string name="explanation_image_linking">Verbinde beide Bilder. Wenn du mit einem Bild interagierst, wird das selbe im anderen Bild durchgeführt.</string>
     <string name="explanation_swap_images">Tausche beide Bilder miteinander.</string>
-    <string name="explanation_enable_extensions">Aktiviere oder deaktiviere Details in den folgenden Vergleichsmodi: Seite and Seite, Tippen.</string>
+    <string name="explanation_enable_extensions">Aktiviere oder deaktiviere Details in den folgenden Vergleichsmodi: Seite and Seite, Tippen und Schneiden.</string>
     <string name="explanation_edit_image_size">Bild zuschneiden vorm Vergleich.</string>
     <string name="explanation_rotate_image">Das Bild um 90 Grad nach rechts rotieren</string>
     <string name="explanation_hide_image">Verberge das Bild im Vordergrund, um mit dem Bild im Hintergrund zu interagieren.</string>
@@ -83,7 +83,9 @@
     <string name="error_msg_missing_images">Wähle zuerst Bilder aus</string>
     <string name="settings_save_success">Erfolgreich gespeichert</string>
     <string name="settings_reset_success">Einstellungen erfolgreich zurückgesetzt</string>
-    <string name="compare_mode_overlay_cut">Schneiden (Beta)</string>
+    <string name="compare_mode_overlay_cut">Schneiden</string>
     <string name="reset">Zurücksetzen</string>
     <string name="overlay_cut_keep_image">Bild behalten</string>
+    <string name="explanation_keep_changes">Bewahren Sie die vorgenommenen Änderungen auf und verwenden Sie sie als Grundlage für weitere Änderungen.</string>
+    <string name="explanation_reset">Alle bisherigen Änderungen rückgängig machen.</string>
 </resources>
