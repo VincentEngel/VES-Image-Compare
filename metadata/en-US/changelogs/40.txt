@@ -1,2 +1,2 @@
-* Add Overlay Cut (Beta) comparison mode
+* Add new Overlay Cut comparison mode
 * Some refactoring
