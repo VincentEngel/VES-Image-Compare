@@ -7,27 +7,60 @@
     android:keepScreenOn="true"
     tools:context=".Activities.CompareModes.OverlayCutActivity">
 
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/full_slider_frame_layout_top"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="horizontal">
 
-        <SeekBar
-            android:id="@+id/full_slider_seekbar_top"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="48dp"
-            android:progressTint="@android:color/transparent"
-            android:thumbTint="@color/light_grey" />
-    </FrameLayout>
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <ImageButton
+                android:id="@+id/overlay_cut_btn_reset"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:contentDescription="@string/reset"
+                app:srcCompat="@drawable/ic_restart" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="0dip"
+            android:layout_height="fill_parent"
+            android:layout_weight="1">
+
+            <SeekBar
+                android:id="@+id/full_slider_seekbar_top"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:progressTint="@android:color/transparent"
+                android:thumbTint="@color/light_grey" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <ImageButton
+                android:id="@+id/overlay_cut_btn_check"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:contentDescription="@string/overlay_cut_keep_image"
+                app:srcCompat="@drawable/ic_check" />
+        </FrameLayout>
+
+    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/full_slider_frame_layout_left"
         android:layout_width="48dp"
         android:layout_height="match_parent"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@id/full_slider_frame_layout_top"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -36,7 +69,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_marginVertical="48dp"
             android:progressTint="@android:color/transparent"
             android:rotation="90"
             android:thumbTint="@color/light_grey" />
@@ -71,25 +103,26 @@
         android:id="@+id/full_slider_frame_layout_right"
         android:layout_width="48dp"
         android:layout_height="match_parent"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@id/full_slider_frame_layout_top"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintEnd_toEndOf="parent">
 
         <SeekBar
             android:id="@+id/full_slider_seekbar_right"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_marginVertical="48dp"
             android:progressTint="@android:color/transparent"
             android:rotation="90"
             android:thumbTint="@color/light_grey" />
     </FrameLayout>
 
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/full_slider_frame_layout_bottom"
         android:layout_width="match_parent"
         android:layout_height="48dp"
+        android:paddingHorizontal="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -98,8 +131,7 @@
             android:id="@+id/full_slider_seekbar_bottom"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginHorizontal="48dp"
             android:progressTint="@android:color/transparent"
             android:thumbTint="@color/light_grey" />
-    </FrameLayout>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

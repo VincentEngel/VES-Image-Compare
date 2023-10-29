@@ -4,6 +4,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.SeekBar;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,6 +34,9 @@ public class OverlayCutActivity extends AppCompatActivity {
 
     public static Bitmap nextCalculatedBitmap;
 
+    public static Bitmap bitmapSource;
+    public static Bitmap bitmapAdjusted;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (nextThread != null) {
@@ -49,10 +53,12 @@ public class OverlayCutActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         if (Status.activityIsOpening) {
+            OverlayCutActivity.bitmapSource = Images.second.getAdjustedBitmap();
+            OverlayCutActivity.bitmapAdjusted = Images.second.getAdjustedBitmap();
             OverlayCutActivity.sync.value = getIntent().getBooleanExtra(IntentExtras.SYNCED_ZOOM, true);
         }
         Status.activityIsOpening = false;
-        setContentView(R.layout.activity_full_slider);
+        setContentView(R.layout.activity_overlay_cut);
         FullScreenHelper.setFullScreenFlags(this.getWindow());
 
         OverlayCutActivity.color_active = getResources().getColor(R.color.orange, null);
@@ -77,14 +83,31 @@ public class OverlayCutActivity extends AppCompatActivity {
         SeekBar seekBarTop = findViewById(R.id.full_slider_seekbar_top);
         SeekBar seekBarBottom = findViewById(R.id.full_slider_seekbar_bottom);
 
+        ImageButton buttonReset = findViewById(R.id.overlay_cut_btn_reset);
+        buttonReset.setOnClickListener(view -> {
+            OverlayCutActivity.bitmapAdjusted = OverlayCutActivity.bitmapSource;
+            if (currentSeekBar != null) {
+                int progress = currentSeekBar.getProgress();
+                if (progress > 1) {
+                    currentSeekBar.setProgress(progress - 1);
+                } else {
+                    currentSeekBar.setProgress(1);
+                }
+            }
+        });
+
+        ImageButton buttonKeep = findViewById(R.id.overlay_cut_btn_check);
+        buttonKeep.setOnClickListener(view -> {
+            OverlayCutActivity.bitmapAdjusted = image_front.getCurrentBitmap().copy(Bitmap.Config.ARGB_8888, false);
+        });
 
         this.addSeekbarLogic(seekBarTop);
         this.addSeekbarLogic(seekBarLeft);
         this.addSeekbarLogic(seekBarRight);
         this.addSeekbarLogic(seekBarBottom);
 
-        seekBarLeft.setProgress(100);
-        seekBarRight.setProgress(1);
+        seekBarLeft.setProgress(90);
+        seekBarRight.setProgress(10);
     }
 
     private void updateImage(Bitmap bitmapSource)
@@ -198,7 +221,7 @@ public class OverlayCutActivity extends AppCompatActivity {
                         currentSeekBar = seekBar;
                     }
 
-                    updateImage(Images.second.getAdjustedBitmap().copy(Bitmap.Config.ARGB_8888, true));
+                    updateImage(OverlayCutActivity.bitmapAdjusted.copy(Bitmap.Config.ARGB_8888, true));
                 } catch (Exception ignored) {
                 }
             }

@@ -26,4 +26,6 @@ public interface VesImageInterface {
 
     void setImageScale(ImageScaleCenter imageScaleCenter);
     boolean onTouchEvent(MotionEvent event);
+
+    Bitmap getCurrentBitmap();
 }

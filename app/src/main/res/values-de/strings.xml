@@ -84,4 +84,6 @@
     <string name="settings_save_success">Erfolgreich gespeichert</string>
     <string name="settings_reset_success">Einstellungen erfolgreich zurückgesetzt</string>
     <string name="compare_mode_overlay_cut">Schneiden (Beta)</string>
+    <string name="reset">Zurücksetzen</string>
+    <string name="overlay_cut_keep_image">Bild behalten</string>
 </resources>

@@ -25,6 +25,8 @@
     <string name="background_image">Background image</string>
     <string name="front_image">Front image</string>
     <string name="hide_front_image">Hide front image</string>
+    <string name="reset">Reset</string>
+    <string name="overlay_cut_keep_image">Keep image</string>
 
     <!-- Generic -->
     <string name="done">Done</string>

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.PointF;
+import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
@@ -73,5 +74,9 @@ public class ZoomImageView extends TouchImageView implements VesImageInterface {
     public boolean onTouchEvent(MotionEvent event) {
         super.dispatchTouchEvent(event);
         return false;
+    }
+
+    public Bitmap getCurrentBitmap() {
+        return ((BitmapDrawable)super.getDrawable()).getBitmap();
     }
 }
