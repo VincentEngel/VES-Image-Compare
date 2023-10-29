@@ -63,6 +63,7 @@
     <string name="compare_mode_side_by_side">Side by Side</string>
     <string name="compare_mode_overlay_slide">Overlay Slide</string>
     <string name="compare_mode_overlay_tap">Overlay Tap</string>
+    <string name="compare_mode_overlay_cut">Overlay Cut (Beta)</string>
 
     <!-- Image resize -->
     <string name="resize_image_info_text_automatic">Automatically reduce image size in order to improve performance. Scale the image down to screen size while keeping its proportions</string>

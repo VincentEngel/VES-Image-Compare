@@ -3,6 +3,7 @@ package com.vincentengelsoftware.androidimagecompare.Activities.CompareModes;
 import android.content.Context;
 
 import com.vincentengelsoftware.androidimagecompare.R;
+import com.vincentengelsoftware.androidimagecompare.services.Settings.DefaultSettings;
 
 public class CompareModeNames {
     public static final String SIDE_BY_SIDE = "SIDE_BY_SIDE";
@@ -10,6 +11,7 @@ public class CompareModeNames {
     public static final String OVERLAY_SLIDE = "OVERLAY_SLIDE";
     public static final String OVERLAY_TRANSPARENT = "OVERLAY_TRANSPARENT";
     public static final String META_DATA = "META_DATA";
+    public static final String OVERLAY_CUT = "OVERLAY_CUT";
 
     public static String getInternalCompareModeNameFromUserCompareModeName(Context context, String compareMode)
     {
@@ -33,18 +35,39 @@ public class CompareModeNames {
             return META_DATA;
         }
 
-        return "";
+        if (compareMode.equals(context.getString(R.string.compare_mode_overlay_cut))) {
+            return OVERLAY_CUT;
+        }
+
+        return DefaultSettings.COMPARE_MODE;
     }
-    public static String getInternalCompareModeNameFromActivityName(String activityName)
+    public static String getInternalCompareModeNameByActivity(Class<?> activity)
     {
-        return switch (activityName) {
-            case "SideBySideActivity" -> SIDE_BY_SIDE;
-            case "OverlayTapActivity" -> OVERLAY_TAP;
-            case "OverlaySlideActivity" -> OVERLAY_SLIDE;
-            case "OverlayTransparentActivity" -> OVERLAY_TRANSPARENT;
-            case "MetaDataActivity" -> META_DATA;
-            default -> "";
-        };
+        if (SideBySideActivity.class.equals(activity)) {
+            return SIDE_BY_SIDE;
+        }
+
+        if (OverlayTapActivity.class.equals(activity)) {
+            return OVERLAY_TAP;
+        }
+
+        if (OverlaySlideActivity.class.equals(activity)) {
+            return OVERLAY_SLIDE;
+        }
+
+        if (OverlayTransparentActivity.class.equals(activity)) {
+            return OVERLAY_TRANSPARENT;
+        }
+
+        if (MetaDataActivity.class.equals(activity)) {
+            return META_DATA;
+        }
+
+        if (OverlayCutActivity.class.equals(activity)) {
+            return OVERLAY_CUT;
+        }
+
+        return DefaultSettings.COMPARE_MODE;
     }
 
     public static String getUserCompareModeNameFromInternalName(Context context,String compareMode)
@@ -55,7 +78,8 @@ public class CompareModeNames {
             case OVERLAY_SLIDE -> context.getString(R.string.compare_mode_overlay_slide);
             case OVERLAY_TRANSPARENT -> context.getString(R.string.compare_mode_transparent);
             case META_DATA -> context.getString(R.string.compare_mode_metadata);
-            default -> "";
+            case OVERLAY_CUT -> context.getString(R.string.compare_mode_overlay_cut);
+            default -> CompareModeNames.getUserCompareModeNameFromInternalName(context, DefaultSettings.COMPARE_MODE);
         };
 
     }

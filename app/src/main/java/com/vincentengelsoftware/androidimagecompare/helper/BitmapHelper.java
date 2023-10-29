@@ -5,6 +5,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.Point;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 
 public class BitmapHelper {
     public static Bitmap createScaledBitmapToMaxLength(Bitmap image, int maxWidth, int maxHeight) {
@@ -114,61 +118,146 @@ public class BitmapHelper {
         );
     }
 
-    /**
-     * Old bad way, don't use it
-     */
-    public static Bitmap getCutBitmapWithTransparentBackgroundWithArray(
+    public static Bitmap cutBitmapAny(
             Bitmap bitmapSource,
-            int width,
-            boolean cutFromRightToLeft
+            boolean topSeekBarActive,
+            int topSeekBarProgress,
+            boolean leftSeekBarActive,
+            int leftSeekBarProgress,
+            boolean rightSeekBarActive,
+            int rightSeekBarProgress,
+            boolean bottomSeekBarActive,
+            int bottomSeekBarProgress
     ) {
-        Bitmap bitmapCopy = bitmapSource.copy(bitmapSource.getConfig(), true);
-
-        int[] pixels = new int[bitmapSource.getHeight()*bitmapSource.getWidth()];
-        bitmapSource.getPixels(
-                pixels,
-                0,
-                bitmapSource.getWidth(),
-                0,
-                0,
-                bitmapSource.getWidth(),
-                bitmapSource.getHeight()
+        return BitmapHelper.getCutBitmapFromPoints(
+                bitmapSource,
+                BitmapHelper.getPoints(
+                        bitmapSource.getWidth(),
+                        bitmapSource.getHeight(),
+                        topSeekBarActive,
+                        topSeekBarProgress,
+                        leftSeekBarActive,
+                        leftSeekBarProgress,
+                        rightSeekBarActive,
+                        rightSeekBarProgress,
+                        bottomSeekBarActive,
+                        bottomSeekBarProgress
+                )
         );
-
-        if (cutFromRightToLeft) {
-            for (int x = width; x < bitmapSource.getWidth(); x++) {
-                for (int y = 0; y < bitmapSource.getHeight(); y++) {
-                    pixels[x + (y * bitmapSource.getWidth())] = Color.TRANSPARENT;
-                }
-            }
-        } else {
-            for (int x = 0; x < width; x++) {
-                for (int y = 0; y < bitmapSource.getHeight(); y++) {
-                    pixels[x + (y * bitmapSource.getWidth())] = Color.TRANSPARENT;
-                }
-            }
-        }
-
-        bitmapCopy.setPixels(
-                pixels,
-                0,
-                bitmapSource.getWidth(),
-                0,
-                0,
-                bitmapSource.getWidth(),
-                bitmapSource.getHeight()
-        );
-
-        return bitmapCopy;
     }
 
-    public static Bitmap cutBitmapBetweenFromLeft(
+    public static Point[] getPoints(
+            int width,
+            int height,
+            boolean topSeekBarActive,
+            int topSeekBarProgress,
+            boolean leftSeekBarActive,
+            int leftSeekBarProgress,
+            boolean rightSeekBarActive,
+            int rightSeekBarProgress,
+            boolean bottomSeekBarActive,
+            int bottomSeekBarProgress
+    )
+    {
+        Point topright = new Point(width, 0);
+        Point bottomleft = new Point(0, height);
+        Point bottomright = new Point(width, height);
+
+        Point[] points = new Point[5];
+        int i = 0;
+
+        if (topSeekBarActive && rightSeekBarActive) {
+            points[i++] = new Point(width, (height * rightSeekBarProgress / 100));
+            points[i++] = new Point((width * topSeekBarProgress / 100), 0);
+            points[i] = topright;
+
+            return points;
+        }
+
+        if (topSeekBarActive && bottomSeekBarActive) {
+            points[i++] = new Point((width * bottomSeekBarProgress / 100), height);
+            points[i++] = new Point((width * topSeekBarProgress / 100), 0);
+            points[i++] = topright;
+            points[i] = bottomright;
+
+            return points;
+        }
+
+        if (topSeekBarActive && leftSeekBarActive) {
+            points[i++] = new Point(0, (height * leftSeekBarProgress / 100));
+            points[i++] = new Point((width * topSeekBarProgress / 100), 0);
+            points[i++] = topright;
+            points[i++] = bottomright;
+            points[i] = bottomleft;
+
+            return points;
+        }
+
+        if (rightSeekBarActive && bottomSeekBarActive) {
+            points[i++] = new Point((width * bottomSeekBarProgress / 100), height);
+            points[i++] = new Point(width, (height * rightSeekBarProgress / 100));
+            points[i] = bottomright;
+
+            return points;
+        }
+
+        if (rightSeekBarActive && leftSeekBarActive) {
+            points[i++] = new Point(0, (height * leftSeekBarProgress / 100));
+            points[i++] = new Point(width, (height * rightSeekBarProgress / 100));
+            points[i++] = bottomright;
+            points[i] = bottomleft;
+
+            return points;
+        }
+
+        if (bottomSeekBarActive && leftSeekBarActive) {
+            points[i++] = new Point(0, (height * leftSeekBarProgress / 100));
+            points[i++] = new Point((width * bottomSeekBarProgress / 100), height);
+            points[i] = bottomleft;
+
+            return points;
+        }
+
+
+        return points;
+    }
+
+    public static Bitmap getCutBitmapFromPoints(
             Bitmap bitmapSource,
-            int startX,
-            int startY,
-            int endX,
-            int endY
+            Point[] points
     ) {
+        try {
+            Path path = BitmapHelper.getPathByPoints(points);
+
+            Canvas canvas = new Canvas(bitmapSource);
+            Paint transparentPaint = new Paint();
+            transparentPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
+            canvas.drawPath(path, transparentPaint);
+
+            return bitmapSource;
+        } catch (Exception ignored) {
+        }
+
         return bitmapSource;
+    }
+
+    public static Path getPathByPoints(
+            Point[] points
+    ) {
+        Path path = new Path();
+        path.moveTo(points[0].x, points[0].y);
+
+        for (int i = 1; i < points.length; i++) {
+            if (points[i] == null) {
+                break;
+            }
+            path.lineTo(points[i].x, points[i].y);
+        }
+
+        path.lineTo(points[0].x, points[0].y);
+
+        path.close();
+
+        return path;
     }
 }

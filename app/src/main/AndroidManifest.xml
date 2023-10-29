@@ -30,7 +30,7 @@
             android:name=".Activities.CompareModes.MetaDataActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.CompareModes.FullSliderActivity"
+            android:name=".Activities.CompareModes.OverlayCutActivity"
             android:exported="false" />
         <activity
             android:name=".Activities.CompareModes.SideBySideActivity"

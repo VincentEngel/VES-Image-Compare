@@ -19,7 +19,7 @@ import com.vincentengelsoftware.androidimagecompare.helper.SyncZoom;
 import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
 import com.vincentengelsoftware.androidimagecompare.ImageView.VesImageInterface;
 
-public class FullSliderActivity extends AppCompatActivity {
+public class OverlayCutActivity extends AppCompatActivity {
     public SeekBar recentSeekBar;
     public SeekBar currentSeekBar;
 
@@ -45,18 +45,18 @@ public class FullSliderActivity extends AppCompatActivity {
             nextThread = null;
         }
 
-        FullSliderActivity.nextCalculatedBitmap = null;
+        OverlayCutActivity.nextCalculatedBitmap = null;
 
         super.onCreate(savedInstanceState);
         if (Status.activityIsOpening) {
-            FullSliderActivity.sync.value = getIntent().getBooleanExtra(IntentExtras.SYNCED_ZOOM, true);
+            OverlayCutActivity.sync.value = getIntent().getBooleanExtra(IntentExtras.SYNCED_ZOOM, true);
         }
         Status.activityIsOpening = false;
         setContentView(R.layout.activity_full_slider);
         FullScreenHelper.setFullScreenFlags(this.getWindow());
 
-        FullSliderActivity.color_active = getResources().getColor(R.color.orange, null);
-        FullSliderActivity.color_inactive = getResources().getColor(android.R.color.transparent, null);
+        OverlayCutActivity.color_active = getResources().getColor(R.color.orange, null);
+        OverlayCutActivity.color_inactive = getResources().getColor(android.R.color.darker_gray, null);
 
         VesImageInterface image_back = findViewById(R.id.full_slide_image_view_base);
         Images.first.updateVesImageViewWithAdjustedImage(image_back);
@@ -64,7 +64,7 @@ public class FullSliderActivity extends AppCompatActivity {
         VesImageInterface image_front = findViewById(R.id.full_slide_image_view_front);
         Images.second.updateVesImageViewWithAdjustedImage(image_front);
 
-        SyncZoom.setLinkedTargets(image_front, image_back, FullSliderActivity.sync, new UtilMutableBoolean(false));
+        SyncZoom.setLinkedTargets(image_front, image_back, OverlayCutActivity.sync, new UtilMutableBoolean(false));
 
         SeekBar seekBarLeft = findViewById(R.id.full_slider_seekbar_left);
         ViewGroup.LayoutParams layoutParamsSeekbarLeft = seekBarLeft.getLayoutParams();
@@ -93,14 +93,14 @@ public class FullSliderActivity extends AppCompatActivity {
             return;
         }
 
-        boolean topSeekBarActive = false;
-        int topSeekBarProgress = 0;
-        boolean leftSeekBarActive = false;
-        int leftSeekBarProgress = 0;
-        boolean rightSeekBarActive = false;
-        int rightSeekBarProgress = 0;
-        boolean bottomSeekBarActive = false;
-        int bottomSeekBarProgress = 0;
+        boolean topSeekBarActive;
+        int topSeekBarProgress;
+        boolean leftSeekBarActive;
+        int leftSeekBarProgress;
+        boolean rightSeekBarActive;
+        int rightSeekBarProgress;
+        boolean bottomSeekBarActive;
+        int bottomSeekBarProgress;
 
         SeekBar seekBarTop = findViewById(R.id.full_slider_seekbar_top);
         SeekBar seekBarLeft = findViewById(R.id.full_slider_seekbar_left);
@@ -110,21 +110,33 @@ public class FullSliderActivity extends AppCompatActivity {
         if (currentSeekBar.getId() == seekBarTop.getId() || recentSeekBar.getId() == seekBarTop.getId()) {
             topSeekBarActive = true;
             topSeekBarProgress = seekBarTop.getProgress();
+        } else {
+            topSeekBarProgress = 0;
+            topSeekBarActive = false;
         }
 
         if (currentSeekBar.getId() == seekBarLeft.getId() || recentSeekBar.getId() == seekBarLeft.getId()) {
             leftSeekBarActive = true;
             leftSeekBarProgress = seekBarLeft.getProgress();
+        } else {
+            leftSeekBarProgress = 0;
+            leftSeekBarActive = false;
         }
 
         if (currentSeekBar.getId() == seekBarRight.getId() || recentSeekBar.getId() == seekBarRight.getId()) {
             rightSeekBarActive = true;
             rightSeekBarProgress = seekBarRight.getProgress();
+        } else {
+            rightSeekBarProgress = 0;
+            rightSeekBarActive = false;
         }
 
         if (currentSeekBar.getId() == seekBarBottom.getId() || recentSeekBar.getId() == seekBarBottom.getId()) {
             bottomSeekBarActive = true;
             bottomSeekBarProgress = seekBarBottom.getProgress();
+        } else {
+            bottomSeekBarProgress = 0;
+            bottomSeekBarActive = false;
         }
 
         processNextThread(
@@ -133,29 +145,29 @@ public class FullSliderActivity extends AppCompatActivity {
                         return;
                     }
 
-                    Bitmap bitmap = BitmapHelper.cutBitmapBetweenFromLeft(
+                    Bitmap bitmap = BitmapHelper.cutBitmapAny(
                             bitmapSource,
-                            0,
-                            0,
-                            0,
-                            0
+                            topSeekBarActive,
+                            topSeekBarProgress,
+                            leftSeekBarActive,
+                            leftSeekBarProgress,
+                            rightSeekBarActive,
+                            rightSeekBarProgress,
+                            bottomSeekBarActive,
+                            bottomSeekBarProgress
                     );
 
                     if (Thread.currentThread().isInterrupted()) {
                         return;
                     }
 
-                    FullSliderActivity.nextCalculatedBitmap = bitmap;
+                    OverlayCutActivity.nextCalculatedBitmap = bitmap;
 
                     runOnUiThread(() -> {
-                        if (FullSliderActivity.nextCalculatedBitmap != null) {
-                            if (FullSliderActivity.sync.value) {
-                                VesImageInterface image_back = findViewById(R.id.full_slide_image_view_base);
-                                image_back.resetZoom();
-                            }
+                        if (OverlayCutActivity.nextCalculatedBitmap != null) {
 
                             VesImageInterface image_front = findViewById(R.id.full_slide_image_view_front);
-                            //image_front.setBitmapImage(FullSliderActivity.nextCalculatedBitmap);
+                            image_front.setBitmapImage(OverlayCutActivity.nextCalculatedBitmap);
                         }
                     });
 
@@ -168,28 +180,25 @@ public class FullSliderActivity extends AppCompatActivity {
 
     private void addSeekbarLogic(SeekBar seekBarView)
     {
-        Bitmap bitmapSource = Images.second.getAdjustedBitmap();
-
         seekBarView.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                seekBar.getThumb().setTint(FullSliderActivity.color_active);
+                seekBar.getThumb().setTint(OverlayCutActivity.color_active);
                 try {
                     if (currentSeekBar == null) {
                         currentSeekBar = seekBar;
                         return;
                     }
 
-                    if (recentSeekBar != null && seekBar.getId() != currentSeekBar.getId() && seekBar.getId() != recentSeekBar.getId()) {
-                        recentSeekBar.getThumb().setTint(FullSliderActivity.color_inactive);
-                    }
-
                     if (seekBar.getId() != currentSeekBar.getId()) {
+                        if (recentSeekBar != null && seekBar.getId() != recentSeekBar.getId()) {
+                            recentSeekBar.getThumb().setTint(OverlayCutActivity.color_inactive);
+                        }
                         recentSeekBar = currentSeekBar;
                         currentSeekBar = seekBar;
                     }
 
-                    updateImage(bitmapSource);
+                    updateImage(Images.second.getAdjustedBitmap().copy(Bitmap.Config.ARGB_8888, true));
                 } catch (Exception ignored) {
                 }
             }

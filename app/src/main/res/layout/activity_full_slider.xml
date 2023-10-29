@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:keepScreenOn="true"
-    tools:context=".Activities.CompareModes.FullSliderActivity">
+    tools:context=".Activities.CompareModes.OverlayCutActivity">
 
     <FrameLayout
         android:id="@+id/full_slider_frame_layout_top"

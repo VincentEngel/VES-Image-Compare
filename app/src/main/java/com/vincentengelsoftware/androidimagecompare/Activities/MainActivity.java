@@ -32,6 +32,7 @@ import androidx.window.layout.WindowMetrics;
 import androidx.window.layout.WindowMetricsCalculator;
 
 import com.vincentengelsoftware.androidimagecompare.Activities.CompareModes.CompareModeNames;
+import com.vincentengelsoftware.androidimagecompare.Activities.CompareModes.OverlayCutActivity;
 import com.vincentengelsoftware.androidimagecompare.Activities.CompareModes.MetaDataActivity;
 import com.vincentengelsoftware.androidimagecompare.Activities.CompareModes.OverlaySlideActivity;
 import com.vincentengelsoftware.androidimagecompare.Activities.CompareModes.OverlayTapActivity;
@@ -349,6 +350,7 @@ public class MainActivity extends AppCompatActivity {
                 case CompareModeNames.OVERLAY_TAP -> openCompareActivity(OverlayTapActivity.class);
                 case CompareModeNames.OVERLAY_TRANSPARENT -> openCompareActivity(OverlayTransparentActivity.class);
                 case CompareModeNames.META_DATA -> openCompareActivity(MetaDataActivity.class);
+                case CompareModeNames.OVERLAY_CUT -> openCompareActivity(OverlayCutActivity.class);
                 default -> openCompareDialog();
             }
         });
@@ -584,6 +586,12 @@ public class MainActivity extends AppCompatActivity {
                 dialog
         );
 
+        addCompareDialogButtonOnClickLogic(
+                R.id.select_compare_mode_dialog_btn_overlay_cut,
+                OverlayCutActivity.class,
+                dialog
+        );
+
         dialog.show();
     }
 
@@ -612,8 +620,7 @@ public class MainActivity extends AppCompatActivity {
             }
             Status.activityIsOpening = true;
 
-            String activityName = targetActivity.toString().substring(targetActivity.toString().lastIndexOf(".")+1);
-            String internalCompareModeName = CompareModeNames.getInternalCompareModeNameFromActivityName(activityName);
+            String internalCompareModeName = CompareModeNames.getInternalCompareModeNameByActivity(targetActivity);
             this.userSettings.setLastCompareMode(internalCompareModeName);
             Button button = findViewById(R.id.main_button_last_compare);
             button.setText(CompareModeNames.getUserCompareModeNameFromInternalName(getBaseContext(), internalCompareModeName));
