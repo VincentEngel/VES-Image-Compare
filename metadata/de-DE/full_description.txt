@@ -19,17 +19,17 @@ Hast du Bilder und Fotos, die sich ähnlich sehen und du kannst dich nicht entsc
 
 <b>Vergleichsmodi:</b>
 
-* <b>Side by Side:</b> Zeigen Sie die Bilder nebeneinander an
+* <b>Nebeneinander:</b> Zeigen Sie die Bilder nebeneinander an
 
-* <b>Overlay Tap:</b> Platzieren Sie die Bilder hintereinander und tippen Sie auf den Bildschirm, um schnell zwischen ihnen zu wechseln
+* <b>Tippen:</b> Platzieren Sie die Bilder hintereinander und tippen Sie auf den Bildschirm, um schnell zwischen ihnen zu wechseln
 
-* <b>Overlay Slide:</b> Platzieren Sie die Bilder hintereinander und passen Sie die Breite des vorderen Bildes an
+* <b>Wischen:</b> Platzieren Sie die Bilder hintereinander und passen Sie die Breite des vorderen Bildes an
 
 * <b>Transparent:</b> Platzieren Sie die Bilder hintereinander und passen Sie die Transparenz des vorderen Bildes an
 
-* <b>MetaData:</b> (Beta) Vergleich alle Metadaten, wie z.B. Exif Daten, nebeneinander
+* <b>Schneiden:</b> Schneide das vordere Bild von einem Punkt zu einem anderen Punkt in einer geraden Linie ab
 
-* <b>Overlay Cut:</b> Schneide das vordere Bild von einem Punkt zu einem anderen Punkt ab
+* <b>Metadaten:</b> (Beta) Vergleich alle Metadaten, wie z.B. Exif Daten, nebeneinander
 
 <b>KEINE WERBUNG und Privatsphärefreundlich.</b> Diese App benötigt keinen Zugang zum Internet. Alle Informationen werden lokal im Cache der App gespeichert und können jederzeit in den Geräteeinstellungen gelöscht werden.
 
