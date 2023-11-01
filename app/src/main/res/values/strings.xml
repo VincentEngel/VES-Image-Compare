@@ -91,6 +91,10 @@
     <string name="open_settings">Open Settings</string>
     <string name="settings_save_success">Successfully saved</string>
     <string name="settings_reset_success">Successfully reset all settings</string>
+    <string name="settings_tap_hide_mode_description_invisible">Compare mode Tap hiding mode:\n\nInvisible makes the current image invisible to show the other image.</string>
+    <string name="settings_tap_hide_mode_description_background">Compare mode Tap hiding mode:\n\nBackground makes the current image move to the back to show the other image.</string>
+    <string name="settings_tap_hide_mode_invisible">Invisible</string>
+    <string name="settings_tap_hide_mode_background">Move to background</string>
 
     <!-- Explanation -->
     <string name="explanation">Explanation</string>

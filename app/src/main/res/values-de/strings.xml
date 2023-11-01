@@ -88,4 +88,8 @@
     <string name="overlay_cut_keep_image">Bild behalten</string>
     <string name="explanation_keep_changes">Bewahren Sie die vorgenommenen Änderungen auf und verwenden Sie sie als Grundlage für weitere Änderungen.</string>
     <string name="explanation_reset">Alle bisherigen Änderungen rückgängig machen.</string>
+    <string name="settings_tap_hide_mode_description_invisible">Vergleichsmodi Tippen Option:\n\nUnsichtbar macht das aktuelle Bild unsichtbar um das andere Bild zu zeigen.</string>
+    <string name="settings_tap_hide_mode_description_background">Vergleichsmodi Tippen Option:\n\nHintergrund verschiebt das aktuelle Bild in den Hintergrund um das andere Bild zu zeigen.</string>
+    <string name="settings_tap_hide_mode_invisible">Unsichtbar</string>
+    <string name="settings_tap_hide_mode_background">In den Hintergrund</string>
 </resources>

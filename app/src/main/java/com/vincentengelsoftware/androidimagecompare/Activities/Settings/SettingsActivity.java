@@ -75,6 +75,18 @@ public class SettingsActivity extends AppCompatActivity {
             mirroringDescription.setText(R.string.settings_mirroring_loose_description);
         });
 
+        TextView tapHideModeDescription = findViewById(R.id.settings_tap_hide_mode_description);
+        RadioButton tapHideModeInvisible = findViewById(R.id.settings_tap_hide_mode_btn_invisible);
+        tapHideModeInvisible.setOnClickListener(view -> {
+            this.userSettings.setTypHideMode(Status.TAP_HIDE_MODE_INVISIBLE);
+            tapHideModeDescription.setText(R.string.settings_tap_hide_mode_description_invisible);
+        });
+        RadioButton tapHideModeBackground = findViewById(R.id.settings_tap_hide_mode_btn_background);
+        tapHideModeBackground.setOnClickListener(view -> {
+            this.userSettings.setTypHideMode(Status.TAP_HIDE_MODE_BACKGROUND);
+            tapHideModeDescription.setText(R.string.settings_tap_hide_mode_description_background);
+        });
+
         Button resetButton = findViewById(R.id.settings_reset);
         resetButton.setOnClickListener(view -> {
             this.userSettings.resetAllSettings();
@@ -98,6 +110,7 @@ public class SettingsActivity extends AppCompatActivity {
         resetZoomOnLinking.setChecked(this.userSettings.getResetImageOnLink());
 
         this.applyMirroringSettings();
+        this.applyTapModeSettings();
     }
 
     private void applyMirroringSettings()
@@ -124,6 +137,26 @@ public class SettingsActivity extends AppCompatActivity {
             strictMirroring.setChecked(false);
             looseMirroring.setChecked(true);
             mirroringDescription.setText(R.string.settings_mirroring_loose_description);
+        }
+    }
+
+    private void applyTapModeSettings()
+    {
+        TextView tapHideModeDescription = findViewById(R.id.settings_tap_hide_mode_description);
+        RadioButton tapHideModeInvisible = findViewById(R.id.settings_tap_hide_mode_btn_invisible);
+        RadioButton tapHideModeBackground = findViewById(R.id.settings_tap_hide_mode_btn_background);
+
+
+        if (this.userSettings.getTypHideMode() == Status.TAP_HIDE_MODE_INVISIBLE) {
+            tapHideModeInvisible.setChecked(true);
+            tapHideModeBackground.setChecked(false);
+            tapHideModeDescription.setText(R.string.settings_tap_hide_mode_description_invisible);
+        }
+
+        if (this.userSettings.getTypHideMode() == Status.TAP_HIDE_MODE_BACKGROUND) {
+            tapHideModeInvisible.setChecked(false);
+            tapHideModeBackground.setChecked(true);
+            tapHideModeDescription.setText(R.string.settings_tap_hide_mode_description_background);
         }
     }
 

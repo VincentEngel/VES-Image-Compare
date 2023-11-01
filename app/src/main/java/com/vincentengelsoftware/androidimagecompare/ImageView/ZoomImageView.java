@@ -7,6 +7,7 @@ import android.graphics.PointF;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.ViewGroup;
 
 import com.ortiz.touchview.TouchImageView;
 import com.vincentengelsoftware.androidimagecompare.ImageView.Listeners.FadeListener;
@@ -74,6 +75,10 @@ public class ZoomImageView extends TouchImageView implements VesImageInterface {
     public boolean onTouchEvent(MotionEvent event) {
         super.dispatchTouchEvent(event);
         return false;
+    }
+
+    public ViewGroup getParentViewGroup() {
+        return (ViewGroup) super.getParent();
     }
 
     public Bitmap getCurrentBitmap() {

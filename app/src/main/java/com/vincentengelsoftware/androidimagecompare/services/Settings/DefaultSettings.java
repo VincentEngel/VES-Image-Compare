@@ -15,5 +15,7 @@ public class DefaultSettings {
     public static int IMAGE_RESIZE_WIDTH = 1024;
     public static int IMAGE_RESIZE_HEIGHT = 1024;
     public static boolean RESET_IMAGE_ON_LINKING = true;
-    public static int MIRRORING_TYPE = 0;
+    public static int MIRRORING_TYPE = Status.NATURAL_MIRRORING;
+
+    public static int TAP_HIDE_MODE = Status.TAP_HIDE_MODE_INVISIBLE;
 }

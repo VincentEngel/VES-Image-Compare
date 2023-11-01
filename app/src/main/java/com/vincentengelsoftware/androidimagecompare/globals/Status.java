@@ -13,4 +13,7 @@ public class Status {
     public static int NATURAL_MIRRORING = 0;
     public static int STRICT_MIRRORING = 1;
     public static int LOOSE_MIRRORING = 2;
+
+    public static int TAP_HIDE_MODE_INVISIBLE = 0;
+    public static int TAP_HIDE_MODE_BACKGROUND = 1;
 }

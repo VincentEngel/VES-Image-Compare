@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat;
 import com.vincentengelsoftware.androidimagecompare.Activities.IntentExtras;
 import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.globals.Images;
+import com.vincentengelsoftware.androidimagecompare.globals.Settings;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
 import com.vincentengelsoftware.androidimagecompare.helper.FullScreenHelper;
 import com.vincentengelsoftware.androidimagecompare.helper.SyncZoom;
@@ -42,7 +43,12 @@ public class OverlayTapActivity extends AppCompatActivity {
         VesImageInterface image_second = findViewById(R.id.overlay_tap_image_view_two);
         Images.second.updateVesImageViewWithAdjustedImage(image_second);
 
-        image_second.setVisibility(View.INVISIBLE);
+        if (Settings.TAP_HIDE_MODE == Status.TAP_HIDE_MODE_INVISIBLE) {
+            image_second.setVisibility(View.INVISIBLE);
+        } else {
+            image_first.bringToFront();
+        }
+
 
         TapHelper.setOnClickListener(image_first, image_second, OverlayTapActivity.sync, textView, Images.second);
         TapHelper.setOnClickListener(image_second, image_first, OverlayTapActivity.sync, textView, Images.first);

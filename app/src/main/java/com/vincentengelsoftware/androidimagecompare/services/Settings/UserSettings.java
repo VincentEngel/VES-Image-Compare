@@ -16,6 +16,8 @@ public class UserSettings {
 
     public static final String MIRRORING_TYPE = "MIRRORING_TYPE";
 
+    public static final String TAP_HIDE_MODE = "TAP_HIDE_MODE";
+
     private final ImageResizeSettings LeftImageResizeSettings;
     private final ImageResizeSettings RightImageResizeSettings;
 
@@ -107,6 +109,14 @@ public class UserSettings {
         this.keyValueStorage.setInt(UserSettings.MIRRORING_TYPE, mirroringType);
     }
 
+    public int getTypHideMode() {
+        return this.keyValueStorage.getInt(UserSettings.TAP_HIDE_MODE, DefaultSettings.TAP_HIDE_MODE);
+    }
+
+    public void setTypHideMode(int tapHideMode) {
+        this.keyValueStorage.setInt(UserSettings.TAP_HIDE_MODE, tapHideMode);
+    }
+
 
     public void resetAllSettings() {
         this.keyValueStorage.remove(UserSettings.USER_THEME);
@@ -119,6 +129,8 @@ public class UserSettings {
         Settings.RESET_IMAGE_ON_LINKING = DefaultSettings.RESET_IMAGE_ON_LINKING;
         this.keyValueStorage.remove(UserSettings.MIRRORING_TYPE);
         Settings.MIRRORING_TYPE = DefaultSettings.MIRRORING_TYPE;
+        this.keyValueStorage.remove(UserSettings.TAP_HIDE_MODE);
+        Settings.TAP_HIDE_MODE = DefaultSettings.TAP_HIDE_MODE;
 
         this.LeftImageResizeSettings.resetAllSettings();
         this.RightImageResizeSettings.resetAllSettings();

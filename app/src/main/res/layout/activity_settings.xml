@@ -120,6 +120,7 @@
                         android:layout_marginEnd="6dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textAlignment="viewStart"
                         android:text="@string/settings_mirroring"
                         android:textSize="16sp" />
 
@@ -156,6 +157,47 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/mirroring_mode_loose" />
+                </RadioGroup>
+            </TableRow>
+
+            <TableRow
+                android:background="@drawable/meta_data_table_row_value_border_bottom"
+                android:paddingBottom="6dp"
+                android:layout_marginBottom="6dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <FrameLayout
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/settings_tap_hide_mode_description"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="6dp"
+                        android:text="@string/settings_tap_hide_mode_description_invisible"
+                        android:textAlignment="viewStart"
+                        android:textSize="16sp" />
+                </FrameLayout>
+
+                <RadioGroup
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent" >
+
+                    <RadioButton
+                        android:id="@+id/settings_tap_hide_mode_btn_invisible"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_tap_hide_mode_invisible" />
+
+                    <RadioButton
+                        android:id="@+id/settings_tap_hide_mode_btn_background"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_tap_hide_mode_background" />
                 </RadioGroup>
             </TableRow>
 
