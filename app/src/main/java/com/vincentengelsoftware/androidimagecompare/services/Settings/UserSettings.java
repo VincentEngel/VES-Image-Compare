@@ -109,11 +109,12 @@ public class UserSettings {
         this.keyValueStorage.setInt(UserSettings.MIRRORING_TYPE, mirroringType);
     }
 
-    public int getTypHideMode() {
+    public int getTapHideMode() {
         return this.keyValueStorage.getInt(UserSettings.TAP_HIDE_MODE, DefaultSettings.TAP_HIDE_MODE);
     }
 
     public void setTypHideMode(int tapHideMode) {
+        Settings.TAP_HIDE_MODE = tapHideMode;
         this.keyValueStorage.setInt(UserSettings.TAP_HIDE_MODE, tapHideMode);
     }
 

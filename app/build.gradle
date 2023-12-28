@@ -9,7 +9,7 @@ android {
         applicationId 'com.vincentengelsoftware.vesandroidimagecompare'
         minSdk 28
         targetSdk 34
-        versionCode 40
+        versionCode 41
         versionName "2.2.5"
         archivesBaseName = "vesipc_v$versionName"
 
@@ -34,12 +34,12 @@ dependencies {
     // https://stackoverflow.com/questions/75263047/duplicate-class-in-kotlin-android
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.0"))
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'androidx.window:window:1.1.0'
-    implementation 'com.google.android.material:material:1.10.0'
+    implementation 'androidx.window:window:1.2.0'
+    implementation 'com.google.android.material:material:1.11.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.core:core:1.12.0'
     implementation 'com.github.MikeOrtiz:TouchImageView:3.6'
-    implementation 'com.drewnoakes:metadata-extractor:2.18.0'
+    implementation 'com.drewnoakes:metadata-extractor:2.19.0'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

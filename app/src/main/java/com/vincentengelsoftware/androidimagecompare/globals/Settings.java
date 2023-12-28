@@ -7,7 +7,7 @@ public class Settings {
         Settings.MAX_ZOOM = userSettings.getMaxZoom();
         Settings.RESET_IMAGE_ON_LINKING = userSettings.getResetImageOnLink();
         Settings.MIRRORING_TYPE = userSettings.getMirroringType();
-        Settings.TAP_HIDE_MODE = userSettings.getTypHideMode();
+        Settings.TAP_HIDE_MODE = userSettings.getTapHideMode();
     }
     public static int MAX_ZOOM = 10; // Bad practice: static mutable field
     public static boolean RESET_IMAGE_ON_LINKING = true; // Bad practice: static mutable field

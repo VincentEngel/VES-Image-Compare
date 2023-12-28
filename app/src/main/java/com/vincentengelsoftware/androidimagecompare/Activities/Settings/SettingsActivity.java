@@ -147,13 +147,13 @@ public class SettingsActivity extends AppCompatActivity {
         RadioButton tapHideModeBackground = findViewById(R.id.settings_tap_hide_mode_btn_background);
 
 
-        if (this.userSettings.getTypHideMode() == Status.TAP_HIDE_MODE_INVISIBLE) {
+        if (this.userSettings.getTapHideMode() == Status.TAP_HIDE_MODE_INVISIBLE) {
             tapHideModeInvisible.setChecked(true);
             tapHideModeBackground.setChecked(false);
             tapHideModeDescription.setText(R.string.settings_tap_hide_mode_description_invisible);
         }
 
-        if (this.userSettings.getTypHideMode() == Status.TAP_HIDE_MODE_BACKGROUND) {
+        if (this.userSettings.getTapHideMode() == Status.TAP_HIDE_MODE_BACKGROUND) {
             tapHideModeInvisible.setChecked(false);
             tapHideModeBackground.setChecked(true);
             tapHideModeDescription.setText(R.string.settings_tap_hide_mode_description_background);
