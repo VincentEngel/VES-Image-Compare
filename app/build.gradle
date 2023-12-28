@@ -10,7 +10,7 @@ android {
         minSdk 28
         targetSdk 34
         versionCode 41
-        versionName "2.2.5"
+        versionName "2.2.6"
         archivesBaseName = "vesipc_v$versionName"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
