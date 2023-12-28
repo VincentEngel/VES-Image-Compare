@@ -8,7 +8,7 @@ import com.vincentengelsoftware.androidimagecompare.services.KeyValueStorage;
 import java.util.concurrent.TimeUnit;
 
 public class AskForReview {
-    public static final int INSTALLED_FOR_AT_LEAST_DAYS = 30;
+    public static final int INSTALLED_FOR_AT_LEAST_DAYS = 14;
     public static boolean isItTimeToAsk(Context context, KeyValueStorage keyValueStorage)
     {
         return !keyValueStorage.getBoolean(KeyValueStorage.ASKED_FOR_REVIEW, false)

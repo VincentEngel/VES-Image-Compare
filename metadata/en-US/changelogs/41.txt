@@ -1,3 +1,4 @@
 * Adjust F-Droid Store full description text
 * Add options for tap mode image rotation
 * Update libraries
+* Ask for review once after App was installed for at least 14 days instead of 30
