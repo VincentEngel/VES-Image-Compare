@@ -1,2 +1,2 @@
 * Rename App to Vesic
-* Update Gradle to 8.2.1
+* Update Gradle to 8.2.2
