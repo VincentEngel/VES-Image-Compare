@@ -28,7 +28,7 @@ public interface VesImageInterface {
     void addMirrorListener(VesImageInterface target, UtilMutableBoolean sync, UtilMutableBoolean disabled);
 
     void setImageScale(ImageScaleCenter imageScaleCenter);
-    boolean onTouchEvent(MotionEvent event);
+    void triggerOnTouchEvent(MotionEvent event);
 
     Bitmap getCurrentBitmap();
 }

@@ -72,9 +72,8 @@ public class ZoomImageView extends TouchImageView implements VesImageInterface {
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    public boolean onTouchEvent(MotionEvent event) {
+    public void triggerOnTouchEvent(MotionEvent event) {
         super.dispatchTouchEvent(event);
-        return false;
     }
 
     public ViewGroup getParentViewGroup() {

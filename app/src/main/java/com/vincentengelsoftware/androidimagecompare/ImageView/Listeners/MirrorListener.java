@@ -41,7 +41,7 @@ public class MirrorListener implements OnTouchListenerInterface
     private void handleMirroring(MotionEvent motionEvent) {
         if (Settings.MIRRORING_TYPE == Status.NATURAL_MIRRORING) {
             this.disabled.value = true;
-            this.target.onTouchEvent(motionEvent);
+            this.target.triggerOnTouchEvent(motionEvent);
             this.disabled.value = false;
             return;
         }
