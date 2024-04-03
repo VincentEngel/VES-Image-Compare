@@ -36,6 +36,7 @@
     <string name="unknown">Unknown</string>
     <string name="save">Save</string>
     <string name="number">Number</string>
+    <string name="number_decimal">Decimal Number</string>
     <string name="version">Version</string>
 
     <!-- About -->
@@ -88,7 +89,9 @@
     <string name="settings_reset_all_settings">Reset all Settings</string>
     <string name="user_settings">User settings</string>
     <string name="max_zoom">Max Zoom</string>
+    <string name="min_zoom">Min Zoom</string>
     <string name="default_100">(default: 100)</string>
+    <string name="default_1.0">(default: 1.0)</string>
     <string name="open_settings">Open Settings</string>
     <string name="settings_save_success">Successfully saved</string>
     <string name="settings_reset_success">Successfully reset all settings</string>

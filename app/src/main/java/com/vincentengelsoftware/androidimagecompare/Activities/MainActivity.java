@@ -162,6 +162,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        Settings.init(userSettings);
+
         Button lastCompareMode = findViewById(R.id.main_button_last_compare);
         lastCompareMode.setText(
                 CompareModeNames.getUserCompareModeNameFromInternalName(getBaseContext(), this.userSettings.getLastCompareMode())

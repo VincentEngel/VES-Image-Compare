@@ -82,4 +82,22 @@ public class KeyValueStorage {
 
         return defaultValue;
     }
+
+    public float getFloat(String key, float defaultValue)
+    {
+        try {
+            return this.getSharedPreferences().getFloat(key, defaultValue);
+        } catch (Exception ignored) {}
+
+        return defaultValue;
+    }
+
+    public void setFloat(String key, float value)
+    {
+        try {
+            SharedPreferences.Editor editor = this.getEditor();
+            editor.putFloat(key, value);
+            editor.apply();
+        } catch (Exception ignored) {}
+    }
 }

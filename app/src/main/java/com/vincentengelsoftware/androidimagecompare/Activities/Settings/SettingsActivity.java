@@ -39,6 +39,8 @@ public class SettingsActivity extends AppCompatActivity {
 
         EditText maxZoom = findViewById(R.id.settings_max_zoom);
 
+        EditText minZoom = findViewById(R.id.settings_min_zoom);
+
         Button saveButton = findViewById(R.id.settings_save);
         saveButton.setOnClickListener(view -> {
             int maxZoomValue = Integer.parseInt(maxZoom.getText().toString());
@@ -47,6 +49,13 @@ public class SettingsActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), getString(R.string.error_msg_invalid_input_number_gt_zero), Toast.LENGTH_LONG).show();
             }
             this.userSettings.setMaxZoom(maxZoomValue);
+
+            float minZoomValue = Float.parseFloat(minZoom.getText().toString());
+            if (minZoomValue <= 0F) {
+                minZoomValue = 0.1F;
+                Toast.makeText(getApplicationContext(), getString(R.string.error_msg_invalid_input_number_gt_zero), Toast.LENGTH_LONG).show();
+            }
+            this.userSettings.setMinZoom(minZoomValue);
 
             this.applyCurrentSettings();
 
@@ -102,6 +111,9 @@ public class SettingsActivity extends AppCompatActivity {
     {
         EditText maxZoom = findViewById(R.id.settings_max_zoom);
         maxZoom.setText(String.valueOf(this.userSettings.getMaxZoom()));
+
+        EditText minZoom = findViewById(R.id.settings_min_zoom);
+        minZoom.setText(String.valueOf(this.userSettings.getMinZoom()));
 
         Button themeButton = findViewById(R.id.home_theme);
         Theme.updateButtonText(themeButton, this.userSettings.getTheme());

@@ -41,11 +41,13 @@ public class ZoomImageView extends TouchImageView implements VesImageInterface {
     public ZoomImageView(Context context, AttributeSet attr) {
         super(context, attr);
         super.setMaxZoom(Settings.MAX_ZOOM); // Bad practice
+        super.setMinZoom(Settings.MIN_ZOOM); // Bad practice
     }
 
     public ZoomImageView(Context context) {
         super(context);
         super.setMaxZoom(Settings.MAX_ZOOM); // Bad practice
+        super.setMinZoom(Settings.MIN_ZOOM); // Bad practice
     }
 
     @Override

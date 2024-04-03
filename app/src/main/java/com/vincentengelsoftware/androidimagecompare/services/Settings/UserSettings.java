@@ -11,6 +11,7 @@ public class UserSettings {
     public static final String SHOW_EXTENSIONS = "SHOW_EXTENSIONS";
     public static final String LAST_COMPARE_MODE = "LAST_COMPARE_MODE";
     public static final String MAX_ZOOM = "MAX_ZOOM";
+    public static final String MIN_ZOOM = "MIN_ZOOM";
 
     public static final String RESET_IMAGE_ON_LINKING = "RESET_IMAGE_ON_LINKING";
 
@@ -113,6 +114,14 @@ public class UserSettings {
         return this.keyValueStorage.getInt(UserSettings.TAP_HIDE_MODE, DefaultSettings.TAP_HIDE_MODE);
     }
 
+    public float getMinZoom() {
+        return this.keyValueStorage.getFloat(UserSettings.MIN_ZOOM, DefaultSettings.MIN_ZOOM);
+    }
+
+    public void setMinZoom(float minZoom) {
+        this.keyValueStorage.setFloat(UserSettings.MIN_ZOOM, minZoom);
+    }
+
     public void setTypHideMode(int tapHideMode) {
         Settings.TAP_HIDE_MODE = tapHideMode;
         this.keyValueStorage.setInt(UserSettings.TAP_HIDE_MODE, tapHideMode);
@@ -132,6 +141,8 @@ public class UserSettings {
         Settings.MIRRORING_TYPE = DefaultSettings.MIRRORING_TYPE;
         this.keyValueStorage.remove(UserSettings.TAP_HIDE_MODE);
         Settings.TAP_HIDE_MODE = DefaultSettings.TAP_HIDE_MODE;
+        this.keyValueStorage.remove(UserSettings.MIN_ZOOM);
+        Settings.MIN_ZOOM = DefaultSettings.MIN_ZOOM;
 
         this.LeftImageResizeSettings.resetAllSettings();
         this.RightImageResizeSettings.resetAllSettings();

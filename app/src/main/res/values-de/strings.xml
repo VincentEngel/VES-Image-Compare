@@ -55,9 +55,12 @@
     <string name="resize_image_mode_original">Original</string>
     <string name="resize_image">Bild zuschneiden</string>
     <string name="max_zoom">Maximal Zoom</string>
+    <string name="min_zoom">Minimal Zoom</string>
     <string name="save">Speichern</string>
     <string name="number">Nummer</string>
+    <string name="number_decimal">Dezimalzahl</string>
     <string name="default_100">(standard: 100)</string>
+    <string name="default_1.0">(standard: 1.0)</string>
     <string name="open_settings">Einstellungen öffnen</string>
     <string name="user_settings">Benutzereinstellungen</string>
     <string name="explanation">Erklärung</string>
