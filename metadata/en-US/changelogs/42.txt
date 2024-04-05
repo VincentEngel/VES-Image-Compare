@@ -1,4 +1,4 @@
-* Rename App to Vesic
+* Rename App to vesIC
 * Update Gradle to 8.3.1
 * Trying to solve Infinite onTouchEvent Triggering
 * Add new option to adjust minZoom

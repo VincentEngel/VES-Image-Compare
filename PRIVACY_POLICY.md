@@ -13,8 +13,8 @@ The words of which the initial letter is capitalized have meanings defined under
 ## Definitions
 For the purposes of this Privacy Policy:
 
-- <b>Application</b> means the software program provided by the Company downloaded by You on any electronic device, named VES - Image and Photo Compare
-- <b>Company</b> (referred to as either "the Company", "We", "Us" or "Our" in this Agreement) refers to VES - Image and Photo Compare.
+- <b>Application</b> means the software program provided by the Company downloaded by You on any electronic device, named VES - Image Compare
+- <b>Company</b> (referred to as either "the Company", "We", "Us" or "Our" in this Agreement) refers to VES - Image Compare.
 - <b>Device</b> means any device that can access the Service such as a computer, a cellphone or a digital tablet.
 - <b>Personal Data</b> is any information that relates to an identified or identifiable individual.
 - <b>Service</b> refers to the Application.
