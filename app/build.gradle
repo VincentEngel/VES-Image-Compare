@@ -9,8 +9,8 @@ android {
         applicationId 'com.vincentengelsoftware.vesandroidimagecompare'
         minSdk 28
         targetSdk 34
-        versionCode 41
-        versionName "2.2.6"
+        versionCode 42
+        versionName "2.2.7"
         archivesBaseName = "vesic_v$versionName"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
