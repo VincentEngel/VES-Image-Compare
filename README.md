@@ -36,7 +36,7 @@
      alt="Get it on Google Play"
      height="80">](https://play.google.com/store/apps/details?id=com.vincentengelsoftware.vesandroidimagecompare)
 
-Watch the intro video on YouTube: https://www.youtube.com/watch?v=KlXy7ZQIdQE
+Watch the intro video on YouTube: https://youtu.be/6OAuVFqamyA
 
 ## Developer Note
 This is an App I like to work on in my spare time. It is my first Android Java App. This Code does not reflect my professional work.
@@ -44,39 +44,44 @@ I am always open to suggestions and improvements. Feel free to [contact](#contac
 
 ## Available comparisons
 <div>
-  <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/01_main_1.png" width=22% height=20%>
-  <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/06_main_2.png" width=70% height=20%>
+  <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/1_main.png" width=22% height=20%>
+  <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/2_compare_modes.png" width=70% height=20%>
 </div>
 
 ### Overlay Slide
 <p>Cut the side of the image in the front</p>
 <div>
-  <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/02_overlay_slide_1.png" width=22% height=20%>
-  <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/07_overlay_slide_2.png" width=70% height=20%>
-</div>
-
-### Overlay Tap
-<p>Tap on the screen to switch the image being shown</p>
-<div>
-  <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/09_tap_1.png" width=22% height=20%>
-  <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/10_tap_2.png" width=22% height=20%>
+  <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/tenInchScreenshots/4_slide.png">
 </div>
 
 ### Transparent
 <p>Adjust the transparency of the image in the front</p>
 <div>
-  <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/04_transparent_1.png" width=22% height=20%>
-  <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/05_transparent_2.png" width=22% height=20%>
+  <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/tenInchScreenshots/5_transparent.png">
 </div>
 
 ### Side by Side
 <p>View both images side by side with the option to zoom into each image</p>
 <div>
-  <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/03_side_by_side_1.png" width=22% height=20%>
-  <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/08_side_by_side_2.png" width=70% height=75%>
+  <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/tenInchScreenshots/3_side_by_side.png">
 </div>
+
+### Overlay Cut
+<p>Cut the image from one point to another in a straight line</p>
+<div>
+  <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/tenInchScreenshots/3_side_by_side.png">
+</div>
+
+### Overlay Tap
+<p>Tap on the screen to switch the image being shown</p>
+
+### MetaData (Beta)
+<p>Show all Meta Data, like Exif Data, side by side</p>
 
 # Contact
 <div>
   <p>You can contact me using this E-Mail address: <a href="mailto:vincentengelsoftware@gmail.com">vincentengelsoftware@gmail.com</a></p>
 </div>
+
+### YouTube Music
+[Inspire](https://www.bensound.com/royalty-free-music/track/inspire) by Benjamin Tissot
