@@ -44,8 +44,8 @@ I am always open to suggestions and improvements. Feel free to [contact](#contac
 
 ## Available comparisons
 <div>
-  <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/1_main.png" width=22% height=20%>
-  <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/2_compare_modes.png" width=70% height=20%>
+  <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/1_main.png" width=40% height=40%>
+  <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/phoneScreenshots/2_compare_modes.png" width=40% height=40%>
 </div>
 
 ### Overlay Slide
