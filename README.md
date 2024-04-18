@@ -69,7 +69,7 @@ I am always open to suggestions and improvements. Feel free to [contact](#contac
 ### Overlay Cut
 <p>Cut the image from one point to another in a straight line</p>
 <div>
-  <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/tenInchScreenshots/3_side_by_side.png">
+  <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/tenInchScreenshots/6_cut.png">
 </div>
 
 ### Overlay Tap
