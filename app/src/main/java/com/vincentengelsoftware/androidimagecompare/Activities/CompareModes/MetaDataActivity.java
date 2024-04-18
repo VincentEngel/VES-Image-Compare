@@ -55,6 +55,24 @@ public class MetaDataActivity extends AppCompatActivity {
                 String[] groupNames = Preparer.getSortedKeys(metaDataFirst.keySet());
                 String[] valueNames;
 
+                if (groupNames.length == 0) {
+                    runOnUiThread(() -> {
+                        TableLayout metaDataTable = findViewById(R.id.MetaDataTable);
+                        TableRow titleRow = new TableRow(this);
+                        TextView titleText = new TextView(this);
+                        titleText.setTextAppearance(R.style.meta_data_title_text);
+
+                        titleText.setText(R.string.no_metadata_data);
+                        titleRow.addView(titleText);
+                        metaDataTable.addView(titleRow);
+
+                        ProgressBar spinner = findViewById(R.id.meta_data_spinner);
+                        spinner.setVisibility(View.GONE);
+                    });
+
+                    return;
+                }
+
                 for (String groupName : groupNames) {
                     runOnUiThread(() -> {
                         TableLayout metaDataTable = findViewById(R.id.MetaDataTable);

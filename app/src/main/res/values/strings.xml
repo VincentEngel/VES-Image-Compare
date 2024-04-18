@@ -28,6 +28,7 @@
     <string name="hide_front_image">Hide front image</string>
     <string name="reset">Reset</string>
     <string name="overlay_cut_keep_image">Keep image</string>
+    <string name="no_metadata_data">Google has restricted access to metadata such as Exif data in Android 14. As a result, it is not always possible to read metadata from images selected from the Image Picker. To read metadata, you need to open your images, select the two you want to compare and click Share, then share them with the vesIC app.</string>
 
     <!-- Generic -->
     <string name="done">Done</string>

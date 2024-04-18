@@ -95,4 +95,5 @@
     <string name="settings_tap_hide_mode_description_background">Vergleichsmodi Tippen Option:\n\nHintergrund verschiebt das aktuelle Bild in den Hintergrund um das andere Bild zu zeigen.</string>
     <string name="settings_tap_hide_mode_invisible">Unsichtbar</string>
     <string name="settings_tap_hide_mode_background">In den Hintergrund</string>
+    <string name="no_metadata_data">Google hat den Zugriff auf Metadaten wie Exif-Daten in Android 14 eingeschränkt. Daher ist es nicht immer möglich, Metadaten von Bildern zu lesen, die mit dem Image Picker ausgewählt wurden. Um Metadaten zu lesen, müssen Sie Ihre Bilder öffnen, die beiden Bilder, die Sie vergleichen möchten, auswählen und auf "Teilen" klicken, um sie dann mit der vesIC-App zu teilen.</string>
 </resources>
