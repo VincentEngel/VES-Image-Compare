@@ -1,3 +1,5 @@
-* Update Gradle to 8.3.2
+* Update Gradle to 8.4.0
 * Add fallback for missing metadata
 * Update store images and video
+* Update androidx.core:core to 1.13.1
+* Update com.google.android.material:material to 1.12.0
