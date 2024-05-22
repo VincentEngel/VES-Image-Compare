@@ -1,4 +1,4 @@
-* Update Gradle to 8.4.0
+* Update Gradle to 8.4.1
 * Add fallback for missing metadata
 * Update store images and video
 * Update androidx.core:core to 1.13.1
