@@ -3,10 +3,10 @@ package com.vincentengelsoftware.androidimagecompare.Activities;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -464,9 +464,10 @@ public class MainActivity extends AppCompatActivity {
         Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog_resize_image);
 
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int widthPixel = displayMetrics.widthPixels;
+        WindowMetricsCalculator windowMetricsCalculator = WindowMetricsCalculator.getOrCreate();
+        WindowMetrics windowMetrics = windowMetricsCalculator.computeCurrentWindowMetrics(this);
+        Rect bounds = windowMetrics.getBounds();
+        int widthPixel = bounds.width();
 
         widthPixel = (int) (widthPixel * 0.9);
 
