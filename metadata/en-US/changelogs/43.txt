@@ -5,3 +5,4 @@
 * Update com.google.android.material:material to 1.12.0
 * Update androidx.window:window to 1.3.0
 * Update androidx.appcompat:appcompat to 1.7.0
+* Remove USE_FULL_SCREEN_INTENT permission
