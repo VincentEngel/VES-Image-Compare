@@ -78,7 +78,12 @@ public class OverlaySlideActivity extends AppCompatActivity implements FadeActiv
 
             VesImageInterface image_back = findViewById(R.id.overlay_slide_image_view_base);
             image_back.addFadeListener(this);
-            Images.first.updateVesImageViewWithAdjustedImage(image_back);
+
+            try {
+                Images.first.updateVesImageViewWithAdjustedImage(image_back);
+            } catch (Exception e) {
+                this.finish();
+            }
 
             VesImageInterface image_front = findViewById(R.id.overlay_slide_image_view_front);
             image_front.addFadeListener(this);

@@ -35,7 +35,11 @@ public class OverlayTapActivity extends AppCompatActivity {
         setContentView(R.layout.activity_overlay_tap);
 
         VesImageInterface image_first = findViewById(R.id.overlay_tap_image_view_one);
-        Images.first.updateVesImageViewWithAdjustedImage(image_first);
+        try {
+            Images.first.updateVesImageViewWithAdjustedImage(image_first);
+        } catch (Exception e) {
+            this.finish();
+        }
 
         TextView textView = findViewById(R.id.overlay_tap_image_name);
         textView.setText(Images.first.getImageName());

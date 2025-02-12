@@ -28,13 +28,17 @@ public class MetaDataActivity extends AppCompatActivity {
         setContentView(R.layout.activity_meta_data);
         FullScreenHelper.setFullScreenFlags(this.getWindow());
 
-        Images.first.updateImageViewPreviewImage(findViewById(R.id.meta_data_image_first));
-        TextView imageNameFirst = findViewById(R.id.meta_data_image_name_first);
-        imageNameFirst.setText(Images.first.getImageName());
+        try {
+            Images.first.updateImageViewPreviewImage(findViewById(R.id.meta_data_image_first));
+            TextView imageNameFirst = findViewById(R.id.meta_data_image_name_first);
+            imageNameFirst.setText(Images.first.getImageName());
 
-        Images.second.updateImageViewPreviewImage(findViewById(R.id.meta_data_image_second));
-        TextView imageNameSecond = findViewById(R.id.meta_data_image_name_second);
-        imageNameSecond.setText(Images.second.getImageName());
+            Images.second.updateImageViewPreviewImage(findViewById(R.id.meta_data_image_second));
+            TextView imageNameSecond = findViewById(R.id.meta_data_image_name_second);
+            imageNameSecond.setText(Images.second.getImageName());
+        } catch (Exception e) {
+            this.finish();
+        }
 
         Thread t = new Thread(() -> {
             runOnUiThread(() -> {

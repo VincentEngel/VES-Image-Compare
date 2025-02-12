@@ -57,7 +57,11 @@ public class OverlayTransparentActivity extends AppCompatActivity implements Fad
 
         VesImageInterface base = findViewById(R.id.overlay_transparent_image_view_base);
         base.addFadeListener(this);
-        Images.first.updateVesImageViewWithAdjustedImage(base);
+        try {
+            Images.first.updateVesImageViewWithAdjustedImage(base);
+        } catch (Exception e) {
+            this.finish();
+        }
 
         VesImageInterface image_transparent = findViewById(R.id.overlay_transparent_image_view_transparent);
         image_transparent.addFadeListener(this);

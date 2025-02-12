@@ -632,6 +632,8 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra(IntentExtras.SHOW_EXTENSIONS, this.userSettings.isShowExtensions());
             intent.putExtra(IntentExtras.SYNCED_ZOOM, this.userSettings.isSyncedZoom());
             intent.putExtra(IntentExtras.HAS_HARDWARE_KEY, Status.HAS_HARDWARE_KEY);
+            intent.putExtra(IntentExtras.IMAGE_URI_ONE, "bitmap_uri");
+            intent.putExtra(IntentExtras.IMAGE_URI_TWO, "bitmap_uri");
 
             Thread t = new Thread(() -> {
                 try {
@@ -795,6 +797,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception ignored) {
         }
     }
+
     private void askForReview()
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.alertDialog);

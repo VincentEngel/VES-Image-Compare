@@ -66,10 +66,14 @@ public class OverlayCutActivity extends AppCompatActivity {
         OverlayCutActivity.color_inactive = getResources().getColor(android.R.color.darker_gray, null);
 
         VesImageInterface image_back = findViewById(R.id.full_slide_image_view_base);
-        Images.first.updateVesImageViewWithAdjustedImage(image_back);
-
         VesImageInterface image_front = findViewById(R.id.full_slide_image_view_front);
-        Images.second.updateVesImageViewWithAdjustedImage(image_front);
+
+        try {
+            Images.first.updateVesImageViewWithAdjustedImage(image_back);
+            Images.second.updateVesImageViewWithAdjustedImage(image_front);
+        } catch (Exception e) {
+            this.finish();
+        }
 
         SyncZoom.setLinkedTargets(image_front, image_back, OverlayCutActivity.sync, new UtilMutableBoolean(false));
 

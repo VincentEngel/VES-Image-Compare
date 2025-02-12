@@ -52,13 +52,17 @@ public class SideBySideActivity extends AppCompatActivity {
                 null
         );
 
-        Images.first.updateVesImageViewWithAdjustedImage(findViewById(R.id.side_by_side_image_left));
-        TextView imageFirst = findViewById(R.id.side_by_side_image_name_first);
-        imageFirst.setText(Images.first.getImageName());
+        try {
+            Images.first.updateVesImageViewWithAdjustedImage(findViewById(R.id.side_by_side_image_left));
+            TextView imageFirst = findViewById(R.id.side_by_side_image_name_first);
+            imageFirst.setText(Images.first.getImageName());
 
-        Images.second.updateVesImageViewWithAdjustedImage(findViewById(R.id.side_by_side_image_right));
-        TextView imageSecond = findViewById(R.id.side_by_side_image_name_second);
-        imageSecond.setText(Images.second.getImageName());
+            Images.second.updateVesImageViewWithAdjustedImage(findViewById(R.id.side_by_side_image_right));
+            TextView imageSecond = findViewById(R.id.side_by_side_image_name_second);
+            imageSecond.setText(Images.second.getImageName());
+        } catch (Exception e) {
+            this.finish();
+        }
 
         LinearLayout extensions = findViewById(R.id.side_by_side_extensions);
         if (getIntent().getBooleanExtra(IntentExtras.SHOW_EXTENSIONS, false)) {

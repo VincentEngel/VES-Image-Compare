@@ -1,1 +1,2 @@
-* Update Gradle to 8.7.3
+* Upgrade Gradle
+* Reduce App crashes
