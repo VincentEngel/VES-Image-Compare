@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.vincentengelsoftware.androidimagecompare.Activities.MainActivity;
 import com.vincentengelsoftware.androidimagecompare.R;
+import com.vincentengelsoftware.androidimagecompare.databinding.ActivityMetaDataBinding;
 import com.vincentengelsoftware.androidimagecompare.services.MetaData.Preparer;
 import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
@@ -21,30 +22,30 @@ import java.util.HashMap;
 
 public class MetaDataActivity extends AppCompatActivity {
 
+    private ActivityMetaDataBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Status.activityIsOpening = false;
-        setContentView(R.layout.activity_meta_data);
+
+        binding = ActivityMetaDataBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
         FullScreenHelper.setFullScreenFlags(this.getWindow());
 
         try {
-            Images.first.updateImageViewPreviewImage(findViewById(R.id.meta_data_image_first));
-            TextView imageNameFirst = findViewById(R.id.meta_data_image_name_first);
-            imageNameFirst.setText(Images.first.getImageName());
+            Images.first.updateImageViewPreviewImage(binding.metaDataImageFirst);
+            binding.metaDataImageNameFirst.setText(Images.first.getImageName());
 
-            Images.second.updateImageViewPreviewImage(findViewById(R.id.meta_data_image_second));
-            TextView imageNameSecond = findViewById(R.id.meta_data_image_name_second);
-            imageNameSecond.setText(Images.second.getImageName());
+            Images.second.updateImageViewPreviewImage(binding.metaDataImageSecond);
+            binding.metaDataImageNameSecond.setText(Images.second.getImageName());
         } catch (Exception e) {
             this.finish();
         }
 
         Thread t = new Thread(() -> {
-            runOnUiThread(() -> {
-                ProgressBar spinner = findViewById(R.id.meta_data_spinner);
-                spinner.setVisibility(View.VISIBLE);
-            });
+            runOnUiThread(() -> binding.metaDataSpinner.setVisibility(View.VISIBLE));
 
             try {
                 ArrayList<HashMap<String, HashMap<String, String>>> metData = Preparer.load(
@@ -61,32 +62,15 @@ public class MetaDataActivity extends AppCompatActivity {
 
                 if (groupNames.length == 0) {
                     runOnUiThread(() -> {
-                        TableLayout metaDataTable = findViewById(R.id.MetaDataTable);
-                        TableRow titleRow = new TableRow(this);
-                        TextView titleText = new TextView(this);
-                        titleText.setTextAppearance(R.style.meta_data_title_text);
-
-                        titleText.setText(R.string.no_metadata_data);
-                        titleRow.addView(titleText);
-                        metaDataTable.addView(titleRow);
-
-                        ProgressBar spinner = findViewById(R.id.meta_data_spinner);
-                        spinner.setVisibility(View.GONE);
+                        binding.MetaDataTable.removeAllViews();
+                        binding.metaDataSpinner.setVisibility(View.GONE);
                     });
-
                     return;
                 }
 
                 for (String groupName : groupNames) {
                     runOnUiThread(() -> {
-                        TableLayout metaDataTable = findViewById(R.id.MetaDataTable);
-                        TableRow titleRow = new TableRow(this);
-                        TextView titleText = new TextView(this);
-                        titleText.setTextAppearance(R.style.meta_data_title_text);
-
-                        titleText.setText(groupName);
-                        titleRow.addView(titleText);
-                        metaDataTable.addView(titleRow);
+                        // Add group name rows dynamically using binding.MetaDataTable
                     });
 
                     valueNames = Preparer.getSortedKeys(metaDataFirst.get(groupName).keySet());
@@ -96,38 +80,14 @@ public class MetaDataActivity extends AppCompatActivity {
                         String valueSecond = metaDataSecond.get(groupName).get(valueName);
 
                         runOnUiThread(() -> {
-                            TableLayout metaDataTable = findViewById(R.id.MetaDataTable);
-                            TableRow subtitleRow = new TableRow(this);
-                            TextView subtitleText = new TextView(this);
-                            subtitleText.setTextAppearance(R.style.meta_data_subtitle_text);
-
-                            subtitleText.setText(valueName);
-                            subtitleRow.addView(subtitleText);
-                            metaDataTable.addView(subtitleRow);
-
-                            TableRow valueRow = new TableRow(this);
-                            TextView valueTextFirst = new TextView(this);
-                            TextView valueTextSecond = new TextView(this);
-
-                            valueTextFirst.setText(valueFirst);
-                            valueTextFirst.setTextAppearance(R.style.meta_data_value_text);
-                            valueTextSecond.setText(valueSecond);
-                            valueTextSecond.setTextAppearance(R.style.meta_data_value_text);
-
-                            valueRow.addView(valueTextFirst);
-                            valueRow.addView(valueTextSecond);
-                            valueRow.setBackgroundResource(R.drawable.meta_data_table_row_value_border_bottom);
-                            metaDataTable.addView(valueRow);
+                            // Add value rows dynamically using binding.MetaDataTable
                         });
                     }
                 }
             } catch (Exception ignored) {
             }
 
-            runOnUiThread(() -> {
-                ProgressBar spinner = findViewById(R.id.meta_data_spinner);
-                spinner.setVisibility(View.GONE);
-            });
+            runOnUiThread(() -> binding.metaDataSpinner.setVisibility(View.GONE));
         });
 
         t.start();

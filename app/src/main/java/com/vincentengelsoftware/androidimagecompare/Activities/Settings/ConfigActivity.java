@@ -8,25 +8,27 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.TextView;
 
 import com.vincentengelsoftware.androidimagecompare.R;
+import com.vincentengelsoftware.androidimagecompare.databinding.ActivityConfigsBinding;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
 
 public class ConfigActivity extends AppCompatActivity {
 
+    private ActivityConfigsBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_configs);
+
+        binding = ActivityConfigsBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         Status.activityIsOpening = false;
 
         this.setVersionText();
     }
 
-    private void setVersionText()
-    {
+    private void setVersionText() {
         String version = getString(R.string.unknown);
         try {
             PackageInfo pinfo = getPackageInfo();
@@ -34,34 +36,29 @@ public class ConfigActivity extends AppCompatActivity {
         } catch (Exception ignored) {
         }
 
-        TextView versionText = findViewById(R.id.settings_version);
-        versionText.setText(version);
+        binding.settingsVersion.setText(version);
 
-        Button privacyPolicyButton = findViewById(R.id.configs_action_privacy_policy);
-        privacyPolicyButton.setOnClickListener(view -> {
+        binding.configsActionPrivacyPolicy.setOnClickListener(view -> {
             Intent intent = new Intent(this, PrivacyPolicyActivity.class);
             startActivity(intent);
         });
 
-        Button aboutButton = findViewById(R.id.configs_action_app_info);
-        aboutButton.setOnClickListener(view -> {
+        binding.configsActionAppInfo.setOnClickListener(view -> {
             Intent intent = new Intent(this, AboutActivity.class);
             startActivity(intent);
         });
 
-        Button settingsButton = findViewById(R.id.configs_action_settings);
-        settingsButton.setOnClickListener(view -> {
+        binding.configsActionSettings.setOnClickListener(view -> {
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
         });
 
-        Button openPlaystore = findViewById(R.id.configs_open_playstore);
-        openPlaystore.setOnClickListener(view -> {
+        binding.configsOpenPlaystore.setOnClickListener(view -> {
             try {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" +getPackageName())));
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getPackageName())));
             } catch (ActivityNotFoundException e1) {
                 try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" +getPackageName())));
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName())));
                 } catch (ActivityNotFoundException ignored) {
                 }
             }

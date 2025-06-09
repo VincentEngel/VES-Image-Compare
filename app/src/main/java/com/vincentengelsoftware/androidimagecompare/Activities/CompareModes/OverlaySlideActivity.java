@@ -6,7 +6,6 @@ import android.os.SystemClock;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.SeekBar;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +14,7 @@ import com.vincentengelsoftware.androidimagecompare.Activities.IntentExtras;
 import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.animations.FadeActivity;
 import com.vincentengelsoftware.androidimagecompare.animations.ResizeAnimation;
+import com.vincentengelsoftware.androidimagecompare.databinding.ActivityOverlaySlideBinding;
 import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
 import com.vincentengelsoftware.androidimagecompare.helper.BitmapHelper;
@@ -27,19 +27,16 @@ import com.vincentengelsoftware.androidimagecompare.ImageView.ImageScaleCenter;
 import com.vincentengelsoftware.androidimagecompare.ImageView.VesImageInterface;
 
 public class OverlaySlideActivity extends AppCompatActivity implements FadeActivity {
-    /**
-     * If problematic, add a single synced access method for both of them
-     */
     private static Thread currentThread;
     private static Thread nextThread;
 
     public static UtilMutableBoolean sync = new UtilMutableBoolean(true);
-
     private final static UtilMutableBoolean leftToRight = new UtilMutableBoolean(true);
-
     private final static UtilMutableBoolean continueHiding = new UtilMutableBoolean(true);
     private static Thread fadeOutThread;
     private static Thread fadeInThread;
+
+    private ActivityOverlaySlideBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,63 +71,69 @@ public class OverlaySlideActivity extends AppCompatActivity implements FadeActiv
 
             FullScreenHelper.setFullScreenFlags(this.getWindow());
 
-            setContentView(R.layout.activity_overlay_slide);
+            binding = ActivityOverlaySlideBinding.inflate(getLayoutInflater());
+            setContentView(binding.getRoot());
 
-            VesImageInterface image_back = findViewById(R.id.overlay_slide_image_view_base);
-            image_back.addFadeListener(this);
+            binding.overlaySlideImageViewBase.addFadeListener(this);
 
             try {
-                Images.first.updateVesImageViewWithAdjustedImage(image_back);
+                Images.first.updateVesImageViewWithAdjustedImage(binding.overlaySlideImageViewBase);
             } catch (Exception e) {
                 this.finish();
             }
 
-            VesImageInterface image_front = findViewById(R.id.overlay_slide_image_view_front);
-            image_front.addFadeListener(this);
+            binding.overlaySlideImageViewFront.addFadeListener(this);
             Bitmap bitmapSource = Images.second.getAdjustedBitmap();
 
-            SyncZoom.setLinkedTargets(image_front, image_back, OverlaySlideActivity.sync, new UtilMutableBoolean(false));
-
-            ImageButton hideShow = findViewById(R.id.overlay_transparent_button_hide_front_image);
-
-            SeekBar seekBar = findViewById(R.id.overlay_slide_seek_bar);
-            this.addSeekbarLogic(seekBar, image_front, leftToRight, bitmapSource, hideShow);
-            seekBar.setProgress(50);
-
-            ImageButton swapDirection = findViewById(R.id.overlay_slide_button_swap_seekbar);
-            if (leftToRight.value) {
-                swapDirection.setImageResource(R.drawable.ic_slide_ltr);
-            } else {
-                swapDirection.setImageResource(R.drawable.ic_slide_rtl);
-            }
-            SlideHelper.setSwapSlideDirectionOnClick(
-                    swapDirection,
-                    seekBar,
-                    leftToRight,
-                    this
+            SyncZoom.setLinkedTargets(
+                    binding.overlaySlideImageViewFront,
+                    binding.overlaySlideImageViewBase,
+                    OverlaySlideActivity.sync,
+                    new UtilMutableBoolean(false)
             );
 
-            hideShow.setOnClickListener(view -> {
+            binding.overlayTransparentButtonHideFrontImage.setOnClickListener(view -> {
                 instantFadeIn();
-                if (image_front.getVisibility() == View.VISIBLE) {
-                    hideShow.setImageResource(R.drawable.ic_visibility_off);
-                    image_front.setVisibility(View.GONE);
-                } else if (leftToRight.value && (seekBar.getProgress() <= 1)) {
-                    seekBar.setProgress(2);
-                } else if (!leftToRight.value && (seekBar.getProgress() >= 99)) {
-                    seekBar.setProgress(98);
+                if (binding.overlaySlideImageViewFront.getVisibility() == View.VISIBLE) {
+                    binding.overlayTransparentButtonHideFrontImage.setImageResource(R.drawable.ic_visibility_off);
+                    binding.overlaySlideImageViewFront.setVisibility(View.GONE);
+                } else if (leftToRight.value && (binding.overlaySlideSeekBar.getProgress() <= 1)) {
+                    binding.overlaySlideSeekBar.setProgress(2);
+                } else if (!leftToRight.value && (binding.overlaySlideSeekBar.getProgress() >= 99)) {
+                    binding.overlaySlideSeekBar.setProgress(98);
                 } else {
-                    hideShow.setImageResource(R.drawable.ic_visibility);
-                    image_front.setVisibility(View.VISIBLE);
+                    binding.overlayTransparentButtonHideFrontImage.setImageResource(R.drawable.ic_visibility);
+                    binding.overlaySlideImageViewFront.setVisibility(View.VISIBLE);
                 }
                 triggerFadeOutThread();
             });
 
+            this.addSeekbarLogic(
+                    binding.overlaySlideSeekBar,
+                    binding.overlaySlideImageViewFront,
+                    leftToRight,
+                    bitmapSource,
+                    binding.overlayTransparentButtonHideFrontImage
+            );
+            binding.overlaySlideSeekBar.setProgress(50);
+
+            if (leftToRight.value) {
+                binding.overlaySlideButtonSwapSeekbar.setImageResource(R.drawable.ic_slide_ltr);
+            } else {
+                binding.overlaySlideButtonSwapSeekbar.setImageResource(R.drawable.ic_slide_rtl);
+            }
+
+            SlideHelper.setSwapSlideDirectionOnClick(
+                    binding.overlaySlideButtonSwapSeekbar,
+                    binding.overlaySlideSeekBar,
+                    leftToRight,
+                    this
+            );
+
             if (getIntent().getBooleanExtra(IntentExtras.HAS_HARDWARE_KEY, false)) {
-                LinearLayout linearLayout = findViewById(R.id.overlay_slide_extensions);
-                ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) linearLayout.getLayoutParams();
+                ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) binding.overlaySlideExtensions.getLayoutParams();
                 layoutParams.setMargins(0, 0, 0, 0);
-                linearLayout.setLayoutParams(layoutParams);
+                binding.overlaySlideExtensions.setLayoutParams(layoutParams);
             }
         } catch (Exception ignored) {}
     }
@@ -141,8 +144,7 @@ public class OverlaySlideActivity extends AppCompatActivity implements FadeActiv
         triggerFadeOutThread();
     }
 
-    public void triggerFadeIn()
-    {
+    public void triggerFadeIn() {
         continueHiding.value = false;
         if (fadeOutThread != null) {
             fadeOutThread.interrupt();
@@ -154,18 +156,16 @@ public class OverlaySlideActivity extends AppCompatActivity implements FadeActiv
 
         fadeInThread = new Thread(() -> runOnUiThread(() -> {
             try {
-                LinearLayout linearLayout = findViewById(R.id.overlay_slide_extensions);
-
                 ResizeAnimation anim = new ResizeAnimation(
-                        linearLayout,
+                        binding.overlaySlideExtensions,
                         Calculator.DpToPx2(48, getResources()),
                         ResizeAnimation.CHANGE_HEIGHT,
                         ResizeAnimation.IS_SHOWING_ANIMATION,
                         continueHiding
                 );
                 anim.setDuration(ResizeAnimation.DURATION_SHORT);
-                linearLayout.clearAnimation();
-                linearLayout.startAnimation(anim);
+                binding.overlaySlideExtensions.clearAnimation();
+                binding.overlaySlideExtensions.startAnimation(anim);
                 fadeInThread = null;
                 triggerFadeOutThread();
             } catch (Exception ignored) {
@@ -175,8 +175,7 @@ public class OverlaySlideActivity extends AppCompatActivity implements FadeActiv
         fadeInThread.start();
     }
 
-    public void triggerFadeOutThread()
-    {
+    public void triggerFadeOutThread() {
         if (fadeOutThread != null) {
             fadeOutThread.interrupt();
         }
@@ -189,18 +188,16 @@ public class OverlaySlideActivity extends AppCompatActivity implements FadeActiv
 
             runOnUiThread(() -> {
                 try {
-                    LinearLayout linearLayout = findViewById(R.id.overlay_slide_extensions);
-
                     continueHiding.value = true;
                     ResizeAnimation anim = new ResizeAnimation(
-                            linearLayout,
+                            binding.overlaySlideExtensions,
                             1,
                             ResizeAnimation.CHANGE_HEIGHT,
                             ResizeAnimation.IS_HIDING_ANIMATION,
                             continueHiding
                     );
                     anim.setDuration(ResizeAnimation.DURATION_SHORT);
-                    linearLayout.startAnimation(anim);
+                    binding.overlaySlideExtensions.startAnimation(anim);
                     fadeOutThread = null;
                 } catch (Exception ignored) {
                 }
@@ -210,15 +207,13 @@ public class OverlaySlideActivity extends AppCompatActivity implements FadeActiv
         fadeOutThread.start();
     }
 
-    public void instantFadeIn()
-    {
+    public void instantFadeIn() {
         continueHiding.value = false;
         runOnUiThread(() -> {
             try {
-                LinearLayout linearLayout = findViewById(R.id.overlay_slide_extensions);
-                linearLayout.clearAnimation();
-                ViewGroup.LayoutParams layoutParams = linearLayout.getLayoutParams();
-                linearLayout.setVisibility(View.VISIBLE);
+                binding.overlaySlideExtensions.clearAnimation();
+                ViewGroup.LayoutParams layoutParams = binding.overlaySlideExtensions.getLayoutParams();
+                binding.overlaySlideExtensions.setVisibility(View.VISIBLE);
                 layoutParams.height = Calculator.DpToPx2(48, getResources());
                 fadeInThread = null;
                 triggerFadeOutThread();
@@ -300,8 +295,7 @@ public class OverlaySlideActivity extends AppCompatActivity implements FadeActiv
         });
     }
 
-    private synchronized void processNextThread(Thread thread)
-    {
+    private synchronized void processNextThread(Thread thread) {
         if (currentThread == null) {
             currentThread = thread;
             currentThread.start();
@@ -310,8 +304,7 @@ public class OverlaySlideActivity extends AppCompatActivity implements FadeActiv
         }
     }
 
-    private synchronized void processNextThread()
-    {
+    private synchronized void processNextThread() {
         if (nextThread != null) {
             currentThread = nextThread;
             nextThread = null;

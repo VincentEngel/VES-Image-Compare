@@ -2,23 +2,22 @@ package com.vincentengelsoftware.androidimagecompare.Activities.CompareModes;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.vincentengelsoftware.androidimagecompare.Activities.IntentExtras;
 import com.vincentengelsoftware.androidimagecompare.R;
+import com.vincentengelsoftware.androidimagecompare.databinding.ActivitySideBySideBinding;
 import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
 import com.vincentengelsoftware.androidimagecompare.helper.FullScreenHelper;
 import com.vincentengelsoftware.androidimagecompare.helper.SyncZoom;
 import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
-import com.vincentengelsoftware.androidimagecompare.ImageView.VesImageInterface;
 
 public class SideBySideActivity extends AppCompatActivity {
     public static UtilMutableBoolean sync = new UtilMutableBoolean(true);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,21 +30,19 @@ public class SideBySideActivity extends AppCompatActivity {
 
         FullScreenHelper.setFullScreenFlags(this.getWindow());
 
-        setContentView(R.layout.activity_side_by_side);
-
-        VesImageInterface first = findViewById(R.id.side_by_side_image_left);
-        VesImageInterface second = findViewById(R.id.side_by_side_image_right);
+        ActivitySideBySideBinding binding = ActivitySideBySideBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         SyncZoom.setLinkedTargets(
-                first,
-                second,
+                binding.sideBySideImageLeft,
+                binding.sideBySideImageRight,
                 SideBySideActivity.sync,
                 new UtilMutableBoolean(false)
         );
         SyncZoom.setUpSyncZoomToggleButton(
-                first,
-                second,
-                findViewById(R.id.toggleButton),
+                binding.sideBySideImageLeft,
+                binding.sideBySideImageRight,
+                binding.toggleButton,
                 ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_link),
                 ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_link_off),
                 SideBySideActivity.sync,
@@ -53,22 +50,19 @@ public class SideBySideActivity extends AppCompatActivity {
         );
 
         try {
-            Images.first.updateVesImageViewWithAdjustedImage(findViewById(R.id.side_by_side_image_left));
-            TextView imageFirst = findViewById(R.id.side_by_side_image_name_first);
-            imageFirst.setText(Images.first.getImageName());
+            Images.first.updateVesImageViewWithAdjustedImage(binding.sideBySideImageLeft);
+            binding.sideBySideImageNameFirst.setText(Images.first.getImageName());
 
-            Images.second.updateVesImageViewWithAdjustedImage(findViewById(R.id.side_by_side_image_right));
-            TextView imageSecond = findViewById(R.id.side_by_side_image_name_second);
-            imageSecond.setText(Images.second.getImageName());
+            Images.second.updateVesImageViewWithAdjustedImage(binding.sideBySideImageRight);
+            binding.sideBySideImageNameSecond.setText(Images.second.getImageName());
         } catch (Exception e) {
             this.finish();
         }
 
-        LinearLayout extensions = findViewById(R.id.side_by_side_extensions);
         if (getIntent().getBooleanExtra(IntentExtras.SHOW_EXTENSIONS, false)) {
-            extensions.setVisibility(View.VISIBLE);
+            binding.sideBySideExtensions.setVisibility(View.VISIBLE);
         } else {
-            extensions.setVisibility(View.GONE);
+            binding.sideBySideExtensions.setVisibility(View.GONE);
         }
     }
 }

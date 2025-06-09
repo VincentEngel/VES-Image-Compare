@@ -5,13 +5,13 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.SeekBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.vincentengelsoftware.androidimagecompare.Activities.IntentExtras;
 import com.vincentengelsoftware.androidimagecompare.R;
+import com.vincentengelsoftware.androidimagecompare.databinding.ActivityOverlayCutBinding;
 import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
 import com.vincentengelsoftware.androidimagecompare.helper.BitmapHelper;
@@ -19,7 +19,6 @@ import com.vincentengelsoftware.androidimagecompare.helper.Calculator;
 import com.vincentengelsoftware.androidimagecompare.helper.FullScreenHelper;
 import com.vincentengelsoftware.androidimagecompare.helper.SyncZoom;
 import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
-import com.vincentengelsoftware.androidimagecompare.ImageView.VesImageInterface;
 
 public class OverlayCutActivity extends AppCompatActivity {
     public SeekBar recentSeekBar;
@@ -37,6 +36,8 @@ public class OverlayCutActivity extends AppCompatActivity {
 
     public static Bitmap bitmapSource;
     public static Bitmap bitmapAdjusted;
+
+    private ActivityOverlayCutBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,40 +60,36 @@ public class OverlayCutActivity extends AppCompatActivity {
             OverlayCutActivity.sync.value = getIntent().getBooleanExtra(IntentExtras.SYNCED_ZOOM, true);
         }
         Status.activityIsOpening = false;
-        setContentView(R.layout.activity_overlay_cut);
+
+        binding = ActivityOverlayCutBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         FullScreenHelper.setFullScreenFlags(this.getWindow());
 
         OverlayCutActivity.color_active = getResources().getColor(R.color.orange, null);
         OverlayCutActivity.color_inactive = getResources().getColor(android.R.color.darker_gray, null);
 
-        VesImageInterface image_back = findViewById(R.id.full_slide_image_view_base);
-        VesImageInterface image_front = findViewById(R.id.full_slide_image_view_front);
-
         try {
-            Images.first.updateVesImageViewWithAdjustedImage(image_back);
-            Images.second.updateVesImageViewWithAdjustedImage(image_front);
+            Images.first.updateVesImageViewWithAdjustedImage(binding.fullSlideImageViewBase);
+            Images.second.updateVesImageViewWithAdjustedImage(binding.fullSlideImageViewFront);
         } catch (Exception e) {
             this.finish();
         }
 
-        SyncZoom.setLinkedTargets(image_front, image_back, OverlayCutActivity.sync, new UtilMutableBoolean(false));
+        SyncZoom.setLinkedTargets(
+                binding.fullSlideImageViewFront,
+                binding.fullSlideImageViewBase,
+                OverlayCutActivity.sync,
+                new UtilMutableBoolean(false)
+        );
 
-        SeekBar seekBarLeft = findViewById(R.id.full_slider_seekbar_left);
-        ViewGroup.LayoutParams layoutParamsSeekbarLeft = seekBarLeft.getLayoutParams();
+        ViewGroup.LayoutParams layoutParamsSeekbarLeft = binding.fullSliderSeekbarLeft.getLayoutParams();
         layoutParamsSeekbarLeft.width = Resources.getSystem().getDisplayMetrics().heightPixels - Calculator.DpToPx2(48, getResources());
 
-        SeekBar seekBarRight = findViewById(R.id.full_slider_seekbar_right);
-        ViewGroup.LayoutParams layoutParamsSeekbarRight = seekBarRight.getLayoutParams();
+        ViewGroup.LayoutParams layoutParamsSeekbarRight = binding.fullSliderSeekbarRight.getLayoutParams();
         layoutParamsSeekbarRight.width = Resources.getSystem().getDisplayMetrics().heightPixels - Calculator.DpToPx2(48, getResources());
 
-        SeekBar seekBarTop = findViewById(R.id.full_slider_seekbar_top);
-        SeekBar seekBarBottom = findViewById(R.id.full_slider_seekbar_bottom);
-
-        ImageButton buttonReset = findViewById(R.id.overlay_cut_btn_reset);
-        ImageButton buttonKeep = findViewById(R.id.overlay_cut_btn_check);
-
         if (getIntent().getBooleanExtra(IntentExtras.SHOW_EXTENSIONS, false)) {
-            buttonReset.setOnClickListener(view -> {
+            binding.overlayCutBtnReset.setOnClickListener(view -> {
                 OverlayCutActivity.bitmapAdjusted = OverlayCutActivity.bitmapSource;
                 if (currentSeekBar != null) {
                     int progress = currentSeekBar.getProgress();
@@ -103,25 +100,24 @@ public class OverlayCutActivity extends AppCompatActivity {
                     }
                 }
             });
-            buttonKeep.setOnClickListener(view -> {
-                OverlayCutActivity.bitmapAdjusted = image_front.getCurrentBitmap().copy(Bitmap.Config.ARGB_8888, false);
+            binding.overlayCutBtnCheck.setOnClickListener(view -> {
+                OverlayCutActivity.bitmapAdjusted = binding.fullSlideImageViewFront.getCurrentBitmap().copy(Bitmap.Config.ARGB_8888, false);
             });
         } else {
-            buttonReset.setVisibility(View.INVISIBLE);
-            buttonKeep.setVisibility(View.INVISIBLE);
+            binding.overlayCutBtnReset.setVisibility(View.INVISIBLE);
+            binding.overlayCutBtnCheck.setVisibility(View.INVISIBLE);
         }
 
-        this.addSeekbarLogic(seekBarTop);
-        this.addSeekbarLogic(seekBarLeft);
-        this.addSeekbarLogic(seekBarRight);
-        this.addSeekbarLogic(seekBarBottom);
+        this.addSeekbarLogic(binding.fullSliderSeekbarTop);
+        this.addSeekbarLogic(binding.fullSliderSeekbarLeft);
+        this.addSeekbarLogic(binding.fullSliderSeekbarRight);
+        this.addSeekbarLogic(binding.fullSliderSeekbarBottom);
 
-        seekBarLeft.setProgress(90);
-        seekBarRight.setProgress(10);
+        binding.fullSliderSeekbarLeft.setProgress(90);
+        binding.fullSliderSeekbarRight.setProgress(10);
     }
 
-    private void updateImage(Bitmap bitmapSource)
-    {
+    private void updateImage(Bitmap bitmapSource) {
         if (currentSeekBar == null || recentSeekBar == null) {
             return;
         }
@@ -135,38 +131,33 @@ public class OverlayCutActivity extends AppCompatActivity {
         boolean bottomSeekBarActive;
         int bottomSeekBarProgress;
 
-        SeekBar seekBarTop = findViewById(R.id.full_slider_seekbar_top);
-        SeekBar seekBarLeft = findViewById(R.id.full_slider_seekbar_left);
-        SeekBar seekBarRight = findViewById(R.id.full_slider_seekbar_right);
-        SeekBar seekBarBottom = findViewById(R.id.full_slider_seekbar_bottom);
-
-        if (currentSeekBar.getId() == seekBarTop.getId() || recentSeekBar.getId() == seekBarTop.getId()) {
+        if (currentSeekBar.getId() == binding.fullSliderSeekbarTop.getId() || recentSeekBar.getId() == binding.fullSliderSeekbarTop.getId()) {
             topSeekBarActive = true;
-            topSeekBarProgress = seekBarTop.getProgress();
+            topSeekBarProgress = binding.fullSliderSeekbarTop.getProgress();
         } else {
             topSeekBarProgress = 0;
             topSeekBarActive = false;
         }
 
-        if (currentSeekBar.getId() == seekBarLeft.getId() || recentSeekBar.getId() == seekBarLeft.getId()) {
+        if (currentSeekBar.getId() == binding.fullSliderSeekbarLeft.getId() || recentSeekBar.getId() == binding.fullSliderSeekbarLeft.getId()) {
             leftSeekBarActive = true;
-            leftSeekBarProgress = seekBarLeft.getProgress();
+            leftSeekBarProgress = binding.fullSliderSeekbarLeft.getProgress();
         } else {
             leftSeekBarProgress = 0;
             leftSeekBarActive = false;
         }
 
-        if (currentSeekBar.getId() == seekBarRight.getId() || recentSeekBar.getId() == seekBarRight.getId()) {
+        if (currentSeekBar.getId() == binding.fullSliderSeekbarRight.getId() || recentSeekBar.getId() == binding.fullSliderSeekbarRight.getId()) {
             rightSeekBarActive = true;
-            rightSeekBarProgress = seekBarRight.getProgress();
+            rightSeekBarProgress = binding.fullSliderSeekbarRight.getProgress();
         } else {
             rightSeekBarProgress = 0;
             rightSeekBarActive = false;
         }
 
-        if (currentSeekBar.getId() == seekBarBottom.getId() || recentSeekBar.getId() == seekBarBottom.getId()) {
+        if (currentSeekBar.getId() == binding.fullSliderSeekbarBottom.getId() || recentSeekBar.getId() == binding.fullSliderSeekbarBottom.getId()) {
             bottomSeekBarActive = true;
-            bottomSeekBarProgress = seekBarBottom.getProgress();
+            bottomSeekBarProgress = binding.fullSliderSeekbarBottom.getProgress();
         } else {
             bottomSeekBarProgress = 0;
             bottomSeekBarActive = false;
@@ -198,9 +189,7 @@ public class OverlayCutActivity extends AppCompatActivity {
 
                     runOnUiThread(() -> {
                         if (OverlayCutActivity.nextCalculatedBitmap != null) {
-
-                            VesImageInterface image_front = findViewById(R.id.full_slide_image_view_front);
-                            image_front.setBitmapImage(OverlayCutActivity.nextCalculatedBitmap);
+                            binding.fullSlideImageViewFront.setBitmapImage(OverlayCutActivity.nextCalculatedBitmap);
                         }
                     });
 
@@ -211,8 +200,7 @@ public class OverlayCutActivity extends AppCompatActivity {
         );
     }
 
-    private void addSeekbarLogic(SeekBar seekBarView)
-    {
+    private void addSeekbarLogic(SeekBar seekBarView) {
         seekBarView.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
@@ -246,8 +234,7 @@ public class OverlayCutActivity extends AppCompatActivity {
         });
     }
 
-    private synchronized void processNextThread(Thread thread)
-    {
+    private synchronized void processNextThread(Thread thread) {
         if (currentThread == null) {
             currentThread = thread;
             currentThread.start();
@@ -256,8 +243,7 @@ public class OverlayCutActivity extends AppCompatActivity {
         }
     }
 
-    private synchronized void processNextThread()
-    {
+    private synchronized void processNextThread() {
         if (nextThread != null) {
             currentThread = nextThread;
             nextThread = null;

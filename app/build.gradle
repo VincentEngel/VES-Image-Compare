@@ -3,14 +3,14 @@ plugins {
 }
 
 android {
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId 'com.vincentengelsoftware.vesandroidimagecompare'
         minSdk 28
-        targetSdk 34
-        versionCode 44
-        versionName "2.2.9"
+        targetSdk 35
+        versionCode 45
+        versionName "2.3.0"
         archivesBaseName = "vesic_v$versionName"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -23,21 +23,27 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
+
     namespace 'com.vincentengelsoftware.androidimagecompare'
+
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
     // https://stackoverflow.com/questions/75263047/duplicate-class-in-kotlin-android
-    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.22"))
-    implementation 'androidx.appcompat:appcompat:1.7.0'
-    implementation 'androidx.window:window:1.3.0'
+    implementation(platform('org.jetbrains.kotlin:kotlin-bom:2.1.20'))
+    implementation 'androidx.appcompat:appcompat:1.7.1'
+    implementation 'androidx.window:window:1.4.0'
     implementation 'com.google.android.material:material:1.12.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.core:core:1.13.1'
-    implementation 'com.github.MikeOrtiz:TouchImageView:3.6'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
+    implementation 'androidx.core:core:1.16.0'
+    implementation 'com.github.MikeOrtiz:TouchImageView:3.7.1'
     implementation 'com.drewnoakes:metadata-extractor:2.19.0'
 }
