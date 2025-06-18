@@ -1,0 +1,122 @@
+<resources>
+    <string name="privacy_policy_title">Политика конфиденциальности</string>
+
+    <!-- Main -->
+    <string name="first_image">Первое изображение</string>
+    <string name="second_image">Второе изображение</string>
+    <string name="swap_images">Поменять местами</string>
+    <string name="rotate_image_left">Повернуть левое изображение</string>
+    <string name="rotate_image_right">Повернуть правое изображение</string>
+    <string name="image_name">Название изображения</string>
+    <string name="resize">Изменить размер</string>
+    <string name="globally_enable_or_disable_linked_zoom">Включить или отключить связанные взаимодействия</string>
+    <string name="show_extensions_in_compare_modes">Показать расширения в режимах сравнения</string>
+    <string name="compare">Сравнить</string>
+    <string name="last_compare">Последнее сравнение</string>
+    <string name="share_image">Поделиться изображением</string>
+    <string name="load_image_camera">Сделать фото</string>
+    <string name="load_image_gallery">Выбрать из галереи</string>
+
+    <!-- Activities -->
+    <string name="sync">Синхронизация</string>
+    <string name="background_image">Фоновое изображение</string>
+    <string name="front_image">Переднее изображение</string>
+    <string name="hide_front_image">Скрыть переднее изображение</string>
+    <string name="reset">Сброс</string>
+    <string name="overlay_cut_keep_image">Оставить изображение</string>
+    <string name="no_metadata_data">Google ограничил доступ к метаданным, таким как данные Exif, в Android 14. В результате не всегда возможно прочитать метаданные из выбранных изображений. Чтобы прочитать метаданные, вам нужно открыть свои изображения, выбрать два, которые вы хотите сравнить, и нажать «Поделиться», а затем выбрать приложение vesIC.</string>
+
+    <!-- Generic -->
+    <string name="done">Готово</string>
+    <string name="about">О приложении</string>
+    <string name="settings">Настройки</string>
+    <string name="unknown">Неизвестно</string>
+    <string name="save">Сохранить</string>
+    <string name="number">Число</string>
+    <string name="number_decimal">Десятичное число</string>
+    <string name="version">Версия</string>
+
+    <!-- About -->
+    <string name="github_project">Проект на GitHub</string>
+    <string name="used_libraries">Используемые библиотеки</string>
+    <string name="color_theme">Цветовая тема</string>
+    <string name="info_text_view_inspiration">Это приложение во многом вдохновлено приложением «Ditto - Photo Comparer»</string>
+    <string name="open_playstore">Открыть в PlayStore</string>
+    <string name="icon_sources">Источники значков</string>
+
+    <!-- Themes -->
+    <string name="theme">Тема оформления</string>
+    <string name="theme_system">Как в системе</string>
+    <string name="theme_light">Светлая</string>
+    <string name="theme_dark">Тёмная</string>
+
+    <!-- Compare modes -->
+    <string name="select_compare_mode_title">Выбрать режим сравнения</string>
+    <string name="compare_mode_metadata">Метаданные (бета)</string>
+    <string name="compare_mode_transparent">Прозрачный</string>
+    <string name="compare_mode_side_by_side">Бок о бок</string>
+    <string name="compare_mode_overlay_slide">Наложенное друг на друга</string>
+    <string name="compare_mode_overlay_tap">Наложенное Касание</string>
+    <string name="compare_mode_overlay_cut">Наложенное Вырезать</string>
+
+    <!-- Image resize -->
+    <string name="resize_image_info_text_automatic">Автоматически уменьшить размер изображения для повышения производительности. Уменьшить изображение до размера экрана, сохранив пропорции</string>
+    <string name="resize_image_info_text_original">Оставить исходное изображение без изменений. Могут возникнуть проблемы с производительностью</string>
+    <string name="resize_image_mode_custom">Свой</string>
+    <string name="resize_image_mode_automatic">Автоматический</string>
+    <string name="resize_image_mode_original">Исходный</string>
+    <string name="resize_image">Изменить размер изображения</string>
+    <string name="resize_image_height_in_px">Высота в пикселях</string>
+    <string name="resize_image_width_in_px">Ширина в пикселях</string>
+
+    <!-- Settings -->
+    <string name="settings_on_linking">Включить или отключить сброс при связывании масштабирования</string>
+    <string name="settings_mirroring_natural_description">Зеркально отображать все взаимодействия</string>
+    <string name="settings_mirroring_strict_description">Принудительно применять идентичные масштаб и положение</string>
+    <string name="settings_mirroring_loose_description">Только зеркальный масштаб</string>
+    <string name="settings_reset_zoom">Сбросить масштаб при связывании</string>
+    <string name="settings_mirroring">Параметры зеркалирования</string>
+    <string name="settings_reset_all_settings">Сбросить все настройки</string>
+    <string name="user_settings">Настройки пользователя</string>
+    <string name="max_zoom">Макс. масштаб</string>
+    <string name="min_zoom">Мин. масштаб</string>
+    <string name="default_100">(по умолчанию: 100)</string>
+    <string name="default_1.0">(по умолчанию: 1.0)</string>
+    <string name="open_settings">Открыть настройки</string>
+    <string name="settings_save_success">Успешно сохранено</string>
+    <string name="settings_reset_success">Успешно сброшены все настройки</string>
+    <string name="settings_tap_hide_mode_description_invisible">Режим сравнения скрытия по касанию:\n\nНевидимый делает текущее изображение невидимым, чтобы показать другое изображение.</string>
+    <string name="settings_tap_hide_mode_description_background">Режим сравнения скрытия по касанию:\n\nФон перемещает текущее изображение на задний план, чтобы показать другое изображение.</string>
+    <string name="settings_tap_hide_mode_invisible">Невидимый</string>
+    <string name="settings_tap_hide_mode_background">Переместить на задний план</string>
+
+    <!-- Explanation -->
+    <string name="explanation">Объяснение</string>
+    <string name="explanation_image_linking">Связывает оба изображения. При увеличении масштаба одного изображения, другое изображение также автоматически увеличивается.</string>
+    <string name="explanation_swap_images">Поменять местами изображения.</string>
+    <string name="explanation_enable_extensions">Включить детали в следующих режимах сравнения: «Рядом», «Нажатие» и «Вырезать наложение».</string>
+    <string name="explanation_edit_image_size">Изменить размер изображения перед его сравнением.</string>
+    <string name="explanation_rotate_image">Повернуть изображение на 90 градусов.</string>
+    <string name="explanation_hide_image">Скрыть изображение на переднем плане, чтобы взаимодействовать с изображением на заднем плане.</string>
+    <string name="explanation_swap_images_inside_comparemode">Поменять местами изображения в режиме сравнения.</string>
+    <string name="switch_slide_direction">Переключить направление снимка</string>
+    <string name="explanation_keep_changes">Сохраните внесённые изменения и используйте их как основу для дальнейших изменений.</string>
+    <string name="explanation_reset">Отменить все предыдущие изменения.</string>
+
+    <!-- Mirroring modes -->
+    <string name="mirroring_mode_natural">Естественный</string>
+    <string name="mirroring_mode_strict">Строгий</string>
+    <string name="mirroring_mode_loose">Нестрогий</string>
+
+    <!-- Error messages -->
+    <string name="error_msg_invalid_input_not_a_number">Недопустимый ввод: ввод должен быть числом</string>
+    <string name="error_msg_invalid_input_number_gt_zero">Недопустимый ввод: вводимые значения должны быть больше 0</string>
+    <string name="error_msg_missing_images">Сначала выберите изображения</string>
+    <string name="error_message_general">Что-то пошло не так</string>
+    <string name="error_message_intent_more_than_two_images">Вы можете сравнивать только два изображения одновременно</string>
+
+    <!-- Ask for review -->
+    <string name="ask_for_review_text">Если вам нравится это приложение, пожалуйста, поддержите его, оставив отзыв в Google PlayStore!</string>
+    <string name="ask_for_review_positive">Открыть PlayStore</string>
+    <string name="ask_for_review_negative">Больше не показывать</string>
+</resources>
