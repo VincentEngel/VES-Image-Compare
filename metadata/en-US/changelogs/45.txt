@@ -8,3 +8,4 @@
 * update androidx.window:window:1.4.0
 * update org.jetbrains.kotlin:kotlin-bom:2.1.20
 * Enable viewBinding and replace findViewById with viewBinding usage
+* Thanks to https://github.com/yurtpage for adding ru translation
