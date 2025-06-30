@@ -4,7 +4,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 
-import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ResizeAnimation extends Animation {
     private final int targetSize;
@@ -25,7 +25,7 @@ public class ResizeAnimation extends Animation {
             int targetSize,
             boolean targetDimension,
             boolean isHidingAnimation,
-            UtilMutableBoolean mutableBoolean
+            AtomicBoolean mutableBoolean
     ) {
         this.view = view;
         this.targetSize = targetSize;
@@ -42,7 +42,7 @@ public class ResizeAnimation extends Animation {
             public void onAnimationEnd(Animation animation) {
                 try {
                     if (isHidingAnimation) {
-                        if (mutableBoolean.value) {
+                        if (mutableBoolean.get()) {
                             view.setVisibility(View.INVISIBLE);
                         }
                     } else {

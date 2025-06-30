@@ -13,17 +13,18 @@ import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
 import com.vincentengelsoftware.androidimagecompare.helper.FullScreenHelper;
 import com.vincentengelsoftware.androidimagecompare.helper.SyncZoom;
-import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SideBySideActivity extends AppCompatActivity {
-    public static UtilMutableBoolean sync = new UtilMutableBoolean(true);
+    public static AtomicBoolean sync = new AtomicBoolean(true);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         if (Status.activityIsOpening) {
-            sync.value = getIntent().getBooleanExtra(IntentExtras.SYNCED_ZOOM, true);
+            sync.set(getIntent().getBooleanExtra(IntentExtras.SYNCED_ZOOM, true));
         }
 
         Status.activityIsOpening = false;
@@ -37,7 +38,7 @@ public class SideBySideActivity extends AppCompatActivity {
                 binding.sideBySideImageLeft,
                 binding.sideBySideImageRight,
                 SideBySideActivity.sync,
-                new UtilMutableBoolean(false)
+                new AtomicBoolean(false)
         );
         SyncZoom.setUpSyncZoomToggleButton(
                 binding.sideBySideImageLeft,

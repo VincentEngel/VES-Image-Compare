@@ -16,7 +16,8 @@ import com.vincentengelsoftware.androidimagecompare.ImageView.Listeners.OnTouchL
 import com.vincentengelsoftware.androidimagecompare.ImageView.Listeners.OnTouchListeners;
 import com.vincentengelsoftware.androidimagecompare.animations.FadeActivity;
 import com.vincentengelsoftware.androidimagecompare.globals.Settings;
-import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ZoomImageView extends TouchImageView implements VesImageInterface {
     private final OnTouchListeners onTouchListeners = new OnTouchListeners();
@@ -28,7 +29,7 @@ public class ZoomImageView extends TouchImageView implements VesImageInterface {
         super.setOnTouchListener(this.onTouchListeners);
     }
 
-    public void addMirrorListener(VesImageInterface target, UtilMutableBoolean sync, UtilMutableBoolean disabled)
+    public void addMirrorListener(VesImageInterface target, AtomicBoolean sync, AtomicBoolean disabled)
     {
         this.addOnTouchEventListener(new MirrorListener(this, target, sync, disabled));
     }

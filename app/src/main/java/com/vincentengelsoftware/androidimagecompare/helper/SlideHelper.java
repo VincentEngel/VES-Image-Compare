@@ -5,20 +5,21 @@ import android.widget.SeekBar;
 
 import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.animations.FadeActivity;
-import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SlideHelper {
     public static void setSwapSlideDirectionOnClick(
             ImageButton imageButton,
             SeekBar seekBar,
-            UtilMutableBoolean mutableBoolean,
+            AtomicBoolean mutableBoolean,
             FadeActivity activity
     ) {
         imageButton.setOnClickListener(view -> {
             activity.instantFadeIn();
-            mutableBoolean.value = !mutableBoolean.value;
+            mutableBoolean.set(!mutableBoolean.get());
 
-            if (mutableBoolean.value) {
+            if (mutableBoolean.get()) {
                 imageButton.setImageResource(R.drawable.ic_slide_ltr);
             } else {
                 imageButton.setImageResource(R.drawable.ic_slide_rtl);

@@ -19,12 +19,13 @@ import com.vincentengelsoftware.androidimagecompare.helper.Calculator;
 import com.vincentengelsoftware.androidimagecompare.helper.FullScreenHelper;
 import com.vincentengelsoftware.androidimagecompare.helper.SyncZoom;
 import com.vincentengelsoftware.androidimagecompare.helper.TransparentHelper;
-import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class OverlayTransparentActivity extends AppCompatActivity implements FadeActivity {
-    public static UtilMutableBoolean sync = new UtilMutableBoolean(true);
+    public static AtomicBoolean sync = new AtomicBoolean(true);
 
-    private final static UtilMutableBoolean continueHiding = new UtilMutableBoolean(true);
+    private final static AtomicBoolean continueHiding = new AtomicBoolean(true);
     private static Thread fadeOutThread;
     private static Thread fadeInThread;
 
@@ -45,7 +46,7 @@ public class OverlayTransparentActivity extends AppCompatActivity implements Fad
         }
 
         if (Status.activityIsOpening) {
-            sync.value = getIntent().getBooleanExtra(IntentExtras.SYNCED_ZOOM, true);
+            sync.set(getIntent().getBooleanExtra(IntentExtras.SYNCED_ZOOM, true));
         }
 
         Status.activityIsOpening = false;
@@ -94,7 +95,7 @@ public class OverlayTransparentActivity extends AppCompatActivity implements Fad
                 binding.overlayTransparentImageViewBase,
                 binding.overlayTransparentImageViewTransparent,
                 OverlayTransparentActivity.sync,
-                new UtilMutableBoolean(false)
+                new AtomicBoolean(false)
         );
         SyncZoom.setUpSyncZoomToggleButton(
                 binding.overlayTransparentImageViewBase,
@@ -120,7 +121,7 @@ public class OverlayTransparentActivity extends AppCompatActivity implements Fad
     }
 
     public void triggerFadeIn() {
-        continueHiding.value = false;
+        continueHiding.set(false);
         if (fadeOutThread != null) {
             fadeOutThread.interrupt();
         }
@@ -165,7 +166,7 @@ public class OverlayTransparentActivity extends AppCompatActivity implements Fad
 
             runOnUiThread(() -> {
                 try {
-                    continueHiding.value = true;
+                    continueHiding.set(true);
                     ResizeAnimation anim = new ResizeAnimation(
                             binding.overlayTransparentExtensions,
                             1,
@@ -185,7 +186,7 @@ public class OverlayTransparentActivity extends AppCompatActivity implements Fad
     }
 
     public void instantFadeIn() {
-        continueHiding.value = false;
+        continueHiding.set(false);
         runOnUiThread(() -> {
             try {
                 binding.overlayTransparentExtensions.clearAnimation();

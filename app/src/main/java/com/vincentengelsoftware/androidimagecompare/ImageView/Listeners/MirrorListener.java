@@ -6,21 +6,22 @@ import android.view.View;
 import com.vincentengelsoftware.androidimagecompare.ImageView.VesImageInterface;
 import com.vincentengelsoftware.androidimagecompare.globals.Settings;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
-import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MirrorListener implements OnTouchListenerInterface
 {
     private final VesImageInterface source;
     private final VesImageInterface target;
-    private final UtilMutableBoolean sync;
+    private final AtomicBoolean sync;
     // Prevent infinite loop
-    private final UtilMutableBoolean disabled;
+    private final AtomicBoolean disabled;
 
     public MirrorListener(
             VesImageInterface source,
             VesImageInterface target,
-            UtilMutableBoolean sync,
-            UtilMutableBoolean disabled
+            AtomicBoolean sync,
+            AtomicBoolean disabled
     ) {
         this.source = source;
         this.target = target;
@@ -29,20 +30,20 @@ public class MirrorListener implements OnTouchListenerInterface
     }
     public void trigger(View view, MotionEvent motionEvent)
     {
-        if (this.disabled.value) {
+        if (this.disabled.get()) {
             return;
         }
 
-        if (this.sync.value) {
+        if (this.sync.get()) {
             this.handleMirroring(motionEvent);
         }
     }
 
     private void handleMirroring(MotionEvent motionEvent) {
         if (Settings.MIRRORING_TYPE == Status.NATURAL_MIRRORING) {
-            this.disabled.value = true;
+            this.disabled.set(true);
             this.target.triggerOnTouchEvent(motionEvent);
-            this.disabled.value = false;
+            this.disabled.set(false);
             return;
         }
 

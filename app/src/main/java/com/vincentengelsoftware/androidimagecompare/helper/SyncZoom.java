@@ -5,15 +5,16 @@ import android.widget.ToggleButton;
 
 import com.vincentengelsoftware.androidimagecompare.animations.FadeActivity;
 import com.vincentengelsoftware.androidimagecompare.globals.Settings;
-import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
 import com.vincentengelsoftware.androidimagecompare.ImageView.VesImageInterface;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SyncZoom {
     public static void setLinkedTargets(
             VesImageInterface imageOne,
             VesImageInterface imageTwo,
-            UtilMutableBoolean sync,
-            UtilMutableBoolean disabled
+            AtomicBoolean sync,
+            AtomicBoolean disabled
     ) {
         imageOne.addMirrorListener(imageTwo, sync, disabled);
         imageTwo.addMirrorListener(imageOne, sync, disabled);
@@ -25,12 +26,12 @@ public class SyncZoom {
             ToggleButton toggleButton,
             Drawable iconLinkedOn,
             Drawable iconLinkedOff,
-            UtilMutableBoolean sync,
+            AtomicBoolean sync,
             FadeActivity activity
     )
     {
-        toggleButton.setChecked(sync.value);
-        if (sync.value) {
+        toggleButton.setChecked(sync.get());
+        if (sync.get()) {
             toggleButton.setBackgroundDrawable(iconLinkedOn);
         } else {
             toggleButton.setBackgroundDrawable(iconLinkedOff);
@@ -50,7 +51,7 @@ public class SyncZoom {
             } else {
                 toggleButton.setBackgroundDrawable(iconLinkedOff);
             }
-            sync.value = !sync.value;
+            sync.set(!sync.get());
             if (activity != null) {
                 activity.triggerFadeOutThread();
             }

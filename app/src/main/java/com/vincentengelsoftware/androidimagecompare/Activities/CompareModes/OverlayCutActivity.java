@@ -18,7 +18,8 @@ import com.vincentengelsoftware.androidimagecompare.helper.BitmapHelper;
 import com.vincentengelsoftware.androidimagecompare.helper.Calculator;
 import com.vincentengelsoftware.androidimagecompare.helper.FullScreenHelper;
 import com.vincentengelsoftware.androidimagecompare.helper.SyncZoom;
-import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class OverlayCutActivity extends AppCompatActivity {
     public SeekBar recentSeekBar;
@@ -27,7 +28,7 @@ public class OverlayCutActivity extends AppCompatActivity {
     private static Thread currentThread;
     private static Thread nextThread;
 
-    public static UtilMutableBoolean sync = new UtilMutableBoolean(true);
+    public static AtomicBoolean sync = new AtomicBoolean(true);
 
     private static int color_active;
     private static int color_inactive;
@@ -57,7 +58,7 @@ public class OverlayCutActivity extends AppCompatActivity {
         if (Status.activityIsOpening) {
             OverlayCutActivity.bitmapSource = Images.second.getAdjustedBitmap();
             OverlayCutActivity.bitmapAdjusted = Images.second.getAdjustedBitmap();
-            OverlayCutActivity.sync.value = getIntent().getBooleanExtra(IntentExtras.SYNCED_ZOOM, true);
+            OverlayCutActivity.sync.set(getIntent().getBooleanExtra(IntentExtras.SYNCED_ZOOM, true));
         }
         Status.activityIsOpening = false;
 
@@ -79,7 +80,7 @@ public class OverlayCutActivity extends AppCompatActivity {
                 binding.fullSlideImageViewFront,
                 binding.fullSlideImageViewBase,
                 OverlayCutActivity.sync,
-                new UtilMutableBoolean(false)
+                new AtomicBoolean(false)
         );
 
         ViewGroup.LayoutParams layoutParamsSeekbarLeft = binding.fullSliderSeekbarLeft.getLayoutParams();

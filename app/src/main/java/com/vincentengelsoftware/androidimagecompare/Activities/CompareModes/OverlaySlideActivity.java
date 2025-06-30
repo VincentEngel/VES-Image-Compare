@@ -22,17 +22,18 @@ import com.vincentengelsoftware.androidimagecompare.helper.Calculator;
 import com.vincentengelsoftware.androidimagecompare.helper.FullScreenHelper;
 import com.vincentengelsoftware.androidimagecompare.helper.SlideHelper;
 import com.vincentengelsoftware.androidimagecompare.helper.SyncZoom;
-import com.vincentengelsoftware.androidimagecompare.util.UtilMutableBoolean;
 import com.vincentengelsoftware.androidimagecompare.ImageView.ImageScaleCenter;
 import com.vincentengelsoftware.androidimagecompare.ImageView.VesImageInterface;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class OverlaySlideActivity extends AppCompatActivity implements FadeActivity {
     private static Thread currentThread;
     private static Thread nextThread;
 
-    public static UtilMutableBoolean sync = new UtilMutableBoolean(true);
-    private final static UtilMutableBoolean leftToRight = new UtilMutableBoolean(true);
-    private final static UtilMutableBoolean continueHiding = new UtilMutableBoolean(true);
+    public static AtomicBoolean sync = new AtomicBoolean(true);
+    private final static AtomicBoolean leftToRight = new AtomicBoolean(true);
+    private final static AtomicBoolean continueHiding = new AtomicBoolean(true);
     private static Thread fadeOutThread;
     private static Thread fadeInThread;
 
@@ -64,7 +65,7 @@ public class OverlaySlideActivity extends AppCompatActivity implements FadeActiv
             }
 
             if (Status.activityIsOpening) {
-                sync.value = getIntent().getBooleanExtra(IntentExtras.SYNCED_ZOOM, true);
+                sync.set(getIntent().getBooleanExtra(IntentExtras.SYNCED_ZOOM, true));
             }
 
             Status.activityIsOpening = false;
@@ -89,7 +90,7 @@ public class OverlaySlideActivity extends AppCompatActivity implements FadeActiv
                     binding.overlaySlideImageViewFront,
                     binding.overlaySlideImageViewBase,
                     OverlaySlideActivity.sync,
-                    new UtilMutableBoolean(false)
+                    new AtomicBoolean(false)
             );
 
             binding.overlayTransparentButtonHideFrontImage.setOnClickListener(view -> {
@@ -97,9 +98,9 @@ public class OverlaySlideActivity extends AppCompatActivity implements FadeActiv
                 if (binding.overlaySlideImageViewFront.getVisibility() == View.VISIBLE) {
                     binding.overlayTransparentButtonHideFrontImage.setImageResource(R.drawable.ic_visibility_off);
                     binding.overlaySlideImageViewFront.setVisibility(View.GONE);
-                } else if (leftToRight.value && (binding.overlaySlideSeekBar.getProgress() <= 1)) {
+                } else if (leftToRight.get() && (binding.overlaySlideSeekBar.getProgress() <= 1)) {
                     binding.overlaySlideSeekBar.setProgress(2);
-                } else if (!leftToRight.value && (binding.overlaySlideSeekBar.getProgress() >= 99)) {
+                } else if (!leftToRight.get() && (binding.overlaySlideSeekBar.getProgress() >= 99)) {
                     binding.overlaySlideSeekBar.setProgress(98);
                 } else {
                     binding.overlayTransparentButtonHideFrontImage.setImageResource(R.drawable.ic_visibility);
@@ -117,7 +118,7 @@ public class OverlaySlideActivity extends AppCompatActivity implements FadeActiv
             );
             binding.overlaySlideSeekBar.setProgress(50);
 
-            if (leftToRight.value) {
+            if (leftToRight.get()) {
                 binding.overlaySlideButtonSwapSeekbar.setImageResource(R.drawable.ic_slide_ltr);
             } else {
                 binding.overlaySlideButtonSwapSeekbar.setImageResource(R.drawable.ic_slide_rtl);
@@ -145,7 +146,7 @@ public class OverlaySlideActivity extends AppCompatActivity implements FadeActiv
     }
 
     public void triggerFadeIn() {
-        continueHiding.value = false;
+        continueHiding.set(false);
         if (fadeOutThread != null) {
             fadeOutThread.interrupt();
         }
@@ -188,7 +189,7 @@ public class OverlaySlideActivity extends AppCompatActivity implements FadeActiv
 
             runOnUiThread(() -> {
                 try {
-                    continueHiding.value = true;
+                    continueHiding.set(true);
                     ResizeAnimation anim = new ResizeAnimation(
                             binding.overlaySlideExtensions,
                             1,
@@ -208,7 +209,7 @@ public class OverlaySlideActivity extends AppCompatActivity implements FadeActiv
     }
 
     public void instantFadeIn() {
-        continueHiding.value = false;
+        continueHiding.set(false);
         runOnUiThread(() -> {
             try {
                 binding.overlaySlideExtensions.clearAnimation();
@@ -225,7 +226,7 @@ public class OverlaySlideActivity extends AppCompatActivity implements FadeActiv
     private void addSeekbarLogic(
             SeekBar seekBar,
             VesImageInterface imageView,
-            UtilMutableBoolean cutFromRightToLeft,
+            AtomicBoolean cutFromRightToLeft,
             Bitmap bitmapSource,
             ImageButton hideShow
     ) {
@@ -238,7 +239,7 @@ public class OverlaySlideActivity extends AppCompatActivity implements FadeActiv
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
                 instantFadeIn();
-                if (!cutFromRightToLeft.value && (progress >= 99)) {
+                if (!cutFromRightToLeft.get() && (progress >= 99)) {
                     hideShow.setImageResource(R.drawable.ic_visibility_off);
                     imageView.setVisibility(View.GONE);
                     triggerFadeOutThread();
@@ -247,7 +248,7 @@ public class OverlaySlideActivity extends AppCompatActivity implements FadeActiv
 
                 int width = bitmapSource.getWidth() * progress / 100;
 
-                if (cutFromRightToLeft.value && ((progress <= 1) || width == 0)) {
+                if (cutFromRightToLeft.get() && ((progress <= 1) || width == 0)) {
                     hideShow.setImageResource(R.drawable.ic_visibility_off);
                     imageView.setVisibility(View.GONE);
                     triggerFadeOutThread();
@@ -264,7 +265,7 @@ public class OverlaySlideActivity extends AppCompatActivity implements FadeActiv
                                     bitmapSource,
                                     transparentBitmap,
                                     width,
-                                    cutFromRightToLeft.value
+                                    cutFromRightToLeft.get()
                             );
 
                             if (Thread.currentThread().isInterrupted()) {

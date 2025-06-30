@@ -46,4 +46,7 @@ dependencies {
     implementation 'androidx.core:core:1.16.0'
     implementation 'com.github.MikeOrtiz:TouchImageView:3.7.1'
     implementation 'com.drewnoakes:metadata-extractor:2.19.0'
+    implementation 'androidx.test.ext:junit:1.2.1'
+
+    testImplementation 'junit:junit:4.13.2'
 }
