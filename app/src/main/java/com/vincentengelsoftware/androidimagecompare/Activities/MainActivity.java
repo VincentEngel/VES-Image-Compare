@@ -454,7 +454,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void openResizeImageDialog(ImageHolder imageHolder, ImageResizeSettings imageResizeSettings) {
         Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.dialog_resize_image);
+        // Inflate the layout using view binding
+        DialogResizeImageBinding dialogBinding = DialogResizeImageBinding.inflate(getLayoutInflater());
+        // Set the dialog's content view to the root of the inflated binding
+        dialog.setContentView(dialogBinding.getRoot()); //MODIFIED LINE
 
         WindowMetricsCalculator windowMetricsCalculator = WindowMetricsCalculator.getOrCreate();
         WindowMetrics windowMetrics = windowMetricsCalculator.computeCurrentWindowMetrics(this);
@@ -463,7 +466,7 @@ public class MainActivity extends AppCompatActivity {
 
         widthPixel = (int) (widthPixel * 0.9);
 
-        DialogResizeImageBinding dialogBinding = DialogResizeImageBinding.inflate(getLayoutInflater());
+        // Now, modifications to views via dialogBinding will apply to the displayed dialog
         dialogBinding.dialogResizeImageLinearLayout.setMinimumWidth(widthPixel);
 
         dialogBinding.dialogResizeImageRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
@@ -483,17 +486,21 @@ public class MainActivity extends AppCompatActivity {
         });
 
         switch (imageResizeSettings.getImageResizeOption()) {
-            case Images.RESIZE_OPTION_ORIGINAL ->
-                    dialogBinding.dialogResizeImageRadioGroup.check(R.id.dialog_resize_image_radio_button_original);
-            case Images.RESIZE_OPTION_AUTOMATIC ->
-                    dialogBinding.dialogResizeImageRadioGroup.check(R.id.dialog_resize_image_radio_button_automatic);
-            case Images.RESIZE_OPTION_CUSTOM -> {
+            case Images.RESIZE_OPTION_ORIGINAL:
+                dialogBinding.dialogResizeImageRadioGroup.check(R.id.dialog_resize_image_radio_button_original);
+                break;
+            case Images.RESIZE_OPTION_AUTOMATIC:
+                dialogBinding.dialogResizeImageRadioGroup.check(R.id.dialog_resize_image_radio_button_automatic);
+                break;
+            case Images.RESIZE_OPTION_CUSTOM: {
                 dialogBinding.dialogResizeImageRadioGroup.check(R.id.dialog_resize_image_radio_button_custom);
                 dialogBinding.dialogResizeImageInputHeight.setText(String.valueOf(imageResizeSettings.getImageResizeHeight()));
                 dialogBinding.dialogResizeImageInputWidth.setText(String.valueOf(imageResizeSettings.getImageResizeWidth()));
+                break;
             }
-            default ->
-                    dialogBinding.dialogResizeImageRadioGroup.check(R.id.dialog_resize_image_radio_button_automatic);
+            default:
+                dialogBinding.dialogResizeImageRadioGroup.check(R.id.dialog_resize_image_radio_button_automatic);
+                break;
         }
 
         dialogBinding.dialogResizeImageBtnDone.setOnClickListener(v -> {
