@@ -1,3 +1,6 @@
+* Enable viewBinding and replace findViewById with viewBinding usage
+* Use AtomicBoolean instead of own UtilMutableBoolean object
+* Thanks to https://github.com/yurtpage for adding ru translation
 * update targetSdk from 34 to 35
 * update androidx.constraintlayout:constraintlayout to 2.2.1
 * update androidx.core:core to 1.16.0
@@ -7,5 +10,3 @@
 * update androidx.appcompat:appcompat:1.7.1
 * update androidx.window:window:1.4.0
 * update org.jetbrains.kotlin:kotlin-bom:2.1.20
-* Enable viewBinding and replace findViewById with viewBinding usage
-* Thanks to https://github.com/yurtpage for adding ru translation
