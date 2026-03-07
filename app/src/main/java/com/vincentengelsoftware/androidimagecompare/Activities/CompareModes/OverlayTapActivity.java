@@ -1,5 +1,6 @@
 package com.vincentengelsoftware.androidimagecompare.Activities.CompareModes;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 
@@ -9,9 +10,9 @@ import androidx.core.content.ContextCompat;
 import com.vincentengelsoftware.androidimagecompare.Activities.IntentExtras;
 import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.databinding.ActivityOverlayTapBinding;
-import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.globals.Settings;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
+import com.vincentengelsoftware.androidimagecompare.helper.BitmapExtractor;
 import com.vincentengelsoftware.androidimagecompare.helper.FullScreenHelper;
 import com.vincentengelsoftware.androidimagecompare.helper.SyncZoom;
 import com.vincentengelsoftware.androidimagecompare.helper.TapHelper;
@@ -27,22 +28,30 @@ public class OverlayTapActivity extends AppCompatActivity {
 
         if (Status.activityIsOpening) {
             sync.set(getIntent().getBooleanExtra(IntentExtras.SYNCED_ZOOM, true));
+            Status.activityIsOpening = false;
         }
-        Status.activityIsOpening = false;
 
         FullScreenHelper.setFullScreenFlags(this.getWindow());
 
         ActivityOverlayTapBinding binding = ActivityOverlayTapBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        String uriOne = getIntent().getStringExtra(IntentExtras.IMAGE_URI_ONE);
+        String uriTwo = getIntent().getStringExtra(IntentExtras.IMAGE_URI_TWO);
+        String nameOne = getIntent().getStringExtra(IntentExtras.IMAGE_NAME_ONE);
+        String nameTwo = getIntent().getStringExtra(IntentExtras.IMAGE_NAME_TWO);
+
+        Bitmap bitmapFirst = BitmapExtractor.fromUriString(getContentResolver(), uriOne);
+        Bitmap bitmapSecond = BitmapExtractor.fromUriString(getContentResolver(), uriTwo);
+
         try {
-            Images.first.updateVesImageViewWithAdjustedImage(binding.overlayTapImageViewOne);
+            binding.overlayTapImageViewOne.setBitmapImage(bitmapFirst);
         } catch (Exception e) {
             this.finish();
         }
 
-        binding.overlayTapImageName.setText(Images.first.getImageName());
-        Images.second.updateVesImageViewWithAdjustedImage(binding.overlayTapImageViewTwo);
+        binding.overlayTapImageName.setText(nameOne);
+        binding.overlayTapImageViewTwo.setBitmapImage(bitmapSecond);
 
         if (Settings.TAP_HIDE_MODE == Status.TAP_HIDE_MODE_INVISIBLE) {
             binding.overlayTapImageViewTwo.setVisibility(View.INVISIBLE);
@@ -55,7 +64,7 @@ public class OverlayTapActivity extends AppCompatActivity {
                 binding.overlayTapImageViewTwo,
                 OverlayTapActivity.sync,
                 binding.overlayTapImageName,
-                Images.second
+                nameTwo
         );
 
         TapHelper.setOnClickListener(
@@ -63,7 +72,7 @@ public class OverlayTapActivity extends AppCompatActivity {
                 binding.overlayTapImageViewOne,
                 OverlayTapActivity.sync,
                 binding.overlayTapImageName,
-                Images.first
+                nameOne
         );
 
         SyncZoom.setUpSyncZoomToggleButton(

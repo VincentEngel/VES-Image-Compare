@@ -20,7 +20,7 @@
 
 
         <com.vincentengelsoftware.androidimagecompare.ImageView.ZoomImageView
-            android:id="@+id/side_by_side_image_left"
+            android:id="@+id/side_by_side_image_top_left"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -38,7 +38,7 @@
                 android:layout_weight="1">
 
                 <TextView
-                    android:id="@+id/side_by_side_image_name_first"
+                    android:id="@+id/side_by_side_image_name_top_left"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -71,7 +71,7 @@
                 android:layout_weight="1">
 
                 <TextView
-                    android:id="@+id/side_by_side_image_name_second"
+                    android:id="@+id/side_by_side_image_name_bottom_right"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -83,7 +83,7 @@
         </LinearLayout>
 
         <com.vincentengelsoftware.androidimagecompare.ImageView.ZoomImageView
-            android:id="@+id/side_by_side_image_right"
+            android:id="@+id/side_by_side_image_bottom_right"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"

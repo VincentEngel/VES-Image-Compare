@@ -65,7 +65,7 @@
                         android:layout_weight="1">
 
                         <ImageView
-                            android:id="@+id/home_image_first"
+                            android:id="@+id/home_image_left"
                             android:layout_width="124dp"
                             android:layout_height="124dp"
                             android:layout_gravity="center"
@@ -130,7 +130,7 @@
                         android:layout_weight="1">
 
                         <ImageView
-                            android:id="@+id/home_image_second"
+                            android:id="@+id/home_image_right"
                             android:layout_width="124dp"
                             android:layout_height="124dp"
                             android:layout_gravity="center"

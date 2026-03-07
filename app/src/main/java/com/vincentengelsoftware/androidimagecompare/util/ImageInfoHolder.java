@@ -2,12 +2,10 @@ package com.vincentengelsoftware.androidimagecompare.util;
 
 import android.graphics.Bitmap;
 import android.widget.ImageView;
-
 import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.helper.BitmapHelper;
-import com.vincentengelsoftware.androidimagecompare.ImageView.VesImageInterface;
 
-public class ImageHolder {
+public class ImageInfoHolder {
     private Bitmap bitmap;
     private Bitmap bitmapSmall;
     private Bitmap bitmapResized;
@@ -38,20 +36,20 @@ public class ImageHolder {
         return this.imageName;
     }
 
-    public void updateFromImageHolder(ImageHolder imageHolder)
+    public void updateFromImageHolder(ImageInfoHolder imageInfoHolder)
     {
-        this.maxSideSize = imageHolder.maxSideSize;
-        this.maxSideSizeForSmallBitmap = imageHolder.maxSideSizeForSmallBitmap;
+        this.maxSideSize = imageInfoHolder.maxSideSize;
+        this.maxSideSizeForSmallBitmap = imageInfoHolder.maxSideSizeForSmallBitmap;
 
-        this.bitmap = imageHolder.bitmap;
-        this.bitmapSmall = imageHolder.bitmapSmall;
+        this.bitmap = imageInfoHolder.bitmap;
+        this.bitmapSmall = imageInfoHolder.bitmapSmall;
         this.bitmapResized = null;
-        this.rotatedBitmap = imageHolder.rotatedBitmap;
+        this.rotatedBitmap = imageInfoHolder.rotatedBitmap;
 
-        this.currentRotation = imageHolder.currentRotation;
-        this.currentBitmapRotation = imageHolder.currentBitmapRotation;
+        this.currentRotation = imageInfoHolder.currentRotation;
+        this.currentBitmapRotation = imageInfoHolder.currentBitmapRotation;
 
-        this.imageName = imageHolder.imageName;
+        this.imageName = imageInfoHolder.imageName;
     }
 
     /**
@@ -177,11 +175,6 @@ public class ImageHolder {
         }
 
         return this.rotatedBitmap;
-    }
-
-    public void updateVesImageViewWithAdjustedImage(VesImageInterface imageView)
-    {
-        imageView.setBitmapImage(this.getAdjustedBitmap());
     }
 
     public void updateImageViewPreviewImage(ImageView imageView)

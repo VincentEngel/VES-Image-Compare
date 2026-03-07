@@ -28,7 +28,6 @@
     <string name="hide_front_image">Hide front image</string>
     <string name="reset">Reset</string>
     <string name="overlay_cut_keep_image">Keep image</string>
-    <string name="no_metadata_data">Google has restricted access to metadata such as Exif data in Android 14. As a result, it is not always possible to read metadata from images selected from the Image Picker. To read metadata, you need to open your images, select the two you want to compare and click Share, then share them with the vesIC app.</string>
 
     <!-- Generic -->
     <string name="done">Done</string>
@@ -48,7 +47,6 @@
     <string name="link_app_icon" translatable="false"><a href="https://github.com/google/material-design-icons">Google - Material Design Icons</a></string>
     <string name="color_theme">Color Theme</string>
     <string name="link_color_theme" translatable="false"><a href="https://github.com/SimpleMobileTools/Simple-Calendar">Simple Calendar</a></string>
-    <string name="metadata_extractor" translatable="false"><a href="https://github.com/drewnoakes/metadata-extractor">Metadata Extractor</a></string>
     <string name="info_text_view_inspiration">This app is heavily inspired from the App \"Ditto - Photo Comparer\"</string>
     <string name="link_ditto_photo_comparer" translatable="false"><a href="https://play.google.com/store/apps/details?id=com.sasiddiqui.ditto">Ditto - Photo Comparer</a></string>
     <string name="playstore" translatable="false">PlayStore</string>
@@ -63,7 +61,6 @@
 
     <!-- Compare modes -->
     <string name="select_compare_mode_title">Select Compare Mode</string>
-    <string name="compare_mode_metadata">MetaData (Beta)</string>
     <string name="compare_mode_transparent">Transparent</string>
     <string name="compare_mode_side_by_side">Side by Side</string>
     <string name="compare_mode_overlay_slide">Overlay Slide</string>

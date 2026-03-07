@@ -1,5 +1,6 @@
 package com.vincentengelsoftware.androidimagecompare.Activities.CompareModes;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.View;
@@ -13,8 +14,8 @@ import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.animations.FadeActivity;
 import com.vincentengelsoftware.androidimagecompare.animations.ResizeAnimation;
 import com.vincentengelsoftware.androidimagecompare.databinding.ActivityOverlayTransparentBinding;
-import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
+import com.vincentengelsoftware.androidimagecompare.helper.BitmapExtractor;
 import com.vincentengelsoftware.androidimagecompare.helper.Calculator;
 import com.vincentengelsoftware.androidimagecompare.helper.FullScreenHelper;
 import com.vincentengelsoftware.androidimagecompare.helper.SyncZoom;
@@ -47,24 +48,28 @@ public class OverlayTransparentActivity extends AppCompatActivity implements Fad
 
         if (Status.activityIsOpening) {
             sync.set(getIntent().getBooleanExtra(IntentExtras.SYNCED_ZOOM, true));
+            Status.activityIsOpening = false;
         }
-
-        Status.activityIsOpening = false;
 
         FullScreenHelper.setFullScreenFlags(this.getWindow());
 
         binding = ActivityOverlayTransparentBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        String uriOne = getIntent().getStringExtra(IntentExtras.IMAGE_URI_ONE);
+        String uriTwo = getIntent().getStringExtra(IntentExtras.IMAGE_URI_TWO);
+        Bitmap bitmapFirst = BitmapExtractor.fromUriString(getContentResolver(), uriOne);
+        Bitmap bitmapSecond = BitmapExtractor.fromUriString(getContentResolver(), uriTwo);
+
         binding.overlayTransparentImageViewBase.addFadeListener(this);
         try {
-            Images.first.updateVesImageViewWithAdjustedImage(binding.overlayTransparentImageViewBase);
+            binding.overlayTransparentImageViewBase.setBitmapImage(bitmapFirst);
         } catch (Exception e) {
             this.finish();
         }
 
         binding.overlayTransparentImageViewTransparent.addFadeListener(this);
-        Images.second.updateVesImageViewWithAdjustedImage(binding.overlayTransparentImageViewTransparent);
+        binding.overlayTransparentImageViewTransparent.setBitmapImage(bitmapSecond);
 
         binding.overlayTransparentImageViewTransparent.bringToFront();
 

@@ -2,10 +2,8 @@ package com.vincentengelsoftware.androidimagecompare.Activities;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Rect;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
@@ -17,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -26,7 +25,6 @@ import androidx.window.layout.WindowMetricsCalculator;
 
 import com.vincentengelsoftware.androidimagecompare.Activities.CompareModes.CompareModeNames;
 import com.vincentengelsoftware.androidimagecompare.Activities.CompareModes.OverlayCutActivity;
-import com.vincentengelsoftware.androidimagecompare.Activities.CompareModes.MetaDataActivity;
 import com.vincentengelsoftware.androidimagecompare.Activities.CompareModes.OverlaySlideActivity;
 import com.vincentengelsoftware.androidimagecompare.Activities.CompareModes.OverlayTapActivity;
 import com.vincentengelsoftware.androidimagecompare.Activities.CompareModes.OverlayTransparentActivity;
@@ -42,36 +40,34 @@ import com.vincentengelsoftware.androidimagecompare.globals.Settings;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
 import com.vincentengelsoftware.androidimagecompare.helper.AskForReview;
 import com.vincentengelsoftware.androidimagecompare.helper.BitmapExtractor;
+import com.vincentengelsoftware.androidimagecompare.helper.ImageFileSaver;
 import com.vincentengelsoftware.androidimagecompare.helper.MainHelper;
 import com.vincentengelsoftware.androidimagecompare.helper.UriExtractor;
 import com.vincentengelsoftware.androidimagecompare.services.KeyValueStorage;
 import com.vincentengelsoftware.androidimagecompare.services.Settings.ApplyUserSettings;
 import com.vincentengelsoftware.androidimagecompare.services.Settings.ImageResizeSettings;
 import com.vincentengelsoftware.androidimagecompare.services.Settings.UserSettings;
-import com.vincentengelsoftware.androidimagecompare.util.ImageHolder;
+import com.vincentengelsoftware.androidimagecompare.util.ImageInfoHolder;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
-    public static String leftImageUri;
-    public static String rightImageUri;
+    public static Uri leftImageUri;
+    public static Uri rightImageUri;
     public static final String leftImageUriKey = "leftImageUriKey";
     public static final String rightImageUriKey = "rightImageUriKey";
-
-    private KeyValueStorage keyValueStorage;
 
     private UserSettings userSettings;
 
     protected ActivityMainBinding binding;
 
-    /**
-     * TODO clear / refactor onCreate
-     */
     protected void onCreate(Bundle savedInstanceState) {
-        this.keyValueStorage = new KeyValueStorage(getApplicationContext());
-        this.userSettings = UserSettings.getInstance(this.keyValueStorage);
+        KeyValueStorage keyValueStorage = new KeyValueStorage(getApplicationContext());
+        this.userSettings = UserSettings.getInstance(keyValueStorage);
         Settings.init(userSettings);
 
         ApplyUserSettings.apply(this.userSettings, Images.first, Images.second);
@@ -81,36 +77,7 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        if (savedInstanceState == null) {
-            try {
-                this.keyValueStorage.setString(MainActivity.leftImageUriKey, null);
-                this.keyValueStorage.setString(MainActivity.rightImageUriKey, null);
-            } catch (Exception ignored) {
-            }
-        }
-
         Status.HAS_HARDWARE_KEY = ViewConfiguration.get(this).hasPermanentMenuKey();
-
-        if (Images.fileUriFirst == null) {
-            try {
-                Images.fileUriFirst = FileProvider.getUriForFile(
-                        this,
-                        getApplicationContext().getPackageName() + ".fileprovider",
-                        new File(this.getCacheDir(), "camera_image_one.png")
-                );
-            } catch (Exception ignored) {
-            }
-        }
-        if (Images.fileUriSecond == null) {
-            try {
-                Images.fileUriSecond = FileProvider.getUriForFile(
-                        this,
-                        getApplicationContext().getPackageName() + ".fileprovider",
-                        new File(this.getCacheDir(), "camera_image_two.png")
-                );
-            } catch (Exception ignored) {
-            }
-        }
 
         if (Dimensions.maxSide == 0) {
             WindowMetrics windowMetrics = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(this);
@@ -128,8 +95,17 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (savedInstanceState != null) {
+            String savedLeft = savedInstanceState.getString(MainActivity.leftImageUriKey);
+            String savedRight = savedInstanceState.getString(MainActivity.rightImageUriKey);
+            if (savedLeft != null) {
+                MainActivity.leftImageUri = Uri.parse(savedLeft);
+            }
+            if (savedRight != null) {
+                MainActivity.rightImageUri = Uri.parse(savedRight);
+            }
             restoreImages();
         }
+
         restoreImageViews();
 
         setUpActions();
@@ -139,21 +115,57 @@ public class MainActivity extends AppCompatActivity {
             this.handleIntent(getIntent());
         }
 
-        if (AskForReview.isItTimeToAsk(getApplicationContext(), this.keyValueStorage)) {
-            askForReview();
-            this.keyValueStorage.setBoolean(KeyValueStorage.ASKED_FOR_REVIEW, true);
+        AskForReview.askForReviewWhenNecessary(getApplicationContext(), keyValueStorage);
+    }
+
+    @Override
+    protected void onSaveInstanceState(@androidx.annotation.NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (MainActivity.leftImageUri != null) {
+            outState.putString(MainActivity.leftImageUriKey, MainActivity.leftImageUri.toString());
+        }
+        if (MainActivity.rightImageUri != null) {
+            outState.putString(MainActivity.rightImageUriKey, MainActivity.rightImageUri.toString());
         }
     }
 
     @Override
-    protected void onStop() {
+    protected void onDestroy() {
+        super.onDestroy();
+        try {
+            File cacheDir = getCacheDir();
+            File[] files = cacheDir.listFiles();
+            if (files != null) {
+                Set<String> keepPaths = getKeepPaths();
+                for (File file : files) {
+                    if (!keepPaths.contains(file.getCanonicalPath())) {
+                        file.delete();
+                    }
+                }
+            }
+        } catch (Exception ignored) {
+        }
+    }
+
+    @NonNull
+    private static Set<String> getKeepPaths() throws IOException {
+        Set<String> keepPaths = new java.util.HashSet<>();
+
         if (MainActivity.leftImageUri != null) {
-            this.keyValueStorage.setString(MainActivity.leftImageUriKey, MainActivity.leftImageUri);
+            Uri leftUri = MainActivity.leftImageUri;
+            if (leftUri.getPath() != null) {
+                keepPaths.add(new File(leftUri.getPath()).getCanonicalPath());
+            }
         }
+
         if (MainActivity.rightImageUri != null) {
-            this.keyValueStorage.setString(MainActivity.rightImageUriKey, MainActivity.rightImageUri);
+            Uri rightUri = MainActivity.rightImageUri;
+            if (rightUri.getPath() != null) {
+                keepPaths.add(new File(rightUri.getPath()).getCanonicalPath());
+            }
         }
-        super.onStop();
+
+        return keepPaths;
     }
 
     @Override
@@ -179,53 +191,58 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private static String stripSlotPrefix(String name) {
+        if (name != null && name.length() > 2 && (name.startsWith("1_") || name.startsWith("2_"))) {
+            return name.substring(2);
+        }
+        return name;
+    }
+
     public void restoreImages() {
         if (Images.first.getBitmap() == null) {
             try {
-                Uri uri = Uri.parse(this.keyValueStorage.getString(MainActivity.leftImageUriKey, null));
+                Uri uri = MainActivity.leftImageUri;
                 Images.first.updateFromBitmap(
                         BitmapExtractor.fromUri(this.getContentResolver(), uri),
                         Dimensions.maxSide,
                         Dimensions.maxSideForPreview,
-                        MainHelper.getImageName(this, uri)
+                        stripSlotPrefix(MainHelper.getImageName(this, uri))
                 );
-                MainActivity.leftImageUri = uri.toString();
             } catch (Exception ignored) {
             }
         }
         if (Images.second.getBitmap() == null) {
             try {
-                Uri uri = Uri.parse(this.keyValueStorage.getString(MainActivity.rightImageUriKey, null));
+                Uri uri = MainActivity.rightImageUri;
                 Images.second.updateFromBitmap(
                         BitmapExtractor.fromUri(this.getContentResolver(), uri),
                         Dimensions.maxSide,
                         Dimensions.maxSideForPreview,
-                        MainHelper.getImageName(this, uri)
+                        stripSlotPrefix(MainHelper.getImageName(this, uri))
                 );
-                MainActivity.rightImageUri = uri.toString();
             } catch (Exception ignored) {
             }
         }
 
         if (Images.first.getBitmap() != null) {
-            Images.first.updateImageViewPreviewImage(binding.homeImageFirst);
+            Images.first.updateImageViewPreviewImage(binding.homeImageLeft);
             binding.mainTextViewNameImageLeft.setText(Images.first.getImageName());
         }
 
         if (Images.second.getBitmap() != null) {
-            Images.second.updateImageViewPreviewImage(binding.homeImageSecond);
+            Images.second.updateImageViewPreviewImage(binding.homeImageRight);
             binding.mainTextViewNameImageRight.setText(Images.second.getImageName());
         }
     }
 
     public void restoreImageViews() {
         if (Images.first.getBitmap() != null) {
-            Images.first.updateImageViewPreviewImage(binding.homeImageFirst);
+            Images.first.updateImageViewPreviewImage(binding.homeImageLeft);
             binding.mainTextViewNameImageLeft.setText(Images.first.getImageName());
         }
 
         if (Images.second.getBitmap() != null) {
-            Images.second.updateImageViewPreviewImage(binding.homeImageSecond);
+            Images.second.updateImageViewPreviewImage(binding.homeImageRight);
             binding.mainTextViewNameImageRight.setText(Images.second.getImageName());
         }
     }
@@ -265,28 +282,40 @@ public class MainActivity extends AppCompatActivity {
         Uri imageUri = UriExtractor.getOutOfParcelableExtra(intent);
 
         if (imageUri != null) {
-            ImageHolder imageHolder;
+            ImageInfoHolder imageInfoHolder;
             ImageView imageView;
             TextView imageName;
 
-            if (Images.first.getBitmap() == null) {
-                imageHolder = Images.first;
-                imageView = binding.homeImageFirst;
+            boolean isFirst = Images.first.getBitmap() == null;
+
+            if (isFirst) {
+                imageInfoHolder = Images.first;
+                imageView = binding.homeImageLeft;
                 imageName = binding.mainTextViewNameImageLeft;
-                MainActivity.leftImageUri = imageUri.toString();
             } else {
-                imageHolder = Images.second;
-                imageView = binding.homeImageSecond;
+                imageInfoHolder = Images.second;
+                imageView = binding.homeImageRight;
                 imageName = binding.mainTextViewNameImageRight;
-                MainActivity.rightImageUri = imageUri.toString();
+            }
+
+            String originalName = MainHelper.getImageName(this, imageUri);
+            String fileName = isFirst ? "1_" + originalName : "2_" + originalName;
+            java.io.File localFile = new java.io.File(getCacheDir(), fileName);
+            Uri localUri = ImageFileSaver.saveToFile(getContentResolver(), imageUri, localFile);
+            if (localUri == null) return;
+
+            if (isFirst) {
+                MainActivity.leftImageUri = localUri;
+            } else {
+                MainActivity.rightImageUri = localUri;
             }
 
             MainHelper.updateImageFromIntent(
-                    imageHolder,
-                    BitmapExtractor.fromUri(this.getContentResolver(), imageUri),
+                    imageInfoHolder,
+                    BitmapExtractor.fromUri(this.getContentResolver(), localUri),
                     Dimensions.maxSide,
                     Dimensions.maxSideForPreview,
-                    MainHelper.getImageName(this, imageUri),
+                    originalName,
                     imageView,
                     imageName
             );
@@ -301,29 +330,39 @@ public class MainActivity extends AppCompatActivity {
 
         if (imageUris != null) {
             if (imageUris.get(0) != null) {
-                MainHelper.updateImageFromIntent(
-                        Images.first,
-                        BitmapExtractor.fromUri(this.getContentResolver(), imageUris.get(0)),
-                        Dimensions.maxSide,
-                        Dimensions.maxSideForPreview,
-                        MainHelper.getImageName(this, imageUris.get(0)),
-                        binding.homeImageFirst,
-                        binding.mainTextViewNameImageLeft
-                );
-                MainActivity.leftImageUri = imageUris.get(0).toString();
+                Uri srcUri = imageUris.get(0);
+                java.io.File localFile = new java.io.File(getCacheDir(), "1_" + MainHelper.getImageName(this, srcUri));
+                Uri localUri = ImageFileSaver.saveToFile(getContentResolver(), srcUri, localFile);
+                if (localUri != null) {
+                    MainHelper.updateImageFromIntent(
+                            Images.first,
+                            BitmapExtractor.fromUri(this.getContentResolver(), localUri),
+                            Dimensions.maxSide,
+                            Dimensions.maxSideForPreview,
+                            MainHelper.getImageName(this, srcUri),
+                            binding.homeImageLeft,
+                            binding.mainTextViewNameImageLeft
+                    );
+                    MainActivity.leftImageUri = localUri;
+                }
             }
 
-            if (imageUris.get(1) != null) {
-                MainHelper.updateImageFromIntent(
-                        Images.second,
-                        BitmapExtractor.fromUri(this.getContentResolver(), imageUris.get(1)),
-                        Dimensions.maxSide,
-                        Dimensions.maxSideForPreview,
-                        MainHelper.getImageName(this, imageUris.get(1)),
-                        binding.homeImageSecond,
-                        binding.mainTextViewNameImageRight
-                );
-                MainActivity.rightImageUri = imageUris.get(1).toString();
+            if (imageUris.size() > 1 && imageUris.get(1) != null) {
+                Uri srcUri = imageUris.get(1);
+                java.io.File localFile = new java.io.File(getCacheDir(), "2_" + MainHelper.getImageName(this, srcUri));
+                Uri localUri = ImageFileSaver.saveToFile(getContentResolver(), srcUri, localFile);
+                if (localUri != null) {
+                    MainHelper.updateImageFromIntent(
+                            Images.second,
+                            BitmapExtractor.fromUri(this.getContentResolver(), localUri),
+                            Dimensions.maxSide,
+                            Dimensions.maxSideForPreview,
+                            MainHelper.getImageName(this, srcUri),
+                            binding.homeImageRight,
+                            binding.mainTextViewNameImageRight
+                    );
+                    MainActivity.rightImageUri = localUri;
+                }
             }
 
             if (imageUris.size() > 2) {
@@ -350,7 +389,6 @@ public class MainActivity extends AppCompatActivity {
                 case CompareModeNames.OVERLAY_SLIDE -> openCompareActivity(OverlaySlideActivity.class);
                 case CompareModeNames.OVERLAY_TAP -> openCompareActivity(OverlayTapActivity.class);
                 case CompareModeNames.OVERLAY_TRANSPARENT -> openCompareActivity(OverlayTransparentActivity.class);
-                case CompareModeNames.META_DATA -> openCompareActivity(MetaDataActivity.class);
                 case CompareModeNames.OVERLAY_CUT -> openCompareActivity(OverlayCutActivity.class);
                 default -> openCompareDialog();
             }
@@ -371,8 +409,8 @@ public class MainActivity extends AppCompatActivity {
                 binding.homeButtonSwapImages,
                 Images.first,
                 Images.second,
-                binding.homeImageFirst,
-                binding.homeImageSecond,
+                binding.homeImageLeft,
+                binding.homeImageRight,
                 binding.mainTextViewNameImageLeft,
                 binding.mainTextViewNameImageRight
         );
@@ -420,7 +458,7 @@ public class MainActivity extends AppCompatActivity {
         MainHelper.addRotateImageLogic(
                 binding.homeButtonRotateImageLeft,
                 Images.first,
-                binding.homeImageFirst
+                binding.homeImageLeft
         );
         binding.homeButtonRotateImageLeft.setOnLongClickListener(view -> {
             Toast.makeText(getApplicationContext(), getString(R.string.rotate_image_left), Toast.LENGTH_SHORT).show();
@@ -430,7 +468,7 @@ public class MainActivity extends AppCompatActivity {
         MainHelper.addRotateImageLogic(
                 binding.homeButtonRotateImageRight,
                 Images.second,
-                binding.homeImageSecond
+                binding.homeImageRight
         );
         binding.homeButtonRotateImageRight.setOnLongClickListener(view -> {
             Toast.makeText(getApplicationContext(), getString(R.string.rotate_image_right), Toast.LENGTH_SHORT).show();
@@ -438,26 +476,24 @@ public class MainActivity extends AppCompatActivity {
         });
 
         addLoadImageLogic(
-                binding.homeImageFirst,
-                "first",
-                binding.mainTextViewNameImageLeft,
-                Images.fileUriFirst
+                binding.homeImageLeft,
+                "left",
+                binding.mainTextViewNameImageLeft
         );
 
         addLoadImageLogic(
-                binding.homeImageSecond,
-                "second",
-                binding.mainTextViewNameImageRight,
-                Images.fileUriSecond
+                binding.homeImageRight,
+                "right",
+                binding.mainTextViewNameImageRight
         );
     }
 
-    private void openResizeImageDialog(ImageHolder imageHolder, ImageResizeSettings imageResizeSettings) {
+    private void openResizeImageDialog(ImageInfoHolder imageInfoHolder, ImageResizeSettings imageResizeSettings) {
         Dialog dialog = new Dialog(this);
         // Inflate the layout using view binding
         DialogResizeImageBinding dialogBinding = DialogResizeImageBinding.inflate(getLayoutInflater());
         // Set the dialog's content view to the root of the inflated binding
-        dialog.setContentView(dialogBinding.getRoot()); //MODIFIED LINE
+        dialog.setContentView(dialogBinding.getRoot());
 
         WindowMetricsCalculator windowMetricsCalculator = WindowMetricsCalculator.getOrCreate();
         WindowMetrics windowMetrics = windowMetricsCalculator.computeCurrentWindowMetrics(this);
@@ -507,10 +543,10 @@ public class MainActivity extends AppCompatActivity {
             int checkedId = dialogBinding.dialogResizeImageRadioGroup.getCheckedRadioButtonId();
 
             if (checkedId == R.id.dialog_resize_image_radio_button_original) {
-                imageHolder.setResizeOption(Images.RESIZE_OPTION_ORIGINAL);
+                imageInfoHolder.setResizeOption(Images.RESIZE_OPTION_ORIGINAL);
                 imageResizeSettings.setImageResizeOption(Images.RESIZE_OPTION_ORIGINAL);
             } else if (checkedId == R.id.dialog_resize_image_radio_button_automatic) {
-                imageHolder.setResizeOption(Images.RESIZE_OPTION_AUTOMATIC);
+                imageInfoHolder.setResizeOption(Images.RESIZE_OPTION_AUTOMATIC);
                 imageResizeSettings.setImageResizeOption(Images.RESIZE_OPTION_AUTOMATIC);
             } else if (checkedId == R.id.dialog_resize_image_radio_button_custom) {
                 int height;
@@ -533,11 +569,11 @@ public class MainActivity extends AppCompatActivity {
                 imageResizeSettings.setImageResizeHeight(height);
                 imageResizeSettings.setImageResizeWidth(width);
 
-                imageHolder.setResizeOption(Images.RESIZE_OPTION_CUSTOM);
-                imageHolder.setCustomSize(height, width);
+                imageInfoHolder.setResizeOption(Images.RESIZE_OPTION_CUSTOM);
+                imageInfoHolder.setCustomSize(height, width);
             }
 
-            imageHolder.resetBitmapResized();
+            imageInfoHolder.resetBitmapResized();
 
             dialog.dismiss();
         });
@@ -556,7 +592,6 @@ public class MainActivity extends AppCompatActivity {
         addCompareDialogButtonOnClickLogic(dialogBinding.selectCompareModeDialogBtnOverlaySlide, OverlaySlideActivity.class, dialog);
         addCompareDialogButtonOnClickLogic(dialogBinding.selectCompareModeDialogBtnTransparent, OverlayTransparentActivity.class, dialog);
         addCompareDialogButtonOnClickLogic(dialogBinding.selectCompareModeDialogBtnOverlayTap, OverlayTapActivity.class, dialog);
-        addCompareDialogButtonOnClickLogic(dialogBinding.selectCompareModeDialogBtnMetadata, MetaDataActivity.class, dialog);
         addCompareDialogButtonOnClickLogic(dialogBinding.selectCompareModeDialogBtnOverlayCut, OverlayCutActivity.class, dialog);
 
         dialog.show();
@@ -591,16 +626,35 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra(IntentExtras.SHOW_EXTENSIONS, this.userSettings.isShowExtensions());
             intent.putExtra(IntentExtras.SYNCED_ZOOM, this.userSettings.isSyncedZoom());
             intent.putExtra(IntentExtras.HAS_HARDWARE_KEY, Status.HAS_HARDWARE_KEY);
-            intent.putExtra(IntentExtras.IMAGE_URI_ONE, "bitmap_uri");
-            intent.putExtra(IntentExtras.IMAGE_URI_TWO, "bitmap_uri");
 
             Thread t = new Thread(() -> {
                 try {
                     runOnUiThread(() -> binding.pbProgess.setVisibility(View.VISIBLE));
 
-                    // Run in separate threads to improve performance
                     Images.first.calculateRotatedBitmap();
                     Images.second.calculateRotatedBitmap();
+
+                    File fileOne = new File(getCacheDir(), "compare_image_one.png");
+                    File fileTwo = new File(getCacheDir(), "compare_image_two.png");
+
+                    ImageFileSaver.saveBitmapToFile(Images.first.getAdjustedBitmap(), fileOne);
+                    ImageFileSaver.saveBitmapToFile(Images.second.getAdjustedBitmap(), fileTwo);
+
+                    Uri uriOne = FileProvider.getUriForFile(
+                            getApplicationContext(),
+                            getApplicationContext().getPackageName() + ".fileprovider",
+                            fileOne
+                    );
+                    Uri uriTwo = FileProvider.getUriForFile(
+                            getApplicationContext(),
+                            getApplicationContext().getPackageName() + ".fileprovider",
+                            fileTwo
+                    );
+
+                    intent.putExtra(IntentExtras.IMAGE_URI_ONE, uriOne.toString());
+                    intent.putExtra(IntentExtras.IMAGE_URI_TWO, uriTwo.toString());
+                    intent.putExtra(IntentExtras.IMAGE_NAME_ONE, Images.first.getImageName());
+                    intent.putExtra(IntentExtras.IMAGE_NAME_TWO, Images.second.getImageName());
 
                     runOnUiThread(() -> binding.pbProgess.setVisibility(View.GONE));
 
@@ -618,40 +672,61 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void addLoadImageLogic(ImageView imageView, String imageHolderName, TextView imageNameText, Uri fileUri) {
+    private void addLoadImageLogic(ImageView imageView, String imageHolderName, TextView imageNameText) {
         ActivityResultLauncher<String> imagePicker = registerForActivityResult(
                 new ActivityResultContracts.GetContent(),
-                uri -> {
-                    if (uri == null) {
+                receivedImageUri -> {
+                    if (receivedImageUri == null) {
+                        Toast.makeText(getApplicationContext(), R.string.error_message_general, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    String originalImageName = MainHelper.getImageName(this, receivedImageUri);
+                    String fileName = (Objects.equals(imageHolderName, "left") ? "1_" : "2_") + originalImageName;
+
+                    java.io.File localFile = new java.io.File(getCacheDir(), fileName);
+
+                    // Copy raw bytes to local file without decoding into memory
+                    android.net.Uri localUri = ImageFileSaver.saveToFile(
+                            getContentResolver(), receivedImageUri, localFile
+                    );
+
+                    if (localUri == null) {
                         Toast.makeText(getApplicationContext(), R.string.error_message_general, Toast.LENGTH_SHORT).show();
                         return;
                     }
 
                     runOnUiThread(() -> {
                         try {
-                            ImageHolder imageHolder;
-                            if (Objects.equals(imageHolderName, "first")) {
-                                MainActivity.leftImageUri = uri.toString();
-                                imageHolder = Images.first;
+                            ImageInfoHolder imageInfoHolder;
+                            if (Objects.equals(imageHolderName, "left")) {
+                                MainActivity.leftImageUri = localUri;
+                                imageInfoHolder = Images.first;
                             } else {
-                                imageHolder = Images.second;
-                                MainActivity.rightImageUri = uri.toString();
+                                imageInfoHolder = Images.second;
+                                MainActivity.rightImageUri = localUri;
                             }
 
-                            imageHolder.updateFromBitmap(
-                                    BitmapExtractor.fromUri(this.getContentResolver(), uri),
+                            imageInfoHolder.updateFromBitmap(
+                                    BitmapExtractor.fromUri(this.getContentResolver(), localUri),
                                     Dimensions.maxSide,
                                     Dimensions.maxSideForPreview,
-                                    MainHelper.getImageName(this, uri)
+                                    originalImageName
                             );
-                            imageHolder.updateImageViewPreviewImage(imageView);
-                            imageNameText.setText(imageHolder.getImageName());
+                            imageInfoHolder.updateImageViewPreviewImage(imageView);
+                            imageNameText.setText(imageInfoHolder.getImageName());
                         } catch (Exception ignored) {
                         }
                     });
                 });
 
         try {
+            Uri fileUri = FileProvider.getUriForFile(
+                    this,
+                    getApplicationContext().getPackageName() + ".fileprovider",
+                    new File(this.getCacheDir(), "camera_image_" + System.currentTimeMillis() + ".png")
+            );
+
             ActivityResultLauncher<Uri> mGetContentCamera = registerForActivityResult(
                     new ActivityResultContracts.TakePicture(),
                     result -> {
@@ -661,16 +736,16 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                         try {
-                            ImageHolder imageHolder;
-                            if (Objects.equals(fileUri.getPath(), Images.fileUriFirst.getPath())) {
-                                imageHolder = Images.first;
-                                MainActivity.leftImageUri = fileUri.toString();
+                            ImageInfoHolder imageInfoHolder;
+                            if (Objects.equals(imageHolderName, "left")) {
+                                imageInfoHolder = Images.first;
+                                MainActivity.leftImageUri = fileUri;
                             } else {
-                                imageHolder = Images.second;
-                                MainActivity.rightImageUri = fileUri.toString();
+                                imageInfoHolder = Images.second;
+                                MainActivity.rightImageUri = fileUri;
                             }
 
-                            imageHolder.updateFromBitmap(
+                            imageInfoHolder.updateFromBitmap(
                                     BitmapExtractor.fromUri(this.getContentResolver(), fileUri),
                                     Dimensions.maxSide,
                                     Dimensions.maxSideForPreview,
@@ -709,13 +784,13 @@ public class MainActivity extends AppCompatActivity {
                                     Toast.makeText(getApplicationContext(), getString(R.string.error_msg_missing_images), Toast.LENGTH_SHORT).show();
                                     return;
                                 }
-                                imageUri = Uri.parse(MainActivity.leftImageUri);
+                                imageUri = MainActivity.leftImageUri;
                             } else {
                                 if (MainActivity.rightImageUri == null) {
                                     Toast.makeText(getApplicationContext(), getString(R.string.error_msg_missing_images), Toast.LENGTH_SHORT).show();
                                     return;
                                 }
-                                imageUri = Uri.parse(MainActivity.rightImageUri);
+                                imageUri = MainActivity.rightImageUri;
                             }
 
                             Intent intent = new Intent(Intent.ACTION_SEND);
@@ -735,42 +810,5 @@ public class MainActivity extends AppCompatActivity {
             });
         } catch (Exception ignored) {
         }
-    }
-
-    private void askForReview()
-    {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.alertDialog);
-
-        builder.setCancelable(false);
-
-        builder.setMessage(R.string.ask_for_review_text);
-
-        builder.setPositiveButton(R.string.ask_for_review_positive, (dialogInterface, i) -> {
-            if (isPlayStoreInstalled()) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getPackageName())));
-            } else {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName())));
-            }
-        });
-
-        builder.setNegativeButton(R.string.ask_for_review_negative, (dialogInterface, i) -> {});
-
-        builder.show();
-    }
-
-    @SuppressWarnings("deprecation")
-    private boolean isPlayStoreInstalled() {
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                getPackageManager().getPackageInfo("com.android.vending", PackageManager.PackageInfoFlags.of(PackageManager.GET_META_DATA));
-            } else {
-                getPackageManager().getPackageInfo("com.android.vending", PackageManager.GET_META_DATA);
-            }
-
-            return true;
-        } catch (Exception ignored) {
-        }
-
-        return false;
     }
 }

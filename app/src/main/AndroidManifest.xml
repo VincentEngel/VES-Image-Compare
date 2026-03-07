@@ -2,9 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.CAMERA" />
 
-    <uses-feature android:name="android.hardware.camera" />
-    <uses-feature android:name="android.hardware.camera.any" />
-    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-feature android:name="android.hardware.camera" android:required="false"/>
 
     <application
         android:allowBackup="true"
@@ -23,9 +21,6 @@
             android:exported="false" />
         <activity
             android:name=".Activities.Settings.ConfigActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Activities.CompareModes.MetaDataActivity"
             android:exported="false" />
         <activity
             android:name=".Activities.CompareModes.OverlayCutActivity"

@@ -137,7 +137,7 @@
                             tools:ignore="ImageContrastCheck" />
 
                         <ImageView
-                            android:id="@+id/home_image_first"
+                            android:id="@+id/home_image_left"
                             android:layout_width="@dimen/image_layout_side"
                             android:layout_height="@dimen/image_layout_side"
                             android:layout_gravity="center"
@@ -212,7 +212,7 @@
                             app:srcCompat="@drawable/ic_resize" />
 
                         <ImageView
-                            android:id="@+id/home_image_second"
+                            android:id="@+id/home_image_right"
                             android:layout_width="@dimen/image_layout_side"
                             android:layout_height="@dimen/image_layout_side"
                             android:layout_gravity="center"

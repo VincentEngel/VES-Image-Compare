@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.vincentengelsoftware.androidimagecompare.ImageView.ZoomImageView
-            android:id="@+id/side_by_side_image_left"
+            android:id="@+id/side_by_side_image_top_left"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -36,7 +36,7 @@
                 android:layout_weight="1">
 
                 <TextView
-                    android:id="@+id/side_by_side_image_name_second"
+                    android:id="@+id/side_by_side_image_name_bottom_right"
                     android:layout_width="150dp"
                     android:layout_height="fill_parent"
                     android:gravity="center"
@@ -69,7 +69,7 @@
                 android:layout_weight="1">
 
                 <TextView
-                    android:id="@+id/side_by_side_image_name_first"
+                    android:id="@+id/side_by_side_image_name_top_left"
                     android:layout_width="150dp"
                     android:layout_height="fill_parent"
                     android:gravity="center"
@@ -82,7 +82,7 @@
         </LinearLayout>
 
         <com.vincentengelsoftware.androidimagecompare.ImageView.ZoomImageView
-            android:id="@+id/side_by_side_image_right"
+            android:id="@+id/side_by_side_image_bottom_right"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"

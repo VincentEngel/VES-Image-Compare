@@ -9,8 +9,8 @@ import androidx.core.content.ContextCompat;
 import com.vincentengelsoftware.androidimagecompare.Activities.IntentExtras;
 import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.databinding.ActivitySideBySideBinding;
-import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
+import com.vincentengelsoftware.androidimagecompare.helper.BitmapExtractor;
 import com.vincentengelsoftware.androidimagecompare.helper.FullScreenHelper;
 import com.vincentengelsoftware.androidimagecompare.helper.SyncZoom;
 
@@ -24,10 +24,11 @@ public class SideBySideActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         if (Status.activityIsOpening) {
+            // Sync zoom can be deactivated within the Activity,
+            // so only set it on first opening
             sync.set(getIntent().getBooleanExtra(IntentExtras.SYNCED_ZOOM, true));
+            Status.activityIsOpening = false;
         }
-
-        Status.activityIsOpening = false;
 
         FullScreenHelper.setFullScreenFlags(this.getWindow());
 
@@ -35,14 +36,14 @@ public class SideBySideActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         SyncZoom.setLinkedTargets(
-                binding.sideBySideImageLeft,
-                binding.sideBySideImageRight,
+                binding.sideBySideImageTopLeft,
+                binding.sideBySideImageBottomRight,
                 SideBySideActivity.sync,
                 new AtomicBoolean(false)
         );
         SyncZoom.setUpSyncZoomToggleButton(
-                binding.sideBySideImageLeft,
-                binding.sideBySideImageRight,
+                binding.sideBySideImageTopLeft,
+                binding.sideBySideImageBottomRight,
                 binding.toggleButton,
                 ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_link),
                 ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_link_off),
@@ -51,11 +52,17 @@ public class SideBySideActivity extends AppCompatActivity {
         );
 
         try {
-            Images.first.updateVesImageViewWithAdjustedImage(binding.sideBySideImageLeft);
-            binding.sideBySideImageNameFirst.setText(Images.first.getImageName());
+            binding.sideBySideImageTopLeft.setBitmapImage(BitmapExtractor.fromUriString(
+                    getContentResolver(),
+                    getIntent().getStringExtra(IntentExtras.IMAGE_URI_ONE)
+            ));
+            binding.sideBySideImageNameTopLeft.setText(getIntent().getStringExtra(IntentExtras.IMAGE_NAME_ONE));
 
-            Images.second.updateVesImageViewWithAdjustedImage(binding.sideBySideImageRight);
-            binding.sideBySideImageNameSecond.setText(Images.second.getImageName());
+            binding.sideBySideImageBottomRight.setBitmapImage(BitmapExtractor.fromUriString(
+                    getContentResolver(),
+                    getIntent().getStringExtra(IntentExtras.IMAGE_URI_TWO)
+            ));
+            binding.sideBySideImageNameBottomRight.setText(getIntent().getStringExtra(IntentExtras.IMAGE_NAME_TWO));
         } catch (Exception e) {
             this.finish();
         }

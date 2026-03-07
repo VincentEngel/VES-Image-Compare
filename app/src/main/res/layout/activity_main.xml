@@ -66,7 +66,7 @@
                         android:layout_weight="1">
 
                         <ImageView
-                            android:id="@+id/home_image_first"
+                            android:id="@+id/home_image_left"
                             android:layout_width="@dimen/image_layout_side"
                             android:layout_height="@dimen/image_layout_side"
                             android:layout_gravity="center_horizontal"
@@ -131,7 +131,7 @@
                         android:layout_weight="1">
 
                         <ImageView
-                            android:id="@+id/home_image_second"
+                            android:id="@+id/home_image_right"
                             android:layout_width="@dimen/image_layout_side"
                             android:layout_height="@dimen/image_layout_side"
                             android:layout_gravity="center_horizontal"

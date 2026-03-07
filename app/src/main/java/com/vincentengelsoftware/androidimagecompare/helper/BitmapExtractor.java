@@ -23,4 +23,17 @@ public class BitmapExtractor {
 
         return bitmap;
     }
+
+    public static Bitmap fromUriString(ContentResolver cr, String uriString)
+    {
+        try {
+            Uri uri = Uri.parse(uriString);
+            if ("file".equals(uri.getScheme())) {
+                return BitmapFactory.decodeFile(uri.getPath());
+            }
+            return fromUri(cr, uri);
+        } catch (Exception ignored) {
+            return Bitmap.createBitmap(1, 1, Bitmap.Config.ALPHA_8);
+        }
+    }
 }

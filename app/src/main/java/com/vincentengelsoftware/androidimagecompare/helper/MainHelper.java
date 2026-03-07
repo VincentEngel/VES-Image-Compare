@@ -20,27 +20,27 @@ import com.vincentengelsoftware.androidimagecompare.Activities.MainActivity;
 import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.globals.RequestPermissionCodes;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
-import com.vincentengelsoftware.androidimagecompare.util.ImageHolder;
+import com.vincentengelsoftware.androidimagecompare.util.ImageInfoHolder;
 
 public class MainHelper {
     public static void addRotateImageLogic(
             ImageButton imageButton,
-            ImageHolder imageHolder,
+            ImageInfoHolder imageInfoHolder,
             ImageView imageView
     ) {
         imageButton.setOnClickListener(view -> {
-            if (imageHolder.getBitmap() == null || Status.activityIsOpening) {
+            if (imageInfoHolder.getBitmap() == null || Status.activityIsOpening) {
                 return;
             }
-            imageHolder.rotatePreviewImage();
-            imageHolder.updateImageViewPreviewImage(imageView);
+            imageInfoHolder.rotatePreviewImage();
+            imageInfoHolder.updateImageViewPreviewImage(imageView);
         });
     }
 
     public static void addSwapImageLogic(
             ImageButton imageButton,
-            ImageHolder imageHolderOne,
-            ImageHolder imageHolderTwo,
+            ImageInfoHolder imageInfoHolderOne,
+            ImageInfoHolder imageInfoHolderTwo,
             ImageView imageViewOne,
             ImageView imageViewTwo,
             TextView imageTextViewNameLeft,
@@ -48,26 +48,26 @@ public class MainHelper {
     ) {
         // Just replace imageHolders <.<
         imageButton.setOnClickListener(view -> {
-            if (imageHolderOne.getBitmap() == null || imageHolderTwo.getBitmap() == null || Status.activityIsOpening) {
+            if (imageInfoHolderOne.getBitmap() == null || imageInfoHolderTwo.getBitmap() == null || Status.activityIsOpening) {
                 return;
             }
-            ImageHolder imageHolder = new ImageHolder();
-            imageHolder.updateFromImageHolder(imageHolderOne);
-            imageHolderOne.updateFromImageHolder(imageHolderTwo);
-            imageHolderTwo.updateFromImageHolder(imageHolder);
+            ImageInfoHolder imageInfoHolder = new ImageInfoHolder();
+            imageInfoHolder.updateFromImageHolder(imageInfoHolderOne);
+            imageInfoHolderOne.updateFromImageHolder(imageInfoHolderTwo);
+            imageInfoHolderTwo.updateFromImageHolder(imageInfoHolder);
 
-            imageHolderOne.updateImageViewPreviewImage(imageViewOne);
-            imageHolderTwo.updateImageViewPreviewImage(imageViewTwo);
+            imageInfoHolderOne.updateImageViewPreviewImage(imageViewOne);
+            imageInfoHolderTwo.updateImageViewPreviewImage(imageViewTwo);
 
-            imageTextViewNameLeft.setText(imageHolderOne.getImageName());
-            imageTextViewNameRight.setText(imageHolderTwo.getImageName());
+            imageTextViewNameLeft.setText(imageInfoHolderOne.getImageName());
+            imageTextViewNameRight.setText(imageInfoHolderTwo.getImageName());
 
             // Take two camera pictures => swap them once
             // Take another camera picture
             // App crashes
             // App restores last state
             // Same Image on both sides => Wrong image was loaded because they have the same path
-            String temp = MainActivity.leftImageUri;
+            Uri temp = MainActivity.leftImageUri;
             MainActivity.leftImageUri = MainActivity.rightImageUri;
             MainActivity.rightImageUri = temp;
         });
@@ -105,7 +105,7 @@ public class MainHelper {
     }
 
     public static void updateImageFromIntent(
-            ImageHolder imageHolder,
+            ImageInfoHolder imageInfoHolder,
             Bitmap bitmap,
             int maxSideSize,
             int maxSideSizeForSmallBitmap,
@@ -114,13 +114,13 @@ public class MainHelper {
             TextView textView
     )
     {
-        imageHolder.updateFromBitmap(
+        imageInfoHolder.updateFromBitmap(
                 bitmap,
                 maxSideSize,
                 maxSideSizeForSmallBitmap,
                 imageName
         );
-        imageHolder.updateImageViewPreviewImage(imageView);
-        textView.setText(imageHolder.getImageName());
+        imageInfoHolder.updateImageViewPreviewImage(imageView);
+        textView.setText(imageInfoHolder.getImageName());
     }
 }

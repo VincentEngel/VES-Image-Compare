@@ -26,7 +26,6 @@ public class AboutActivity extends AppCompatActivity {
 
         TextViewModifier.makeLinkClickable(binding.infoTextViewLinkGithubProject);
         TextViewModifier.makeLinkClickable(binding.infoTextViewLinkLibrarySubsamplingScaleImageView);
-        TextViewModifier.makeLinkClickable(binding.infoTextViewLinkLibraryMetadataExtractor);
         TextViewModifier.makeLinkClickable(binding.infoTextViewLinkColorTheme);
         TextViewModifier.makeLinkClickable(binding.infoTextViewLinkGoogleMaterialIcons);
         TextViewModifier.makeLinkClickable(binding.infoTextViewLinkDittoPhotoComparer);

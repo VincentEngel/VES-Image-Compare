@@ -6,7 +6,6 @@ import android.widget.TextView;
 
 import com.vincentengelsoftware.androidimagecompare.globals.Settings;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
-import com.vincentengelsoftware.androidimagecompare.util.ImageHolder;
 import com.vincentengelsoftware.androidimagecompare.ImageView.VesImageInterface;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -17,7 +16,7 @@ public class TapHelper {
             VesImageInterface imageViewTarget,
             AtomicBoolean utilMutableBoolean,
             TextView textViewImageName,
-            ImageHolder targetImageHolder
+            String targetImageName
     )
     {
         imageViewListener.setOnClickListener(view -> {
@@ -34,7 +33,7 @@ public class TapHelper {
                 parentView.addView((View)imageViewTarget);
             }
 
-            textViewImageName.setText(targetImageHolder.getImageName());
+            textViewImageName.setText(targetImageName);
         });
     }
 }

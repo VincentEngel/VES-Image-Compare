@@ -6,4 +6,6 @@ public class IntentExtras {
     public static final String HAS_HARDWARE_KEY = "HAS_HARDWARE_KEY";
     public static final String IMAGE_URI_ONE = "IMAGE_URI_ONE";
     public static final String IMAGE_URI_TWO = "IMAGE_URI_TWO";
+    public static final String IMAGE_NAME_ONE = "IMAGE_NAME_ONE";
+    public static final String IMAGE_NAME_TWO = "IMAGE_NAME_TWO";
 }

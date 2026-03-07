@@ -15,8 +15,8 @@ import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.animations.FadeActivity;
 import com.vincentengelsoftware.androidimagecompare.animations.ResizeAnimation;
 import com.vincentengelsoftware.androidimagecompare.databinding.ActivityOverlaySlideBinding;
-import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
+import com.vincentengelsoftware.androidimagecompare.helper.BitmapExtractor;
 import com.vincentengelsoftware.androidimagecompare.helper.BitmapHelper;
 import com.vincentengelsoftware.androidimagecompare.helper.Calculator;
 import com.vincentengelsoftware.androidimagecompare.helper.FullScreenHelper;
@@ -75,16 +75,20 @@ public class OverlaySlideActivity extends AppCompatActivity implements FadeActiv
             binding = ActivityOverlaySlideBinding.inflate(getLayoutInflater());
             setContentView(binding.getRoot());
 
+            String uriOne = getIntent().getStringExtra(IntentExtras.IMAGE_URI_ONE);
+            String uriTwo = getIntent().getStringExtra(IntentExtras.IMAGE_URI_TWO);
+            Bitmap bitmapBase = BitmapExtractor.fromUriString(getContentResolver(), uriOne);
+            Bitmap bitmapSource = BitmapExtractor.fromUriString(getContentResolver(), uriTwo);
+
             binding.overlaySlideImageViewBase.addFadeListener(this);
 
             try {
-                Images.first.updateVesImageViewWithAdjustedImage(binding.overlaySlideImageViewBase);
+                binding.overlaySlideImageViewBase.setBitmapImage(bitmapBase);
             } catch (Exception e) {
                 this.finish();
             }
 
             binding.overlaySlideImageViewFront.addFadeListener(this);
-            Bitmap bitmapSource = Images.second.getAdjustedBitmap();
 
             SyncZoom.setLinkedTargets(
                     binding.overlaySlideImageViewFront,

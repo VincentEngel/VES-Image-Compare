@@ -21,8 +21,6 @@
 
 * <b>Transparent:</b> Place the images behind each other and adjust the transparency of the image in the front
 
-* <b>MetaData:</b> (Beta) Show all Meta Data, like Exif Data, side by side
-
 * <b>Overlay Cut:</b> Cut the image from one point to another
 
 <b>NO ADS and Privacy friendly.</b> This App does not need access to the internet. All information is saved locally in your Apps Cache and can be deleted at any time through your Device Settings.

@@ -1,14 +1,10 @@
 package com.vincentengelsoftware.androidimagecompare.globals;
 
-import android.net.Uri;
-
-import com.vincentengelsoftware.androidimagecompare.util.ImageHolder;
+import com.vincentengelsoftware.androidimagecompare.util.ImageInfoHolder;
 
 public class Images {
-    public static ImageHolder first = new ImageHolder();
-    public static ImageHolder second = new ImageHolder();
-    public static Uri fileUriFirst;
-    public static Uri fileUriSecond;
+    public static ImageInfoHolder first = new ImageInfoHolder();
+    public static ImageInfoHolder second = new ImageInfoHolder();
 
     public static final int RESIZE_OPTION_ORIGINAL = 0;
     public static final int RESIZE_OPTION_AUTOMATIC = 1;

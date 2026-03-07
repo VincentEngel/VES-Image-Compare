@@ -12,8 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.vincentengelsoftware.androidimagecompare.Activities.IntentExtras;
 import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.databinding.ActivityOverlayCutBinding;
-import com.vincentengelsoftware.androidimagecompare.globals.Images;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
+import com.vincentengelsoftware.androidimagecompare.helper.BitmapExtractor;
 import com.vincentengelsoftware.androidimagecompare.helper.BitmapHelper;
 import com.vincentengelsoftware.androidimagecompare.helper.Calculator;
 import com.vincentengelsoftware.androidimagecompare.helper.FullScreenHelper;
@@ -33,8 +33,7 @@ public class OverlayCutActivity extends AppCompatActivity {
     private static int color_active;
     private static int color_inactive;
 
-    public static Bitmap nextCalculatedBitmap;
-
+    public static Bitmap bitmapBaseView;
     public static Bitmap bitmapSource;
     public static Bitmap bitmapAdjusted;
 
@@ -52,15 +51,14 @@ public class OverlayCutActivity extends AppCompatActivity {
             nextThread = null;
         }
 
-        OverlayCutActivity.nextCalculatedBitmap = null;
-
         super.onCreate(savedInstanceState);
         if (Status.activityIsOpening) {
-            OverlayCutActivity.bitmapSource = Images.second.getAdjustedBitmap();
-            OverlayCutActivity.bitmapAdjusted = Images.second.getAdjustedBitmap();
             OverlayCutActivity.sync.set(getIntent().getBooleanExtra(IntentExtras.SYNCED_ZOOM, true));
+            this.setupImages(true);
+            Status.activityIsOpening = false;
         }
-        Status.activityIsOpening = false;
+
+        this.setupImages(false);
 
         binding = ActivityOverlayCutBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -70,8 +68,8 @@ public class OverlayCutActivity extends AppCompatActivity {
         OverlayCutActivity.color_inactive = getResources().getColor(android.R.color.darker_gray, null);
 
         try {
-            Images.first.updateVesImageViewWithAdjustedImage(binding.fullSlideImageViewBase);
-            Images.second.updateVesImageViewWithAdjustedImage(binding.fullSlideImageViewFront);
+            binding.fullSlideImageViewBase.setBitmapImage(OverlayCutActivity.bitmapBaseView);
+            binding.fullSlideImageViewFront.setBitmapImage(OverlayCutActivity.bitmapSource);
         } catch (Exception e) {
             this.finish();
         }
@@ -116,6 +114,23 @@ public class OverlayCutActivity extends AppCompatActivity {
 
         binding.fullSliderSeekbarLeft.setProgress(90);
         binding.fullSliderSeekbarRight.setProgress(10);
+    }
+
+    private void setupImages(boolean force)
+    {
+        if (
+                force ||
+                OverlayCutActivity.bitmapBaseView == null ||
+                        OverlayCutActivity.bitmapSource == null ||
+                        OverlayCutActivity.bitmapAdjusted == null
+        ) {
+            String uriOne = getIntent().getStringExtra(IntentExtras.IMAGE_URI_ONE);
+            String uriTwo = getIntent().getStringExtra(IntentExtras.IMAGE_URI_TWO);
+            OverlayCutActivity.bitmapBaseView = BitmapExtractor.fromUriString(getContentResolver(), uriOne);
+            Bitmap bitmapTwo = BitmapExtractor.fromUriString(getContentResolver(), uriTwo);
+            OverlayCutActivity.bitmapSource = bitmapTwo;
+            OverlayCutActivity.bitmapAdjusted = bitmapTwo;
+        }
     }
 
     private void updateImage(Bitmap bitmapSource) {
@@ -186,13 +201,7 @@ public class OverlayCutActivity extends AppCompatActivity {
                         return;
                     }
 
-                    OverlayCutActivity.nextCalculatedBitmap = bitmap;
-
-                    runOnUiThread(() -> {
-                        if (OverlayCutActivity.nextCalculatedBitmap != null) {
-                            binding.fullSlideImageViewFront.setBitmapImage(OverlayCutActivity.nextCalculatedBitmap);
-                        }
-                    });
+                    runOnUiThread(() -> binding.fullSlideImageViewFront.setBitmapImage(bitmap));
 
                     currentThread = null;
 

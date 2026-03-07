@@ -10,7 +10,6 @@ public class CompareModeNames {
     public static final String OVERLAY_TAP = "OVERLAY_TAP";
     public static final String OVERLAY_SLIDE = "OVERLAY_SLIDE";
     public static final String OVERLAY_TRANSPARENT = "OVERLAY_TRANSPARENT";
-    public static final String META_DATA = "META_DATA";
     public static final String OVERLAY_CUT = "OVERLAY_CUT";
 
     public static String getInternalCompareModeNameFromUserCompareModeName(Context context, String compareMode)
@@ -29,10 +28,6 @@ public class CompareModeNames {
 
         if (compareMode.equals(context.getString(R.string.compare_mode_transparent))) {
             return OVERLAY_TRANSPARENT;
-        }
-
-        if (compareMode.equals(context.getString(R.string.compare_mode_metadata))) {
-            return META_DATA;
         }
 
         if (compareMode.equals(context.getString(R.string.compare_mode_overlay_cut))) {
@@ -59,10 +54,6 @@ public class CompareModeNames {
             return OVERLAY_TRANSPARENT;
         }
 
-        if (MetaDataActivity.class.equals(activity)) {
-            return META_DATA;
-        }
-
         if (OverlayCutActivity.class.equals(activity)) {
             return OVERLAY_CUT;
         }
@@ -77,7 +68,6 @@ public class CompareModeNames {
             case OVERLAY_TAP -> context.getString(R.string.compare_mode_overlay_tap);
             case OVERLAY_SLIDE -> context.getString(R.string.compare_mode_overlay_slide);
             case OVERLAY_TRANSPARENT -> context.getString(R.string.compare_mode_transparent);
-            case META_DATA -> context.getString(R.string.compare_mode_metadata);
             case OVERLAY_CUT -> context.getString(R.string.compare_mode_overlay_cut);
             default -> CompareModeNames.getUserCompareModeNameFromInternalName(context, DefaultSettings.COMPARE_MODE);
         };
