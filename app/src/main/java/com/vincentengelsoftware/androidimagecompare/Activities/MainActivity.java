@@ -634,22 +634,18 @@ public class MainActivity extends AppCompatActivity {
                     Images.first.calculateRotatedBitmap();
                     Images.second.calculateRotatedBitmap();
 
-                    File fileOne = new File(getCacheDir(), "compare_image_one.png");
-                    File fileTwo = new File(getCacheDir(), "compare_image_two.png");
-
-                    ImageFileSaver.saveBitmapToFile(Images.first.getAdjustedBitmap(), fileOne);
-                    ImageFileSaver.saveBitmapToFile(Images.second.getAdjustedBitmap(), fileTwo);
-
-                    Uri uriOne = FileProvider.getUriForFile(
-                            getApplicationContext(),
-                            getApplicationContext().getPackageName() + ".fileprovider",
-                            fileOne
+                    Uri uriOne = ImageFileSaver.saveBitmapToFile(
+                            Images.first.getAdjustedBitmap(),
+                            new File(getCacheDir(), "compare_image_one.png")
                     );
-                    Uri uriTwo = FileProvider.getUriForFile(
-                            getApplicationContext(),
-                            getApplicationContext().getPackageName() + ".fileprovider",
-                            fileTwo
+                    Uri uriTwo = ImageFileSaver.saveBitmapToFile(
+                            Images.second.getAdjustedBitmap(),
+                            new File(getCacheDir(), "compare_image_two.png")
                     );
+
+                    if (uriOne == null || uriTwo == null) {
+                        throw new Exception("Error saving images");
+                    }
 
                     intent.putExtra(IntentExtras.IMAGE_URI_ONE, uriOne.toString());
                     intent.putExtra(IntentExtras.IMAGE_URI_TWO, uriTwo.toString());
