@@ -2,16 +2,15 @@ package com.vincentengelsoftware.androidimagecompare.Activities.Settings;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 
+import com.vincentengelsoftware.androidimagecompare.Activities.Settings.UserSettings.UserSettingsActivity;
 import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.databinding.ActivityConfigsBinding;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
+import com.vincentengelsoftware.androidimagecompare.helper.AppVersionHelper;
+import com.vincentengelsoftware.androidimagecompare.helper.PlayStoreNavigator;
 
 public class ConfigActivity extends AppCompatActivity {
 
@@ -25,52 +24,22 @@ public class ConfigActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         Status.activityIsOpening = false;
 
-        this.setVersionText();
+        this.setUpViews();
     }
 
-    private void setVersionText() {
-        String version = getString(R.string.unknown);
-        try {
-            PackageInfo pinfo = getPackageInfo();
-            version = "v" + pinfo.versionName;
-        } catch (Exception ignored) {
-        }
+    private void setUpViews() {
+        binding.settingsVersion.setText(AppVersionHelper.getVersionName(this, getString(R.string.unknown)));
 
-        binding.settingsVersion.setText(version);
+        binding.configsActionPrivacyPolicy.setOnClickListener(view ->
+                startActivity(new Intent(this, PrivacyPolicyActivity.class)));
 
-        binding.configsActionPrivacyPolicy.setOnClickListener(view -> {
-            Intent intent = new Intent(this, PrivacyPolicyActivity.class);
-            startActivity(intent);
-        });
+        binding.configsActionAppInfo.setOnClickListener(view ->
+                startActivity(new Intent(this, AboutActivity.class)));
 
-        binding.configsActionAppInfo.setOnClickListener(view -> {
-            Intent intent = new Intent(this, AboutActivity.class);
-            startActivity(intent);
-        });
+        binding.configsActionSettings.setOnClickListener(view ->
+                startActivity(new Intent(this, UserSettingsActivity.class)));
 
-        binding.configsActionSettings.setOnClickListener(view -> {
-            Intent intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
-        });
-
-        binding.configsOpenPlaystore.setOnClickListener(view -> {
-            try {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getPackageName())));
-            } catch (ActivityNotFoundException e1) {
-                try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName())));
-                } catch (ActivityNotFoundException ignored) {
-                }
-            }
-        });
-    }
-
-    @SuppressWarnings("deprecation")
-    private PackageInfo getPackageInfo() throws PackageManager.NameNotFoundException {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-            return getPackageManager().getPackageInfo(getPackageName(), PackageManager.PackageInfoFlags.of(PackageManager.GET_META_DATA));
-        }
-
-        return getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_META_DATA);
+        binding.configsOpenPlaystore.setOnClickListener(view ->
+                PlayStoreNavigator.openPlayStoreListing(this));
     }
 }

@@ -17,8 +17,7 @@ public class BitmapExtractor {
             bitmap = BitmapFactory.decodeStream(input);
             input.close();
         } catch (Exception ignored) {
-            // TODO create and return error BitmapImage
-            bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ALPHA_8);
+            return null;
         }
 
         return bitmap;

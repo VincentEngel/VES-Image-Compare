@@ -10,10 +10,10 @@ public class Status {
 
     public static boolean HAS_HARDWARE_KEY = false;
 
-    public static int NATURAL_MIRRORING = 0;
-    public static int STRICT_MIRRORING = 1;
-    public static int LOOSE_MIRRORING = 2;
+    public static final int NATURAL_MIRRORING = 0;
+    public static final int STRICT_MIRRORING = 1;
+    public static final int LOOSE_MIRRORING = 2;
 
-    public static int TAP_HIDE_MODE_INVISIBLE = 0;
-    public static int TAP_HIDE_MODE_BACKGROUND = 1;
+    public static final int TAP_HIDE_MODE_INVISIBLE = 0;
+    public static final int TAP_HIDE_MODE_BACKGROUND = 1;
 }

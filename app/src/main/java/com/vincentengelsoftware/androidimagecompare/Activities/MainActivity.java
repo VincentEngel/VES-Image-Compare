@@ -2,6 +2,7 @@ package com.vincentengelsoftware.androidimagecompare.Activities;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
@@ -199,9 +200,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void restoreImages() {
-        if (Images.first.getBitmap() == null) {
+        if (Images.first.getBitmap() == null && MainActivity.leftImageUri != null) {
             try {
                 Uri uri = MainActivity.leftImageUri;
+                Bitmap bitmap = BitmapExtractor.fromUri(this.getContentResolver(), uri);
+                if (bitmap == null) {
+                    throw new Exception("Unable to load bitmap");
+                }
                 Images.first.updateFromBitmap(
                         BitmapExtractor.fromUri(this.getContentResolver(), uri),
                         Dimensions.maxSide,
@@ -211,11 +216,15 @@ public class MainActivity extends AppCompatActivity {
             } catch (Exception ignored) {
             }
         }
-        if (Images.second.getBitmap() == null) {
+        if (Images.second.getBitmap() == null && MainActivity.rightImageUri != null) {
             try {
                 Uri uri = MainActivity.rightImageUri;
+                Bitmap bitmap = BitmapExtractor.fromUri(this.getContentResolver(), uri);
+                if (bitmap == null) {
+                    throw new Exception("Unable to load bitmap");
+                }
                 Images.second.updateFromBitmap(
-                        BitmapExtractor.fromUri(this.getContentResolver(), uri),
+                        bitmap,
                         Dimensions.maxSide,
                         Dimensions.maxSideForPreview,
                         stripSlotPrefix(MainHelper.getImageName(this, uri))

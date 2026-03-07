@@ -55,7 +55,7 @@ public class ImageInfoHolder {
     /**
      * TODO improve: If resize = true is set, then it is faster to resize before rotation
      */
-    public void calculateRotatedBitmap()
+    public boolean calculateRotatedBitmap()
     {
         // Already calculated
         if (
@@ -63,7 +63,7 @@ public class ImageInfoHolder {
                         && this.rotatedBitmap != null
                         && this.bitmapResized != null
         ) {
-            return;
+            return false;
         }
 
         if (this.currentRotation == 0) {
@@ -75,6 +75,8 @@ public class ImageInfoHolder {
         this.bitmapResized = null;
         this.getBitmapResized();
         this.currentBitmapRotation = this.currentRotation;
+
+        return true;
     }
 
     public Bitmap getBitmapSmall()

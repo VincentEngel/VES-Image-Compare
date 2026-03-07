@@ -91,7 +91,7 @@ public class MainHelper {
     public static String getImageName(Context context, Uri uri) {
         try {
             DocumentFile df = DocumentFile.fromSingleUri(context, uri);
-            if (df != null && df.getName() != null) {
+            if (df.getName() != null) {
                 return df.getName();
             }
 

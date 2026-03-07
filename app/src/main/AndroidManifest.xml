@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.VesAndroidImageCompare">
         <activity
-            android:name=".Activities.Settings.SettingsActivity"
+            android:name=".Activities.Settings.UserSettings.UserSettingsActivity"
             android:exported="false" />
         <activity
             android:name=".Activities.Settings.PrivacyPolicyActivity"
