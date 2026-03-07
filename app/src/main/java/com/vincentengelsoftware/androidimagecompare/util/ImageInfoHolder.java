@@ -2,7 +2,7 @@ package com.vincentengelsoftware.androidimagecompare.util;
 
 import android.graphics.Bitmap;
 import android.widget.ImageView;
-import com.vincentengelsoftware.androidimagecompare.globals.Images;
+import com.vincentengelsoftware.androidimagecompare.globals.ImageResizeOptions;
 import com.vincentengelsoftware.androidimagecompare.helper.BitmapHelper;
 
 public class ImageInfoHolder {
@@ -16,7 +16,7 @@ public class ImageInfoHolder {
 
     private String imageName;
 
-    private int resizeOption = Images.RESIZE_OPTION_AUTOMATIC;
+    private int resizeOption = ImageResizeOptions.RESIZE_OPTION_AUTOMATIC;
 
     // Should be part of the constructor as they never change
     private int maxSideSize;
@@ -55,7 +55,7 @@ public class ImageInfoHolder {
     /**
      * TODO improve: If resize = true is set, then it is faster to resize before rotation
      */
-    public boolean calculateRotatedBitmap()
+    public void calculateRotatedBitmap()
     {
         // Already calculated
         if (
@@ -63,7 +63,7 @@ public class ImageInfoHolder {
                         && this.rotatedBitmap != null
                         && this.bitmapResized != null
         ) {
-            return false;
+            return;
         }
 
         if (this.currentRotation == 0) {
@@ -76,7 +76,6 @@ public class ImageInfoHolder {
         this.getBitmapResized();
         this.currentBitmapRotation = this.currentRotation;
 
-        return true;
     }
 
     public Bitmap getBitmapSmall()
@@ -95,7 +94,7 @@ public class ImageInfoHolder {
     public Bitmap getBitmapResized()
     {
         if (this.bitmapResized == null) {
-            if (this.resizeOption == Images.RESIZE_OPTION_CUSTOM) {
+            if (this.resizeOption == ImageResizeOptions.RESIZE_OPTION_CUSTOM) {
                 this.bitmapResized = BitmapHelper.resizeBitmap(
                         this.rotatedBitmap,
                         this.customWidth,
@@ -170,8 +169,8 @@ public class ImageInfoHolder {
     public Bitmap getAdjustedBitmap()
     {
         if (
-                this.resizeOption == Images.RESIZE_OPTION_AUTOMATIC
-                || this.resizeOption == Images.RESIZE_OPTION_CUSTOM
+                this.resizeOption == ImageResizeOptions.RESIZE_OPTION_AUTOMATIC
+                || this.resizeOption == ImageResizeOptions.RESIZE_OPTION_CUSTOM
         ) {
             return this.getBitmapResized();
         }

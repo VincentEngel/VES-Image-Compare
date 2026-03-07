@@ -36,7 +36,7 @@ import com.vincentengelsoftware.androidimagecompare.databinding.ActivityMainBind
 import com.vincentengelsoftware.androidimagecompare.databinding.DialogCompareModeSelectionBinding;
 import com.vincentengelsoftware.androidimagecompare.databinding.DialogResizeImageBinding;
 import com.vincentengelsoftware.androidimagecompare.globals.Dimensions;
-import com.vincentengelsoftware.androidimagecompare.globals.Images;
+import com.vincentengelsoftware.androidimagecompare.globals.ImageResizeOptions;
 import com.vincentengelsoftware.androidimagecompare.globals.Settings;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
 import com.vincentengelsoftware.androidimagecompare.helper.AskForReview;
@@ -61,6 +61,9 @@ public class MainActivity extends AppCompatActivity {
     public static Uri rightImageUri;
     public static final String leftImageUriKey = "leftImageUriKey";
     public static final String rightImageUriKey = "rightImageUriKey";
+    
+    private static ImageInfoHolder firstImageInfoHolder;
+    private static ImageInfoHolder secondImageInfoHolder;
 
     private UserSettings userSettings;
 
@@ -70,8 +73,13 @@ public class MainActivity extends AppCompatActivity {
         KeyValueStorage keyValueStorage = new KeyValueStorage(getApplicationContext());
         this.userSettings = UserSettings.getInstance(keyValueStorage);
         Settings.init(userSettings);
+        
+        if (firstImageInfoHolder == null || secondImageInfoHolder == null) {
+            firstImageInfoHolder = new ImageInfoHolder();
+            secondImageInfoHolder = new ImageInfoHolder();
+        }
 
-        ApplyUserSettings.apply(this.userSettings, Images.first, Images.second);
+        ApplyUserSettings.apply(this.userSettings, firstImageInfoHolder, secondImageInfoHolder);
 
         super.onCreate(savedInstanceState);
 
@@ -200,14 +208,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void restoreImages() {
-        if (Images.first.getBitmap() == null && MainActivity.leftImageUri != null) {
+        if (firstImageInfoHolder.getBitmap() == null && MainActivity.leftImageUri != null) {
             try {
                 Uri uri = MainActivity.leftImageUri;
                 Bitmap bitmap = BitmapExtractor.fromUri(this.getContentResolver(), uri);
                 if (bitmap == null) {
                     throw new Exception("Unable to load bitmap");
                 }
-                Images.first.updateFromBitmap(
+                firstImageInfoHolder.updateFromBitmap(
                         BitmapExtractor.fromUri(this.getContentResolver(), uri),
                         Dimensions.maxSide,
                         Dimensions.maxSideForPreview,
@@ -216,14 +224,14 @@ public class MainActivity extends AppCompatActivity {
             } catch (Exception ignored) {
             }
         }
-        if (Images.second.getBitmap() == null && MainActivity.rightImageUri != null) {
+        if (secondImageInfoHolder.getBitmap() == null && MainActivity.rightImageUri != null) {
             try {
                 Uri uri = MainActivity.rightImageUri;
                 Bitmap bitmap = BitmapExtractor.fromUri(this.getContentResolver(), uri);
                 if (bitmap == null) {
                     throw new Exception("Unable to load bitmap");
                 }
-                Images.second.updateFromBitmap(
+                secondImageInfoHolder.updateFromBitmap(
                         bitmap,
                         Dimensions.maxSide,
                         Dimensions.maxSideForPreview,
@@ -233,26 +241,26 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        if (Images.first.getBitmap() != null) {
-            Images.first.updateImageViewPreviewImage(binding.homeImageLeft);
-            binding.mainTextViewNameImageLeft.setText(Images.first.getImageName());
+        if (firstImageInfoHolder.getBitmap() != null) {
+            firstImageInfoHolder.updateImageViewPreviewImage(binding.homeImageLeft);
+            binding.mainTextViewNameImageLeft.setText(firstImageInfoHolder.getImageName());
         }
 
-        if (Images.second.getBitmap() != null) {
-            Images.second.updateImageViewPreviewImage(binding.homeImageRight);
-            binding.mainTextViewNameImageRight.setText(Images.second.getImageName());
+        if (secondImageInfoHolder.getBitmap() != null) {
+            secondImageInfoHolder.updateImageViewPreviewImage(binding.homeImageRight);
+            binding.mainTextViewNameImageRight.setText(secondImageInfoHolder.getImageName());
         }
     }
 
     public void restoreImageViews() {
-        if (Images.first.getBitmap() != null) {
-            Images.first.updateImageViewPreviewImage(binding.homeImageLeft);
-            binding.mainTextViewNameImageLeft.setText(Images.first.getImageName());
+        if (firstImageInfoHolder.getBitmap() != null) {
+            firstImageInfoHolder.updateImageViewPreviewImage(binding.homeImageLeft);
+            binding.mainTextViewNameImageLeft.setText(firstImageInfoHolder.getImageName());
         }
 
-        if (Images.second.getBitmap() != null) {
-            Images.second.updateImageViewPreviewImage(binding.homeImageRight);
-            binding.mainTextViewNameImageRight.setText(Images.second.getImageName());
+        if (secondImageInfoHolder.getBitmap() != null) {
+            secondImageInfoHolder.updateImageViewPreviewImage(binding.homeImageRight);
+            binding.mainTextViewNameImageRight.setText(secondImageInfoHolder.getImageName());
         }
     }
 
@@ -295,14 +303,14 @@ public class MainActivity extends AppCompatActivity {
             ImageView imageView;
             TextView imageName;
 
-            boolean isFirst = Images.first.getBitmap() == null;
+            boolean isFirst = firstImageInfoHolder.getBitmap() == null;
 
             if (isFirst) {
-                imageInfoHolder = Images.first;
+                imageInfoHolder = firstImageInfoHolder;
                 imageView = binding.homeImageLeft;
                 imageName = binding.mainTextViewNameImageLeft;
             } else {
-                imageInfoHolder = Images.second;
+                imageInfoHolder = secondImageInfoHolder;
                 imageView = binding.homeImageRight;
                 imageName = binding.mainTextViewNameImageRight;
             }
@@ -344,7 +352,7 @@ public class MainActivity extends AppCompatActivity {
                 Uri localUri = ImageFileSaver.saveToFile(getContentResolver(), srcUri, localFile);
                 if (localUri != null) {
                     MainHelper.updateImageFromIntent(
-                            Images.first,
+                            firstImageInfoHolder,
                             BitmapExtractor.fromUri(this.getContentResolver(), localUri),
                             Dimensions.maxSide,
                             Dimensions.maxSideForPreview,
@@ -362,7 +370,7 @@ public class MainActivity extends AppCompatActivity {
                 Uri localUri = ImageFileSaver.saveToFile(getContentResolver(), srcUri, localFile);
                 if (localUri != null) {
                     MainHelper.updateImageFromIntent(
-                            Images.second,
+                            secondImageInfoHolder,
                             BitmapExtractor.fromUri(this.getContentResolver(), localUri),
                             Dimensions.maxSide,
                             Dimensions.maxSideForPreview,
@@ -382,11 +390,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void setUpActions() {
         binding.mainBtnResizeImageLeft.setOnClickListener(view ->
-                openResizeImageDialog(Images.first, this.userSettings.getLeftImageResizeSettings())
+                openResizeImageDialog(firstImageInfoHolder, this.userSettings.getLeftImageResizeSettings())
         );
 
         binding.mainBtnResizeImageRight.setOnClickListener(view ->
-                openResizeImageDialog(Images.second, this.userSettings.getRightImageResizeSettings())
+                openResizeImageDialog(secondImageInfoHolder, this.userSettings.getRightImageResizeSettings())
         );
 
         binding.mainButtonLastCompare.setText(
@@ -416,8 +424,8 @@ public class MainActivity extends AppCompatActivity {
 
         MainHelper.addSwapImageLogic(
                 binding.homeButtonSwapImages,
-                Images.first,
-                Images.second,
+                firstImageInfoHolder,
+                secondImageInfoHolder,
                 binding.homeImageLeft,
                 binding.homeImageRight,
                 binding.mainTextViewNameImageLeft,
@@ -466,7 +474,7 @@ public class MainActivity extends AppCompatActivity {
 
         MainHelper.addRotateImageLogic(
                 binding.homeButtonRotateImageLeft,
-                Images.first,
+                firstImageInfoHolder,
                 binding.homeImageLeft
         );
         binding.homeButtonRotateImageLeft.setOnLongClickListener(view -> {
@@ -476,7 +484,7 @@ public class MainActivity extends AppCompatActivity {
 
         MainHelper.addRotateImageLogic(
                 binding.homeButtonRotateImageRight,
-                Images.second,
+                secondImageInfoHolder,
                 binding.homeImageRight
         );
         binding.homeButtonRotateImageRight.setOnLongClickListener(view -> {
@@ -531,13 +539,13 @@ public class MainActivity extends AppCompatActivity {
         });
 
         switch (imageResizeSettings.getImageResizeOption()) {
-            case Images.RESIZE_OPTION_ORIGINAL:
+            case ImageResizeOptions.RESIZE_OPTION_ORIGINAL:
                 dialogBinding.dialogResizeImageRadioGroup.check(R.id.dialog_resize_image_radio_button_original);
                 break;
-            case Images.RESIZE_OPTION_AUTOMATIC:
+            case ImageResizeOptions.RESIZE_OPTION_AUTOMATIC:
                 dialogBinding.dialogResizeImageRadioGroup.check(R.id.dialog_resize_image_radio_button_automatic);
                 break;
-            case Images.RESIZE_OPTION_CUSTOM: {
+            case ImageResizeOptions.RESIZE_OPTION_CUSTOM: {
                 dialogBinding.dialogResizeImageRadioGroup.check(R.id.dialog_resize_image_radio_button_custom);
                 dialogBinding.dialogResizeImageInputHeight.setText(String.valueOf(imageResizeSettings.getImageResizeHeight()));
                 dialogBinding.dialogResizeImageInputWidth.setText(String.valueOf(imageResizeSettings.getImageResizeWidth()));
@@ -552,11 +560,11 @@ public class MainActivity extends AppCompatActivity {
             int checkedId = dialogBinding.dialogResizeImageRadioGroup.getCheckedRadioButtonId();
 
             if (checkedId == R.id.dialog_resize_image_radio_button_original) {
-                imageInfoHolder.setResizeOption(Images.RESIZE_OPTION_ORIGINAL);
-                imageResizeSettings.setImageResizeOption(Images.RESIZE_OPTION_ORIGINAL);
+                imageInfoHolder.setResizeOption(ImageResizeOptions.RESIZE_OPTION_ORIGINAL);
+                imageResizeSettings.setImageResizeOption(ImageResizeOptions.RESIZE_OPTION_ORIGINAL);
             } else if (checkedId == R.id.dialog_resize_image_radio_button_automatic) {
-                imageInfoHolder.setResizeOption(Images.RESIZE_OPTION_AUTOMATIC);
-                imageResizeSettings.setImageResizeOption(Images.RESIZE_OPTION_AUTOMATIC);
+                imageInfoHolder.setResizeOption(ImageResizeOptions.RESIZE_OPTION_AUTOMATIC);
+                imageResizeSettings.setImageResizeOption(ImageResizeOptions.RESIZE_OPTION_AUTOMATIC);
             } else if (checkedId == R.id.dialog_resize_image_radio_button_custom) {
                 int height;
                 int width;
@@ -574,11 +582,11 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
 
-                imageResizeSettings.setImageResizeOption(Images.RESIZE_OPTION_CUSTOM);
+                imageResizeSettings.setImageResizeOption(ImageResizeOptions.RESIZE_OPTION_CUSTOM);
                 imageResizeSettings.setImageResizeHeight(height);
                 imageResizeSettings.setImageResizeWidth(width);
 
-                imageInfoHolder.setResizeOption(Images.RESIZE_OPTION_CUSTOM);
+                imageInfoHolder.setResizeOption(ImageResizeOptions.RESIZE_OPTION_CUSTOM);
                 imageInfoHolder.setCustomSize(height, width);
             }
 
@@ -619,7 +627,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void openCompareActivity(Class<?> targetActivity) {
         try {
-            if (Images.first.getBitmap() == null || Images.second.getBitmap() == null || Status.activityIsOpening) {
+            if (firstImageInfoHolder.getBitmap() == null || secondImageInfoHolder.getBitmap() == null || Status.activityIsOpening) {
                 Toast.makeText(getApplicationContext(), getString(R.string.error_msg_missing_images), Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -640,15 +648,15 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     runOnUiThread(() -> binding.pbProgess.setVisibility(View.VISIBLE));
 
-                    Images.first.calculateRotatedBitmap();
-                    Images.second.calculateRotatedBitmap();
+                    firstImageInfoHolder.calculateRotatedBitmap();
+                    secondImageInfoHolder.calculateRotatedBitmap();
 
                     Uri uriOne = ImageFileSaver.saveBitmapToFile(
-                            Images.first.getAdjustedBitmap(),
+                            firstImageInfoHolder.getAdjustedBitmap(),
                             new File(getCacheDir(), "compare_image_one.png")
                     );
                     Uri uriTwo = ImageFileSaver.saveBitmapToFile(
-                            Images.second.getAdjustedBitmap(),
+                            secondImageInfoHolder.getAdjustedBitmap(),
                             new File(getCacheDir(), "compare_image_two.png")
                     );
 
@@ -658,8 +666,8 @@ public class MainActivity extends AppCompatActivity {
 
                     intent.putExtra(IntentExtras.IMAGE_URI_ONE, uriOne.toString());
                     intent.putExtra(IntentExtras.IMAGE_URI_TWO, uriTwo.toString());
-                    intent.putExtra(IntentExtras.IMAGE_NAME_ONE, Images.first.getImageName());
-                    intent.putExtra(IntentExtras.IMAGE_NAME_TWO, Images.second.getImageName());
+                    intent.putExtra(IntentExtras.IMAGE_NAME_ONE, firstImageInfoHolder.getImageName());
+                    intent.putExtra(IntentExtras.IMAGE_NAME_TWO, secondImageInfoHolder.getImageName());
 
                     runOnUiThread(() -> binding.pbProgess.setVisibility(View.GONE));
 
@@ -706,9 +714,9 @@ public class MainActivity extends AppCompatActivity {
                             ImageInfoHolder imageInfoHolder;
                             if (Objects.equals(imageHolderName, "left")) {
                                 MainActivity.leftImageUri = localUri;
-                                imageInfoHolder = Images.first;
+                                imageInfoHolder = firstImageInfoHolder;
                             } else {
-                                imageInfoHolder = Images.second;
+                                imageInfoHolder = secondImageInfoHolder;
                                 MainActivity.rightImageUri = localUri;
                             }
 
@@ -743,10 +751,10 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             ImageInfoHolder imageInfoHolder;
                             if (Objects.equals(imageHolderName, "left")) {
-                                imageInfoHolder = Images.first;
+                                imageInfoHolder = firstImageInfoHolder;
                                 MainActivity.leftImageUri = fileUri;
                             } else {
-                                imageInfoHolder = Images.second;
+                                imageInfoHolder = secondImageInfoHolder;
                                 MainActivity.rightImageUri = fileUri;
                             }
 

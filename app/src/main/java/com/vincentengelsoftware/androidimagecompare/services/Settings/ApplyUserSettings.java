@@ -1,6 +1,6 @@
 package com.vincentengelsoftware.androidimagecompare.services.Settings;
 
-import com.vincentengelsoftware.androidimagecompare.globals.Images;
+import com.vincentengelsoftware.androidimagecompare.globals.ImageResizeOptions;
 import com.vincentengelsoftware.androidimagecompare.helper.Theme;
 import com.vincentengelsoftware.androidimagecompare.util.ImageInfoHolder;
 
@@ -29,7 +29,7 @@ public class ApplyUserSettings {
     ) {
         imageInfoHolder.setResizeOption(imageResizeSettings.getImageResizeOption());
 
-        if (imageResizeSettings.getImageResizeOption() == Images.RESIZE_OPTION_CUSTOM) {
+        if (imageResizeSettings.getImageResizeOption() == ImageResizeOptions.RESIZE_OPTION_CUSTOM) {
             imageInfoHolder.setCustomSize(
                     imageResizeSettings.getImageResizeHeight(),
                     imageResizeSettings.getImageResizeWidth()
