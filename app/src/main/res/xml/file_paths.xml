@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<paths xmlns:android="http://schemas.android.com/apk/res/android">
+<!--
+    FileProvider paths – exposes only the internal cache directory.
+    All temporary files created by the app (camera captures, shared images) live
+    directly inside getCacheDir(), so "." is the narrowest valid scope.
+-->
+<paths xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="UnusedNamespace">
     <cache-path
         name="cache"
-        path="/" />
+        path="." />
 </paths>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Locale configuration – declares every language the app ships translations for.
+    Referenced by android:localeConfig in the <application> tag (API 33+).
+    The system uses this list to show only the supported languages in the
+    per-app language preference screen in Settings.
+-->
+<locale-config xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Default / fallback language -->
+    <locale android:name="en"/>
+    <!-- German translation -->
+    <locale android:name="de"/>
+</locale-config>
+

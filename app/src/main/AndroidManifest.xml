@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
     <uses-permission android:name="android.permission.CAMERA" />
 
     <uses-feature android:name="android.hardware.camera" android:required="false"/>
@@ -12,7 +13,11 @@
         android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:theme="@style/Theme.VesAndroidImageCompare">
+        android:theme="@style/Theme.VesAndroidImageCompare"
+
+        tools:targetApi="33"
+        android:localeConfig="@xml/locales_config"
+        >
         <activity
             android:name=".Activities.Settings.UserSettings.UserSettingsActivity"
             android:exported="false" />
@@ -43,31 +48,26 @@
         <activity
             android:name=".Activities.MainActivity"
             android:exported="true"
-            android:launchMode="singleTask"> <!-- singleTask = Only allow one instance of this app -->
-            <intent-filter> <!-- WHAT IS THIS FOR? -->
+            android:launchMode="singleTask">
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <intent-filter>
+            <intent-filter android:label="@string/app_name_short">
                 <action android:name="android.intent.action.SEND" />
-
                 <category android:name="android.intent.category.DEFAULT" />
-
                 <data android:mimeType="image/*" />
             </intent-filter>
-            <intent-filter>
+            <intent-filter android:label="@string/app_name_short">
                 <action android:name="android.intent.action.SEND_MULTIPLE" />
-
                 <category android:name="android.intent.category.DEFAULT" />
-
                 <data android:mimeType="image/*" />
             </intent-filter>
         </activity>
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.vincentengelsoftware.vesandroidimagecompare.fileprovider"
+            android:authorities="${applicationId}.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
