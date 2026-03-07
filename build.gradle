@@ -8,13 +8,11 @@ tasks.register('clean', Delete) {
     delete rootProject.layout.buildDirectory
 }
 
-allprojects {
-    gradle.projectsEvaluated {
-        tasks.withType(JavaCompile).tap {
-            configureEach {
-                options.encoding("UTF-8")
-                options.compilerArgs << "-Xlint:deprecation"
-            }
-        }
+// Apply UTF-8 encoding and deprecation warnings to all Java compile tasks.
+// Note: -Dfile.encoding=UTF-8 is already set via org.gradle.jvmargs in gradle.properties.
+subprojects {
+    tasks.withType(JavaCompile).configureEach {
+        options.encoding = 'UTF-8'
+        options.compilerArgs << '-Xlint:deprecation'
     }
 }

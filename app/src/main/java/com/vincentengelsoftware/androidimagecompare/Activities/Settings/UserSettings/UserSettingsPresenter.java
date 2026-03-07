@@ -122,17 +122,6 @@ public class UserSettingsPresenter {
         };
     }
 
-    public static class SaveZoomResult {
-        /** True when at least one zoom value was out of range and was clamped. */
-        private final boolean hadInvalidInput;
-
-        SaveZoomResult(boolean hadInvalidInput) {
-            this.hadInvalidInput = hadInvalidInput;
-        }
-
-        public boolean hadInvalidInput() {
-            return hadInvalidInput;
-        }
-    }
+    public record SaveZoomResult(boolean hadInvalidInput) {}
 }
 

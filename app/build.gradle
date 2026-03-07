@@ -4,34 +4,50 @@ plugins {
 
 android {
     compileSdk = 36
+    namespace   = 'com.vincentengelsoftware.androidimagecompare'
 
     defaultConfig {
-        applicationId 'com.vincentengelsoftware.vesandroidimagecompare'
-        minSdk 28
-        targetSdk 36
-        versionCode 46
-        versionName "2.3.1"
+        applicationId  = 'com.vincentengelsoftware.vesandroidimagecompare'
+        minSdk         = 28
+        targetSdk      = 36
+        versionCode    = 46
+        versionName    = "2.3.1"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled = true
+            shrinkResources = true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            applicationIdSuffix = ".debug"
+            versionNameSuffix   = "-debug"
         }
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
-    namespace 'com.vincentengelsoftware.androidimagecompare'
+    lint {
+        abortOnError    = true
+        warningsAsErrors = true
+    }
+
+    testOptions {
+        unitTests {
+            returnDefaultValues = true
+            includeAndroidResources = true
+        }
+    }
 
     buildFeatures {
-        viewBinding true
+        viewBinding = true
+        buildConfig = false   // disabled – not used; re-enable if needed
     }
 }
 
