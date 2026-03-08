@@ -1,6 +1,6 @@
 package com.vincentengelsoftware.androidimagecompare.globals;
 
-import com.vincentengelsoftware.androidimagecompare.services.Settings.UserSettings;
+import com.vincentengelsoftware.androidimagecompare.services.settings.UserSettings;
 
 public class Settings {
     public static void init(UserSettings userSettings) {

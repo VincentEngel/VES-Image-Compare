@@ -4,7 +4,7 @@ import android.graphics.drawable.Drawable;
 import android.widget.ToggleButton;
 
 import com.vincentengelsoftware.androidimagecompare.globals.Settings;
-import com.vincentengelsoftware.androidimagecompare.ImageView.VesImageInterface;
+import com.vincentengelsoftware.androidimagecompare.imageView.VesImageInterface;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 

@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import com.vincentengelsoftware.androidimagecompare.globals.Settings;
 import com.vincentengelsoftware.androidimagecompare.globals.Status;
-import com.vincentengelsoftware.androidimagecompare.ImageView.VesImageInterface;
+import com.vincentengelsoftware.androidimagecompare.imageView.VesImageInterface;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
