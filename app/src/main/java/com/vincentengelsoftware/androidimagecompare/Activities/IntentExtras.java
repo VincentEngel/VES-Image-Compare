@@ -1,7 +1,7 @@
 package com.vincentengelsoftware.androidimagecompare.Activities;
 
 public class IntentExtras {
-    public static final String SYNCED_ZOOM = "SYNCED_ZOOM";
+    public static final String SYNC_IMAGE_INTERACTIONS = "SYNCED_IMAGE_INTERACTIONS";
     public static final String SHOW_EXTENSIONS = "SHOW_EXTENSIONS";
     public static final String HAS_HARDWARE_KEY = "HAS_HARDWARE_KEY";
     public static final String IMAGE_URI_ONE = "IMAGE_URI_ONE";

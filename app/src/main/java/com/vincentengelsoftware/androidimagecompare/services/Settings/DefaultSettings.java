@@ -7,7 +7,7 @@ import com.vincentengelsoftware.androidimagecompare.globals.Status;
 public class DefaultSettings {
     public static int MAX_ZOOM = 100;
     public static String COMPARE_MODE = CompareModeNames.SIDE_BY_SIDE;
-    public static boolean SYNCED_ZOOM = true;
+    public static boolean SYNC_IMAGE_INTERACTIONS = true;
     public static boolean SHOW_EXTENSIONS = true;
     public static int THEME = Status.THEME_SYSTEM;
 

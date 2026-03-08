@@ -3,74 +3,121 @@ package com.vincentengelsoftware.androidimagecompare.Activities.CompareModes;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.vincentengelsoftware.androidimagecompare.Activities.IntentExtras;
 import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.databinding.ActivitySideBySideBinding;
-import com.vincentengelsoftware.androidimagecompare.globals.Status;
 import com.vincentengelsoftware.androidimagecompare.helper.BitmapExtractor;
 import com.vincentengelsoftware.androidimagecompare.helper.FullScreenHelper;
 import com.vincentengelsoftware.androidimagecompare.helper.SyncZoom;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SideBySideActivity extends AppCompatActivity {
-    public static AtomicBoolean sync = new AtomicBoolean(true);
+
+    private static final String KEY_SYNC_IMAGE_INTERACTIONS = "key_sync_image_interactions";
+
+    /** Shared sync state, retained across config changes via savedInstanceState. */
+    private final AtomicBoolean syncImageInteractions = new AtomicBoolean(true);
+
+    private ActivitySideBySideBinding binding;
+    private ExecutorService imageLoadExecutor;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (Status.activityIsOpening) {
-            // Sync zoom can be deactivated within the Activity,
-            // so only set it on first opening
-            sync.set(getIntent().getBooleanExtra(IntentExtras.SYNCED_ZOOM, true));
-            Status.activityIsOpening = false;
-        }
+        FullScreenHelper.setFullScreenFlags(getWindow());
 
-        FullScreenHelper.setFullScreenFlags(this.getWindow());
-
-        ActivitySideBySideBinding binding = ActivitySideBySideBinding.inflate(getLayoutInflater());
+        binding = ActivitySideBySideBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        // Restore or initialise the sync-zoom state.
+        // On first launch the value comes from the launching Intent;
+        // on configuration changes it is preserved via savedInstanceState.
+        if (savedInstanceState != null) {
+            syncImageInteractions.set(savedInstanceState.getBoolean(KEY_SYNC_IMAGE_INTERACTIONS, true));
+        } else {
+            syncImageInteractions.set(getIntent().getBooleanExtra(IntentExtras.SYNC_IMAGE_INTERACTIONS, true));
+        }
 
         SyncZoom.setLinkedTargets(
                 binding.sideBySideImageTopLeft,
                 binding.sideBySideImageBottomRight,
-                SideBySideActivity.sync,
-                new AtomicBoolean(false)
+                syncImageInteractions
         );
+
         SyncZoom.setUpSyncZoomToggleButton(
                 binding.sideBySideImageTopLeft,
                 binding.sideBySideImageBottomRight,
                 binding.toggleButton,
-                ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_link),
-                ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_link_off),
-                SideBySideActivity.sync,
-                null
+                ContextCompat.getDrawable(this, R.drawable.ic_link),
+                ContextCompat.getDrawable(this, R.drawable.ic_link_off),
+                syncImageInteractions
         );
 
-        try {
-            binding.sideBySideImageTopLeft.setBitmapImage(BitmapExtractor.fromUriString(
-                    getContentResolver(),
-                    getIntent().getStringExtra(IntentExtras.IMAGE_URI_ONE)
-            ));
-            binding.sideBySideImageNameTopLeft.setText(getIntent().getStringExtra(IntentExtras.IMAGE_NAME_ONE));
+        toggleExtensionsVisibility();
+        loadImagesAsync();
+    }
 
-            binding.sideBySideImageBottomRight.setBitmapImage(BitmapExtractor.fromUriString(
-                    getContentResolver(),
-                    getIntent().getStringExtra(IntentExtras.IMAGE_URI_TWO)
-            ));
-            binding.sideBySideImageNameBottomRight.setText(getIntent().getStringExtra(IntentExtras.IMAGE_NAME_TWO));
-        } catch (Exception e) {
-            this.finish();
-        }
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(KEY_SYNC_IMAGE_INTERACTIONS, syncImageInteractions.get());
+    }
 
-        if (getIntent().getBooleanExtra(IntentExtras.SHOW_EXTENSIONS, false)) {
-            binding.sideBySideExtensions.setVisibility(View.VISIBLE);
-        } else {
-            binding.sideBySideExtensions.setVisibility(View.GONE);
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (imageLoadExecutor != null) {
+            imageLoadExecutor.shutdownNow();
         }
+        binding = null;
+    }
+
+    /** Shows or hides the extensions bar based on the Intent extra. */
+    private void toggleExtensionsVisibility() {
+        boolean showExtensions = getIntent().getBooleanExtra(IntentExtras.SHOW_EXTENSIONS, false);
+        binding.sideBySideExtensions.setVisibility(showExtensions ? View.VISIBLE : View.GONE);
+    }
+
+    /**
+     * Decodes the two bitmaps on a background thread and delivers them to the
+     * UI thread once ready.  Calls {@link #finish()} if either image cannot be
+     * loaded so the user is never shown a broken screen.
+     */
+    private void loadImagesAsync() {
+        final String uriOne = getIntent().getStringExtra(IntentExtras.IMAGE_URI_ONE);
+        final String uriTwo = getIntent().getStringExtra(IntentExtras.IMAGE_URI_TWO);
+        final String nameOne = getIntent().getStringExtra(IntentExtras.IMAGE_NAME_ONE);
+        final String nameTwo = getIntent().getStringExtra(IntentExtras.IMAGE_NAME_TWO);
+
+        imageLoadExecutor = Executors.newSingleThreadExecutor();
+        imageLoadExecutor.execute(() -> {
+            final var bitmapOne = BitmapExtractor.fromUriString(getContentResolver(), uriOne);
+            final var bitmapTwo = BitmapExtractor.fromUriString(getContentResolver(), uriTwo);
+
+            runOnUiThread(() -> {
+                if (isFinishing() || isDestroyed() || binding == null) {
+                    return;
+                }
+
+                try {
+                    binding.sideBySideImageTopLeft.setBitmapImage(bitmapOne);
+                    binding.sideBySideImageNameTopLeft.setText(nameOne);
+
+                    binding.sideBySideImageBottomRight.setBitmapImage(bitmapTwo);
+                    binding.sideBySideImageNameBottomRight.setText(nameTwo);
+                } catch (Exception e) {
+                    finish();
+                }
+            });
+        });
     }
 }

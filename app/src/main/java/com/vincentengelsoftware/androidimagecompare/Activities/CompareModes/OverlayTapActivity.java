@@ -27,7 +27,7 @@ public class OverlayTapActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         if (Status.activityIsOpening) {
-            sync.set(getIntent().getBooleanExtra(IntentExtras.SYNCED_ZOOM, true));
+            sync.set(getIntent().getBooleanExtra(IntentExtras.SYNC_IMAGE_INTERACTIONS, true));
             Status.activityIsOpening = false;
         }
 
@@ -81,8 +81,7 @@ public class OverlayTapActivity extends AppCompatActivity {
                 binding.overlayTapButtonZoomSync,
                 ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_link),
                 ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_link_off),
-                OverlayTapActivity.sync,
-                null
+                OverlayTapActivity.sync
         );
 
         if (getIntent().getBooleanExtra(IntentExtras.SHOW_EXTENSIONS, false)) {

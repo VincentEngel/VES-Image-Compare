@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
             binding.homeButtonExtensions.setImageDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_extension_off));
         }
 
-        if (this.userSettings.isSyncedZoom()) {
+        if (this.userSettings.isSyncImageInteractions()) {
             binding.homeButtonLinkZoom.setImageDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_link));
         } else {
             binding.homeButtonLinkZoom.setImageDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_link_off));
@@ -454,14 +454,14 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
-        if (this.userSettings.isSyncedZoom()) {
+        if (this.userSettings.isSyncImageInteractions()) {
             binding.homeButtonLinkZoom.setImageDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_link));
         } else {
             binding.homeButtonLinkZoom.setImageDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_link_off));
         }
         binding.homeButtonLinkZoom.setOnClickListener(view -> {
-            this.userSettings.setSyncedZoom(!this.userSettings.isSyncedZoom());
-            if (this.userSettings.isSyncedZoom()) {
+            this.userSettings.setSyncImageInteractions(!this.userSettings.isSyncImageInteractions());
+            if (this.userSettings.isSyncImageInteractions()) {
                 binding.homeButtonLinkZoom.setImageDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_link));
             } else {
                 binding.homeButtonLinkZoom.setImageDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_link_off));
@@ -641,7 +641,7 @@ public class MainActivity extends AppCompatActivity {
 
             Intent intent = new Intent(getApplicationContext(), targetActivity);
             intent.putExtra(IntentExtras.SHOW_EXTENSIONS, this.userSettings.isShowExtensions());
-            intent.putExtra(IntentExtras.SYNCED_ZOOM, this.userSettings.isSyncedZoom());
+            intent.putExtra(IntentExtras.SYNC_IMAGE_INTERACTIONS, this.userSettings.isSyncImageInteractions());
             intent.putExtra(IntentExtras.HAS_HARDWARE_KEY, Status.HAS_HARDWARE_KEY);
 
             Thread t = new Thread(() -> {

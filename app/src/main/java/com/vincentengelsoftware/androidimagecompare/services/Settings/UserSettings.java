@@ -7,7 +7,7 @@ public class UserSettings {
     private static UserSettings instance;
     private final KeyValueStorage keyValueStorage;
     public static final String USER_THEME = "USER_THEME";
-    public static final String SYNCED_ZOOM = "SYNCED_ZOOM";
+    public static final String SYNC_IMAGE_INTERACTIONS = "SYNCED_ZOOM";
     public static final String SHOW_EXTENSIONS = "SHOW_EXTENSIONS";
     public static final String LAST_COMPARE_MODE = "LAST_COMPARE_MODE";
     public static final String MAX_ZOOM = "MAX_ZOOM";
@@ -53,12 +53,12 @@ public class UserSettings {
         this.keyValueStorage.setString(UserSettings.LAST_COMPARE_MODE, lastCompareMode);
     }
 
-    public boolean isSyncedZoom() {
-        return this.keyValueStorage.getBoolean(UserSettings.SYNCED_ZOOM, DefaultSettings.SYNCED_ZOOM);
+    public boolean isSyncImageInteractions() {
+        return this.keyValueStorage.getBoolean(UserSettings.SYNC_IMAGE_INTERACTIONS, DefaultSettings.SYNC_IMAGE_INTERACTIONS);
     }
 
-    public void setSyncedZoom(boolean syncedZoom) {
-        this.keyValueStorage.setBoolean(UserSettings.SYNCED_ZOOM, syncedZoom);
+    public void setSyncImageInteractions(boolean syncedZoom) {
+        this.keyValueStorage.setBoolean(UserSettings.SYNC_IMAGE_INTERACTIONS, syncedZoom);
     }
 
     public boolean isShowExtensions() {
@@ -130,7 +130,7 @@ public class UserSettings {
 
     public void resetAllSettings() {
         this.keyValueStorage.remove(UserSettings.USER_THEME);
-        this.keyValueStorage.remove(UserSettings.SYNCED_ZOOM);
+        this.keyValueStorage.remove(UserSettings.SYNC_IMAGE_INTERACTIONS);
         this.keyValueStorage.remove(UserSettings.SHOW_EXTENSIONS);
         this.keyValueStorage.remove(UserSettings.LAST_COMPARE_MODE);
         this.keyValueStorage.remove(UserSettings.MAX_ZOOM);

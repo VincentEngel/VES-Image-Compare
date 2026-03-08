@@ -3,7 +3,6 @@ package com.vincentengelsoftware.androidimagecompare.helper;
 import android.graphics.drawable.Drawable;
 import android.widget.ToggleButton;
 
-import com.vincentengelsoftware.androidimagecompare.animations.FadeActivity;
 import com.vincentengelsoftware.androidimagecompare.globals.Settings;
 import com.vincentengelsoftware.androidimagecompare.ImageView.VesImageInterface;
 
@@ -13,9 +12,12 @@ public class SyncZoom {
     public static void setLinkedTargets(
             VesImageInterface imageOne,
             VesImageInterface imageTwo,
-            AtomicBoolean sync,
-            AtomicBoolean disabled
+            AtomicBoolean sync
     ) {
+        // Mirroring interactions needs to be disabled while processing
+        // interactions from the other image. Else they would trigger each other
+        AtomicBoolean disabled = new AtomicBoolean(false);
+
         imageOne.addMirrorListener(imageTwo, sync, disabled);
         imageTwo.addMirrorListener(imageOne, sync, disabled);
     }
@@ -26,8 +28,7 @@ public class SyncZoom {
             ToggleButton toggleButton,
             Drawable iconLinkedOn,
             Drawable iconLinkedOff,
-            AtomicBoolean sync,
-            FadeActivity activity
+            AtomicBoolean sync
     )
     {
         toggleButton.setChecked(sync.get());
@@ -38,9 +39,6 @@ public class SyncZoom {
         }
 
         toggleButton.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (activity != null) {
-                activity.instantFadeIn();
-            }
             if (b) {
                 if (Settings.RESET_IMAGE_ON_LINKING) {
                     imageOne.resetZoom();
@@ -52,9 +50,6 @@ public class SyncZoom {
                 toggleButton.setBackgroundDrawable(iconLinkedOff);
             }
             sync.set(!sync.get());
-            if (activity != null) {
-                activity.triggerFadeOutThread();
-            }
         });
     }
 }

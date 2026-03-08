@@ -47,7 +47,7 @@ public class OverlayTransparentActivity extends AppCompatActivity implements Fad
         }
 
         if (Status.activityIsOpening) {
-            sync.set(getIntent().getBooleanExtra(IntentExtras.SYNCED_ZOOM, true));
+            sync.set(getIntent().getBooleanExtra(IntentExtras.SYNC_IMAGE_INTERACTIONS, true));
             Status.activityIsOpening = false;
         }
 
@@ -99,8 +99,7 @@ public class OverlayTransparentActivity extends AppCompatActivity implements Fad
         SyncZoom.setLinkedTargets(
                 binding.overlayTransparentImageViewBase,
                 binding.overlayTransparentImageViewTransparent,
-                OverlayTransparentActivity.sync,
-                new AtomicBoolean(false)
+                OverlayTransparentActivity.sync
         );
         SyncZoom.setUpSyncZoomToggleButton(
                 binding.overlayTransparentImageViewBase,
@@ -108,8 +107,7 @@ public class OverlayTransparentActivity extends AppCompatActivity implements Fad
                 binding.overlayTransparentButtonZoomSync,
                 ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_link),
                 ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_link_off),
-                OverlayTransparentActivity.sync,
-                this
+                OverlayTransparentActivity.sync
         );
 
         if (getIntent().getBooleanExtra(IntentExtras.HAS_HARDWARE_KEY, false)) {

@@ -65,7 +65,7 @@ public class OverlaySlideActivity extends AppCompatActivity implements FadeActiv
             }
 
             if (Status.activityIsOpening) {
-                sync.set(getIntent().getBooleanExtra(IntentExtras.SYNCED_ZOOM, true));
+                sync.set(getIntent().getBooleanExtra(IntentExtras.SYNC_IMAGE_INTERACTIONS, true));
             }
 
             Status.activityIsOpening = false;
@@ -93,8 +93,7 @@ public class OverlaySlideActivity extends AppCompatActivity implements FadeActiv
             SyncZoom.setLinkedTargets(
                     binding.overlaySlideImageViewFront,
                     binding.overlaySlideImageViewBase,
-                    OverlaySlideActivity.sync,
-                    new AtomicBoolean(false)
+                    OverlaySlideActivity.sync
             );
 
             binding.overlayTransparentButtonHideFrontImage.setOnClickListener(view -> {

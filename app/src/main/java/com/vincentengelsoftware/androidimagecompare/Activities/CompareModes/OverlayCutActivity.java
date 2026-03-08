@@ -53,7 +53,7 @@ public class OverlayCutActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         if (Status.activityIsOpening) {
-            OverlayCutActivity.sync.set(getIntent().getBooleanExtra(IntentExtras.SYNCED_ZOOM, true));
+            OverlayCutActivity.sync.set(getIntent().getBooleanExtra(IntentExtras.SYNC_IMAGE_INTERACTIONS, true));
             this.setupImages(true);
             Status.activityIsOpening = false;
         }
@@ -77,8 +77,7 @@ public class OverlayCutActivity extends AppCompatActivity {
         SyncZoom.setLinkedTargets(
                 binding.fullSlideImageViewFront,
                 binding.fullSlideImageViewBase,
-                OverlayCutActivity.sync,
-                new AtomicBoolean(false)
+                OverlayCutActivity.sync
         );
 
         ViewGroup.LayoutParams layoutParamsSeekbarLeft = binding.fullSliderSeekbarLeft.getLayoutParams();
