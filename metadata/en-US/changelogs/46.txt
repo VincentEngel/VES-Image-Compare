@@ -1,3 +1,5 @@
 * Upgrade libraries
 * Removed MetaData Compare because normal image picker does no longer provide such information
 * Improved image handling in Activities to reduce memory usage
+* Only keeping DE and ENG translation
+* Improve performance

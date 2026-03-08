@@ -7,8 +7,8 @@ import android.net.Uri;
 
 public class PlayStoreNavigator {
 
-    /** Opens the Play Store listing for this app, falling back to the browser. */
-    public static void openPlayStoreListing(Context context) {
+    /** Opens the Play Store page for this app, falling back to the browser. */
+    public static void openPlayStoreAppPage(Context context) {
         try {
             context.startActivity(new Intent(Intent.ACTION_VIEW,
                     Uri.parse("market://details?id=" + context.getPackageName())));

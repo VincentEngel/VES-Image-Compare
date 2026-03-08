@@ -38,6 +38,6 @@ public class ConfigActivity extends AppCompatActivity {
                 startActivity(new Intent(this, UserSettingsActivity.class)));
 
         binding.configsOpenPlaystore.setOnClickListener(view ->
-                PlayStoreNavigator.openPlayStoreListing(this));
+                PlayStoreNavigator.openPlayStoreAppPage(this));
     }
 }

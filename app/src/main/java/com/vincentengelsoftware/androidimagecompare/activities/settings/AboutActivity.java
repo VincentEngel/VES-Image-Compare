@@ -23,7 +23,7 @@ public class AboutActivity extends AppCompatActivity {
         TextViewModifier.makeLinkClickable(binding.infoTextViewLinkGoogleMaterialIcons);
         TextViewModifier.makeLinkClickable(binding.infoTextViewLinkDittoPhotoComparer);
 
-        binding.infoBtnOpenPlaystore.setOnClickListener(view -> PlayStoreNavigator.openPlayStoreListing(this));
+        binding.infoBtnOpenPlaystore.setOnClickListener(view -> PlayStoreNavigator.openPlayStoreAppPage(this));
 
         String version = getString(R.string.unknown);
         try {

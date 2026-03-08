@@ -33,7 +33,7 @@ public class AskForReview {
         builder.setMessage(R.string.ask_for_review_text);
 
         builder.setPositiveButton(R.string.ask_for_review_positive, (dialogInterface, i) ->
-                PlayStoreNavigator.openPlayStoreListing(context));
+                PlayStoreNavigator.openPlayStoreAppPage(context));
 
         builder.setNegativeButton(R.string.ask_for_review_negative, (dialogInterface, i) -> {});
 

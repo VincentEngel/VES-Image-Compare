@@ -4,10 +4,13 @@ import android.content.ContentResolver;
 import android.graphics.Bitmap;
 import android.net.Uri;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.io.OutputStream;
+import java.nio.channels.Channels;
+import java.nio.channels.FileChannel;
+import java.nio.channels.ReadableByteChannel;
 
 /**
  * Copies the raw bytes of an image identified by a content URI into a local cache file
@@ -25,18 +28,23 @@ public class ImageFileSaver {
      */
     public static Uri saveToFile(ContentResolver contentResolver, Uri sourceUri, File destinationFile) {
         try (InputStream in = contentResolver.openInputStream(sourceUri);
-             OutputStream out = new FileOutputStream(destinationFile)) {
+             FileOutputStream fos = new FileOutputStream(destinationFile);
+             FileChannel outChannel = fos.getChannel()) {
 
             if (in == null) {
                 return null;
             }
 
-            byte[] buffer = new byte[8192];
-            int bytesRead;
-            while ((bytesRead = in.read(buffer)) != -1) {
-                out.write(buffer, 0, bytesRead);
+            // NIO channel transfer — avoids copying bytes through a JVM heap buffer.
+            // The OS moves data directly between the source and the destination file.
+            try (ReadableByteChannel inChannel = Channels.newChannel(in)) {
+                long position = 0;
+                long transferred;
+                do {
+                    transferred = outChannel.transferFrom(inChannel, position, 1024 * 1024);
+                    position += transferred;
+                } while (transferred > 0);
             }
-            out.flush();
 
             return Uri.fromFile(destinationFile);
         } catch (Exception ignored) {
@@ -52,7 +60,10 @@ public class ImageFileSaver {
      * @return the Uri of the destination file on success, or {@code null} on failure
      */
     public static Uri saveBitmapToFile(Bitmap bitmap, File destinationFile) {
-        try (FileOutputStream out = new FileOutputStream(destinationFile)) {
+        try (FileOutputStream fos = new FileOutputStream(destinationFile);
+             BufferedOutputStream out = new BufferedOutputStream(fos, 65536)) {
+            // BufferedOutputStream (64 KB buffer) coalesces the PNG encoder's many small
+            // writes into larger, fewer system calls before they reach the kernel.
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
             out.flush();
             return Uri.fromFile(destinationFile);

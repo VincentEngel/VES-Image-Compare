@@ -21,19 +21,4 @@ public class Theme {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }
     }
-
-    public static void updateButtonText(Button button, int theme)
-    {
-        switch (theme) {
-            case Status.THEME_SYSTEM:
-                button.setText(R.string.theme_system);
-                break;
-            case Status.THEME_LIGHT:
-                button.setText(R.string.theme_light);
-                break;
-            case Status.THEME_DARK:
-            default:
-                button.setText(R.string.theme_dark);
-        }
-    }
 }
