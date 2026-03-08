@@ -62,7 +62,14 @@ public class MainActivity extends AppCompatActivity {
     public static Uri rightImageUri;
     public static final String leftImageUriKey = "leftImageUriKey";
     public static final String rightImageUriKey = "rightImageUriKey";
-    
+    private static final String pendingCameraUriLeftKey = "pendingCameraUriLeftKey";
+    private static final String pendingCameraUriRightKey = "pendingCameraUriRightKey";
+
+    /** URI of the file currently being written by the camera for the left slot. */
+    private Uri pendingCameraUriLeft;
+    /** URI of the file currently being written by the camera for the right slot. */
+    private Uri pendingCameraUriRight;
+
     private static ImageInfoHolder firstImageInfoHolder;
     private static ImageInfoHolder secondImageInfoHolder;
     
@@ -115,6 +122,14 @@ public class MainActivity extends AppCompatActivity {
             if (savedRight != null) {
                 MainActivity.rightImageUri = Uri.parse(savedRight);
             }
+            String savedPendingLeft = savedInstanceState.getString(pendingCameraUriLeftKey);
+            if (savedPendingLeft != null) {
+                pendingCameraUriLeft = Uri.parse(savedPendingLeft);
+            }
+            String savedPendingRight = savedInstanceState.getString(pendingCameraUriRightKey);
+            if (savedPendingRight != null) {
+                pendingCameraUriRight = Uri.parse(savedPendingRight);
+            }
             restoreImages();
         }
 
@@ -138,6 +153,12 @@ public class MainActivity extends AppCompatActivity {
         }
         if (MainActivity.rightImageUri != null) {
             outState.putString(MainActivity.rightImageUriKey, MainActivity.rightImageUri.toString());
+        }
+        if (pendingCameraUriLeft != null) {
+            outState.putString(pendingCameraUriLeftKey, pendingCameraUriLeft.toString());
+        }
+        if (pendingCameraUriRight != null) {
+            outState.putString(pendingCameraUriRightKey, pendingCameraUriRight.toString());
         }
     }
 
@@ -746,11 +767,6 @@ public class MainActivity extends AppCompatActivity {
                 });
 
         try {
-            Uri fileUri = FileProvider.getUriForFile(
-                    this,
-                    getApplicationContext().getPackageName() + ".fileprovider",
-                    new File(this.getCacheDir(), "camera_image_" + System.currentTimeMillis() + ".png")
-            );
 
             ActivityResultLauncher<Uri> mGetContentCamera = registerForActivityResult(
                     new ActivityResultContracts.TakePicture(),
@@ -761,20 +777,35 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                         try {
+                            // Retrieve the URI that was stored before launching the camera.
+                            // Using the persisted field rather than the local variable ensures
+                            // correctness even when the activity was destroyed and recreated
+                            // while the camera app was in the foreground.
+                            Uri capturedUri = Objects.equals(imageHolderName, "left")
+                                    ? pendingCameraUriLeft
+                                    : pendingCameraUriRight;
+
+                            if (capturedUri == null) {
+                                Toast.makeText(getApplicationContext(), R.string.error_message_general, Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+
                             ImageInfoHolder imageInfoHolder;
                             if (Objects.equals(imageHolderName, "left")) {
                                 imageInfoHolder = firstImageInfoHolder;
-                                MainActivity.leftImageUri = fileUri;
+                                MainActivity.leftImageUri = capturedUri;
+                                pendingCameraUriLeft = null;
                             } else {
                                 imageInfoHolder = secondImageInfoHolder;
-                                MainActivity.rightImageUri = fileUri;
+                                MainActivity.rightImageUri = capturedUri;
+                                pendingCameraUriRight = null;
                             }
 
                             imageInfoHolder.updateFromBitmap(
-                                    BitmapExtractor.fromUri(this.getContentResolver(), fileUri),
+                                    BitmapExtractor.fromUri(this.getContentResolver(), capturedUri),
                                     Dimensions.maxSide,
                                     Dimensions.maxSideForPreview,
-                                    MainHelper.getImageName(this, fileUri)
+                                    MainHelper.getImageName(this, capturedUri)
                             );
                         } catch (Exception ignored) {
                         }
@@ -794,7 +825,24 @@ public class MainActivity extends AppCompatActivity {
                 builder.setItems(optionsMenu, (dialogInterface, i) -> {
                     if (optionsMenu[i].equals(getString(R.string.load_image_camera))) {
                         if (MainHelper.checkPermission(MainActivity.this)) {
-                            mGetContentCamera.launch(fileUri);
+                            try {
+                                // Build a fresh timestamp-based URI each time the user taps
+                                // "Camera", then persist it before launching so it survives
+                                // activity recreation caused by memory pressure.
+                                Uri cameraFileUri = FileProvider.getUriForFile(
+                                        this,
+                                        getApplicationContext().getPackageName() + ".fileprovider",
+                                        new File(this.getCacheDir(), "camera_image_" + System.currentTimeMillis() + ".png")
+                                );
+                                if (Objects.equals(imageHolderName, "left")) {
+                                    pendingCameraUriLeft = cameraFileUri;
+                                } else {
+                                    pendingCameraUriRight = cameraFileUri;
+                                }
+                                mGetContentCamera.launch(cameraFileUri);
+                            } catch (Exception ignored) {
+                                Toast.makeText(getApplicationContext(), R.string.error_message_general, Toast.LENGTH_SHORT).show();
+                            }
                         } else {
                             MainHelper.requestPermission(MainActivity.this);
                             imageView.callOnClick();
@@ -804,7 +852,7 @@ public class MainActivity extends AppCompatActivity {
                     } else if (optionsMenu[i].equals(getString(R.string.share_image))) {
                         try {
                             Uri imageUri;
-                            if (Objects.equals(imageHolderName, "first")) {
+                            if (Objects.equals(imageHolderName, "left")) {
                                 if (MainActivity.leftImageUri == null) {
                                     Toast.makeText(getApplicationContext(), getString(R.string.error_msg_missing_images), Toast.LENGTH_SHORT).show();
                                     return;
