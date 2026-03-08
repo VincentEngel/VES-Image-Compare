@@ -96,7 +96,9 @@ public class ImageInfoHolder {
     }
 
     /**
-     * TODO improve: If resize = true is set, then it is faster to resize before rotation
+     * Computes the final bitmap for comparison by scaling first, then rotating.
+     * Resizing before rotation is significantly cheaper: the rotation matrix operates on
+     * a much smaller bitmap, reducing both CPU time and peak heap usage.
      */
     public void calculateRotatedBitmap()
     {
@@ -109,14 +111,27 @@ public class ImageInfoHolder {
             return;
         }
 
-        if (this.currentRotation == 0) {
-            this.rotatedBitmap = this.bitmap;
+        // Step 1: scale the full-resolution source bitmap to the target size first.
+        Bitmap scaledBitmap;
+        if (this.resizeOption == ImageResizeOptions.RESIZE_OPTION_CUSTOM) {
+            scaledBitmap = BitmapHelper.resizeBitmap(this.bitmap, this.customWidth, this.customHeight);
+        } else if (this.resizeOption == ImageResizeOptions.RESIZE_OPTION_AUTOMATIC) {
+            scaledBitmap = BitmapHelper.createScaledBitmapToMaxLength(
+                    this.bitmap, this.maxSideSize, this.maxSideSize);
         } else {
-            this.rotatedBitmap = BitmapHelper.rotateBitmap(this.bitmap, BASE_DEGREE * this.currentRotation);
+            // RESIZE_OPTION_ORIGINAL — keep at full resolution
+            scaledBitmap = this.bitmap;
         }
 
-        this.bitmapResized = null;
-        this.getBitmapResized();
+        // Step 2: rotate the already-small bitmap.
+        if (this.currentRotation == 0) {
+            this.rotatedBitmap = scaledBitmap;
+        } else {
+            this.rotatedBitmap = BitmapHelper.rotateBitmap(scaledBitmap, BASE_DEGREE * this.currentRotation);
+        }
+
+        // bitmapResized now equals rotatedBitmap (scaling was already done above).
+        this.bitmapResized = this.rotatedBitmap;
         this.currentBitmapRotation = this.currentRotation;
 
     }

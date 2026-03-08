@@ -55,6 +55,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MainActivity extends AppCompatActivity {
@@ -78,6 +81,22 @@ public class MainActivity extends AppCompatActivity {
     private static ImageInfoHolder secondImageInfoHolder;
     
     private final AtomicBoolean openingActivity = new AtomicBoolean(false);
+
+    /**
+     * Single-thread executor used for the compare-image preparation work.
+     * Using a bounded executor (size 1) ensures that rapid taps never spawn more than one
+     * background task at a time, eliminates raw thread creation overhead, and makes
+     * cancellation / shutdown straightforward.
+     */
+    private final ExecutorService compareExecutor = Executors.newSingleThreadExecutor();
+
+    /**
+     * Two-thread pool used to run the two image pipelines (rotate + resize + encode) in
+     * parallel inside a compare task. Kept separate from {@link #compareExecutor} so that
+     * submitting work here never deadlocks the outer task that is already running on
+     * {@code compareExecutor}.
+     */
+    private final ExecutorService imageProcessExecutor = Executors.newFixedThreadPool(2);
 
     private UserSettings userSettings;
 
@@ -162,6 +181,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        compareExecutor.shutdownNow();
+        imageProcessExecutor.shutdownNow();
         try {
             File cacheDir = getCacheDir();
             File[] files = cacheDir.listFiles();
@@ -683,44 +704,48 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra(IntentExtras.SYNC_IMAGE_INTERACTIONS, this.userSettings.isSyncImageInteractions());
             intent.putExtra(IntentExtras.HAS_HARDWARE_KEY, Status.HAS_HARDWARE_KEY);
 
-            Thread t = new Thread(() -> {
+            // Use the managed executor instead of creating a raw Thread.
+            compareExecutor.execute(() -> {
+                runOnUiThread(() -> binding.pbProgess.setVisibility(View.VISIBLE));
                 try {
-                    runOnUiThread(() -> binding.pbProgess.setVisibility(View.VISIBLE));
-
                     File compareFileOne = new File(getCacheDir(), "compare_image_one.png");
                     File compareFileTwo = new File(getCacheDir(), "compare_image_two.png");
 
                     boolean needsSaveOne = firstImageInfoHolder.needsResave(compareFileOne);
                     boolean needsSaveTwo = secondImageInfoHolder.needsResave(compareFileTwo);
 
-                    Uri uriOne;
-                    Uri uriTwo;
-
-                    if (needsSaveOne) {
+                    // Issue 1: run the two image-preparation pipelines in parallel so both
+                    // CPU cores are utilised simultaneously instead of sequentially.
+                    // imageProcessExecutor is a separate 2-thread pool; submitting here
+                    // never deadlocks the outer task running on compareExecutor.
+                    Future<Uri> futureOne = imageProcessExecutor.submit(() -> {
+                        if (!needsSaveOne) {
+                            return Uri.fromFile(compareFileOne);
+                        }
                         firstImageInfoHolder.calculateRotatedBitmap();
-                        uriOne = ImageFileSaver.saveBitmapToFile(
-                                firstImageInfoHolder.getAdjustedBitmap(),
-                                compareFileOne
-                        );
-                        if (uriOne != null) {
+                        Uri uri = ImageFileSaver.saveBitmapToFile(
+                                firstImageInfoHolder.getAdjustedBitmap(), compareFileOne);
+                        if (uri != null) {
                             firstImageInfoHolder.markSaved();
                         }
-                    } else {
-                        uriOne = Uri.fromFile(compareFileOne);
-                    }
+                        return uri;
+                    });
 
-                    if (needsSaveTwo) {
+                    Future<Uri> futureTwo = imageProcessExecutor.submit(() -> {
+                        if (!needsSaveTwo) {
+                            return Uri.fromFile(compareFileTwo);
+                        }
                         secondImageInfoHolder.calculateRotatedBitmap();
-                        uriTwo = ImageFileSaver.saveBitmapToFile(
-                                secondImageInfoHolder.getAdjustedBitmap(),
-                                compareFileTwo
-                        );
-                        if (uriTwo != null) {
+                        Uri uri = ImageFileSaver.saveBitmapToFile(
+                                secondImageInfoHolder.getAdjustedBitmap(), compareFileTwo);
+                        if (uri != null) {
                             secondImageInfoHolder.markSaved();
                         }
-                    } else {
-                        uriTwo = Uri.fromFile(compareFileTwo);
-                    }
+                        return uri;
+                    });
+
+                    Uri uriOne = futureOne.get();
+                    Uri uriTwo = futureTwo.get();
 
                     if (uriOne == null || uriTwo == null) {
                         throw new Exception("Error saving images");
@@ -731,17 +756,19 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra(IntentExtras.IMAGE_NAME_ONE, firstImageInfoHolder.getImageName());
                     intent.putExtra(IntentExtras.IMAGE_NAME_TWO, secondImageInfoHolder.getImageName());
 
-                    runOnUiThread(() -> binding.pbProgess.setVisibility(View.GONE));
-
                     openingActivity.set(false);
                     startActivity(intent);
                 } catch (Exception ignored) {
                     openingActivity.set(false);
-                    Toast.makeText(getApplicationContext(), R.string.error_message_general, Toast.LENGTH_SHORT).show();
+                    runOnUiThread(() ->
+                            Toast.makeText(getApplicationContext(), R.string.error_message_general, Toast.LENGTH_SHORT).show()
+                    );
+                } finally {
+                    // Issue 5: always hide the progress bar — even when an exception is thrown —
+                    // so the spinner never stays on screen indefinitely.
+                    runOnUiThread(() -> binding.pbProgess.setVisibility(View.GONE));
                 }
             });
-
-            t.start();
         } catch (Exception ignored) {
             openingActivity.set(false);
             Toast.makeText(getApplicationContext(), R.string.error_message_general, Toast.LENGTH_SHORT).show();
