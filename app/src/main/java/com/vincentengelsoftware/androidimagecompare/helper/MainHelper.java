@@ -2,12 +2,10 @@ package com.vincentengelsoftware.androidimagecompare.helper;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.webkit.MimeTypeMap;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,7 +17,7 @@ import androidx.documentfile.provider.DocumentFile;
 import com.vincentengelsoftware.androidimagecompare.activities.MainActivity;
 import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.globals.RequestPermissionCodes;
-import com.vincentengelsoftware.androidimagecompare.util.ImageInfoHolder;
+import com.vincentengelsoftware.androidimagecompare.util.imageInformation.ImageInfoHolder;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 

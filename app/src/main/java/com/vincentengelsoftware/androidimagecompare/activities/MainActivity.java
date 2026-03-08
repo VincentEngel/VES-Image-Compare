@@ -48,7 +48,7 @@ import com.vincentengelsoftware.androidimagecompare.services.KeyValueStorage;
 import com.vincentengelsoftware.androidimagecompare.services.settings.ApplyUserSettings;
 import com.vincentengelsoftware.androidimagecompare.services.settings.ImageResizeSettings;
 import com.vincentengelsoftware.androidimagecompare.services.settings.UserSettings;
-import com.vincentengelsoftware.androidimagecompare.util.ImageInfoHolder;
+import com.vincentengelsoftware.androidimagecompare.util.imageInformation.ImageInfoHolder;
 
 import java.io.File;
 import java.io.IOException;
@@ -711,18 +711,18 @@ public class MainActivity extends AppCompatActivity {
                     File compareFileOne = new File(getCacheDir(), "compare_image_one.png");
                     File compareFileTwo = new File(getCacheDir(), "compare_image_two.png");
 
-                    boolean needsSaveOne = firstImageInfoHolder.needsResave(compareFileOne);
-                    boolean needsSaveTwo = secondImageInfoHolder.needsResave(compareFileTwo);
+                    boolean imageOneRequiresProcessing = firstImageInfoHolder.requiresRecalculation(compareFileOne);
+                    boolean imageTwoRequiresProcessing = secondImageInfoHolder.requiresRecalculation(compareFileTwo);
 
                     // Issue 1: run the two image-preparation pipelines in parallel so both
                     // CPU cores are utilised simultaneously instead of sequentially.
                     // imageProcessExecutor is a separate 2-thread pool; submitting here
                     // never deadlocks the outer task running on compareExecutor.
                     Future<Uri> futureOne = imageProcessExecutor.submit(() -> {
-                        if (!needsSaveOne) {
+                        if (!imageOneRequiresProcessing) {
                             return Uri.fromFile(compareFileOne);
                         }
-                        firstImageInfoHolder.calculateRotatedBitmap();
+                        firstImageInfoHolder.buildAdjustedBitmap();
                         Uri uri = ImageFileSaver.saveBitmapToFile(
                                 firstImageInfoHolder.getAdjustedBitmap(), compareFileOne);
                         if (uri != null) {
@@ -732,10 +732,10 @@ public class MainActivity extends AppCompatActivity {
                     });
 
                     Future<Uri> futureTwo = imageProcessExecutor.submit(() -> {
-                        if (!needsSaveTwo) {
+                        if (!imageTwoRequiresProcessing) {
                             return Uri.fromFile(compareFileTwo);
                         }
-                        secondImageInfoHolder.calculateRotatedBitmap();
+                        secondImageInfoHolder.buildAdjustedBitmap();
                         Uri uri = ImageFileSaver.saveBitmapToFile(
                                 secondImageInfoHolder.getAdjustedBitmap(), compareFileTwo);
                         if (uri != null) {

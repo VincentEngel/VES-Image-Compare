@@ -2,7 +2,7 @@ package com.vincentengelsoftware.androidimagecompare.services.settings;
 
 import com.vincentengelsoftware.androidimagecompare.globals.ImageResizeOptions;
 import com.vincentengelsoftware.androidimagecompare.helper.Theme;
-import com.vincentengelsoftware.androidimagecompare.util.ImageInfoHolder;
+import com.vincentengelsoftware.androidimagecompare.util.imageInformation.ImageInfoHolder;
 
 public class ApplyUserSettings {
     public static void apply(

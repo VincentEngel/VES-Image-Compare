@@ -44,6 +44,10 @@ public class BitmapHelper {
 
     public static Bitmap rotateBitmap(Bitmap bitmap, int degree)
     {
+        if (degree == 0) {
+            return bitmap;
+        }
+
         try {
             Matrix matrix = new Matrix();
             matrix.postRotate(degree);
