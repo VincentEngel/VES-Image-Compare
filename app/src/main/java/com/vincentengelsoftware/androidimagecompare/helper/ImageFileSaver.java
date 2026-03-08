@@ -27,7 +27,7 @@ public class ImageFileSaver {
      * @param destinationFile the local file to write the raw image bytes to
      * @return the Uri of the destination file on success, or {@code null} on failure
      */
-    public static Uri saveToFile(ContentResolver contentResolver, Uri sourceUri, File destinationFile) {
+    public static Uri saveUriToFile(ContentResolver contentResolver, Uri sourceUri, File destinationFile) {
         try (InputStream in = contentResolver.openInputStream(sourceUri);
              FileOutputStream fos = new FileOutputStream(destinationFile);
              FileChannel outChannel = fos.getChannel()) {

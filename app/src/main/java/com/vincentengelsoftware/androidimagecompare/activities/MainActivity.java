@@ -62,13 +62,17 @@ public class MainActivity extends AppCompatActivity {
     public static Uri rightImageUri;
     public static final String leftImageUriKey = "leftImageUriKey";
     public static final String rightImageUriKey = "rightImageUriKey";
-    private static final String pendingCameraUriLeftKey = "pendingCameraUriLeftKey";
-    private static final String pendingCameraUriRightKey = "pendingCameraUriRightKey";
+    /** Key used to persist which image slot ("left" or "right") is awaiting a camera result. */
+    private static final String pendingCameraSlotKey = "pendingCameraSlotKey";
+    /** Hardcoded name of the temporary file the camera writes its output into. */
+    private static final String CAMERA_TEMP_FILENAME = "camera_capture_temp.jpg";
 
-    /** URI of the file currently being written by the camera for the left slot. */
-    private Uri pendingCameraUriLeft;
-    /** URI of the file currently being written by the camera for the right slot. */
-    private Uri pendingCameraUriRight;
+    /**
+     * Which image slot ("left" or "right") is currently waiting for a camera result.
+     * Persisted in {@link #onSaveInstanceState} so it survives activity recreation while
+     * the camera app is in the foreground.
+     */
+    private String pendingCameraSlot;
 
     private static ImageInfoHolder firstImageInfoHolder;
     private static ImageInfoHolder secondImageInfoHolder;
@@ -122,13 +126,9 @@ public class MainActivity extends AppCompatActivity {
             if (savedRight != null) {
                 MainActivity.rightImageUri = Uri.parse(savedRight);
             }
-            String savedPendingLeft = savedInstanceState.getString(pendingCameraUriLeftKey);
-            if (savedPendingLeft != null) {
-                pendingCameraUriLeft = Uri.parse(savedPendingLeft);
-            }
-            String savedPendingRight = savedInstanceState.getString(pendingCameraUriRightKey);
-            if (savedPendingRight != null) {
-                pendingCameraUriRight = Uri.parse(savedPendingRight);
+            String savedPendingSlot = savedInstanceState.getString(pendingCameraSlotKey);
+            if (savedPendingSlot != null) {
+                pendingCameraSlot = savedPendingSlot;
             }
             restoreImages();
         }
@@ -154,11 +154,8 @@ public class MainActivity extends AppCompatActivity {
         if (MainActivity.rightImageUri != null) {
             outState.putString(MainActivity.rightImageUriKey, MainActivity.rightImageUri.toString());
         }
-        if (pendingCameraUriLeft != null) {
-            outState.putString(pendingCameraUriLeftKey, pendingCameraUriLeft.toString());
-        }
-        if (pendingCameraUriRight != null) {
-            outState.putString(pendingCameraUriRightKey, pendingCameraUriRight.toString());
+        if (pendingCameraSlot != null) {
+            outState.putString(pendingCameraSlotKey, pendingCameraSlot);
         }
     }
 
@@ -352,7 +349,7 @@ public class MainActivity extends AppCompatActivity {
             String originalName = MainHelper.getImageName(this, imageUri);
             String fileName = isFirst ? "1_" + originalName : "2_" + originalName;
             java.io.File localFile = new java.io.File(getCacheDir(), fileName);
-            Uri localUri = ImageFileSaver.saveToFile(getContentResolver(), imageUri, localFile);
+            Uri localUri = ImageFileSaver.saveUriToFile(getContentResolver(), imageUri, localFile);
             if (localUri == null) return;
 
             if (isFirst) {
@@ -383,7 +380,7 @@ public class MainActivity extends AppCompatActivity {
             if (imageUris.get(0) != null) {
                 Uri srcUri = imageUris.get(0);
                 java.io.File localFile = new java.io.File(getCacheDir(), "1_" + MainHelper.getImageName(this, srcUri));
-                Uri localUri = ImageFileSaver.saveToFile(getContentResolver(), srcUri, localFile);
+                Uri localUri = ImageFileSaver.saveUriToFile(getContentResolver(), srcUri, localFile);
                 if (localUri != null) {
                     MainHelper.updateImageFromIntent(
                             firstImageInfoHolder,
@@ -401,7 +398,7 @@ public class MainActivity extends AppCompatActivity {
             if (imageUris.size() > 1 && imageUris.get(1) != null) {
                 Uri srcUri = imageUris.get(1);
                 java.io.File localFile = new java.io.File(getCacheDir(), "2_" + MainHelper.getImageName(this, srcUri));
-                Uri localUri = ImageFileSaver.saveToFile(getContentResolver(), srcUri, localFile);
+                Uri localUri = ImageFileSaver.saveUriToFile(getContentResolver(), srcUri, localFile);
                 if (localUri != null) {
                     MainHelper.updateImageFromIntent(
                             secondImageInfoHolder,
@@ -766,7 +763,7 @@ public class MainActivity extends AppCompatActivity {
                     java.io.File localFile = new java.io.File(getCacheDir(), fileName);
 
                     // Copy raw bytes to local file without decoding into memory
-                    android.net.Uri localUri = ImageFileSaver.saveToFile(
+                    android.net.Uri localUri = ImageFileSaver.saveUriToFile(
                             getContentResolver(), receivedImageUri, localFile
                     );
 
@@ -804,41 +801,48 @@ public class MainActivity extends AppCompatActivity {
             ActivityResultLauncher<Uri> mGetContentCamera = registerForActivityResult(
                     new ActivityResultContracts.TakePicture(),
                     result -> {
+                        // Clear the pending slot now that the camera has returned.
+                        String capturedSlot = pendingCameraSlot;
+                        pendingCameraSlot = null;
+
                         if (!result) {
                             Toast.makeText(getApplicationContext(), R.string.error_message_general, Toast.LENGTH_SHORT).show();
                             return;
                         }
 
-                        try {
-                            // Retrieve the URI that was stored before launching the camera.
-                            // Using the persisted field rather than the local variable ensures
-                            // correctness even when the activity was destroyed and recreated
-                            // while the camera app was in the foreground.
-                            Uri capturedUri = Objects.equals(imageHolderName, "left")
-                                    ? pendingCameraUriLeft
-                                    : pendingCameraUriRight;
+                        if (capturedSlot == null) {
+                            Toast.makeText(getApplicationContext(), R.string.error_message_general, Toast.LENGTH_SHORT).show();
+                            return;
+                        }
 
-                            if (capturedUri == null) {
+                        try {
+                            // The camera wrote its output into the hardcoded temp file.
+                            // Copy it to a timestamped file so that it won't be overwritten
+                            // by a subsequent camera capture for the other slot.
+                            File tempFile = new File(getCacheDir(), CAMERA_TEMP_FILENAME);
+                            File destFile = new File(getCacheDir(), "IMG_" + System.currentTimeMillis() + ".jpg");
+                            Uri tempUri = Uri.fromFile(tempFile);
+                            Uri destUri = ImageFileSaver.saveUriToFile(getContentResolver(), tempUri, destFile);
+
+                            if (destUri == null) {
                                 Toast.makeText(getApplicationContext(), R.string.error_message_general, Toast.LENGTH_SHORT).show();
                                 return;
                             }
 
                             ImageInfoHolder imageInfoHolder;
-                            if (Objects.equals(imageHolderName, "left")) {
+                            if (Objects.equals(capturedSlot, "left")) {
                                 imageInfoHolder = firstImageInfoHolder;
-                                MainActivity.leftImageUri = capturedUri;
-                                pendingCameraUriLeft = null;
+                                MainActivity.leftImageUri = destUri;
                             } else {
                                 imageInfoHolder = secondImageInfoHolder;
-                                MainActivity.rightImageUri = capturedUri;
-                                pendingCameraUriRight = null;
+                                MainActivity.rightImageUri = destUri;
                             }
 
                             imageInfoHolder.updateFromBitmap(
-                                    BitmapExtractor.fromUri(this.getContentResolver(), capturedUri),
+                                    BitmapExtractor.fromUri(this.getContentResolver(), destUri),
                                     Dimensions.maxSide,
                                     Dimensions.maxSideForPreview,
-                                    MainHelper.getImageName(this, capturedUri)
+                                    MainHelper.getImageName(this, destUri)
                             );
                         } catch (Exception ignored) {
                         }
@@ -859,19 +863,17 @@ public class MainActivity extends AppCompatActivity {
                     if (optionsMenu[i].equals(getString(R.string.load_image_camera))) {
                         if (MainHelper.checkPermission(MainActivity.this)) {
                             try {
-                                // Build a fresh timestamp-based URI each time the user taps
-                                // "Camera", then persist it before launching so it survives
-                                // activity recreation caused by memory pressure.
+                                // Use a single hardcoded temp file as the camera output target.
+                                // After the camera returns, the file is copied to a timestamped
+                                // destination so that left/right captures never overwrite each other.
                                 Uri cameraFileUri = FileProvider.getUriForFile(
                                         this,
                                         getApplicationContext().getPackageName() + ".fileprovider",
-                                        new File(this.getCacheDir(), "camera_image_" + System.currentTimeMillis() + ".png")
+                                        new File(this.getCacheDir(), CAMERA_TEMP_FILENAME)
                                 );
-                                if (Objects.equals(imageHolderName, "left")) {
-                                    pendingCameraUriLeft = cameraFileUri;
-                                } else {
-                                    pendingCameraUriRight = cameraFileUri;
-                                }
+                                // Record which slot is waiting; survives activity recreation via
+                                // onSaveInstanceState / savedInstanceState restore in onCreate.
+                                pendingCameraSlot = imageHolderName;
                                 mGetContentCamera.launch(cameraFileUri);
                             } catch (Exception ignored) {
                                 Toast.makeText(getApplicationContext(), R.string.error_message_general, Toast.LENGTH_SHORT).show();

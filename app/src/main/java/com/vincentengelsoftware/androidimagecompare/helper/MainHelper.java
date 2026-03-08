@@ -98,9 +98,7 @@ public class MainHelper {
                 return df.getName();
             }
 
-            ContentResolver cR = context.getContentResolver();
-            MimeTypeMap mime = MimeTypeMap.getSingleton();
-            return mime.getExtensionFromMimeType(cR.getType(uri));
+            return uri.getLastPathSegment();
         } catch (Exception ignored) {
         }
 
