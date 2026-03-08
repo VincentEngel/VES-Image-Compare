@@ -49,7 +49,7 @@ public class SyncZoom {
             } else {
                 toggleButton.setBackgroundDrawable(iconLinkedOff);
             }
-            sync.set(!sync.get());
+            sync.set(b);
         });
     }
 }

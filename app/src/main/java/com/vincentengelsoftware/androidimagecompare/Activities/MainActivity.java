@@ -55,6 +55,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MainActivity extends AppCompatActivity {
     public static Uri leftImageUri;
@@ -64,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
     
     private static ImageInfoHolder firstImageInfoHolder;
     private static ImageInfoHolder secondImageInfoHolder;
+    
+    private final AtomicBoolean openingActivity = new AtomicBoolean(false);
 
     private UserSettings userSettings;
 
@@ -414,10 +417,10 @@ public class MainActivity extends AppCompatActivity {
         binding.mainButtonCompare.setOnClickListener(view -> openCompareDialog());
 
         binding.homeButtonInfo.setOnClickListener(view -> {
-            if (Status.activityIsOpening) {
+            if (openingActivity.get()) {
                 return;
             }
-            Status.activityIsOpening = true;
+
             Intent intent = new Intent(getApplicationContext(), ConfigActivity.class);
             startActivity(intent);
         });
@@ -429,7 +432,8 @@ public class MainActivity extends AppCompatActivity {
                 binding.homeImageLeft,
                 binding.homeImageRight,
                 binding.mainTextViewNameImageLeft,
-                binding.mainTextViewNameImageRight
+                binding.mainTextViewNameImageRight,
+                openingActivity
         );
         binding.homeButtonSwapImages.setOnLongClickListener(view -> {
             Toast.makeText(getApplicationContext(), getString(R.string.swap_images), Toast.LENGTH_SHORT).show();
@@ -475,7 +479,8 @@ public class MainActivity extends AppCompatActivity {
         MainHelper.addRotateImageLogic(
                 binding.homeButtonRotateImageLeft,
                 firstImageInfoHolder,
-                binding.homeImageLeft
+                binding.homeImageLeft,
+                openingActivity
         );
         binding.homeButtonRotateImageLeft.setOnLongClickListener(view -> {
             Toast.makeText(getApplicationContext(), getString(R.string.rotate_image_left), Toast.LENGTH_SHORT).show();
@@ -485,7 +490,8 @@ public class MainActivity extends AppCompatActivity {
         MainHelper.addRotateImageLogic(
                 binding.homeButtonRotateImageRight,
                 secondImageInfoHolder,
-                binding.homeImageRight
+                binding.homeImageRight,
+                openingActivity
         );
         binding.homeButtonRotateImageRight.setOnLongClickListener(view -> {
             Toast.makeText(getApplicationContext(), getString(R.string.rotate_image_right), Toast.LENGTH_SHORT).show();
@@ -627,11 +633,16 @@ public class MainActivity extends AppCompatActivity {
 
     private void openCompareActivity(Class<?> targetActivity) {
         try {
-            if (firstImageInfoHolder.getBitmap() == null || secondImageInfoHolder.getBitmap() == null || Status.activityIsOpening) {
+            if (openingActivity.get()) {
+                Toast.makeText(getApplicationContext(), getString(R.string.error_message_general), Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (firstImageInfoHolder.getBitmap() == null || secondImageInfoHolder.getBitmap() == null) {
                 Toast.makeText(getApplicationContext(), getString(R.string.error_msg_missing_images), Toast.LENGTH_SHORT).show();
                 return;
             }
-            Status.activityIsOpening = true;
+
+            openingActivity.set(true);
 
             String internalCompareModeName = CompareModeNames.getInternalCompareModeNameByActivity(targetActivity);
             this.userSettings.setLastCompareMode(internalCompareModeName);
@@ -671,16 +682,17 @@ public class MainActivity extends AppCompatActivity {
 
                     runOnUiThread(() -> binding.pbProgess.setVisibility(View.GONE));
 
+                    openingActivity.set(false);
                     startActivity(intent);
                 } catch (Exception ignored) {
-                    Status.activityIsOpening = false;
+                    openingActivity.set(false);
                     Toast.makeText(getApplicationContext(), R.string.error_message_general, Toast.LENGTH_SHORT).show();
                 }
             });
 
             t.start();
         } catch (Exception ignored) {
-            Status.activityIsOpening = false;
+            openingActivity.set(false);
             Toast.makeText(getApplicationContext(), R.string.error_message_general, Toast.LENGTH_SHORT).show();
         }
     }
@@ -772,7 +784,7 @@ public class MainActivity extends AppCompatActivity {
             );
 
             imageView.setOnClickListener(view -> {
-                if (Status.activityIsOpening) {
+                if (openingActivity.get()) {
                     return;
                 }
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);

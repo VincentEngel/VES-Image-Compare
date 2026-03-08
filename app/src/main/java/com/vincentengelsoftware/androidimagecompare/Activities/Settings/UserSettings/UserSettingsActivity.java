@@ -28,7 +28,6 @@ public class UserSettingsActivity extends AppCompatActivity {
 
         binding = ActivityUserSettingsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        Status.activityIsOpening = false;
 
         this.setUp();
         this.render(presenter.buildUiState());

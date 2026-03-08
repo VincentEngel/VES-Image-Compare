@@ -7,7 +7,6 @@ import android.text.Html;
 
 import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.databinding.ActivityPrivacyPolicyBinding;
-import com.vincentengelsoftware.androidimagecompare.globals.Status;
 import com.vincentengelsoftware.androidimagecompare.helper.TextViewModifier;
 
 public class PrivacyPolicyActivity extends AppCompatActivity {
@@ -18,7 +17,6 @@ public class PrivacyPolicyActivity extends AppCompatActivity {
 
         ActivityPrivacyPolicyBinding binding = ActivityPrivacyPolicyBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        Status.activityIsOpening = false;
 
         binding.privacyPolicyText.setText(Html.fromHtml(
                 getString(R.string.privacy_policy),

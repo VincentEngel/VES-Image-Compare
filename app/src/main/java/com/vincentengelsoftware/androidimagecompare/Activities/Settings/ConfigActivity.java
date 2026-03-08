@@ -8,7 +8,6 @@ import android.os.Bundle;
 import com.vincentengelsoftware.androidimagecompare.Activities.Settings.UserSettings.UserSettingsActivity;
 import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.databinding.ActivityConfigsBinding;
-import com.vincentengelsoftware.androidimagecompare.globals.Status;
 import com.vincentengelsoftware.androidimagecompare.helper.AppVersionHelper;
 import com.vincentengelsoftware.androidimagecompare.helper.PlayStoreNavigator;
 
@@ -22,7 +21,6 @@ public class ConfigActivity extends AppCompatActivity {
 
         binding = ActivityConfigsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        Status.activityIsOpening = false;
 
         this.setUpViews();
     }

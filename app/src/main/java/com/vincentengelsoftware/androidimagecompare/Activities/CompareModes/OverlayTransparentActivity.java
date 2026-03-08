@@ -2,10 +2,13 @@ package com.vincentengelsoftware.androidimagecompare.Activities.CompareModes;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.SystemClock;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -14,7 +17,6 @@ import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.animations.FadeActivity;
 import com.vincentengelsoftware.androidimagecompare.animations.ResizeAnimation;
 import com.vincentengelsoftware.androidimagecompare.databinding.ActivityOverlayTransparentBinding;
-import com.vincentengelsoftware.androidimagecompare.globals.Status;
 import com.vincentengelsoftware.androidimagecompare.helper.BitmapExtractor;
 import com.vincentengelsoftware.androidimagecompare.helper.Calculator;
 import com.vincentengelsoftware.androidimagecompare.helper.FullScreenHelper;
@@ -24,55 +26,91 @@ import com.vincentengelsoftware.androidimagecompare.helper.TransparentHelper;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class OverlayTransparentActivity extends AppCompatActivity implements FadeActivity {
-    public static AtomicBoolean sync = new AtomicBoolean(true);
 
-    private final static AtomicBoolean continueHiding = new AtomicBoolean(true);
-    private static Thread fadeOutThread;
-    private static Thread fadeInThread;
+    private static final String KEY_SYNC_IMAGE_INTERACTIONS = "key_sync_image_interactions";
+
+    /** Sync state retained across config changes via savedInstanceState. */
+    private final AtomicBoolean sync = new AtomicBoolean(true);
+
+    /** Controls whether the auto-hide animation should proceed (cancelled on user interaction). */
+    private final AtomicBoolean continueHiding = new AtomicBoolean(true);
+
+    /** Handler bound to the main thread – used for all deferred UI work. */
+    private final Handler mainHandler = new Handler(Looper.getMainLooper());
+
+    /** Pending auto-hide runnable. Cancelled whenever user interaction resets the timer. */
+    private Runnable pendingFadeOutRunnable;
+
+    /** True while a fade-in animation is in flight, prevents stacking identical animations. */
+    private boolean isFadingIn = false;
 
     private ActivityOverlayTransparentBinding binding;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (fadeOutThread != null) {
-            fadeOutThread.interrupt();
-            fadeOutThread = null;
-        }
-
-        if (fadeInThread != null) {
-            fadeInThread.interrupt();
-            fadeInThread = null;
-        }
-
-        if (Status.activityIsOpening) {
+        // On first launch read the sync state from the Intent;
+        // on configuration changes restore it from savedInstanceState.
+        if (savedInstanceState != null) {
+            sync.set(savedInstanceState.getBoolean(KEY_SYNC_IMAGE_INTERACTIONS, true));
+        } else {
             sync.set(getIntent().getBooleanExtra(IntentExtras.SYNC_IMAGE_INTERACTIONS, true));
-            Status.activityIsOpening = false;
         }
 
-        FullScreenHelper.setFullScreenFlags(this.getWindow());
+        FullScreenHelper.setFullScreenFlags(getWindow());
 
         binding = ActivityOverlayTransparentBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        initImages();
+        initControls();
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(KEY_SYNC_IMAGE_INTERACTIONS, sync.get());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Always snap the controls bar into view on resume so that it is
+        // visible after a configuration change (e.g. rotation), even when
+        // Android's view-state restoration had set the bar to INVISIBLE.
+        // instantFadeIn() internally schedules the next auto-hide.
+        instantFadeIn();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        cancelPendingFadeOut();
+        binding = null;
+    }
+
+    private void initImages() {
         String uriOne = getIntent().getStringExtra(IntentExtras.IMAGE_URI_ONE);
         String uriTwo = getIntent().getStringExtra(IntentExtras.IMAGE_URI_TWO);
-        Bitmap bitmapFirst = BitmapExtractor.fromUriString(getContentResolver(), uriOne);
+
+        Bitmap bitmapFirst  = BitmapExtractor.fromUriString(getContentResolver(), uriOne);
         Bitmap bitmapSecond = BitmapExtractor.fromUriString(getContentResolver(), uriTwo);
 
         binding.overlayTransparentImageViewBase.addFadeListener(this);
         try {
             binding.overlayTransparentImageViewBase.setBitmapImage(bitmapFirst);
         } catch (Exception e) {
-            this.finish();
+            finish();
+            return;
         }
 
         binding.overlayTransparentImageViewTransparent.addFadeListener(this);
         binding.overlayTransparentImageViewTransparent.setBitmapImage(bitmapSecond);
-
         binding.overlayTransparentImageViewTransparent.bringToFront();
+    }
 
+    private void initControls() {
         TransparentHelper.makeTargetTransparent(
                 binding.overlaySlideSeekBar,
                 binding.overlayTransparentImageViewTransparent,
@@ -93,113 +131,121 @@ public class OverlayTransparentActivity extends AppCompatActivity implements Fad
                 binding.overlayTransparentButtonHideFrontImage.setImageResource(R.drawable.ic_visibility);
                 binding.overlayTransparentImageViewTransparent.setVisibility(View.VISIBLE);
             }
-            triggerFadeOutThread();
+            scheduleFadeOut();
         });
 
         SyncZoom.setLinkedTargets(
                 binding.overlayTransparentImageViewBase,
                 binding.overlayTransparentImageViewTransparent,
-                OverlayTransparentActivity.sync
+                sync
         );
         SyncZoom.setUpSyncZoomToggleButton(
                 binding.overlayTransparentImageViewBase,
                 binding.overlayTransparentImageViewTransparent,
                 binding.overlayTransparentButtonZoomSync,
-                ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_link),
-                ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_link_off),
-                OverlayTransparentActivity.sync
+                ContextCompat.getDrawable(this, R.drawable.ic_link),
+                ContextCompat.getDrawable(this, R.drawable.ic_link_off),
+                sync
         );
 
         if (getIntent().getBooleanExtra(IntentExtras.HAS_HARDWARE_KEY, false)) {
-            ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) binding.overlayTransparentExtensions.getLayoutParams();
+            ViewGroup.MarginLayoutParams layoutParams =
+                    (ViewGroup.MarginLayoutParams) binding.overlayTransparentExtensions.getLayoutParams();
             layoutParams.setMargins(0, 0, 0, 0);
             binding.overlayTransparentExtensions.setLayoutParams(layoutParams);
         }
     }
 
+    /**
+     * Animates the controls bar back into view, then schedules the next auto-hide.
+     * No-op if a fade-in is already running.
+     */
     @Override
-    protected void onStart() {
-        super.onStart();
-        triggerFadeOutThread();
-    }
-
     public void triggerFadeIn() {
+        cancelPendingFadeOut();
         continueHiding.set(false);
-        if (fadeOutThread != null) {
-            fadeOutThread.interrupt();
-        }
 
-        if (fadeInThread != null) {
+        if (isFadingIn) {
             return;
         }
+        isFadingIn = true;
 
-        fadeInThread = new Thread(() -> {
-            runOnUiThread(() -> {
-                try {
-                    ResizeAnimation anim = new ResizeAnimation(
-                            binding.overlayTransparentExtensions,
-                            Calculator.DpToPx2(48, getResources()),
-                            ResizeAnimation.CHANGE_HEIGHT,
-                            ResizeAnimation.IS_SHOWING_ANIMATION,
-                            continueHiding
-                    );
-                    anim.setDuration(ResizeAnimation.DURATION_SHORT);
-                    binding.overlayTransparentExtensions.clearAnimation();
-                    binding.overlayTransparentExtensions.startAnimation(anim);
-                    fadeInThread = null;
-                    triggerFadeOutThread();
-                } catch (Exception ignored) {
-                }
-            });
-        });
+        ResizeAnimation anim = new ResizeAnimation(
+                binding.overlayTransparentExtensions,
+                Calculator.DpToPx2(48, getResources()),
+                ResizeAnimation.CHANGE_HEIGHT,
+                ResizeAnimation.IS_SHOWING_ANIMATION,
+                continueHiding
+        );
+        anim.setDuration(ResizeAnimation.DURATION_SHORT);
+        binding.overlayTransparentExtensions.clearAnimation();
+        binding.overlayTransparentExtensions.startAnimation(anim);
 
-        fadeInThread.start();
+        isFadingIn = false;
+        scheduleFadeOut();
     }
 
+    /**
+     * Schedules the controls bar to auto-hide after {@link ResizeAnimation#DURATION_LONG} ms.
+     * Any previously pending auto-hide is cancelled first.
+     */
+    @Override
     public void triggerFadeOutThread() {
-        if (fadeOutThread != null) {
-            fadeOutThread.interrupt();
-        }
+        scheduleFadeOut();
+    }
 
-        fadeOutThread = new Thread(() -> {
-            SystemClock.sleep(ResizeAnimation.DURATION_LONG);
-            if (Thread.currentThread().isInterrupted()) {
+    /**
+     * Immediately snaps the controls bar to full height without animation,
+     * then schedules the next auto-hide.
+     */
+    @Override
+    public void instantFadeIn() {
+        cancelPendingFadeOut();
+        continueHiding.set(false);
+        isFadingIn = false;
+
+        binding.overlayTransparentExtensions.clearAnimation();
+        binding.overlayTransparentExtensions.setVisibility(View.VISIBLE);
+
+        ViewGroup.LayoutParams layoutParams = binding.overlayTransparentExtensions.getLayoutParams();
+        layoutParams.height = Calculator.DpToPx2(48, getResources());
+        binding.overlayTransparentExtensions.setLayoutParams(layoutParams);
+
+        scheduleFadeOut();
+    }
+
+    /**
+     * Posts a delayed runnable on the main thread that hides the controls bar.
+     * Replaces any previously scheduled hide.
+     */
+    private void scheduleFadeOut() {
+        cancelPendingFadeOut();
+
+        pendingFadeOutRunnable = () -> {
+            if (binding == null) {
                 return;
             }
+            continueHiding.set(true);
+            ResizeAnimation resizeAnimation = new ResizeAnimation(
+                    binding.overlayTransparentExtensions,
+                    1,
+                    ResizeAnimation.CHANGE_HEIGHT,
+                    ResizeAnimation.IS_HIDING_ANIMATION,
+                    continueHiding
+            );
+            resizeAnimation.setDuration(ResizeAnimation.DURATION_SHORT);
+            binding.overlayTransparentExtensions.startAnimation(resizeAnimation);
+            pendingFadeOutRunnable = null;
+        };
 
-            runOnUiThread(() -> {
-                try {
-                    continueHiding.set(true);
-                    ResizeAnimation anim = new ResizeAnimation(
-                            binding.overlayTransparentExtensions,
-                            1,
-                            ResizeAnimation.CHANGE_HEIGHT,
-                            ResizeAnimation.IS_HIDING_ANIMATION,
-                            continueHiding
-                    );
-                    anim.setDuration(ResizeAnimation.DURATION_SHORT);
-                    binding.overlayTransparentExtensions.startAnimation(anim);
-                    fadeOutThread = null;
-                } catch (Exception ignored) {
-                }
-            });
-        });
-
-        fadeOutThread.start();
+        mainHandler.postDelayed(pendingFadeOutRunnable, ResizeAnimation.DURATION_LONG);
     }
 
-    public void instantFadeIn() {
-        continueHiding.set(false);
-        runOnUiThread(() -> {
-            try {
-                binding.overlayTransparentExtensions.clearAnimation();
-                ViewGroup.LayoutParams layoutParams = binding.overlayTransparentExtensions.getLayoutParams();
-                binding.overlayTransparentExtensions.setVisibility(View.VISIBLE);
-                layoutParams.height = Calculator.DpToPx2(48, getResources());
-                fadeInThread = null;
-                triggerFadeOutThread();
-            } catch (Exception ignored) {
-            }
-        });
+    /** Removes the pending auto-hide runnable from the main thread queue. */
+    private void cancelPendingFadeOut() {
+        if (pendingFadeOutRunnable != null) {
+            mainHandler.removeCallbacks(pendingFadeOutRunnable);
+            pendingFadeOutRunnable = null;
+        }
     }
 }

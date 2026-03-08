@@ -19,17 +19,19 @@ import androidx.documentfile.provider.DocumentFile;
 import com.vincentengelsoftware.androidimagecompare.Activities.MainActivity;
 import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.globals.RequestPermissionCodes;
-import com.vincentengelsoftware.androidimagecompare.globals.Status;
 import com.vincentengelsoftware.androidimagecompare.util.ImageInfoHolder;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MainHelper {
     public static void addRotateImageLogic(
             ImageButton imageButton,
             ImageInfoHolder imageInfoHolder,
-            ImageView imageView
+            ImageView imageView,
+            AtomicBoolean openingActivity
     ) {
         imageButton.setOnClickListener(view -> {
-            if (imageInfoHolder.getBitmap() == null || Status.activityIsOpening) {
+            if (imageInfoHolder.getBitmap() == null || openingActivity.get()) {
                 return;
             }
             imageInfoHolder.rotatePreviewImage();
@@ -44,11 +46,12 @@ public class MainHelper {
             ImageView imageViewOne,
             ImageView imageViewTwo,
             TextView imageTextViewNameLeft,
-            TextView imageTextViewNameRight
+            TextView imageTextViewNameRight,
+            AtomicBoolean openingActivity
     ) {
         // Just replace imageHolders <.<
         imageButton.setOnClickListener(view -> {
-            if (imageInfoHolderOne.getBitmap() == null || imageInfoHolderTwo.getBitmap() == null || Status.activityIsOpening) {
+            if (imageInfoHolderOne.getBitmap() == null || imageInfoHolderTwo.getBitmap() == null || openingActivity.get()) {
                 return;
             }
             ImageInfoHolder imageInfoHolder = new ImageInfoHolder();

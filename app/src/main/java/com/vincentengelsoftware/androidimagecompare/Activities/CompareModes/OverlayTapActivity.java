@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -20,37 +22,61 @@ import com.vincentengelsoftware.androidimagecompare.helper.TapHelper;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class OverlayTapActivity extends AppCompatActivity {
-    public static AtomicBoolean sync = new AtomicBoolean(true);
+
+    private static final String KEY_SYNC_IMAGE_INTERACTIONS = "key_sync_image_interactions";
+
+    /** Sync state retained across config changes via savedInstanceState. */
+    private final AtomicBoolean sync = new AtomicBoolean(true);
+
+    private ActivityOverlayTapBinding binding;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (Status.activityIsOpening) {
+        // On first launch read the sync state from the Intent;
+        // on configuration changes restore it from savedInstanceState.
+        if (savedInstanceState != null) {
+            sync.set(savedInstanceState.getBoolean(KEY_SYNC_IMAGE_INTERACTIONS, true));
+        } else {
             sync.set(getIntent().getBooleanExtra(IntentExtras.SYNC_IMAGE_INTERACTIONS, true));
-            Status.activityIsOpening = false;
         }
 
-        FullScreenHelper.setFullScreenFlags(this.getWindow());
+        FullScreenHelper.setFullScreenFlags(getWindow());
 
-        ActivityOverlayTapBinding binding = ActivityOverlayTapBinding.inflate(getLayoutInflater());
+        binding = ActivityOverlayTapBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        initImages();
+        initControls();
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(KEY_SYNC_IMAGE_INTERACTIONS, sync.get());
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        binding = null;
+    }
+
+    private void initImages() {
         String uriOne = getIntent().getStringExtra(IntentExtras.IMAGE_URI_ONE);
         String uriTwo = getIntent().getStringExtra(IntentExtras.IMAGE_URI_TWO);
-        String nameOne = getIntent().getStringExtra(IntentExtras.IMAGE_NAME_ONE);
-        String nameTwo = getIntent().getStringExtra(IntentExtras.IMAGE_NAME_TWO);
 
-        Bitmap bitmapFirst = BitmapExtractor.fromUriString(getContentResolver(), uriOne);
+        Bitmap bitmapFirst  = BitmapExtractor.fromUriString(getContentResolver(), uriOne);
         Bitmap bitmapSecond = BitmapExtractor.fromUriString(getContentResolver(), uriTwo);
 
         try {
             binding.overlayTapImageViewOne.setBitmapImage(bitmapFirst);
         } catch (Exception e) {
-            this.finish();
+            finish();
+            return;
         }
 
-        binding.overlayTapImageName.setText(nameOne);
         binding.overlayTapImageViewTwo.setBitmapImage(bitmapSecond);
 
         if (Settings.TAP_HIDE_MODE == Status.TAP_HIDE_MODE_INVISIBLE) {
@@ -58,11 +84,18 @@ public class OverlayTapActivity extends AppCompatActivity {
         } else {
             binding.overlayTapImageViewOne.bringToFront();
         }
+    }
+
+    private void initControls() {
+        String nameOne = getIntent().getStringExtra(IntentExtras.IMAGE_NAME_ONE);
+        String nameTwo = getIntent().getStringExtra(IntentExtras.IMAGE_NAME_TWO);
+
+        binding.overlayTapImageName.setText(nameOne);
 
         TapHelper.setOnClickListener(
                 binding.overlayTapImageViewOne,
                 binding.overlayTapImageViewTwo,
-                OverlayTapActivity.sync,
+                sync,
                 binding.overlayTapImageName,
                 nameTwo
         );
@@ -70,7 +103,7 @@ public class OverlayTapActivity extends AppCompatActivity {
         TapHelper.setOnClickListener(
                 binding.overlayTapImageViewTwo,
                 binding.overlayTapImageViewOne,
-                OverlayTapActivity.sync,
+                sync,
                 binding.overlayTapImageName,
                 nameOne
         );
@@ -79,9 +112,9 @@ public class OverlayTapActivity extends AppCompatActivity {
                 binding.overlayTapImageViewOne,
                 binding.overlayTapImageViewTwo,
                 binding.overlayTapButtonZoomSync,
-                ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_link),
-                ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_link_off),
-                OverlayTapActivity.sync
+                ContextCompat.getDrawable(this, R.drawable.ic_link),
+                ContextCompat.getDrawable(this, R.drawable.ic_link_off),
+                sync
         );
 
         if (getIntent().getBooleanExtra(IntentExtras.SHOW_EXTENSIONS, false)) {
