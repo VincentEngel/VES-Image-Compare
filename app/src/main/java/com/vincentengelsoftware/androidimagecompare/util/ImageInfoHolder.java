@@ -27,6 +27,49 @@ public class ImageInfoHolder {
 
     private static final int BASE_DEGREE = 90;
 
+    // ---- snapshot of the state at the time the compare file was last written ----
+    /** The bitmap instance that was active when the compare file was last saved. */
+    private Bitmap savedBitmapRef = null;
+    /** The rotation that was active when the compare file was last saved. */
+    private int savedRotation = -1;
+    /** The resize option that was active when the compare file was last saved. */
+    private int savedResizeOption = -1;
+    /** Custom height that was active when the compare file was last saved. */
+    private int savedCustomHeight = 0;
+    /** Custom width that was active when the compare file was last saved. */
+    private int savedCustomWidth = 0;
+
+    /**
+     * Returns {@code true} when the compare-output file must be regenerated because the
+     * image, its rotation, or its resize settings have changed since the last save, or
+     * because the file does not exist yet.
+     *
+     * @param compareFile the cache file that would be (re-)written
+     */
+    public boolean needsResave(java.io.File compareFile) {
+        if (!compareFile.exists()) return true;
+        if (savedBitmapRef != bitmap) return true;
+        if (savedRotation != currentRotation) return true;
+        if (savedResizeOption != resizeOption) return true;
+        if (resizeOption == ImageResizeOptions.RESIZE_OPTION_CUSTOM) {
+            if (savedCustomHeight != customHeight) return true;
+            if (savedCustomWidth != customWidth) return true;
+        }
+        return false;
+    }
+
+    /**
+     * Records the current image state so that subsequent calls to {@link #needsResave}
+     * can detect whether anything has changed.
+     */
+    public void markSaved() {
+        savedBitmapRef = bitmap;
+        savedRotation = currentRotation;
+        savedResizeOption = resizeOption;
+        savedCustomHeight = customHeight;
+        savedCustomWidth = customWidth;
+    }
+
     public Bitmap getBitmap() {
         return bitmap;
     }
@@ -134,6 +177,17 @@ public class ImageInfoHolder {
     public void setResizeOption(int resizeOption)
     {
         this.resizeOption = resizeOption;
+        // Invalidate snapshot so needsResave() picks up the change.
+        this.savedResizeOption = -1;
+    }
+
+    public void setCustomSize(int height, int width)
+    {
+        this.customHeight = height;
+        this.customWidth = width;
+        // Invalidate snapshot so needsResave() picks up the change.
+        this.savedCustomHeight = 0;
+        this.savedCustomWidth = 0;
     }
 
     private void resetProperties()
@@ -144,6 +198,14 @@ public class ImageInfoHolder {
 
         this.currentRotation = 0;
         this.currentBitmapRotation = 0;
+
+        // Invalidate the saved-state snapshot so needsResave() correctly returns true
+        // for this freshly loaded image, regardless of what was previously saved.
+        this.savedBitmapRef = null;
+        this.savedRotation = -1;
+        this.savedResizeOption = -1;
+        this.savedCustomHeight = 0;
+        this.savedCustomWidth = 0;
     }
 
     public void rotatePreviewImage()
@@ -160,11 +222,6 @@ public class ImageInfoHolder {
         );
     }
 
-    public void setCustomSize(int height, int width)
-    {
-        this.customHeight = height;
-        this.customWidth = width;
-    }
 
     public Bitmap getAdjustedBitmap()
     {

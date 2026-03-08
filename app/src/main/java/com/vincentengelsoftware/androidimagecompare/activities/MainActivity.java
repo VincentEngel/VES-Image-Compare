@@ -240,11 +240,17 @@ public class MainActivity extends AppCompatActivity {
                     throw new Exception("Unable to load bitmap");
                 }
                 firstImageInfoHolder.updateFromBitmap(
-                        BitmapExtractor.fromUri(this.getContentResolver(), uri),
+                        bitmap,
                         Dimensions.maxSide,
                         Dimensions.maxSideForPreview,
                         stripSlotPrefix(MainHelper.getImageName(this, uri))
                 );
+                // If the compare file still exists on disk it was written from this same
+                // image in a previous session. Mark the holder as already-saved so that
+                // openCompareActivity skips the expensive re-encode when nothing has changed.
+                if (new File(getCacheDir(), "compare_image_one.png").exists()) {
+                    firstImageInfoHolder.markSaved();
+                }
             } catch (Exception ignored) {
             }
         }
@@ -261,6 +267,10 @@ public class MainActivity extends AppCompatActivity {
                         Dimensions.maxSideForPreview,
                         stripSlotPrefix(MainHelper.getImageName(this, uri))
                 );
+                // Same reasoning as for the first image above.
+                if (new File(getCacheDir(), "compare_image_two.png").exists()) {
+                    secondImageInfoHolder.markSaved();
+                }
             } catch (Exception ignored) {
             }
         }
@@ -680,17 +690,40 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     runOnUiThread(() -> binding.pbProgess.setVisibility(View.VISIBLE));
 
-                    firstImageInfoHolder.calculateRotatedBitmap();
-                    secondImageInfoHolder.calculateRotatedBitmap();
+                    File compareFileOne = new File(getCacheDir(), "compare_image_one.png");
+                    File compareFileTwo = new File(getCacheDir(), "compare_image_two.png");
 
-                    Uri uriOne = ImageFileSaver.saveBitmapToFile(
-                            firstImageInfoHolder.getAdjustedBitmap(),
-                            new File(getCacheDir(), "compare_image_one.png")
-                    );
-                    Uri uriTwo = ImageFileSaver.saveBitmapToFile(
-                            secondImageInfoHolder.getAdjustedBitmap(),
-                            new File(getCacheDir(), "compare_image_two.png")
-                    );
+                    boolean needsSaveOne = firstImageInfoHolder.needsResave(compareFileOne);
+                    boolean needsSaveTwo = secondImageInfoHolder.needsResave(compareFileTwo);
+
+                    Uri uriOne;
+                    Uri uriTwo;
+
+                    if (needsSaveOne) {
+                        firstImageInfoHolder.calculateRotatedBitmap();
+                        uriOne = ImageFileSaver.saveBitmapToFile(
+                                firstImageInfoHolder.getAdjustedBitmap(),
+                                compareFileOne
+                        );
+                        if (uriOne != null) {
+                            firstImageInfoHolder.markSaved();
+                        }
+                    } else {
+                        uriOne = Uri.fromFile(compareFileOne);
+                    }
+
+                    if (needsSaveTwo) {
+                        secondImageInfoHolder.calculateRotatedBitmap();
+                        uriTwo = ImageFileSaver.saveBitmapToFile(
+                                secondImageInfoHolder.getAdjustedBitmap(),
+                                compareFileTwo
+                        );
+                        if (uriTwo != null) {
+                            secondImageInfoHolder.markSaved();
+                        }
+                    } else {
+                        uriTwo = Uri.fromFile(compareFileTwo);
+                    }
 
                     if (uriOne == null || uriTwo == null) {
                         throw new Exception("Error saving images");
