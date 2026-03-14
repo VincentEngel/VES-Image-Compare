@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.vincentengelsoftware.androidimagecompare.activities.settings.userSettings.UserSettingsActivity;
-import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.databinding.ActivityConfigsBinding;
 import com.vincentengelsoftware.androidimagecompare.helper.AppVersion;
 import com.vincentengelsoftware.androidimagecompare.helper.PlayStoreNavigator;
