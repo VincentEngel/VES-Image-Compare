@@ -19,37 +19,37 @@
         android:localeConfig="@xml/locales_config"
         >
         <activity
-            android:name=".activities.settings.userSettings.UserSettingsActivity"
+            android:name=".ui.settings.usersettings.UserSettingsActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.settings.PrivacyPolicyActivity"
+            android:name=".ui.settings.PrivacyPolicyActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.settings.ConfigActivity"
+            android:name=".ui.settings.ConfigActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.compareModes.OverlayCutActivity"
+            android:name=".ui.compare.OverlayCutActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.compareModes.SideBySideActivity"
+            android:name=".ui.compare.SideBySideActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.compareModes.OverlayTransparentActivity"
+            android:name=".ui.compare.OverlayTransparentActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.compareModes.OverlayTapActivity"
+            android:name=".ui.compare.OverlayTapActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.compareModes.OverlaySlideActivity"
+            android:name=".ui.compare.OverlaySlideActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.settings.AboutActivity"
+            android:name=".ui.settings.AboutActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.MainActivity"
+            android:name=".ui.main.MainActivity"
             android:exported="true"
             android:launchMode="singleTask">
-            <intent-filter>
+            <intent-filter android:label="@string/app_name_short">
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
