@@ -138,7 +138,29 @@ public class MainActivity extends AppCompatActivity {
             if (savedPendingSlot != null) {
                 pendingCameraSlot = savedPendingSlot;
             }
+
+            // Remember which holders need bitmap reloading BEFORE restoreImages() runs.
+            // If the process is still alive the static holders already hold the correct bitmap
+            // and transform state, so we must not overwrite them.
+            boolean firstWasNull = firstImageInfoHolder.getBitmap() == null;
+            boolean secondWasNull = secondImageInfoHolder.getBitmap() == null;
+
             restoreImages();
+
+            // For holders that had to reload their bitmap from URI (process was killed),
+            // re-apply the saved rotation and dirty-tracking state so that:
+            //   • the preview shows the image at the correct rotation, and
+            //   • requiresRecalculation() returns false when compare files are still valid.
+            if (firstWasNull && firstImageInfoHolder.getBitmap() != null) {
+                firstImageInfoHolder.restoreTransformState(
+                        savedInstanceState.getBundle("leftImageTransformState"));
+                firstImageInfoHolder.updateImageViewPreviewImage(binding.homeImageLeft);
+            }
+            if (secondWasNull && secondImageInfoHolder.getBitmap() != null) {
+                secondImageInfoHolder.restoreTransformState(
+                        savedInstanceState.getBundle("rightImageTransformState"));
+                secondImageInfoHolder.updateImageViewPreviewImage(binding.homeImageRight);
+            }
         }
 
         restoreImageViews();
@@ -156,14 +178,25 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(@androidx.annotation.NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
+
         if (MainActivity.leftImageUri != null) {
             outState.putString(MainActivity.leftImageUriKey, MainActivity.leftImageUri.toString());
         }
+
         if (MainActivity.rightImageUri != null) {
             outState.putString(MainActivity.rightImageUriKey, MainActivity.rightImageUri.toString());
         }
+
         if (pendingCameraSlot != null) {
             outState.putString(pendingCameraSlotKey, pendingCameraSlot);
+        }
+
+        if (firstImageInfoHolder != null && firstImageInfoHolder.getBitmap() != null) {
+            outState.putBundle("leftImageTransformState", firstImageInfoHolder.saveTransformState());
+        }
+
+        if (secondImageInfoHolder != null && secondImageInfoHolder.getBitmap() != null) {
+            outState.putBundle("rightImageTransformState", secondImageInfoHolder.saveTransformState());
         }
     }
 
@@ -245,15 +278,13 @@ public class MainActivity extends AppCompatActivity {
                 if (bitmap == null) {
                     throw new Exception("Unable to load bitmap");
                 }
+                // BUG HERE; we need the old rotation and state as well
                 firstImageInfoHolder.updateFromBitmap(
                         bitmap,
                         Dimensions.maxSide,
                         Dimensions.maxSideForPreview,
                         stripSlotPrefix(MainHelper.getImageName(this, uri))
                 );
-                // If the compare file still exists on disk it was written from this same
-                // image in a previous session. Mark the holder as already-saved so that
-                // openCompareActivity skips the expensive re-encode when nothing has changed.
                 if (new File(getCacheDir(), "compare_image_one.png").exists()) {
                     firstImageInfoHolder.markSaved();
                 }
@@ -273,7 +304,6 @@ public class MainActivity extends AppCompatActivity {
                         Dimensions.maxSideForPreview,
                         stripSlotPrefix(MainHelper.getImageName(this, uri))
                 );
-                // Same reasoning as for the first image above.
                 if (new File(getCacheDir(), "compare_image_two.png").exists()) {
                     secondImageInfoHolder.markSaved();
                 }

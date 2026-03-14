@@ -1,6 +1,7 @@
 package com.vincentengelsoftware.androidimagecompare.util.imageInformation;
 
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.widget.ImageView;
 
 
@@ -9,17 +10,6 @@ import com.vincentengelsoftware.androidimagecompare.helper.BitmapTransformer;
 
 import java.io.File;
 
-/**
- * Coordinates the four focused sub-components that together represent a loaded image and
- * its processing state:
- *
- * <ul>
- *   <li>{@link ImageSource}            – raw bitmap + display-size constraints</li>
- *   <li>{@link BitmapTransformSettings} – user-configured resize mode and rotation</li>
- *   <li>{@link PreviewBitmap}       – lazily-computed derived bitmaps (preview, resized+rotated)</li>
- *   <li>{@link AdjustImageState}      – dirty-tracking to avoid unnecessary re-encoding</li>
- * </ul>
- */
 public class ImageInfoHolder {
     private ImageSource source = new ImageSource(null, null, 0, 0);
     private final BitmapTransformSettings transformSettings = new BitmapTransformSettings();
@@ -119,6 +109,54 @@ public class ImageInfoHolder {
      */
     public void markSaved() {
         stateSaver = AdjustImageState.of(transformSettings);
+    }
+
+    /**
+     * Saves the current rotation and dirty-tracking snapshot into a Bundle so they survive
+     * activity recreation. Pair with {@link #restoreTransformState(Bundle)}.
+     *
+     * <p>Only the rotation and the {@link AdjustImageState} are saved here; resize settings
+     * are managed by {@code UserSettings} and restored separately via
+     * {@code ApplyUserSettings.apply}.
+     */
+    public Bundle saveTransformState() {
+        Bundle b = new Bundle();
+        b.putInt("rotation", transformSettings.getCurrentRotation());
+        b.putInt("savedRotation", stateSaver.savedRotation());
+        b.putInt("savedResizeOption", stateSaver.savedResizeOption());
+        b.putInt("savedCustomHeight", stateSaver.savedCustomHeight());
+        b.putInt("savedCustomWidth", stateSaver.savedCustomWidth());
+        return b;
+    }
+
+    /**
+     * Restores rotation and dirty-tracking state after a bitmap has been re-loaded via
+     * {@link #updateFromBitmap}.  Must be called <em>after</em> {@code updateFromBitmap}
+     * (which resets the rotation to 0) so that the correct rotation is re-applied to both
+     * the {@link BitmapTransformSettings} and the cached preview bitmap, and the
+     * {@link AdjustImageState} is consistent with the previously encoded compare files.
+     *
+     * @param b Bundle previously returned by {@link #saveTransformState()}, or {@code null}
+     *          (in which case this method is a no-op).
+     */
+    public void restoreTransformState(Bundle b) {
+        if (b == null || source.bitmap() == null) return;
+
+        int rotation = b.getInt("rotation", 0);
+
+        // Re-apply each 90° step so both the counter and the cached preview are in sync.
+        for (int i = 0; i < rotation; i++) {
+            transformSettings.rotate();
+            previewBitmap.rotateSmall(source);
+        }
+
+        // Restore the dirty-tracking snapshot so compare files are not needlessly re-encoded.
+        stateSaver = new AdjustImageState(
+                b.getInt("savedRotation", -1),
+                b.getInt("savedResizeOption", -1),
+                b.getInt("savedCustomHeight", -1),
+                b.getInt("savedCustomWidth", -1)
+        );
     }
 
     /**
