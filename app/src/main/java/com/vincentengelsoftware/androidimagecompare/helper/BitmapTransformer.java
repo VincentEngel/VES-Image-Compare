@@ -10,7 +10,7 @@ import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 
-public class BitmapHelper {
+public class BitmapTransformer {
     public static Bitmap createScaledBitmapToMaxLength(Bitmap image, int maxWidth, int maxHeight) {
         try {
             int width = image.getWidth();
@@ -105,7 +105,7 @@ public class BitmapHelper {
             int width,
             boolean cutFromRightToLeft
     ) {
-        Bitmap cutBitmap = BitmapHelper.getCutBitmap(
+        Bitmap cutBitmap = BitmapTransformer.getCutBitmap(
                 bitmap,
                 width,
                 cutFromRightToLeft
@@ -115,7 +115,7 @@ public class BitmapHelper {
             width = 0;
         }
 
-        return BitmapHelper.mergeBitmap(
+        return BitmapTransformer.mergeBitmap(
                 cutBitmap,
                 transparentBitmap,
                 width
@@ -133,9 +133,9 @@ public class BitmapHelper {
             boolean bottomSeekBarActive,
             int bottomSeekBarProgress
     ) {
-        return BitmapHelper.getCutBitmapFromPoints(
+        return BitmapTransformer.getCutBitmapFromPoints(
                 bitmapSource,
-                BitmapHelper.getPoints(
+                BitmapTransformer.getPoints(
                         bitmapSource.getWidth(),
                         bitmapSource.getHeight(),
                         topSeekBarActive,
@@ -231,7 +231,7 @@ public class BitmapHelper {
             Point[] points
     ) {
         try {
-            Path path = BitmapHelper.getPathByPoints(points);
+            Path path = BitmapTransformer.getPathByPoints(points);
 
             Canvas canvas = new Canvas(bitmapSource);
             Paint transparentPaint = new Paint();

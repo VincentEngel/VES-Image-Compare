@@ -19,7 +19,7 @@ import com.vincentengelsoftware.androidimagecompare.animations.FadeActivity;
 import com.vincentengelsoftware.androidimagecompare.animations.ResizeAnimation;
 import com.vincentengelsoftware.androidimagecompare.databinding.ActivityOverlaySlideBinding;
 import com.vincentengelsoftware.androidimagecompare.helper.BitmapExtractor;
-import com.vincentengelsoftware.androidimagecompare.helper.BitmapHelper;
+import com.vincentengelsoftware.androidimagecompare.helper.BitmapTransformer;
 import com.vincentengelsoftware.androidimagecompare.helper.Calculator;
 import com.vincentengelsoftware.androidimagecompare.helper.FullScreenHelper;
 import com.vincentengelsoftware.androidimagecompare.helper.SlideHelper;
@@ -277,7 +277,7 @@ public class OverlaySlideActivity extends AppCompatActivity implements FadeActiv
             Bitmap bitmapSource,
             ImageButton hideShow
     ) {
-        Bitmap transparentBitmap = BitmapHelper.createTransparentBitmap(
+        Bitmap transparentBitmap = BitmapTransformer.createTransparentBitmap(
                 bitmapSource.getWidth(),
                 bitmapSource.getHeight()
         );
@@ -308,7 +308,7 @@ public class OverlaySlideActivity extends AppCompatActivity implements FadeActiv
                         return;
                     }
 
-                    Bitmap bitmap = BitmapHelper.getCutBitmapWithTransparentBackgroundWithCanvas(
+                    Bitmap bitmap = BitmapTransformer.getCutBitmapWithTransparentBackgroundWithCanvas(
                             bitmapSource,
                             transparentBitmap,
                             width,

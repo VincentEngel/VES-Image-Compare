@@ -17,7 +17,7 @@ import com.vincentengelsoftware.androidimagecompare.activities.IntentExtras;
 import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.databinding.ActivityOverlayCutBinding;
 import com.vincentengelsoftware.androidimagecompare.helper.BitmapExtractor;
-import com.vincentengelsoftware.androidimagecompare.helper.BitmapHelper;
+import com.vincentengelsoftware.androidimagecompare.helper.BitmapTransformer;
 import com.vincentengelsoftware.androidimagecompare.helper.Calculator;
 import com.vincentengelsoftware.androidimagecompare.helper.FullScreenHelper;
 import com.vincentengelsoftware.androidimagecompare.helper.SyncZoom;
@@ -285,7 +285,7 @@ public class OverlayCutActivity extends AppCompatActivity {
                 return;
             }
 
-            Bitmap result = BitmapHelper.cutBitmapAny(
+            Bitmap result = BitmapTransformer.cutBitmapAny(
                     bitmapSource,
                     topActive,
                     topProgress,

@@ -4,6 +4,9 @@ import android.graphics.Bitmap;
 import android.widget.ImageView;
 
 
+import com.vincentengelsoftware.androidimagecompare.globals.ImageResizeOptions;
+import com.vincentengelsoftware.androidimagecompare.helper.BitmapTransformer;
+
 import java.io.File;
 
 /**
@@ -12,16 +15,18 @@ import java.io.File;
  *
  * <ul>
  *   <li>{@link ImageSource}            – raw bitmap + display-size constraints</li>
- *   <li>{@link ImageTransformSettings} – user-configured resize mode and rotation</li>
- *   <li>{@link ImageBitmapCache}       – lazily-computed derived bitmaps (preview, resized+rotated)</li>
+ *   <li>{@link BitmapTransformSettings} – user-configured resize mode and rotation</li>
+ *   <li>{@link PreviewBitmap}       – lazily-computed derived bitmaps (preview, resized+rotated)</li>
  *   <li>{@link AdjustImageState}      – dirty-tracking to avoid unnecessary re-encoding</li>
  * </ul>
  */
 public class ImageInfoHolder {
     private ImageSource source = new ImageSource(null, null, 0, 0);
-    private final ImageTransformSettings transform = new ImageTransformSettings();
-    private final ImageBitmapCache cache = new ImageBitmapCache();
+    private final BitmapTransformSettings transformSettings = new BitmapTransformSettings();
+    private final PreviewBitmap previewBitmap = new PreviewBitmap();
     private AdjustImageState stateSaver = AdjustImageState.empty();
+
+    private static final int DEGREES_PER_ROTATION_STEP = 90;
 
     /**
      * Initialises this holder from a freshly decoded bitmap. All cached bitmaps and the
@@ -29,8 +34,8 @@ public class ImageInfoHolder {
      */
     public void updateFromBitmap(Bitmap bitmap, int maxSideSize, int maxSideSizeForSmallBitmap, String imageName) {
         source = new ImageSource(bitmap, imageName, maxSideSize, maxSideSizeForSmallBitmap);
-        transform.reset();
-        cache.invalidate();
+        transformSettings.reset();
+        previewBitmap.invalidate();
         stateSaver = AdjustImageState.empty();
     }
 
@@ -39,18 +44,18 @@ public class ImageInfoHolder {
      */
     public void updateFromImageHolder(ImageInfoHolder other) {
         source = new ImageSource(other.source.bitmap(), other.source.imageName(), other.source.maxSideSize(), other.source.maxSideSizeForSmallBitmap());
-        transform.copyFrom(other.transform);
-        cache.invalidate(); // Let the cache rebuild lazily from the copied source & transform.
-        stateSaver = AdjustImageState.empty();
+        transformSettings.copyFrom(other.transformSettings);
+        previewBitmap.updateFrom(other.previewBitmap);
+        stateSaver = AdjustImageState.of(other.stateSaver);
     }
 
     public void setResizeOption(int resizeOption) {
-        transform.setResizeOption(resizeOption);
+        transformSettings.setResizeOption(resizeOption);
         stateSaver = AdjustImageState.empty();
     }
 
     public void setCustomSize(int height, int width) {
-        transform.setCustomSize(height, width);
+        transformSettings.setCustomSize(height, width);
         stateSaver = AdjustImageState.empty();
     }
 
@@ -62,22 +67,14 @@ public class ImageInfoHolder {
         return source.imageName();
     }
 
-    /**
-     * Computes the final bitmap for comparison by scaling first, then rotating.
-     * The result is cached; subsequent calls with unchanged state are no-ops.
-     */
-    public void buildAdjustedBitmap() {
-        cache.buildAdjustedBitmap(source, transform);
-    }
-
     /** Returns the small preview bitmap, computing it lazily if necessary. */
     public Bitmap getBitmapSmall() {
-        return cache.getSmall(source);
+        return previewBitmap.getSmall(source);
     }
 
     /** Clears the cached resized bitmap so it will be recomputed on next access. */
     public void resetBitmapResized() {
-        cache.invalidateResized();
+        stateSaver = AdjustImageState.empty();
     }
 
     /**
@@ -85,15 +82,22 @@ public class ImageInfoHolder {
      * resize mode is active, otherwise the plain rotated bitmap.
      */
     public Bitmap getAdjustedBitmap() {
-        return cache.getAdjusted(source, transform);
+        // Step 1: scale the source bitmap to the configured target size.
+        Bitmap scaled = scaleSource(source, transformSettings);
+
+        // Step 2: apply rotation to the already-small bitmap.
+        return BitmapTransformer.rotateBitmap(
+                scaled,
+                DEGREES_PER_ROTATION_STEP * transformSettings.getCurrentRotation()
+        );
     }
 
     /**
      * Increments the rotation by 90° and updates the cached small preview bitmap.
      */
     public void rotatePreviewImage() {
-        transform.rotate();
-        cache.rotateSmall(source);
+        transformSettings.rotate();
+        previewBitmap.rotateSmall(source);
     }
 
     public void updateImageViewPreviewImage(ImageView imageView) {
@@ -106,7 +110,7 @@ public class ImageInfoHolder {
      * because the file does not exist yet.
      */
     public boolean requiresRecalculation(File compareFile) {
-        return stateSaver.requiresRecalculation(compareFile, source, transform);
+        return stateSaver.requiresRecalculation(compareFile, transformSettings);
     }
 
     /**
@@ -114,6 +118,26 @@ public class ImageInfoHolder {
      * can detect whether anything has changed.
      */
     public void markSaved() {
-        stateSaver = AdjustImageState.of(source, transform);
+        stateSaver = AdjustImageState.of(transformSettings);
+    }
+
+    /**
+     * Scales {@code source} according to the resize option in {@code settings}.
+     * Returns the original bitmap reference when no scaling is requested.
+     */
+    private static Bitmap scaleSource(ImageSource source, BitmapTransformSettings settings) {
+        return switch (settings.getResizeOption()) {
+            case ImageResizeOptions.RESIZE_OPTION_CUSTOM -> BitmapTransformer.resizeBitmap(
+                    source.bitmap(),
+                    settings.getCustomWidth(),
+                    settings.getCustomHeight()
+            );
+            case ImageResizeOptions.RESIZE_OPTION_AUTOMATIC -> BitmapTransformer.createScaledBitmapToMaxLength(
+                    source.bitmap(),
+                    source.maxSideSize(),
+                    source.maxSideSize()
+            );
+            default -> source.bitmap(); // RESIZE_OPTION_ORIGINAL — keep at full resolution.
+        };
     }
 }

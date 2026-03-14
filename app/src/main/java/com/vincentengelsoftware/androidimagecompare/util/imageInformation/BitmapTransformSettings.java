@@ -6,13 +6,13 @@ import com.vincentengelsoftware.androidimagecompare.globals.ImageResizeOptions;
  * Holds the user-configured transform settings for an image: the resize mode and,
  * when using custom mode, the target dimensions.
  */
-public class ImageTransformSettings {
+public class BitmapTransformSettings {
     private int resizeOption = ImageResizeOptions.RESIZE_OPTION_AUTOMATIC;
     private int customHeight;
     private int customWidth;
     private int currentRotation = 0;
 
-    public void copyFrom(ImageTransformSettings other) {
+    public void copyFrom(BitmapTransformSettings other) {
         this.resizeOption = other.resizeOption;
         this.customHeight = other.customHeight;
         this.customWidth = other.customWidth;
