@@ -5,15 +5,17 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 
-public class AppVersionHelper {
+import com.vincentengelsoftware.androidimagecompare.R;
+
+public class AppVersion {
 
     /** Returns the formatted version string (e.g. "v1.2.3"), or the fallback if unavailable. */
-    public static String getVersionName(Context context, String fallback) {
+    public static String getVersionName(Context context) {
         try {
             PackageInfo pinfo = getPackageInfo(context);
             return "v" + pinfo.versionName;
         } catch (PackageManager.NameNotFoundException ignored) {
-            return fallback;
+            return context.getString(R.string.unknown);
         }
     }
 

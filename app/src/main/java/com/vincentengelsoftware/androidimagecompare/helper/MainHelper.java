@@ -14,7 +14,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.documentfile.provider.DocumentFile;
 
-import com.vincentengelsoftware.androidimagecompare.activities.MainActivity;
+import com.vincentengelsoftware.androidimagecompare.activities.ImageSessionState;
 import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.globals.RequestPermissionCodes;
 import com.vincentengelsoftware.androidimagecompare.util.imageInformation.ImageInfoHolder;
@@ -63,14 +63,8 @@ public class MainHelper {
             imageTextViewNameLeft.setText(imageInfoHolderOne.getImageName());
             imageTextViewNameRight.setText(imageInfoHolderTwo.getImageName());
 
-            // Take two camera pictures => swap them once
-            // Take another camera picture
-            // App crashes
-            // App restores last state
-            // Same Image on both sides => Wrong image was loaded because they have the same path
-            Uri temp = MainActivity.leftImageUri;
-            MainActivity.leftImageUri = MainActivity.rightImageUri;
-            MainActivity.rightImageUri = temp;
+            // Keep the URIs in sync with the swapped holders.
+            ImageSessionState.getInstance().swapUris();
         });
     }
 

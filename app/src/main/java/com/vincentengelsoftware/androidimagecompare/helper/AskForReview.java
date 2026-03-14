@@ -58,6 +58,6 @@ public class AskForReview {
     }
 
     private static long getFirstInstallTime(Context context) throws PackageManager.NameNotFoundException {
-        return AppVersionHelper.getPackageInfo(context).firstInstallTime;
+        return AppVersion.getPackageInfo(context).firstInstallTime;
     }
 }

@@ -8,7 +8,7 @@ import android.os.Bundle;
 import com.vincentengelsoftware.androidimagecompare.activities.settings.userSettings.UserSettingsActivity;
 import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.databinding.ActivityConfigsBinding;
-import com.vincentengelsoftware.androidimagecompare.helper.AppVersionHelper;
+import com.vincentengelsoftware.androidimagecompare.helper.AppVersion;
 import com.vincentengelsoftware.androidimagecompare.helper.PlayStoreNavigator;
 
 public class ConfigActivity extends AppCompatActivity {
@@ -26,7 +26,7 @@ public class ConfigActivity extends AppCompatActivity {
     }
 
     private void setUpViews() {
-        binding.settingsVersion.setText(AppVersionHelper.getVersionName(this, getString(R.string.unknown)));
+        binding.settingsVersion.setText(AppVersion.getVersionName(this));
 
         binding.configsActionPrivacyPolicy.setOnClickListener(view ->
                 startActivity(new Intent(this, PrivacyPolicyActivity.class)));
