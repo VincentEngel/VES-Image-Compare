@@ -12,7 +12,6 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/background</item>
         <!-- Customize your theme here. -->
-        <item name="android:colorBackground">@color/background</item>
         <item name="windowNoTitle">true</item>
 
         <item name="android:textStyle">bold</item>
