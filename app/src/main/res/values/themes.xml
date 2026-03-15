@@ -11,6 +11,9 @@
         <item name="colorOnSecondary">@color/on_secondary</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/background</item>
+        <!-- Window / activity background. -->
+        <item name="android:windowBackground">@color/background</item>
+        <item name="android:colorBackground">@color/background</item>
         <!-- Customize your theme here. -->
         <item name="windowNoTitle">true</item>
 
