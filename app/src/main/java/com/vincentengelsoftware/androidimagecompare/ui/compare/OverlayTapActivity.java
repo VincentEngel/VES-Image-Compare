@@ -50,7 +50,7 @@ public class OverlayTapActivity extends AppCompatActivity {
           .set(getIntent().getBooleanExtra(IntentExtras.SYNC_IMAGE_INTERACTIONS, true));
     }
 
-    FullScreenHelper.setFullScreenFlags(getWindow());
+    FullScreenHelper.apply(getWindow(), Settings.SHOW_NAVIGATION_BAR);
 
     binding = ActivityOverlayTapBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());

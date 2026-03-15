@@ -70,6 +70,9 @@ public class UserSettingsActivity extends AppCompatActivity {
         view ->
             presenter.setResetImageOnLinking(binding.settingsSwitchResetZoomOnLinking.isChecked()));
 
+    binding.settingsSwitchFullscreen.setOnClickListener(
+        view -> presenter.setShowNavigationBar(binding.settingsSwitchFullscreen.isChecked()));
+
     binding.settingsMirroringNatural.setOnClickListener(
         view -> {
           presenter.setMirroringType(Status.NATURAL_MIRRORING);
@@ -120,6 +123,7 @@ public class UserSettingsActivity extends AppCompatActivity {
 
     binding.homeTheme.setText(state.themeButtonTextResId());
     binding.settingsSwitchResetZoomOnLinking.setChecked(state.resetImageOnLinking());
+    binding.settingsSwitchFullscreen.setChecked(state.fullscreen());
 
     binding.settingsMirroringNatural.setChecked(state.mirroringNaturalChecked());
     binding.settingsMirroringStrict.setChecked(state.mirroringStrictChecked());

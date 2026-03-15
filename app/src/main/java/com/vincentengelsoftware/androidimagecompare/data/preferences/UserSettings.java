@@ -18,6 +18,8 @@ public class UserSettings {
 
   public static final String TAP_HIDE_MODE = "TAP_HIDE_MODE";
 
+  public static final String SHOW_NAVIGATION_BAR = "SHOW_NAVIGATION_BAR";
+
   private final ImageResizeSettings LeftImageResizeSettings;
   private final ImageResizeSettings RightImageResizeSettings;
 
@@ -130,6 +132,16 @@ public class UserSettings {
     this.keyValueStorage.setInt(UserSettings.TAP_HIDE_MODE, tapHideMode);
   }
 
+  public boolean getShowNavigationBar() {
+    return this.keyValueStorage.getBoolean(
+        UserSettings.SHOW_NAVIGATION_BAR, DefaultSettings.SHOW_NAVIGATION_BAR);
+  }
+
+  public void setShowNavigationBar(boolean showNavigationBar) {
+    Settings.SHOW_NAVIGATION_BAR = showNavigationBar;
+    this.keyValueStorage.setBoolean(UserSettings.SHOW_NAVIGATION_BAR, showNavigationBar);
+  }
+
   public void resetAllSettings() {
     this.keyValueStorage.remove(UserSettings.USER_THEME);
     this.keyValueStorage.remove(UserSettings.SYNC_IMAGE_INTERACTIONS);
@@ -145,6 +157,8 @@ public class UserSettings {
     Settings.TAP_HIDE_MODE = DefaultSettings.TAP_HIDE_MODE;
     this.keyValueStorage.remove(UserSettings.MIN_ZOOM);
     Settings.MIN_ZOOM = DefaultSettings.MIN_ZOOM;
+    this.keyValueStorage.remove(UserSettings.SHOW_NAVIGATION_BAR);
+    Settings.SHOW_NAVIGATION_BAR = DefaultSettings.SHOW_NAVIGATION_BAR;
 
     this.LeftImageResizeSettings.resetAllSettings();
     this.RightImageResizeSettings.resetAllSettings();

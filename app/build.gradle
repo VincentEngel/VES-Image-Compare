@@ -11,8 +11,8 @@ android {
         applicationId  = 'com.vincentengelsoftware.vesandroidimagecompare'
         minSdk         = 28
         targetSdk      = 36
-        versionCode    = 46
-        versionName    = "2.3.1"
+        versionCode    = 47
+        versionName    = "2.3.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -37,7 +37,7 @@ android {
     lint {
         abortOnError     = true
         warningsAsErrors = true
-        disable          'AndroidGradlePluginVersion'
+        disable          'AndroidGradlePluginVersion', 'ObsoleteSdkInt'
         lintConfig       = file('lint.xml')
     }
 

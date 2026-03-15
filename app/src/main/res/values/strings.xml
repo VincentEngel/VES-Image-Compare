@@ -97,6 +97,8 @@
     <string name="settings_tap_hide_mode_description_background">Compare mode Tap hiding mode:\n\nBackground makes the current image move to the back to show the other image.</string>
     <string name="settings_tap_hide_mode_invisible">Invisible</string>
     <string name="settings_tap_hide_mode_background">Move to background</string>
+    <string name="settings_show_navigation_bar">Show Navigation bar</string>
+    <string name="settings_show_navigation_bar_description">Show navigation bar when entering a compare mode</string>
 
     <!-- Explanation -->
     <string name="explanation">Explanation</string>

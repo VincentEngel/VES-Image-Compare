@@ -115,6 +115,42 @@
                     android:layout_height="match_parent">
 
                     <TextView
+                        android:textAlignment="viewStart"
+                        android:layout_marginEnd="6dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|start"
+                        android:text="@string/settings_show_navigation_bar"
+                        android:textSize="16sp" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent">
+
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/settings_switch_fullscreen"
+                        android:contentDescription="@string/settings_show_navigation_bar_description"
+                        android:layout_gravity="start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </FrameLayout>
+            </TableRow>
+
+            <TableRow
+                android:background="@drawable/meta_data_table_row_value_border_bottom"
+                android:paddingBottom="6dp"
+                android:layout_marginBottom="6dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <FrameLayout
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent">
+
+                    <TextView
                         android:layout_marginEnd="6dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

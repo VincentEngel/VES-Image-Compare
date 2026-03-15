@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.constants.IntentExtras;
+import com.vincentengelsoftware.androidimagecompare.constants.Settings;
 import com.vincentengelsoftware.androidimagecompare.databinding.ActivityOverlayCutBinding;
 import com.vincentengelsoftware.androidimagecompare.domain.model.CropParams;
 import com.vincentengelsoftware.androidimagecompare.ui.util.FullScreenHelper;
@@ -62,7 +63,7 @@ public class OverlayCutActivity extends AppCompatActivity {
       sync.set(getIntent().getBooleanExtra(IntentExtras.SYNC_IMAGE_INTERACTIONS, true));
     }
 
-    FullScreenHelper.setFullScreenFlags(getWindow());
+    FullScreenHelper.apply(getWindow(), Settings.SHOW_NAVIGATION_BAR);
 
     binding = ActivityOverlayCutBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());

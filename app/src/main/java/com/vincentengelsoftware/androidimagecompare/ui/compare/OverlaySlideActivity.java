@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.constants.IntentExtras;
+import com.vincentengelsoftware.androidimagecompare.constants.Settings;
 import com.vincentengelsoftware.androidimagecompare.databinding.ActivityOverlaySlideBinding;
 import com.vincentengelsoftware.androidimagecompare.ui.animation.ControlsBarHost;
 import com.vincentengelsoftware.androidimagecompare.ui.animation.ControlsBarManager;
@@ -58,7 +59,7 @@ public class OverlaySlideActivity extends AppCompatActivity implements ControlsB
           .set(getIntent().getBooleanExtra(IntentExtras.SYNC_IMAGE_INTERACTIONS, true));
     }
 
-    FullScreenHelper.setFullScreenFlags(getWindow());
+    FullScreenHelper.apply(getWindow(), Settings.SHOW_NAVIGATION_BAR);
 
     binding = ActivityOverlaySlideBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());

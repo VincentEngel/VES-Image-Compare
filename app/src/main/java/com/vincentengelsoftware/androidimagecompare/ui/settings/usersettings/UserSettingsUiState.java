@@ -14,6 +14,7 @@ package com.vincentengelsoftware.androidimagecompare.ui.settings.usersettings;
  * @param tapHideModeBackgroundChecked Whether the Background tap-hide radio button is selected
  * @param tapHideModeDescriptionResId String resource ID for the current tap-hide mode description
  * @param themeButtonTextResId String resource ID for the theme toggle button label
+ * @param fullscreen Whether fullscreen (hidden navigation bar) is enabled in compare modes
  */
 public record UserSettingsUiState(
     String maxZoom,
@@ -26,4 +27,5 @@ public record UserSettingsUiState(
     boolean tapHideModeInvisibleChecked,
     boolean tapHideModeBackgroundChecked,
     int tapHideModeDescriptionResId,
-    int themeButtonTextResId) {}
+    int themeButtonTextResId,
+    boolean fullscreen) {}

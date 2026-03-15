@@ -46,7 +46,8 @@ public class UserSettingsPresenter {
         tapHideMode == Status.TAP_HIDE_MODE_INVISIBLE,
         tapHideMode == Status.TAP_HIDE_MODE_BACKGROUND,
         tapHideModeDescriptionResId(tapHideMode),
-        themeButtonTextResId(theme));
+        themeButtonTextResId(theme),
+        userSettings.getShowNavigationBar());
   }
 
   public SaveZoomResult saveZoom(int rawMaxZoom, float rawMinZoom) {
@@ -90,6 +91,10 @@ public class UserSettingsPresenter {
 
   public void setTapHideMode(int tapHideMode) {
     userSettings.setTypHideMode(tapHideMode);
+  }
+
+  public void setShowNavigationBar(boolean showNavigationBar) {
+    userSettings.setShowNavigationBar(showNavigationBar);
   }
 
   public UserSettingsUiState resetAllSettings() {

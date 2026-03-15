@@ -20,4 +20,6 @@ public class DefaultSettings {
   public static float MIN_ZOOM = 1.0F;
 
   public static int TAP_HIDE_MODE = Status.TAP_HIDE_MODE_INVISIBLE;
+
+  public static boolean SHOW_NAVIGATION_BAR = true;
 }

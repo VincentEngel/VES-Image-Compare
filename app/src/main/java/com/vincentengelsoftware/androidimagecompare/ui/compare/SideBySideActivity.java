@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.constants.IntentExtras;
+import com.vincentengelsoftware.androidimagecompare.constants.Settings;
 import com.vincentengelsoftware.androidimagecompare.databinding.ActivitySideBySideBinding;
 import com.vincentengelsoftware.androidimagecompare.ui.util.FullScreenHelper;
 
@@ -45,7 +46,7 @@ public class SideBySideActivity extends AppCompatActivity {
           .set(getIntent().getBooleanExtra(IntentExtras.SYNC_IMAGE_INTERACTIONS, true));
     }
 
-    FullScreenHelper.setFullScreenFlags(getWindow());
+    FullScreenHelper.apply(getWindow(), Settings.SHOW_NAVIGATION_BAR);
 
     binding = ActivitySideBySideBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());

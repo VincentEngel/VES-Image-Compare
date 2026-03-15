@@ -94,4 +94,6 @@
     <string name="settings_tap_hide_mode_description_background">Vergleichsmodi Tippen Option:\n\nHintergrund verschiebt das aktuelle Bild in den Hintergrund um das andere Bild zu zeigen.</string>
     <string name="settings_tap_hide_mode_invisible">Unsichtbar</string>
     <string name="settings_tap_hide_mode_background">In den Hintergrund</string>
+    <string name="settings_show_navigation_bar">Navigationsleiste einblenden</string>
+    <string name="settings_show_navigation_bar_description">Navigationsleiste im Vergleichsmodus einblenden</string>
 </resources>

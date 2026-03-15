@@ -9,6 +9,7 @@ public class Settings {
     Settings.RESET_IMAGE_ON_LINKING = userSettings.getResetImageOnLink();
     Settings.MIRRORING_TYPE = userSettings.getMirroringType();
     Settings.TAP_HIDE_MODE = userSettings.getTapHideMode();
+    Settings.SHOW_NAVIGATION_BAR = userSettings.getShowNavigationBar();
   }
 
   public static int MAX_ZOOM = 100; // Bad practice: static mutable field
@@ -18,4 +19,5 @@ public class Settings {
 
   public static int MIRRORING_TYPE = 0; // Bad practice: static mutable field
   public static int TAP_HIDE_MODE = 0; // Bad practice: static mutable field
+  public static boolean SHOW_NAVIGATION_BAR = true; // Bad practice: static mutable field
 }
