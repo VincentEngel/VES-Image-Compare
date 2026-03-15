@@ -12,6 +12,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/background</item>
         <!-- Customize your theme here. -->
+        <item name="android:colorBackground">@color/background</item>
         <item name="windowNoTitle">true</item>
 
         <item name="android:textStyle">bold</item>
@@ -52,10 +53,5 @@
 
     <style name="NegativeButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
         <item name="android:textColor">@color/text_color</item>
-    </style>
-    <!-- Base application theme. -->
-    <style name="Base.Theme.VesAndroidImageCompare" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 </resources>

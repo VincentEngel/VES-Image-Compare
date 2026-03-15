@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/dialog_resize_image_layout"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@color/background">
+    android:layout_height="fill_parent">
 
     <ScrollView
         android:layout_width="fill_parent"
@@ -92,7 +91,8 @@
 
                     <TableLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        tools:ignore="UselessParent">
 
                         <TableRow
                             android:layout_width="wrap_content"
@@ -102,6 +102,7 @@
                                 android:id="@+id/dialog_resize_image_input_width"
                                 android:layout_width="wrap_content"
                                 android:layout_height="48dp"
+                                android:autofillHints="width"
                                 android:ems="10"
                                 android:hint="@string/resize_image_width_in_px"
                                 android:inputType="number" />
@@ -115,6 +116,7 @@
                                 android:id="@+id/dialog_resize_image_input_height"
                                 android:layout_width="wrap_content"
                                 android:layout_height="48dp"
+                                android:autofillHints="height"
                                 android:ems="10"
                                 android:hint="@string/resize_image_height_in_px"
                                 android:inputType="number" />

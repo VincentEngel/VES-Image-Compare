@@ -35,8 +35,10 @@ android {
     }
 
     lint {
-        abortOnError    = true
+        abortOnError     = true
         warningsAsErrors = true
+        disable          'AndroidGradlePluginVersion'
+        lintConfig       = file('lint.xml')
     }
 
     testOptions {
@@ -82,6 +84,6 @@ spotless {
     }
 }
 
-//tasks.named('check') {
-//   dependsOn 'spotlessApply'
-//}
+tasks.named('check') {
+    dependsOn 'spotlessApply'
+}

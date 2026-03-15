@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<lint>
+    <!-- Colours may be defined for future use or as a palette; suppress unused warnings for colors.xml only. -->
+    <issue id="UnusedResources">
+        <ignore path="res/values/colors.xml" />
+        <ignore path="res/drawable" />
+    </issue>
+</lint>
+

@@ -321,7 +321,8 @@ public class MainActivity extends AppCompatActivity {
     // Stored as fields to ensure the instances (and their registered launcher callbacks)
     // are not garbage-collected while the activity is alive.
     leftPicker = ImageSlotPickerHelper.create(this, "left", sessionState, binding, openingActivity);
-    rightPicker = ImageSlotPickerHelper.create(this, "right", sessionState, binding, openingActivity);
+    rightPicker =
+        ImageSlotPickerHelper.create(this, "right", sessionState, binding, openingActivity);
 
     binding.homeImageLeft.setOnClickListener(leftPicker.buildClickListener());
     binding.homeImageRight.setOnClickListener(rightPicker.buildClickListener());
