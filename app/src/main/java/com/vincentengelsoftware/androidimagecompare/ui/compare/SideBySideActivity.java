@@ -1,5 +1,6 @@
 package com.vincentengelsoftware.androidimagecompare.ui.compare;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import androidx.annotation.NonNull;
@@ -16,14 +17,15 @@ import com.vincentengelsoftware.androidimagecompare.ui.util.FullScreenHelper;
 /**
  * Displays two images side-by-side with optional synchronised zoom/pan.
  *
- * <p>The Activity owns only UI concerns: view binding, controls wiring, and LiveData observation.
- * All bitmap loading and state management is delegated to {@link SideBySideViewModel}.
+ * <p>The Activity owns only UI concerns: view binding and controls wiring. The sync state is
+ * delegated to {@link SideBySideViewModel}. Images are loaded directly from their content URIs on
+ * every (re-)creation – no bitmap is retained in memory across configuration changes.
  */
 public class SideBySideActivity extends AppCompatActivity {
 
   private static final String KEY_SYNC_IMAGE_INTERACTIONS = "key_sync_image_interactions";
 
-  /** Survives configuration changes; owns bitmaps and the sync flag. */
+  /** Survives configuration changes; owns the sync flag. */
   private SideBySideViewModel viewModel;
 
   private ActivitySideBySideBinding binding;
@@ -51,10 +53,14 @@ public class SideBySideActivity extends AppCompatActivity {
     binding = ActivitySideBySideBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());
 
+    if (!initImages()) {
+      // URIs are missing or invalid; nothing to show.
+      finish();
+      return;
+    }
+
     initImageViews();
     toggleExtensionsVisibility();
-    loadImages();
-    observeViewModel();
   }
 
   @Override
@@ -69,37 +75,30 @@ public class SideBySideActivity extends AppCompatActivity {
     binding = null;
   }
 
-  // ── ViewModel observation ──────────────────────────────────────────────────
+  // ── Initialisation helpers ─────────────────────────────────────────────────
 
   /**
-   * Starts observing the ViewModel's LiveData streams. Must be called after the binding is ready so
-   * that view updates are always on the main thread.
+   * Reads the two image URIs from the Intent and applies them to the image views.
+   *
+   * @return {@code false} if either URI string is absent; the caller should finish().
    */
-  private void observeViewModel() {
-    viewModel
-        .getImages()
-        .observe(
-            this,
-            imagePair -> {
-              if (binding == null) return;
-              binding.sideBySideImageTopLeft.setBitmapImage(imagePair.imageOne());
-              binding.sideBySideImageNameTopLeft.setText(
-                  getIntent().getStringExtra(IntentExtras.IMAGE_NAME_ONE));
-              binding.sideBySideImageBottomRight.setBitmapImage(imagePair.imageTwo());
-              binding.sideBySideImageNameBottomRight.setText(
-                  getIntent().getStringExtra(IntentExtras.IMAGE_NAME_TWO));
-            });
+  private boolean initImages() {
+    String uriStringOne = getIntent().getStringExtra(IntentExtras.IMAGE_URI_ONE);
+    String uriStringTwo = getIntent().getStringExtra(IntentExtras.IMAGE_URI_TWO);
 
-    viewModel
-        .isLoadFailed()
-        .observe(
-            this,
-            failed -> {
-              if (Boolean.TRUE.equals(failed)) finish();
-            });
+    if (uriStringOne == null || uriStringOne.isEmpty()
+        || uriStringTwo == null || uriStringTwo.isEmpty()) {
+      return false;
+    }
+
+    binding.sideBySideImageTopLeft.setImageURI(Uri.parse(uriStringOne));
+    binding.sideBySideImageNameTopLeft.setText(getIntent().getStringExtra(IntentExtras.IMAGE_NAME_ONE));
+
+    binding.sideBySideImageBottomRight.setImageURI(Uri.parse(uriStringTwo));
+    binding.sideBySideImageNameBottomRight.setText(getIntent().getStringExtra(IntentExtras.IMAGE_NAME_TWO));
+
+    return true;
   }
-
-  // ── Initialisation helpers ─────────────────────────────────────────────────
 
   /**
    * Wires synchronised zoom/pan between the two image views and binds the toggle button that
@@ -122,19 +121,5 @@ public class SideBySideActivity extends AppCompatActivity {
   private void toggleExtensionsVisibility() {
     boolean showExtensions = getIntent().getBooleanExtra(IntentExtras.SHOW_EXTENSIONS, false);
     binding.sideBySideExtensions.setVisibility(showExtensions ? View.VISIBLE : View.GONE);
-  }
-
-  /**
-   * Asks the ViewModel to decode both bitmaps in the background. This is a no-op after a
-   * configuration change (bitmaps are already retained).
-   */
-  private void loadImages() {
-    String uriOne = getIntent().getStringExtra(IntentExtras.IMAGE_URI_ONE);
-    String uriTwo = getIntent().getStringExtra(IntentExtras.IMAGE_URI_TWO);
-    if (uriOne == null || uriTwo == null) {
-      finish();
-      return;
-    }
-    viewModel.loadImages(getContentResolver(), uriOne, uriTwo);
   }
 }

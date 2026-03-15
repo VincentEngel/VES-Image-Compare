@@ -1,6 +1,6 @@
 package com.vincentengelsoftware.androidimagecompare.ui.compare;
 
-import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import androidx.annotation.NonNull;
@@ -14,20 +14,20 @@ import com.vincentengelsoftware.androidimagecompare.constants.Settings;
 import com.vincentengelsoftware.androidimagecompare.constants.Status;
 import com.vincentengelsoftware.androidimagecompare.databinding.ActivityOverlayTapBinding;
 import com.vincentengelsoftware.androidimagecompare.ui.util.FullScreenHelper;
-import com.vincentengelsoftware.androidimagecompare.util.BitmapExtractor;
 
 /**
  * Displays two images stacked on top of each other; tapping the front image swaps which image is on
  * top.
  *
- * <p>The Activity owns only UI concerns: view binding and controls wiring. Bitmap retention and
- * sync state are delegated to {@link OverlayTapViewModel}.
+ * <p>The Activity owns only UI concerns: view binding and controls wiring. The sync state is
+ * delegated to {@link OverlayTapViewModel}. Images are loaded directly from their content URIs on
+ * every (re-)creation – no bitmap is retained in memory across configuration changes.
  */
 public class OverlayTapActivity extends AppCompatActivity {
 
   private static final String KEY_SYNC_IMAGE_INTERACTIONS = "key_sync_image_interactions";
 
-  /** Survives configuration changes; owns bitmaps and the sync flag. */
+  /** Survives configuration changes; owns the sync flag. */
   private OverlayTapViewModel viewModel;
 
   private ActivityOverlayTapBinding binding;
@@ -56,7 +56,7 @@ public class OverlayTapActivity extends AppCompatActivity {
     setContentView(binding.getRoot());
 
     if (!initImages()) {
-      // URIs are invalid or images could not be decoded; nothing to show.
+      // URIs are missing or invalid; nothing to show.
       finish();
       return;
     }
@@ -79,25 +79,21 @@ public class OverlayTapActivity extends AppCompatActivity {
   // ── Initialisation ─────────────────────────────────────────────────────────
 
   /**
-   * Loads (or reuses from the ViewModel) the two images and applies them to the image views.
+   * Reads the two image URIs from the Intent and applies them to the image views.
    *
-   * @return {@code false} if the images could not be decoded; the caller should finish().
+   * @return {@code false} if either URI string is absent; the caller should finish().
    */
   private boolean initImages() {
-    if (!viewModel.areBitmapsLoaded()) {
-      String uriOne = getIntent().getStringExtra(IntentExtras.IMAGE_URI_ONE);
-      String uriTwo = getIntent().getStringExtra(IntentExtras.IMAGE_URI_TWO);
+    String uriStringOne = getIntent().getStringExtra(IntentExtras.IMAGE_URI_ONE);
+    String uriStringTwo = getIntent().getStringExtra(IntentExtras.IMAGE_URI_TWO);
 
-      Bitmap bitmapOne = BitmapExtractor.fromUriString(getContentResolver(), uriOne);
-      Bitmap bitmapTwo = BitmapExtractor.fromUriString(getContentResolver(), uriTwo);
-
-      if (bitmapOne == null || bitmapTwo == null) return false;
-
-      viewModel.initBitmaps(bitmapOne, bitmapTwo);
+    if (uriStringOne == null || uriStringOne.isEmpty()
+        || uriStringTwo == null || uriStringTwo.isEmpty()) {
+      return false;
     }
 
-    binding.overlayTapImageViewOne.setBitmapImage(viewModel.getBitmapOne());
-    binding.overlayTapImageViewTwo.setBitmapImage(viewModel.getBitmapTwo());
+    binding.overlayTapImageViewOne.setImageURI(Uri.parse(uriStringOne));
+    binding.overlayTapImageViewTwo.setImageURI(Uri.parse(uriStringTwo));
 
     if (Settings.TAP_HIDE_MODE == Status.TAP_HIDE_MODE_INVISIBLE) {
       binding.overlayTapImageViewTwo.setVisibility(View.INVISIBLE);

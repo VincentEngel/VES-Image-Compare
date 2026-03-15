@@ -1,1 +1,2 @@
 * Add toggle Navigation Bar in settings to show or hide them in compare modes
+* Greatly reduce memory usage in the following Activities: Tap, Transparent, SideBySide

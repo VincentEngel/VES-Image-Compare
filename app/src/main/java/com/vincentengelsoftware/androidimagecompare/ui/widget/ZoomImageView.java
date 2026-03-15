@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.PointF;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
@@ -65,6 +66,11 @@ public class ZoomImageView extends TouchImageView implements VesImageInterface {
   @Override
   public void setBitmapImage(Bitmap bitmap) {
     super.setImageBitmap(bitmap);
+  }
+
+  @Override
+  public void setImageURI(Uri uri) {
+    super.setImageURI(uri);
   }
 
   @Override

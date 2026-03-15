@@ -1,6 +1,6 @@
 package com.vincentengelsoftware.androidimagecompare.ui.compare;
 
-import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,21 +16,21 @@ import com.vincentengelsoftware.androidimagecompare.databinding.ActivityOverlayT
 import com.vincentengelsoftware.androidimagecompare.ui.animation.ControlsBarHost;
 import com.vincentengelsoftware.androidimagecompare.ui.animation.ControlsBarManager;
 import com.vincentengelsoftware.androidimagecompare.ui.util.FullScreenHelper;
-import com.vincentengelsoftware.androidimagecompare.util.BitmapExtractor;
 
 /**
  * Displays two images stacked on top of each other and lets the user adjust the opacity of the
  * front image via a seekbar, or hide it entirely with a toggle button.
  *
  * <p>The Activity owns only UI concerns: view binding, seekbar/button wiring, and controls-bar
- * animation. Bitmap retention and the sync-zoom flag are delegated to {@link
- * OverlayTransparentViewModel} so they survive configuration changes.
+ * animation. The sync-zoom flag is delegated to {@link OverlayTransparentViewModel}. Images are
+ * loaded directly from their content URIs on every (re-)creation – no bitmap is retained in memory
+ * across configuration changes.
  */
 public class OverlayTransparentActivity extends AppCompatActivity implements ControlsBarHost {
 
   private static final String KEY_SYNC_IMAGE_INTERACTIONS = "key_sync_image_interactions";
 
-  /** Survives configuration changes; owns bitmaps and the sync flag. */
+  /** Survives configuration changes; owns the sync flag. */
   private OverlayTransparentViewModel viewModel;
 
   /** Encapsulates the animated show/hide behaviour of the controls bar. */
@@ -116,28 +116,24 @@ public class OverlayTransparentActivity extends AppCompatActivity implements Con
   // ── Initialisation ─────────────────────────────────────────────────────────
 
   /**
-   * Loads (or reuses from the ViewModel) the two images and applies them to the image views.
+   * Reads the two image URIs from the Intent and applies them to the image views.
    *
-   * @return {@code false} if the images could not be decoded; the caller should finish().
+   * @return {@code false} if either URI string is absent; the caller should finish().
    */
   private boolean initImages() {
-    if (!viewModel.areBitmapsLoaded()) {
-      String uriOne = getIntent().getStringExtra(IntentExtras.IMAGE_URI_ONE);
-      String uriTwo = getIntent().getStringExtra(IntentExtras.IMAGE_URI_TWO);
+    String uriStringOne = getIntent().getStringExtra(IntentExtras.IMAGE_URI_ONE);
+    String uriStringTwo = getIntent().getStringExtra(IntentExtras.IMAGE_URI_TWO);
 
-      Bitmap bitmapBase = BitmapExtractor.fromUriString(getContentResolver(), uriOne);
-      Bitmap bitmapTransparent = BitmapExtractor.fromUriString(getContentResolver(), uriTwo);
-
-      if (bitmapBase == null || bitmapTransparent == null) return false;
-
-      viewModel.initBitmaps(bitmapBase, bitmapTransparent);
+    if (uriStringOne == null || uriStringOne.isEmpty()
+        || uriStringTwo == null || uriStringTwo.isEmpty()) {
+      return false;
     }
 
     binding.overlayTransparentImageViewBase.addFadeListener(this);
-    binding.overlayTransparentImageViewBase.setBitmapImage(viewModel.getBitmapBase());
+    binding.overlayTransparentImageViewBase.setImageURI(Uri.parse(uriStringOne));
 
     binding.overlayTransparentImageViewTransparent.addFadeListener(this);
-    binding.overlayTransparentImageViewTransparent.setBitmapImage(viewModel.getBitmapTransparent());
+    binding.overlayTransparentImageViewTransparent.setImageURI(Uri.parse(uriStringTwo));
     binding.overlayTransparentImageViewTransparent.bringToFront();
 
     return true;
