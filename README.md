@@ -37,8 +37,7 @@
 Watch the intro video on YouTube: https://youtu.be/6OAuVFqamyA
 
 ## Developer Note
-This is an App I like to work on in my spare time. It is my first Android Java App. This Code does not reflect my professional work.
-I am always open to suggestions and improvements. Feel free to [contact](#contact) me.
+This is an App I like to work on in my spare time. It is my first Android Java App. Feel free to [contact](#contact) me.
 
 ## Available comparisons
 <div>
@@ -72,9 +71,6 @@ I am always open to suggestions and improvements. Feel free to [contact](#contac
 
 ### Overlay Tap
 <p>Tap on the screen to switch the image being shown</p>
-
-### MetaData (Beta)
-<p>Show all Meta Data, like Exif Data, side by side</p>
 
 # Contact
 <div>
