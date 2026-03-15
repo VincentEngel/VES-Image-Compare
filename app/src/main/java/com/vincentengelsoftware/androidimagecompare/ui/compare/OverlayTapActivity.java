@@ -87,8 +87,10 @@ public class OverlayTapActivity extends AppCompatActivity {
     String uriStringOne = getIntent().getStringExtra(IntentExtras.IMAGE_URI_ONE);
     String uriStringTwo = getIntent().getStringExtra(IntentExtras.IMAGE_URI_TWO);
 
-    if (uriStringOne == null || uriStringOne.isEmpty()
-        || uriStringTwo == null || uriStringTwo.isEmpty()) {
+    if (uriStringOne == null
+        || uriStringOne.isEmpty()
+        || uriStringTwo == null
+        || uriStringTwo.isEmpty()) {
       return false;
     }
 

@@ -200,6 +200,16 @@
                             android:gravity="center"
                             app:srcCompat="@drawable/ic_rotate_right"
                             tools:ignore="ImageContrastCheck" />
+
+                        <ImageButton
+                            android:id="@+id/home_button_mirror_image_left"
+                            android:layout_width="@dimen/button_size"
+                            android:layout_height="@dimen/button_size"
+                            android:layout_marginStart="12dp"
+                            android:contentDescription="@string/mirror_image_left"
+                            android:gravity="center"
+                            app:srcCompat="@drawable/ic_slide_ltr"
+                            tools:ignore="ImageContrastCheck" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -229,6 +239,16 @@
                             android:contentDescription="@string/rotate_image_right"
                             android:gravity="center"
                             app:srcCompat="@drawable/ic_rotate_right"
+                            tools:ignore="ImageContrastCheck" />
+
+                        <ImageButton
+                            android:id="@+id/home_button_mirror_image_right"
+                            android:layout_width="@dimen/button_size"
+                            android:layout_height="@dimen/button_size"
+                            android:layout_marginStart="12dp"
+                            android:contentDescription="@string/mirror_image_right"
+                            android:gravity="center"
+                            app:srcCompat="@drawable/ic_slide_ltr"
                             tools:ignore="ImageContrastCheck" />
                     </LinearLayout>
 

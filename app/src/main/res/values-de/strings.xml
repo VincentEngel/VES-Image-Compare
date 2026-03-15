@@ -16,6 +16,8 @@
     <string name="info_text_view_inspiration">Die App ist inspiriert durch \"Ditto - Photo Comparer\"</string>
     <string name="rotate_image_left">Linkes Bild rotieren</string>
     <string name="rotate_image_right">Rechtes Bild rotieren</string>
+    <string name="mirror_image_left">Linkes Bild spiegeln</string>
+    <string name="mirror_image_right">Rechtes Bild spiegeln</string>
     <string name="hide_front_image">Bild im Vordergrund ausblenden</string>
     <string name="image_name">Bildname</string>
     <string name="resize">Zuschneiden</string>

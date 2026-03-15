@@ -196,6 +196,15 @@
                             android:contentDescription="@string/rotate_image_left"
                             app:srcCompat="@drawable/ic_rotate_right"
                             tools:ignore="ImageContrastCheck" />
+
+                        <ImageButton
+                            android:id="@+id/home_button_mirror_image_left"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_gravity="bottom|center_horizontal"
+                            android:contentDescription="@string/mirror_image_left"
+                            app:srcCompat="@drawable/ic_slide_ltr"
+                            tools:ignore="ImageContrastCheck" />
                     </FrameLayout>
 
                     <Space
@@ -224,6 +233,15 @@
                             android:layout_marginEnd="-28dp"
                             android:contentDescription="@string/rotate_image_right"
                             app:srcCompat="@drawable/ic_rotate_right"
+                            tools:ignore="ImageContrastCheck" />
+
+                        <ImageButton
+                            android:id="@+id/home_button_mirror_image_right"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_gravity="bottom|center_horizontal"
+                            android:contentDescription="@string/mirror_image_right"
+                            app:srcCompat="@drawable/ic_slide_ltr"
                             tools:ignore="ImageContrastCheck" />
                     </FrameLayout>
                 </TableRow>

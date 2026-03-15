@@ -6,39 +6,44 @@ import com.vincentengelsoftware.androidimagecompare.util.BitmapTransformer;
 public class PreviewBitmap {
   private static final int DEGREES_PER_ROTATION_STEP = 90;
 
-  /** Small bitmap used for the preview {@link android.widget.ImageView}. */
-  private Bitmap previewBitmap;
+  /**
+   * Unmodified scaled-down version of the source bitmap.
+   *
+   * <p>Kept separate from the transformed result so that rotation and mirror can always be
+   * recomputed from a clean base, regardless of the order in which the user applied them.
+   */
+  private Bitmap scaledBase;
 
-  /** Clears all cached bitmaps so they will be recomputed on next access. */
+  /** Clears the cached base so it will be re-derived from source on the next access. */
   public void invalidate() {
-    previewBitmap = null;
+    scaledBase = null;
   }
 
   public void updateFrom(PreviewBitmap other) {
-    this.previewBitmap = other.previewBitmap;
+    this.scaledBase = other.scaledBase;
   }
 
   /**
-   * Returns a small bitmap suitable for the preview {@link android.widget.ImageView}. Computed
-   * lazily and cached until {@link #invalidate()} is called.
+   * Returns the preview bitmap with transforms applied in the canonical order <b>scale → rotate →
+   * mirror</b>, which is identical to the order used by {@link
+   * com.vincentengelsoftware.androidimagecompare.domain.model.ImageInfoHolder#getAdjustedBitmap()}.
+   *
+   * <p>The scaled base is cached lazily and reused across calls; rotation and mirror are recomputed
+   * from it on every call so the result is always consistent with the current {@link
+   * BitmapTransformSettings}, regardless of the order in which individual operations were applied
+   * interactively.
    */
-  public Bitmap getSmall(ImageSource source) {
-    if (previewBitmap == null) {
-      previewBitmap =
+  public Bitmap getSmall(ImageSource source, BitmapTransformSettings settings) {
+    if (scaledBase == null) {
+      scaledBase =
           BitmapTransformer.createScaledBitmapToMaxLength(
               source.bitmap(),
               source.maxSideSizeForSmallBitmap(),
               source.maxSideSizeForSmallBitmap());
     }
-
-    return previewBitmap;
-  }
-
-  /**
-   * Rotates the cached preview bitmap by 90° and replaces the cache entry. Should be called after
-   * {@link BitmapTransformSettings#rotate()} has already incremented the rotation counter.
-   */
-  public void rotateSmall(ImageSource source) {
-    previewBitmap = BitmapTransformer.rotateBitmap(getSmall(source), DEGREES_PER_ROTATION_STEP);
+    Bitmap rotated =
+        BitmapTransformer.rotateBitmap(
+            scaledBase, DEGREES_PER_ROTATION_STEP * settings.getCurrentRotation());
+    return settings.isMirrored() ? BitmapTransformer.mirrorBitmap(rotated) : rotated;
   }
 }

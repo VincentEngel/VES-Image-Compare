@@ -11,22 +11,33 @@ public class BitmapTransformSettings {
   private int customHeight;
   private int customWidth;
   private int currentRotation = 0;
+  private boolean mirrored = false;
 
   public void copyFrom(BitmapTransformSettings other) {
     this.resizeOption = other.resizeOption;
     this.customHeight = other.customHeight;
     this.customWidth = other.customWidth;
     this.currentRotation = other.currentRotation;
+    this.mirrored = other.mirrored;
   }
 
   public void reset() {
     this.currentRotation = 0;
+    this.mirrored = false;
     // resizeOption, customHeight and customWidth are preserved — they are user settings,
     // not image-specific, and are re-applied from UserSettings after a reset.
   }
 
   public void rotate() {
     currentRotation = (currentRotation + 1) % 4;
+  }
+
+  public void toggleMirror() {
+    mirrored = !mirrored;
+  }
+
+  public boolean isMirrored() {
+    return mirrored;
   }
 
   public int getResizeOption() {

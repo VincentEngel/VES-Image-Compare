@@ -317,6 +317,29 @@ public class MainActivity extends AppCompatActivity {
           return true;
         });
 
+    // Mirror buttons
+    MainHelper.addMirrorImageLogic(
+        binding.homeButtonMirrorImageLeft,
+        sessionState.getFirstImageInfoHolder(),
+        binding.homeImageLeft,
+        openingActivity);
+    binding.homeButtonMirrorImageLeft.setOnLongClickListener(
+        view -> {
+          Toast.makeText(this, R.string.mirror_image_left, Toast.LENGTH_SHORT).show();
+          return true;
+        });
+
+    MainHelper.addMirrorImageLogic(
+        binding.homeButtonMirrorImageRight,
+        sessionState.getSecondImageInfoHolder(),
+        binding.homeImageRight,
+        openingActivity);
+    binding.homeButtonMirrorImageRight.setOnLongClickListener(
+        view -> {
+          Toast.makeText(this, R.string.mirror_image_right, Toast.LENGTH_SHORT).show();
+          return true;
+        });
+
     // Image-slot pickers: camera / gallery / share per slot.
     // Stored as fields to ensure the instances (and their registered launcher callbacks)
     // are not garbage-collected while the activity is alive.

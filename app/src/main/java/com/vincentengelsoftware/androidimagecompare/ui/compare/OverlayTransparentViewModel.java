@@ -12,8 +12,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
  *   <li>Owns the {@link #sync} zoom-link flag so it persists across rotation.
  * </ul>
  *
- * <p>Images are loaded directly from their URIs on each (re-)creation of the Activity; no bitmap
- * is retained in memory here.
+ * <p>Images are loaded directly from their URIs on each (re-)creation of the Activity; no bitmap is
+ * retained in memory here.
  */
 public class OverlayTransparentViewModel extends ViewModel {
 

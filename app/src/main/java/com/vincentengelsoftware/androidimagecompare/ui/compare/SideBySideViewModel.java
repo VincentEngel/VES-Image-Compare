@@ -12,8 +12,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
  *   <li>Owns the {@link #getSync()} zoom-link flag so it is never reset on a configuration change.
  * </ul>
  *
- * <p>Images are loaded directly from their URIs on each (re-)creation of the Activity; no bitmap
- * is retained in memory here.
+ * <p>Images are loaded directly from their URIs on each (re-)creation of the Activity; no bitmap is
+ * retained in memory here.
  */
 public class SideBySideViewModel extends ViewModel {
 

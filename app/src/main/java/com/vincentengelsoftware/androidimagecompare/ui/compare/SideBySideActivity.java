@@ -86,16 +86,20 @@ public class SideBySideActivity extends AppCompatActivity {
     String uriStringOne = getIntent().getStringExtra(IntentExtras.IMAGE_URI_ONE);
     String uriStringTwo = getIntent().getStringExtra(IntentExtras.IMAGE_URI_TWO);
 
-    if (uriStringOne == null || uriStringOne.isEmpty()
-        || uriStringTwo == null || uriStringTwo.isEmpty()) {
+    if (uriStringOne == null
+        || uriStringOne.isEmpty()
+        || uriStringTwo == null
+        || uriStringTwo.isEmpty()) {
       return false;
     }
 
     binding.sideBySideImageTopLeft.setImageURI(Uri.parse(uriStringOne));
-    binding.sideBySideImageNameTopLeft.setText(getIntent().getStringExtra(IntentExtras.IMAGE_NAME_ONE));
+    binding.sideBySideImageNameTopLeft.setText(
+        getIntent().getStringExtra(IntentExtras.IMAGE_NAME_ONE));
 
     binding.sideBySideImageBottomRight.setImageURI(Uri.parse(uriStringTwo));
-    binding.sideBySideImageNameBottomRight.setText(getIntent().getStringExtra(IntentExtras.IMAGE_NAME_TWO));
+    binding.sideBySideImageNameBottomRight.setText(
+        getIntent().getStringExtra(IntentExtras.IMAGE_NAME_TWO));
 
     return true;
   }

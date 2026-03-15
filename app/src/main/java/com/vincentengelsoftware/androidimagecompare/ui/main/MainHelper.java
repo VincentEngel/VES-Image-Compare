@@ -34,6 +34,21 @@ public class MainHelper {
         });
   }
 
+  public static void addMirrorImageLogic(
+      ImageButton imageButton,
+      ImageInfoHolder imageInfoHolder,
+      ImageView imageView,
+      AtomicBoolean openingActivity) {
+    imageButton.setOnClickListener(
+        view -> {
+          if (imageInfoHolder.getBitmap() == null || openingActivity.get()) {
+            return;
+          }
+          imageInfoHolder.mirrorPreviewImage();
+          imageInfoHolder.updateImageViewPreviewImage(imageView);
+        });
+  }
+
   public static void addSwapImageLogic(
       ImageButton imageButton,
       ImageView imageViewOne,

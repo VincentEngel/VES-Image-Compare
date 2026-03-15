@@ -73,6 +73,17 @@ public class BitmapTransformer {
     return bitmap;
   }
 
+  public static Bitmap mirrorBitmap(Bitmap bitmap) {
+    try {
+      Matrix matrix = new Matrix();
+      matrix.preScale(-1, 1);
+      return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+    } catch (Exception ignored) {
+    }
+
+    return bitmap;
+  }
+
   public static Bitmap createTransparentBitmap(int width, int height) {
     // Bitmap.createBitmap initialises all pixels to 0 (fully transparent for ARGB_8888);
     return Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);

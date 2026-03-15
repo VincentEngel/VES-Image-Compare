@@ -11,6 +11,8 @@
     <string name="swap_images">Swap images</string>
     <string name="rotate_image_left">Rotate the left image</string>
     <string name="rotate_image_right">Rotate the right image</string>
+    <string name="mirror_image_left">Mirror the left image</string>
+    <string name="mirror_image_right">Mirror the right image</string>
     <string name="image_name">Image Name</string>
     <string name="resize">Resize</string>
     <string name="globally_enable_or_disable_linked_zoom">Enable or disable linked interactions</string>
