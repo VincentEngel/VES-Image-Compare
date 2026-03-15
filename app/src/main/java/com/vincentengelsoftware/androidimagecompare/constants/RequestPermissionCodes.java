@@ -1,5 +1,5 @@
 package com.vincentengelsoftware.androidimagecompare.constants;
 
 public class RequestPermissionCodes {
-    public final static int CAMERA = 1;
+  public static final int CAMERA = 1;
 }

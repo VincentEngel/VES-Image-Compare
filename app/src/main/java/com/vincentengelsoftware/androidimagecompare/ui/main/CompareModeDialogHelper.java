@@ -3,92 +3,85 @@ package com.vincentengelsoftware.androidimagecompare.ui.main;
 import android.app.Activity;
 import android.app.Dialog;
 import android.widget.Button;
-
+import com.vincentengelsoftware.androidimagecompare.databinding.DialogCompareModeSelectionBinding;
 import com.vincentengelsoftware.androidimagecompare.ui.compare.OverlayCutActivity;
 import com.vincentengelsoftware.androidimagecompare.ui.compare.OverlaySlideActivity;
 import com.vincentengelsoftware.androidimagecompare.ui.compare.OverlayTapActivity;
 import com.vincentengelsoftware.androidimagecompare.ui.compare.OverlayTransparentActivity;
 import com.vincentengelsoftware.androidimagecompare.ui.compare.SideBySideActivity;
-import com.vincentengelsoftware.androidimagecompare.databinding.DialogCompareModeSelectionBinding;
 
 /**
  * Builds and shows the compare-mode selection dialog.
- * <p>
- * Use the single static entry point {@link #show(Activity, OnCompareModeSelectedListener)}.
+ *
+ * <p>Use the single static entry point {@link #show(Activity, OnCompareModeSelectedListener)}.
  */
 public class CompareModeDialogHelper {
 
-    /** Callback invoked when the user selects a compare mode from the dialog. */
-    public interface OnCompareModeSelectedListener {
-        /**
-         * Called with the {@link android.app.Activity} class of the chosen compare mode.
-         *
-         * @param targetActivity the compare-mode activity class selected by the user
-         */
-        void onSelected(Class<?> targetActivity);
-    }
-
+  /** Callback invoked when the user selects a compare mode from the dialog. */
+  public interface OnCompareModeSelectedListener {
     /**
-     * Inflates, configures, and shows the compare-mode selection dialog.
+     * Called with the {@link android.app.Activity} class of the chosen compare mode.
      *
-     * @param activity the host activity
-     * @param listener called once the user taps a mode button; the dialog is dismissed first
+     * @param targetActivity the compare-mode activity class selected by the user
      */
-    public static void show(Activity activity, OnCompareModeSelectedListener listener) {
-        DialogCompareModeSelectionBinding dialogBinding =
-                DialogCompareModeSelectionBinding.inflate(activity.getLayoutInflater());
+    void onSelected(Class<?> targetActivity);
+  }
 
-        Dialog dialog = new Dialog(activity);
-        dialog.setContentView(dialogBinding.getRoot());
+  /**
+   * Inflates, configures, and shows the compare-mode selection dialog.
+   *
+   * @param activity the host activity
+   * @param listener called once the user taps a mode button; the dialog is dismissed first
+   */
+  public static void show(Activity activity, OnCompareModeSelectedListener listener) {
+    DialogCompareModeSelectionBinding dialogBinding =
+        DialogCompareModeSelectionBinding.inflate(activity.getLayoutInflater());
 
-        addButton(
-                dialogBinding.selectCompareModeDialogBtnSideBySide,
-                SideBySideActivity.class,
-                dialog,
-                listener
-        );
+    Dialog dialog = new Dialog(activity);
+    dialog.setContentView(dialogBinding.getRoot());
 
-        addButton(
-                dialogBinding.selectCompareModeDialogBtnOverlaySlide,
-                OverlaySlideActivity.class,
-                dialog,
-                listener
-        );
+    addButton(
+        dialogBinding.selectCompareModeDialogBtnSideBySide,
+        SideBySideActivity.class,
+        dialog,
+        listener);
 
-        addButton(
-                dialogBinding.selectCompareModeDialogBtnTransparent,
-                OverlayTransparentActivity.class,
-                dialog,
-                listener
-        );
+    addButton(
+        dialogBinding.selectCompareModeDialogBtnOverlaySlide,
+        OverlaySlideActivity.class,
+        dialog,
+        listener);
 
-        addButton(
-                dialogBinding.selectCompareModeDialogBtnOverlayTap,
-                OverlayTapActivity.class,
-                dialog,
-                listener
-        );
+    addButton(
+        dialogBinding.selectCompareModeDialogBtnTransparent,
+        OverlayTransparentActivity.class,
+        dialog,
+        listener);
 
-        addButton(
-                dialogBinding.selectCompareModeDialogBtnOverlayCut,
-                OverlayCutActivity.class,
-                dialog,
-                listener
-        );
+    addButton(
+        dialogBinding.selectCompareModeDialogBtnOverlayTap,
+        OverlayTapActivity.class,
+        dialog,
+        listener);
 
-        dialog.show();
-    }
+    addButton(
+        dialogBinding.selectCompareModeDialogBtnOverlayCut,
+        OverlayCutActivity.class,
+        dialog,
+        listener);
 
-    private static void addButton(
-            Button button,
-            Class<?> targetActivity,
-            Dialog dialog,
-            OnCompareModeSelectedListener listener
-    ) {
-        button.setOnClickListener(view -> {
-            dialog.dismiss();
-            listener.onSelected(targetActivity);
+    dialog.show();
+  }
+
+  private static void addButton(
+      Button button,
+      Class<?> targetActivity,
+      Dialog dialog,
+      OnCompareModeSelectedListener listener) {
+    button.setOnClickListener(
+        view -> {
+          dialog.dismiss();
+          listener.onSelected(targetActivity);
         });
-    }
+  }
 }
-

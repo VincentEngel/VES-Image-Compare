@@ -6,117 +6,118 @@ import com.vincentengelsoftware.androidimagecompare.data.preferences.UserSetting
 
 /**
  * Pure-Java presenter for {@link UserSettingsActivity}.
- * <p>
- * Contains all business / settings logic with no Android UI dependencies,
- * making it straightforwardly testable with plain JUnit tests.
- * The Activity is responsible only for rendering the returned {@link UserSettingsUiState}
- * and calling the appropriate presenter methods in response to user actions.
+ *
+ * <p>Contains all business / settings logic with no Android UI dependencies, making it
+ * straightforwardly testable with plain JUnit tests. The Activity is responsible only for rendering
+ * the returned {@link UserSettingsUiState} and calling the appropriate presenter methods in
+ * response to user actions.
  */
 public class UserSettingsPresenter {
 
-    static final float MIN_ZOOM_FALLBACK = 0.1F;
-    static final int MAX_ZOOM_FALLBACK = 1;
-    /** Total number of theme options: System, Light, Dark. */
-    private static final int THEME_COUNT = 3;
+  static final float MIN_ZOOM_FALLBACK = 0.1F;
+  static final int MAX_ZOOM_FALLBACK = 1;
 
-    private final UserSettings userSettings;
+  /** Total number of theme options: System, Light, Dark. */
+  private static final int THEME_COUNT = 3;
 
-    public UserSettingsPresenter(UserSettings userSettings) {
-        this.userSettings = userSettings;
+  private final UserSettings userSettings;
+
+  public UserSettingsPresenter(UserSettings userSettings) {
+    this.userSettings = userSettings;
+  }
+
+  /**
+   * Builds a complete {@link UserSettingsUiState} snapshot from the current {@link UserSettings}
+   * values.
+   */
+  public UserSettingsUiState buildUiState() {
+    int mirroringType = userSettings.getMirroringType();
+    int tapHideMode = userSettings.getTapHideMode();
+    int theme = userSettings.getTheme();
+
+    return new UserSettingsUiState(
+        String.valueOf(userSettings.getMaxZoom()),
+        String.valueOf(userSettings.getMinZoom()),
+        userSettings.getResetImageOnLink(),
+        mirroringType == Status.NATURAL_MIRRORING,
+        mirroringType == Status.STRICT_MIRRORING,
+        mirroringType == Status.LOOSE_MIRRORING,
+        mirroringExplanationResId(mirroringType),
+        tapHideMode == Status.TAP_HIDE_MODE_INVISIBLE,
+        tapHideMode == Status.TAP_HIDE_MODE_BACKGROUND,
+        tapHideModeDescriptionResId(tapHideMode),
+        themeButtonTextResId(theme));
+  }
+
+  public SaveZoomResult saveZoom(int rawMaxZoom, float rawMinZoom) {
+    boolean maxZoomClamped = false;
+    boolean minZoomClamped = false;
+
+    int maxZoom = rawMaxZoom;
+    if (maxZoom < 1) {
+      maxZoom = MAX_ZOOM_FALLBACK;
+      maxZoomClamped = true;
     }
 
-    /**
-     * Builds a complete {@link UserSettingsUiState} snapshot from the current
-     * {@link UserSettings} values.
-     */
-    public UserSettingsUiState buildUiState() {
-        int mirroringType = userSettings.getMirroringType();
-        int tapHideMode   = userSettings.getTapHideMode();
-        int theme         = userSettings.getTheme();
-
-        return new UserSettingsUiState(
-                String.valueOf(userSettings.getMaxZoom()),
-                String.valueOf(userSettings.getMinZoom()),
-                userSettings.getResetImageOnLink(),
-                mirroringType == Status.NATURAL_MIRRORING,
-                mirroringType == Status.STRICT_MIRRORING,
-                mirroringType == Status.LOOSE_MIRRORING,
-                mirroringExplanationResId(mirroringType),
-                tapHideMode == Status.TAP_HIDE_MODE_INVISIBLE,
-                tapHideMode == Status.TAP_HIDE_MODE_BACKGROUND,
-                tapHideModeDescriptionResId(tapHideMode),
-                themeButtonTextResId(theme)
-        );
+    float minZoom = rawMinZoom;
+    if (minZoom <= 0F) {
+      minZoom = MIN_ZOOM_FALLBACK;
+      minZoomClamped = true;
     }
 
-    public SaveZoomResult saveZoom(int rawMaxZoom, float rawMinZoom) {
-        boolean maxZoomClamped = false;
-        boolean minZoomClamped = false;
+    userSettings.setMaxZoom(maxZoom);
+    userSettings.setMinZoom(minZoom);
 
-        int maxZoom = rawMaxZoom;
-        if (maxZoom < 1) {
-            maxZoom = MAX_ZOOM_FALLBACK;
-            maxZoomClamped = true;
-        }
+    return new SaveZoomResult(maxZoomClamped || minZoomClamped);
+  }
 
-        float minZoom = rawMinZoom;
-        if (minZoom <= 0F) {
-            minZoom = MIN_ZOOM_FALLBACK;
-            minZoomClamped = true;
-        }
+  /**
+   * Cycles to the next theme (System → Light → Dark → System → …) and returns the new theme value.
+   */
+  public int cycleTheme() {
+    int newTheme = (userSettings.getTheme() + 1) % THEME_COUNT;
+    userSettings.setTheme(newTheme);
+    return newTheme;
+  }
 
-        userSettings.setMaxZoom(maxZoom);
-        userSettings.setMinZoom(minZoom);
+  public void setResetImageOnLinking(boolean checked) {
+    userSettings.setResetImageOnLinking(checked);
+  }
 
-        return new SaveZoomResult(maxZoomClamped || minZoomClamped);
-    }
+  public void setMirroringType(int mirroringType) {
+    userSettings.setMirroringType(mirroringType);
+  }
 
-    /** Cycles to the next theme (System → Light → Dark → System → …) and returns the new theme value. */
-    public int cycleTheme() {
-        int newTheme = (userSettings.getTheme() + 1) % THEME_COUNT;
-        userSettings.setTheme(newTheme);
-        return newTheme;
-    }
+  public void setTapHideMode(int tapHideMode) {
+    userSettings.setTypHideMode(tapHideMode);
+  }
 
-    public void setResetImageOnLinking(boolean checked) {
-        userSettings.setResetImageOnLinking(checked);
-    }
+  public UserSettingsUiState resetAllSettings() {
+    userSettings.resetAllSettings();
+    return buildUiState();
+  }
 
-    public void setMirroringType(int mirroringType) {
-        userSettings.setMirroringType(mirroringType);
-    }
+  public static int mirroringExplanationResId(int mirroringType) {
+    return switch (mirroringType) {
+      case Status.STRICT_MIRRORING -> R.string.settings_mirroring_strict_description;
+      case Status.LOOSE_MIRRORING -> R.string.settings_mirroring_loose_description;
+      default -> R.string.settings_mirroring_natural_description;
+    };
+  }
 
-    public void setTapHideMode(int tapHideMode) {
-        userSettings.setTypHideMode(tapHideMode);
-    }
+  public static int tapHideModeDescriptionResId(int tapHideMode) {
+    return tapHideMode == Status.TAP_HIDE_MODE_BACKGROUND
+        ? R.string.settings_tap_hide_mode_description_background
+        : R.string.settings_tap_hide_mode_description_invisible;
+  }
 
-    public UserSettingsUiState resetAllSettings() {
-        userSettings.resetAllSettings();
-        return buildUiState();
-    }
+  public static int themeButtonTextResId(int theme) {
+    return switch (theme) {
+      case Status.THEME_SYSTEM -> R.string.theme_system;
+      case Status.THEME_LIGHT -> R.string.theme_light;
+      default -> R.string.theme_dark;
+    };
+  }
 
-    public static int mirroringExplanationResId(int mirroringType) {
-        return switch (mirroringType) {
-            case Status.STRICT_MIRRORING -> R.string.settings_mirroring_strict_description;
-            case Status.LOOSE_MIRRORING  -> R.string.settings_mirroring_loose_description;
-            default                      -> R.string.settings_mirroring_natural_description;
-        };
-    }
-
-    public static int tapHideModeDescriptionResId(int tapHideMode) {
-        return tapHideMode == Status.TAP_HIDE_MODE_BACKGROUND
-                ? R.string.settings_tap_hide_mode_description_background
-                : R.string.settings_tap_hide_mode_description_invisible;
-    }
-
-    public static int themeButtonTextResId(int theme) {
-        return switch (theme) {
-            case Status.THEME_SYSTEM -> R.string.theme_system;
-            case Status.THEME_LIGHT  -> R.string.theme_light;
-            default                  -> R.string.theme_dark;
-        };
-    }
-
-    public record SaveZoomResult(boolean hadInvalidInput) {}
+  public record SaveZoomResult(boolean hadInvalidInput) {}
 }
-
