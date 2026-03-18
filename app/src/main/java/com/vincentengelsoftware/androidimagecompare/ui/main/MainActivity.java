@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
       IntentImageHandler.handleIntent(getIntent(), this, sessionState, binding);
     }
 
-    AskForReview.askForReviewWhenNecessary(getApplicationContext(), keyValueStorage);
+    AskForReview.askForReviewWhenNecessary(this, keyValueStorage);
   }
 
   @Override
