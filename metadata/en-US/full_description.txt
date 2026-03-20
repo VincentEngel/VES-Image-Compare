@@ -1,36 +1,45 @@
-Photo Compare App - Uncover the finest details in your images!
+Stop squinting at your gallery. Find the perfect shot with professional-grade comparison tools.
 
-Struggling to decide between similar visuals? Our Visual Comparison App makes it easy to discern even the subtlest differences. Ideal for before-and-after pictures, images, photos, and snapshots!
+Struggling to decide between two nearly identical selfies? Need to track your fitness progress or home renovation? VES Image Compare is the cleanest, fastest way to spot the subtlest differences between two images, right on your device.
 
-Do you have pictures that look similar and you can't decide which one you like better? With this app you can compare two pictures in different ways to find out which one is better. Through the various comparison options, you can quickly and easily determine even minor differences in the pictures.
-
-<b>Perfect for comparing before and after pictures, before and after images and before and after photos.</b>
+We don't track you or clutter your screen with ads. It’s a lightweight tool designed for photographers, designers, and anyone who loves perfection.
 
 
-<b>The App offers the following options to easily compare two similar photos:</b>
+Powerful Comparison Modes
 
-* Take photos with your camera or load them from your gallery
+* Side by Side: The classic view for a quick visual check.
 
-* Share images and photos directly to the app to compare them
+* Overlay Tap: Stack images and toggle between them with a tap—perfect for spotting "ghosting" or movement.
 
-* Rotate the images before comparing them
+* Overlay Slide: Use a draggable slider to reveal the "before" and "after" in real-time.
 
-* Resize the images to fit them to the screen
+* Transparent Overlay: Blend two images to check alignment or color shifts.
 
-* Zoom into each image individually or synchronously
+* Overlay Cut: A precision line-cut tool for detailed side-by-side analysis.
 
-<b>Comparison modes:</b>
 
-* <b>Side by Side:</b> Show the images side by side
+Key Features for Better Results
 
-* <b>Overlay Tap:</b> Place the images behind each other and tap on the screen to quickly switch between them
+* Synchronized Zoom: Zoom into one image, and the other follows perfectly. Ideal for checking focus and sharpness.
 
-* <b>Overlay Slide:</b> Place the images behind each other and adjust the width of the image in the front
+* Privacy First: No internet permission required. Your photos never leave your phone.
 
-* <b>Transparent:</b> Place the images behind each other and adjust the transparency of the image in the front
+* Zero Ads: A clean, distraction-free interface.
 
-* <b>Overlay Cut:</b> Cut the image from one point to another in a straight line
+* Flexible Loading: Pick from your gallery, use the camera, or "Share to App" directly from your photo browser.
 
-<b>NO ADS and Privacy friendly.</b> This App does not need access to the internet. All information is saved locally in your Apps Cache and can be deleted at any time through your Device Settings.
+* Pre-Comparison Tools: Rotate and resize images to ensure a fair comparison.
+
+
+Perfect For:
+
+* Before & After: Fitness transformations, makeup looks, or DIY projects.
+
+* Quality Control: Comparing compressed vs. original images.
+
+* Designers: Checking iterations of logos or UI mockups.
+
+Completely Private & Local. Your data belongs to you. VES Image Compare works entirely offline. All data is stored in your local cache and can be cleared at any time via your device settings.
+
 
 You can contact me using this E-Mail address: vincentengelsoftware@gmail.com

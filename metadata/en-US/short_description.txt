@@ -1,1 +1,1 @@
-Before and after image compare, photo compare and picture compare. Side by side
+Compare photos and images with side-by-side, overlay, slider, transparent, zoom.

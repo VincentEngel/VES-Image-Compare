@@ -1,36 +1,44 @@
-Fotovergleich App. Bildvergleich App. Fotos vergleichen. Bilder vergleichen. Vorher Nachher vergleich App.
+Fotos und Bilder einfach & präzise vergleichen
 
-Hast du Bilder und Fotos, die sich ähnlich sehen und du kannst dich nicht entscheiden, welches dir besser gefällt? Mit dieser App kannst du auf verschiedene Arten zwei Bilder miteinander vergleichen, um herauszufinden, welches das bessere ist. Durch die verschiedenen Vergleichsmöglichkeiten kannst du schnell und einfach auch kleinere Unterschiede in den Bildern feststellen.
+Du kannst dich zwischen zwei ähnlichen Fotos nicht entscheiden? Oder möchtest du deine Fortschritte in einem Vorher-Nachher-Vergleich festhalten?
 
-<b>Perfekt um Vorher Nachher Bilder und Vorher Nachher Fotos zu vergleichen.</b>
+Mit dieser App wird der Bildvergleich zum Kinderspiel. Egal ob du der perfekte Schnappschuss-Jäger bist, deine Fitness-Transformation dokumentierst oder als Profi-Fotograf die Schärfe zweier Bilder prüfen willst, diese App bietet dir die passenden Werkzeuge. Finden Sie kleinste Unterschiede durch synchrones Zoomen und verschiedene innovative Vergleichsmodi.
+Warum diese App?
 
 
-<b>Die App bietet die folgenden Features:</b>
+Professionelle Vergleichsmodi:
 
-* Nehmen Sie Fotos mit Ihrer Kamera auf oder laden Sie sie aus Ihrer Galerie
+* Nebeneinander: Der klassische Fotovergleich für den schnellen Überblick.
 
-* Teilen Sie Bilder und Fotos direkt mit der App, um sie zu vergleichen
+* Tippen: Lege die Bilder übereinander und wechsle durch Tippen blitzschnell, ideal, um kleinste Positionsänderungen zu finden.
 
-* Drehen Sie die Bilder, bevor Sie sie vergleichen
+* Wischen (Slide): Ziehe eine Trennlinie über die Bilder, perfekt für Vorher-Nachher-Vergleiche.
 
-* Passen Sie die Größe der Bilder an den Bildschirm an
+* Transparent: Überlappe beide Bilder und regele die Sichtbarkeit, um Deckungsgleichheit zu prüfen.
 
-* Zoomen Sie in das Bild. In jedem Vergleichsmodi besteht die Möglichkeit in jedes Bild individuel und synchron zu zoomen
+* Schneiden: Schneide Teile des Bilds entlang einer Linie ab, um einen direkten Kanten-Vergleich zu haben.
 
-<b>Vergleichsmodi:</b>
 
-* <b>Nebeneinander:</b> Zeigen Sie die Bilder nebeneinander an
+Die wichtigsten Features auf einen Blick:
 
-* <b>Tippen:</b> Platzieren Sie die Bilder hintereinander und tippen Sie auf den Bildschirm, um schnell zwischen ihnen zu wechseln
+* Synchroner Zoom: Zoome und bewege beide Bilder gleichzeitig, um Details wie Schärfe oder Bildrauschen exakt zu vergleichen.
 
-* <b>Wischen:</b> Platzieren Sie die Bilder hintereinander und passen Sie die Breite des vorderen Bildes an
+* Einfacher Import: Fotos direkt aus der Galerie laden, mit der Kamera aufnehmen oder aus anderen Apps teilen.
 
-* <b>Transparent:</b> Platzieren Sie die Bilder hintereinander und passen Sie die Transparenz des vorderen Bildes an
+* Bildanpassung: Drehe und skaliere deine Bilder vor dem Vergleich für ein perfektes Ergebnis.
 
-* <b>Schneiden:</b> Schneide das vordere Bild von einem Punkt zu einem anderen Punkt in einer geraden Linie ab
+* 100% Werbefrei: Keine Unterbrechungen, volle Konzentration auf deine Bilder.
 
-* <b>Metadaten:</b> (Beta) Vergleich alle Metadaten, wie z.B. Exif Daten, nebeneinander
+* Privatsphäre zuerst: Kein Internetzugriff nötig. Deine Fotos bleiben dort, wo sie hingehören, auf deinem Gerät.
 
-<b>KEINE WERBUNG und Privatsphärefreundlich.</b> Diese App benötigt keinen Zugang zum Internet. Alle Informationen werden lokal im Cache der App gespeichert und können jederzeit in den Geräteeinstellungen gelöscht werden.
+
+Perfekt geeignet für:
+
+* Fotografie: Fokus-Check und Auswahl der besten Aufnahme aus einer Serie.
+
+* Fitness & Gesundheit: Dokumentation deiner Transformation (Vorher-Nachher-Fotos).
+
+* Heimwerken & Design: Vergleiche Renovierungsschritte oder Farbwirkungen.
+
 
 Sie können unter folgender E-Mail mit mir in Kontakt treten: vincentengelsoftware@gmail.com
