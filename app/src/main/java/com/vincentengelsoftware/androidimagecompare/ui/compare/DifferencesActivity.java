@@ -22,8 +22,8 @@ import com.vincentengelsoftware.androidimagecompare.ui.util.FullScreenHelper;
  *
  * <p>All heavy work (I/O, BFS, drawing) is delegated to {@link DifferencesViewModel}, which
  * survives configuration changes. On rotation the ViewModel immediately re-delivers its cached
- * {@link DifferencesViewModel.ProcessingState#DONE} state via LiveData and the Activity applies
- * the already-annotated bitmaps — zero re-processing.
+ * {@link DifferencesViewModel.ProcessingState#DONE} state via LiveData and the Activity applies the
+ * already-annotated bitmaps — zero re-processing.
  *
  * <p>The Activity owns only UI concerns: view binding, spinner visibility, and controls wiring.
  */
@@ -62,9 +62,9 @@ public class DifferencesActivity extends AppCompatActivity {
   // ── Initialisation ─────────────────────────────────────────────────────────
 
   /**
-   * Reads the image URIs, wires the LiveData observer, and — on first launch only — starts
-   * the processing pipeline in the ViewModel. On rotation the observer immediately fires with
-   * the already-cached state; no re-processing occurs.
+   * Reads the image URIs, wires the LiveData observer, and — on first launch only — starts the
+   * processing pipeline in the ViewModel. On rotation the observer immediately fires with the
+   * already-cached state; no re-processing occurs.
    *
    * @return {@code false} if either URI is absent; the caller should finish().
    */
@@ -86,22 +86,26 @@ public class DifferencesActivity extends AppCompatActivity {
 
     // Observe state — lifecycle-aware: old Activity's observer is removed automatically on
     // rotation before the new one is added, so there is never a double-delivery.
-    viewModel.getProcessingState().observe(this, state -> {
-      switch (state) {
-        case PROCESSING -> binding.differencesProgress.setVisibility(View.VISIBLE);
-        case DONE -> {
-          binding.differencesProgress.setVisibility(View.GONE);
-          binding.differencesImageTop.setBitmapImage(viewModel.getAnnotatedOne());
-          binding.differencesImageBottom.setBitmapImage(viewModel.getAnnotatedTwo());
-          initImageViews();
-        }
-        case ERROR -> {
-          binding.differencesProgress.setVisibility(View.GONE);
-          Toast.makeText(this, R.string.error_message_general, Toast.LENGTH_SHORT).show();
-          finish();
-        }
-      }
-    });
+    viewModel
+        .getProcessingState()
+        .observe(
+            this,
+            state -> {
+              switch (state) {
+                case PROCESSING -> binding.differencesProgress.setVisibility(View.VISIBLE);
+                case DONE -> {
+                  binding.differencesProgress.setVisibility(View.GONE);
+                  binding.differencesImageTop.setBitmapImage(viewModel.getAnnotatedOne());
+                  binding.differencesImageBottom.setBitmapImage(viewModel.getAnnotatedTwo());
+                  initImageViews();
+                }
+                case ERROR -> {
+                  binding.differencesProgress.setVisibility(View.GONE);
+                  Toast.makeText(this, R.string.error_message_general, Toast.LENGTH_SHORT).show();
+                  finish();
+                }
+              }
+            });
 
     // Start processing exactly once. isProcessingStarted() returns true on subsequent
     // calls (rotation), so this block is skipped and the observer above handles display.
@@ -110,8 +114,9 @@ public class DifferencesActivity extends AppCompatActivity {
           UserSettings.getInstance(new KeyValueStorage(getApplicationContext()));
 
       // Initialise sync from Intent only on the very first launch.
-      viewModel.getSync().set(
-          getIntent().getBooleanExtra(IntentExtras.SYNC_IMAGE_INTERACTIONS, true));
+      viewModel
+          .getSync()
+          .set(getIntent().getBooleanExtra(IntentExtras.SYNC_IMAGE_INTERACTIONS, true));
 
       viewModel.startProcessing(
           Uri.parse(uriStringOne),
@@ -124,8 +129,8 @@ public class DifferencesActivity extends AppCompatActivity {
   }
 
   /**
-   * Wires synchronised zoom/pan between the two image views and binds the toggle button.
-   * Called after the bitmaps are applied to the views.
+   * Wires synchronised zoom/pan between the two image views and binds the toggle button. Called
+   * after the bitmaps are applied to the views.
    */
   private void initImageViews() {
     SyncZoom.setLinkedTargets(

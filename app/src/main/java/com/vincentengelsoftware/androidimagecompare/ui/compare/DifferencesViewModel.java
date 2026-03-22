@@ -28,13 +28,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Survives configuration changes for {@link DifferencesActivity}.
  *
  * <p>Responsibilities:
+ *
  * <ul>
  *   <li>Owns the single-thread executor so it is never recreated on rotation.
  *   <li>Runs the image-difference pipeline exactly once and caches the two annotated bitmaps.
  *   <li>Exposes {@link #getProcessingState()} so the Activity can react to state transitions
  *       without duplicating logic.
- *   <li>Recycles bitmaps and shuts down the executor in {@link #onCleared()} (called only when
- *       the Activity is truly finishing, not on rotation).
+ *   <li>Recycles bitmaps and shuts down the executor in {@link #onCleared()} (called only when the
+ *       Activity is truly finishing, not on rotation).
  * </ul>
  */
 public class DifferencesViewModel extends AndroidViewModel {
@@ -45,7 +46,9 @@ public class DifferencesViewModel extends AndroidViewModel {
   public enum ProcessingState {
     /** Job has been submitted and is running. */
     PROCESSING,
-    /** Annotated bitmaps are ready; call {@link #getAnnotatedOne()} / {@link #getAnnotatedTwo()}. */
+    /**
+     * Annotated bitmaps are ready; call {@link #getAnnotatedOne()} / {@link #getAnnotatedTwo()}.
+     */
     DONE,
     /** An unrecoverable error occurred. */
     ERROR
@@ -57,6 +60,7 @@ public class DifferencesViewModel extends AndroidViewModel {
 
   /** Written on the executor thread; read on the UI thread only after {@code DONE} is posted. */
   @Nullable private volatile Bitmap annotatedOne;
+
   @Nullable private volatile Bitmap annotatedTwo;
 
   // ── Infrastructure ─────────────────────────────────────────────────────────
@@ -65,14 +69,14 @@ public class DifferencesViewModel extends AndroidViewModel {
   private final AtomicBoolean sync = new AtomicBoolean(true);
 
   /**
-   * Single executor shared across configuration changes.
-   * One thread is sufficient — the two images are processed sequentially.
+   * Single executor shared across configuration changes. One thread is sufficient — the two images
+   * are processed sequentially.
    */
   private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
   /**
-   * Set to {@code true} in {@link #onCleared()} so that a still-running task can discard its
-   * result instead of storing and posting to destroyed observers.
+   * Set to {@code true} in {@link #onCleared()} so that a still-running task can discard its result
+   * instead of storing and posting to destroyed observers.
    */
   private final AtomicBoolean cleared = new AtomicBoolean(false);
 
@@ -116,36 +120,37 @@ public class DifferencesViewModel extends AndroidViewModel {
   }
 
   /**
-   * Submits the image-difference pipeline to the executor.
-   * Safe to call multiple times — subsequent calls are ignored when already started.
+   * Submits the image-difference pipeline to the executor. Safe to call multiple times — subsequent
+   * calls are ignored when already started.
    *
-   * @param uriOne        URI of the first compare image
-   * @param uriTwo        URI of the second compare image
+   * @param uriOne URI of the first compare image
+   * @param uriTwo URI of the second compare image
    * @param maxDifferences maximum number of circles to draw
-   * @param circleColor   resolved {@link Color} int for the annotation circles
+   * @param circleColor resolved {@link Color} int for the annotation circles
    */
   public void startProcessing(Uri uriOne, Uri uriTwo, int maxDifferences, int circleColor) {
     if (isProcessingStarted()) return;
     processingState.setValue(ProcessingState.PROCESSING);
 
-    executor.submit(() -> {
-      try {
-        Bitmap[] result = processImages(uriOne, uriTwo, maxDifferences, circleColor);
-        if (cleared.get()) {
-          // ViewModel was cleared while we were running; discard to avoid leaking bitmaps.
-          result[0].recycle();
-          result[1].recycle();
-        } else {
-          annotatedOne = result[0];
-          annotatedTwo = result[1];
-          processingState.postValue(ProcessingState.DONE);
-        }
-      } catch (Exception e) {
-        if (!cleared.get()) {
-          processingState.postValue(ProcessingState.ERROR);
-        }
-      }
-    });
+    executor.submit(
+        () -> {
+          try {
+            Bitmap[] result = processImages(uriOne, uriTwo, maxDifferences, circleColor);
+            if (cleared.get()) {
+              // ViewModel was cleared while we were running; discard to avoid leaking bitmaps.
+              result[0].recycle();
+              result[1].recycle();
+            } else {
+              annotatedOne = result[0];
+              annotatedTwo = result[1];
+              processingState.postValue(ProcessingState.DONE);
+            }
+          } catch (Exception e) {
+            if (!cleared.get()) {
+              processingState.postValue(ProcessingState.ERROR);
+            }
+          }
+        });
   }
 
   // ── Lifecycle ──────────────────────────────────────────────────────────────
@@ -160,8 +165,8 @@ public class DifferencesViewModel extends AndroidViewModel {
   // ── Processing pipeline ────────────────────────────────────────────────────
 
   /**
-   * Loads both bitmaps, normalises dimensions, detects difference regions, and returns two
-   * mutable annotated copies. Called exclusively on the executor thread.
+   * Loads both bitmaps, normalises dimensions, detects difference regions, and returns two mutable
+   * annotated copies. Called exclusively on the executor thread.
    */
   private Bitmap[] processImages(Uri uriOne, Uri uriTwo, int maxDifferences, int circleColor)
       throws IOException {
@@ -205,7 +210,7 @@ public class DifferencesViewModel extends AndroidViewModel {
     drawCircles(bmp1, topRegions, circleColor);
     drawCircles(bmp2, topRegions, circleColor);
 
-    return new Bitmap[]{bmp1, bmp2};
+    return new Bitmap[] {bmp1, bmp2};
   }
 
   /**
@@ -217,8 +222,7 @@ public class DifferencesViewModel extends AndroidViewModel {
     BitmapFactory.Options opts = new BitmapFactory.Options();
     opts.inMutable = true;
     opts.inPreferredConfig = Bitmap.Config.ARGB_8888;
-    try (InputStream stream =
-        getApplication().getContentResolver().openInputStream(uri)) {
+    try (InputStream stream = getApplication().getContentResolver().openInputStream(uri)) {
       if (stream == null) return null;
       return BitmapFactory.decodeStream(stream, null, opts);
     } catch (IOException e) {
@@ -289,7 +293,7 @@ public class DifferencesViewModel extends AndroidViewModel {
       }
 
       if (size >= MIN_BLOB_SIZE) {
-        blobs.add(new int[]{size, minX, minY, maxX, maxY});
+        blobs.add(new int[] {size, minX, minY, maxX, maxY});
       }
     }
 

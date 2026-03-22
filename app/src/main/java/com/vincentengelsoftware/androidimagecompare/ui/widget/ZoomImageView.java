@@ -120,8 +120,8 @@ public class ZoomImageView extends TouchImageView implements VesImageInterface {
   /**
    * Registers a listener that is called whenever the image is panned or zoomed by the user.
    *
-   * <p>Multiple listeners are supported. Internally they share a single
-   * {@link OnTouchImageViewListener} slot provided by {@link TouchImageView}.
+   * <p>Multiple listeners are supported. Internally they share a single {@link
+   * OnTouchImageViewListener} slot provided by {@link TouchImageView}.
    *
    * @param onZoomChanged callback invoked on every zoom/pan change
    */

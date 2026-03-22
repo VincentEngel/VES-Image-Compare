@@ -78,9 +78,7 @@ public class ImageInfoHolder {
 
     // Step 3: apply rotation.
     return BitmapTransformer.rotateBitmap(
-            mirrored,
-            DEGREES_PER_ROTATION_STEP * transformSettings.getCurrentRotation()
-    );
+        mirrored, DEGREES_PER_ROTATION_STEP * transformSettings.getCurrentRotation());
   }
 
   public void rotatePreviewImage() {
