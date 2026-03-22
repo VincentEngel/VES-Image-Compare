@@ -1,1 +1,2 @@
 * Update App description
+* Add new compare mode: Touch Transparent

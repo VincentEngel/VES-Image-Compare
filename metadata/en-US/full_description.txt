@@ -13,9 +13,11 @@ Powerful Comparison Modes
 
 * Overlay Slide: Use a draggable slider to reveal the "before" and "after" in real-time.
 
-* Transparent Overlay: Blend two images to check alignment or color shifts.
+* Slide Transparent: Blend two images to check alignment or color shifts.
 
 * Overlay Cut: A precision line-cut tool for detailed side-by-side analysis.
+
+* Touch Transparent: Paint away the front image with your finger to reveal the image underneath. Pause the brush to zoom and pan both images together, then resume erasing exactly where you left off.
 
 
 Key Features for Better Results

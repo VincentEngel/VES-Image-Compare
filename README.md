@@ -19,9 +19,11 @@
 
 * <b>Overlay Slide:</b> Place the images behind each other and adjust the width of the image in the front
 
-* <b>Transparent:</b> Place the images behind each other and adjust the transparency of the image in the front
+* <b>Slide Transparent:</b> Place the images behind each other and adjust the transparency of the image in the front
 
 * <b>Overlay Cut:</b> Cut the image from one point to another
+
+* <b>Touch Transparent:</b> Paint away the front image with your finger to reveal the image underneath. Pause the brush to zoom and pan both images together
 
 <b>NO ADS and Privacy friendly.</b> This App does not need access to the internet. All information is saved locally in your Apps Cache and can be deleted at any time through your Device Settings.
 
@@ -51,7 +53,7 @@ This is an App I like to work on in my spare time. It is my first Android Java A
   <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/tenInchScreenshots/4_slide.png">
 </div>
 
-### Transparent
+### Slide Transparent
 <p>Adjust the transparency of the image in the front</p>
 <div>
   <img src="https://github.com/VincentEngel/VES-Image-Compare/blob/master/metadata/en-US/images/tenInchScreenshots/5_transparent.png">
@@ -71,6 +73,9 @@ This is an App I like to work on in my spare time. It is my first Android Java A
 
 ### Overlay Tap
 <p>Tap on the screen to switch the image being shown</p>
+
+### Touch Transparent
+<p>Paint away the front image with your finger to reveal the image underneath. Pause the brush at any time to zoom and pan both images in sync, then resume erasing exactly where you left off</p>
 
 # Contact
 <div>

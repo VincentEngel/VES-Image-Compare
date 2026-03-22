@@ -4,10 +4,11 @@
     <string name="used_libraries">Verwendete Bibliotheken</string>
     <string name="first_image">Erstes Bild</string>
     <string name="second_image">Zweites Bild</string>
-    <string name="compare_mode_transparent">Transparent</string>
+    <string name="compare_mode_transparent">Schiebe Transparent</string>
     <string name="compare_mode_side_by_side">Nebeneinander</string>
     <string name="compare_mode_overlay_slide">Wischen</string>
     <string name="compare_mode_overlay_tap">Tippen</string>
+    <string name="compare_mode_overlay_touch">Touch Transparent</string>
     <string name="color_theme">Design</string>
     <string name="switch_slide_direction">Wechsel Richtung</string>
     <string name="background_image">Hintergrundbild</string>
@@ -88,6 +89,8 @@
     <string name="settings_save_success">Erfolgreich gespeichert</string>
     <string name="settings_reset_success">Einstellungen erfolgreich zurückgesetzt</string>
     <string name="compare_mode_overlay_cut">Schneiden</string>
+    <string name="compare_mode_overlay_touch">Berühren</string>
+    <string name="overlay_touch_erase_toggle">Radierer umschalten</string>
     <string name="reset">Zurücksetzen</string>
     <string name="overlay_cut_keep_image">Bild behalten</string>
     <string name="explanation_keep_changes">Bewahren Sie die vorgenommenen Änderungen auf und verwenden Sie sie als Grundlage für weitere Änderungen.</string>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:keepScreenOn="true"
+    tools:context=".ui.compare.OverlayTouchActivity">
+
+    <!-- Image area: bottom image + touch-reveal view stacked on top -->
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/overlay_touch_extensions"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- Background image (always fully visible) -->
+        <com.vincentengelsoftware.androidimagecompare.ui.widget.ZoomImageView
+            android:id="@+id/overlay_touch_image_view_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:contentDescription="@string/background_image"
+            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+        <!-- Front image with touch-to-reveal erasing -->
+        <com.vincentengelsoftware.androidimagecompare.ui.compare.TouchRevealView
+            android:id="@+id/overlay_touch_reveal_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent" />
+
+    </FrameLayout>
+
+    <!-- Bottom controls bar -->
+    <TableRow
+        android:id="@+id/overlay_touch_extensions"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <!-- Reset button: restores the front image to its original state -->
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="12dp">
+
+            <ImageButton
+                android:id="@+id/overlay_touch_button_reset"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:backgroundTint="@color/button"
+                android:contentDescription="@string/reset"
+                app:srcCompat="@drawable/ic_restart" />
+        </FrameLayout>
+
+        <!-- Brush-size seekbar -->
+        <FrameLayout
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <SeekBar
+                android:id="@+id/overlay_touch_brush_size"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:max="200"
+                android:progress="60" />
+        </FrameLayout>
+
+        <!-- Pause/resume erasing toggle: when inactive touches pass through for zoom/pan -->
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="12dp">
+
+            <ImageButton
+                android:id="@+id/overlay_touch_button_erase_toggle"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:backgroundTint="@color/button"
+                android:contentDescription="@string/overlay_touch_erase_toggle"
+                app:srcCompat="@drawable/pause_circle" />
+        </FrameLayout>
+
+    </TableRow>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

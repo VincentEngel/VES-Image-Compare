@@ -14,9 +14,11 @@ Professionelle Vergleichsmodi:
 
 * Wischen (Slide): Ziehe eine Trennlinie über die Bilder, perfekt für Vorher-Nachher-Vergleiche.
 
-* Transparent: Überlappe beide Bilder und regele die Sichtbarkeit, um Deckungsgleichheit zu prüfen.
+* Schiebe Transparent: Überlappe beide Bilder und regele die Sichtbarkeit, um Deckungsgleichheit zu prüfen.
 
 * Schneiden: Schneide Teile des Bilds entlang einer Linie ab, um einen direkten Kanten-Vergleich zu haben.
+
+* Touch Transparent: Wische das vordere Bild mit dem Finger weg, um das darunterliegende Bild zu enthüllen. Pausiere den Pinsel, um beide Bilder gleichzeitig zu zoomen und zu verschieben, und setze das Wischen danach genau dort fort, wo du aufgehört hast.
 
 
 Die wichtigsten Features auf einen Blick:

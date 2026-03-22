@@ -10,6 +10,7 @@ public class CompareModeNames {
   public static final String OVERLAY_SLIDE = "OVERLAY_SLIDE";
   public static final String OVERLAY_TRANSPARENT = "OVERLAY_TRANSPARENT";
   public static final String OVERLAY_CUT = "OVERLAY_CUT";
+  public static final String OVERLAY_TOUCH = "OVERLAY_TOUCH";
 
   public static String getInternalCompareModeNameFromUserCompareModeName(
       Context context, String compareMode) {
@@ -31,6 +32,10 @@ public class CompareModeNames {
 
     if (compareMode.equals(context.getString(R.string.compare_mode_overlay_cut))) {
       return OVERLAY_CUT;
+    }
+
+    if (compareMode.equals(context.getString(R.string.compare_mode_overlay_touch))) {
+      return OVERLAY_TOUCH;
     }
 
     return DefaultSettings.COMPARE_MODE;
@@ -57,6 +62,10 @@ public class CompareModeNames {
       return OVERLAY_CUT;
     }
 
+    if (OverlayTouchActivity.class.equals(activity)) {
+      return OVERLAY_TOUCH;
+    }
+
     return DefaultSettings.COMPARE_MODE;
   }
 
@@ -67,6 +76,7 @@ public class CompareModeNames {
       case OVERLAY_SLIDE -> context.getString(R.string.compare_mode_overlay_slide);
       case OVERLAY_TRANSPARENT -> context.getString(R.string.compare_mode_transparent);
       case OVERLAY_CUT -> context.getString(R.string.compare_mode_overlay_cut);
+      case OVERLAY_TOUCH -> context.getString(R.string.compare_mode_overlay_touch);
       default ->
           CompareModeNames.getUserCompareModeNameFromInternalName(
               context, DefaultSettings.COMPARE_MODE);

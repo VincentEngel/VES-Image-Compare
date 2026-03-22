@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
+import com.ortiz.touchview.OnTouchImageViewListener;
 import com.ortiz.touchview.TouchImageView;
 import com.vincentengelsoftware.androidimagecompare.constants.Settings;
 import com.vincentengelsoftware.androidimagecompare.ui.animation.ControlsBarHost;
@@ -16,6 +17,8 @@ import com.vincentengelsoftware.androidimagecompare.ui.widget.listeners.FadeList
 import com.vincentengelsoftware.androidimagecompare.ui.widget.listeners.MirrorListener;
 import com.vincentengelsoftware.androidimagecompare.ui.widget.listeners.OnTouchListenerInterface;
 import com.vincentengelsoftware.androidimagecompare.ui.widget.listeners.OnTouchListeners;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -25,6 +28,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class ZoomImageView extends TouchImageView implements VesImageInterface {
 
   private final OnTouchListeners onTouchListeners = new OnTouchListeners();
+
+  /** Listeners notified via {@link OnTouchImageViewListener#onMove()} on every zoom/pan event. */
+  private final List<Runnable> zoomChangeListeners = new ArrayList<>();
 
   public ZoomImageView(Context context, AttributeSet attr) {
     super(context, attr);
@@ -109,5 +115,28 @@ public class ZoomImageView extends TouchImageView implements VesImageInterface {
   @Override
   public Bitmap getCurrentBitmap() {
     return ((BitmapDrawable) super.getDrawable()).getBitmap();
+  }
+
+  /**
+   * Registers a listener that is called whenever the image is panned or zoomed by the user.
+   *
+   * <p>Multiple listeners are supported. Internally they share a single
+   * {@link OnTouchImageViewListener} slot provided by {@link TouchImageView}.
+   *
+   * @param onZoomChanged callback invoked on every zoom/pan change
+   */
+  public void addZoomChangeListener(Runnable onZoomChanged) {
+    if (zoomChangeListeners.isEmpty()) {
+      super.setOnTouchImageViewListener(
+          new OnTouchImageViewListener() {
+            @Override
+            public void onMove() {
+              for (Runnable listener : zoomChangeListeners) {
+                listener.run();
+              }
+            }
+          });
+    }
+    zoomChangeListeners.add(onZoomChanged);
   }
 }
