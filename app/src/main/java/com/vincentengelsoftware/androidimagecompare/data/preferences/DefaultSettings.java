@@ -22,4 +22,7 @@ public class DefaultSettings {
   public static int TAP_HIDE_MODE = Status.TAP_HIDE_MODE_INVISIBLE;
 
   public static boolean SHOW_NAVIGATION_BAR = true;
+
+  public static int DIFFERENCES_MAX_COUNT = 10;
+  public static int DIFFERENCES_CIRCLE_COLOR = Status.DIFF_CIRCLE_COLOR_RED;
 }

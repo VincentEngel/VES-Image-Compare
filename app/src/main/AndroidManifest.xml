@@ -28,6 +28,9 @@
             android:name=".ui.settings.ConfigActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.compare.DifferencesActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.compare.OverlayCutActivity"
             android:exported="false" />
         <activity

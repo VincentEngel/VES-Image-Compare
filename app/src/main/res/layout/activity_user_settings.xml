@@ -327,6 +327,98 @@
                 </FrameLayout>
             </TableRow>
 
+            <TableRow
+                android:layout_marginTop="6dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <FrameLayout
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/settings_differences_max_count"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:text="@string/settings_differences_max_count_default"
+                        android:textSize="12sp" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/settings_max_differences"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/number"
+                            android:layout_gravity="start"
+                            android:inputType="number" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </FrameLayout>
+            </TableRow>
+
+            <TableRow
+                android:background="@drawable/meta_data_table_row_value_border_bottom"
+                android:paddingBottom="6dp"
+                android:layout_marginBottom="6dp"
+                android:layout_marginTop="6dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <FrameLayout
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="6dp"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/settings_differences_circle_color"
+                        android:textSize="16sp" />
+                </FrameLayout>
+
+                <RadioGroup
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent">
+
+                    <RadioButton
+                        android:id="@+id/settings_diff_circle_color_red"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_differences_circle_color_red" />
+
+                    <RadioButton
+                        android:id="@+id/settings_diff_circle_color_blue"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_differences_circle_color_blue" />
+
+                    <RadioButton
+                        android:id="@+id/settings_diff_circle_color_green"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_differences_circle_color_green" />
+                </RadioGroup>
+            </TableRow>
+
             <FrameLayout
                 android:layout_marginVertical="20dp"
                 android:layout_width="match_parent"

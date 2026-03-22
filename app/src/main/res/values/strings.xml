@@ -69,6 +69,7 @@
     <string name="compare_mode_overlay_tap">Overlay Tap</string>
     <string name="compare_mode_overlay_cut">Overlay Cut</string>
     <string name="compare_mode_overlay_touch">Touch Transparent</string>
+    <string name="compare_mode_differences">Differences</string>
     <string name="overlay_touch_erase_toggle">Toggle erasing</string>
 
     <!-- Image resize -->
@@ -103,6 +104,14 @@
     <string name="settings_tap_hide_mode_background">Move to background</string>
     <string name="settings_show_navigation_bar">Show Navigation bar</string>
     <string name="settings_show_navigation_bar_description">Show navigation bar when entering a compare mode</string>
+
+    <!-- Differences settings -->
+    <string name="settings_differences_max_count">Max differences shown</string>
+    <string name="settings_differences_max_count_default">(default: 10)</string>
+    <string name="settings_differences_circle_color">Difference circle colour</string>
+    <string name="settings_differences_circle_color_red">Red</string>
+    <string name="settings_differences_circle_color_blue">Blue</string>
+    <string name="settings_differences_circle_color_green">Green</string>
 
     <!-- Explanation -->
     <string name="explanation">Explanation</string>

@@ -34,6 +34,7 @@ public class UserSettingsPresenter {
     int mirroringType = userSettings.getMirroringType();
     int tapHideMode = userSettings.getTapHideMode();
     int theme = userSettings.getTheme();
+    int circleColor = userSettings.getDifferencesCircleColor();
 
     return new UserSettingsUiState(
         String.valueOf(userSettings.getMaxZoom()),
@@ -47,7 +48,11 @@ public class UserSettingsPresenter {
         tapHideMode == Status.TAP_HIDE_MODE_BACKGROUND,
         tapHideModeDescriptionResId(tapHideMode),
         themeButtonTextResId(theme),
-        userSettings.getShowNavigationBar());
+        userSettings.getShowNavigationBar(),
+        String.valueOf(userSettings.getDifferencesMaxCount()),
+        circleColor == Status.DIFF_CIRCLE_COLOR_RED,
+        circleColor == Status.DIFF_CIRCLE_COLOR_BLUE,
+        circleColor == Status.DIFF_CIRCLE_COLOR_GREEN);
   }
 
   public SaveZoomResult saveZoom(int rawMaxZoom, float rawMinZoom) {
@@ -95,6 +100,24 @@ public class UserSettingsPresenter {
 
   public void setShowNavigationBar(boolean showNavigationBar) {
     userSettings.setShowNavigationBar(showNavigationBar);
+  }
+
+  /**
+   * Validates and persists the max-differences count.
+   *
+   * @return {@code true} if the input was invalid (clamped to 1)
+   */
+  public boolean saveDifferencesMaxCount(int raw) {
+    if (raw < 1) {
+      userSettings.setDifferencesMaxCount(1);
+      return true;
+    }
+    userSettings.setDifferencesMaxCount(raw);
+    return false;
+  }
+
+  public void setDifferencesCircleColor(int color) {
+    userSettings.setDifferencesCircleColor(color);
   }
 
   public UserSettingsUiState resetAllSettings() {

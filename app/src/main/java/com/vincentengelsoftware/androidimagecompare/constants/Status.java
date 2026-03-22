@@ -15,4 +15,8 @@ public class Status {
 
   public static final int TAP_HIDE_MODE_INVISIBLE = 0;
   public static final int TAP_HIDE_MODE_BACKGROUND = 1;
+
+  public static final int DIFF_CIRCLE_COLOR_RED = 0;
+  public static final int DIFF_CIRCLE_COLOR_BLUE = 1;
+  public static final int DIFF_CIRCLE_COLOR_GREEN = 2;
 }

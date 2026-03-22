@@ -43,11 +43,15 @@ public class UserSettingsActivity extends AppCompatActivity {
             float minZoomValue =
                 Float.parseFloat(
                     Objects.requireNonNull(binding.settingsMinZoom.getText()).toString());
+            int maxDifferencesValue =
+                Integer.parseInt(
+                    Objects.requireNonNull(binding.settingsMaxDifferences.getText()).toString());
 
-            UserSettingsPresenter.SaveZoomResult result =
+            UserSettingsPresenter.SaveZoomResult zoomResult =
                 presenter.saveZoom(maxZoomValue, minZoomValue);
+            boolean diffError = presenter.saveDifferencesMaxCount(maxDifferencesValue);
             this.render(presenter.buildUiState());
-            if (result.hadInvalidInput()) {
+            if (zoomResult.hadInvalidInput() || diffError) {
               Toast.makeText(
                       this,
                       getString(R.string.error_msg_invalid_input_number_gt_zero),
@@ -60,7 +64,7 @@ public class UserSettingsActivity extends AppCompatActivity {
           } catch (NumberFormatException e) {
             Toast.makeText(
                     this,
-                    getString(R.string.error_msg_invalid_input_number_gt_zero),
+                    getString(R.string.error_msg_invalid_input_not_a_number),
                     Toast.LENGTH_LONG)
                 .show();
           }
@@ -108,6 +112,15 @@ public class UserSettingsActivity extends AppCompatActivity {
               UserSettingsPresenter.tapHideModeDescriptionResId(Status.TAP_HIDE_MODE_BACKGROUND));
         });
 
+    binding.settingsDiffCircleColorRed.setOnClickListener(
+        view -> presenter.setDifferencesCircleColor(Status.DIFF_CIRCLE_COLOR_RED));
+
+    binding.settingsDiffCircleColorBlue.setOnClickListener(
+        view -> presenter.setDifferencesCircleColor(Status.DIFF_CIRCLE_COLOR_BLUE));
+
+    binding.settingsDiffCircleColorGreen.setOnClickListener(
+        view -> presenter.setDifferencesCircleColor(Status.DIFF_CIRCLE_COLOR_GREEN));
+
     binding.settingsReset.setOnClickListener(
         view -> {
           this.render(presenter.resetAllSettings());
@@ -133,6 +146,11 @@ public class UserSettingsActivity extends AppCompatActivity {
     binding.settingsTapHideModeBtnInvisible.setChecked(state.tapHideModeInvisibleChecked());
     binding.settingsTapHideModeBtnBackground.setChecked(state.tapHideModeBackgroundChecked());
     binding.settingsTapHideModeDescription.setText(state.tapHideModeDescriptionResId());
+
+    binding.settingsMaxDifferences.setText(state.differencesMaxCount());
+    binding.settingsDiffCircleColorRed.setChecked(state.differencesCircleColorRed());
+    binding.settingsDiffCircleColorBlue.setChecked(state.differencesCircleColorBlue());
+    binding.settingsDiffCircleColorGreen.setChecked(state.differencesCircleColorGreen());
   }
 
   private void setUpThemeToggleButton(Button buttonTheme) {

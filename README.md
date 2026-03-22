@@ -25,6 +25,8 @@
 
 * <b>Touch Transparent:</b> Paint away the front image with your finger to reveal the image underneath. Pause the brush to zoom and pan both images together
 
+* <b>Differences:</b> Automatically compare both images pixel-by-pixel and highlight the biggest differences with coloured circles, so you can spot changes at a glance
+
 <b>NO ADS and Privacy friendly.</b> This App does not need access to the internet. All information is saved locally in your Apps Cache and can be deleted at any time through your Device Settings.
 
 
@@ -76,6 +78,9 @@ This is an App I like to work on in my spare time. It is my first Android Java A
 
 ### Touch Transparent
 <p>Paint away the front image with your finger to reveal the image underneath. Pause the brush at any time to zoom and pan both images in sync, then resume erasing exactly where you left off</p>
+
+### Differences
+<p>Automatically compare both images pixel-by-pixel. The app detects the biggest difference regions and draws coloured circles around them on both images, so you can spot changes instantly without manual inspection</p>
 
 # Contact
 <div>

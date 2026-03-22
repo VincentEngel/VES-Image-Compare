@@ -20,6 +20,9 @@ public class UserSettings {
 
   public static final String SHOW_NAVIGATION_BAR = "SHOW_NAVIGATION_BAR";
 
+  public static final String DIFFERENCES_MAX_COUNT = "DIFFERENCES_MAX_COUNT";
+  public static final String DIFFERENCES_CIRCLE_COLOR = "DIFFERENCES_CIRCLE_COLOR";
+
   private final ImageResizeSettings LeftImageResizeSettings;
   private final ImageResizeSettings RightImageResizeSettings;
 
@@ -142,6 +145,24 @@ public class UserSettings {
     this.keyValueStorage.setBoolean(UserSettings.SHOW_NAVIGATION_BAR, showNavigationBar);
   }
 
+  public int getDifferencesMaxCount() {
+    return this.keyValueStorage.getInt(
+        UserSettings.DIFFERENCES_MAX_COUNT, DefaultSettings.DIFFERENCES_MAX_COUNT);
+  }
+
+  public void setDifferencesMaxCount(int maxCount) {
+    this.keyValueStorage.setInt(UserSettings.DIFFERENCES_MAX_COUNT, maxCount);
+  }
+
+  public int getDifferencesCircleColor() {
+    return this.keyValueStorage.getInt(
+        UserSettings.DIFFERENCES_CIRCLE_COLOR, DefaultSettings.DIFFERENCES_CIRCLE_COLOR);
+  }
+
+  public void setDifferencesCircleColor(int color) {
+    this.keyValueStorage.setInt(UserSettings.DIFFERENCES_CIRCLE_COLOR, color);
+  }
+
   public void resetAllSettings() {
     this.keyValueStorage.remove(UserSettings.USER_THEME);
     this.keyValueStorage.remove(UserSettings.SYNC_IMAGE_INTERACTIONS);
@@ -159,6 +180,8 @@ public class UserSettings {
     Settings.MIN_ZOOM = DefaultSettings.MIN_ZOOM;
     this.keyValueStorage.remove(UserSettings.SHOW_NAVIGATION_BAR);
     Settings.SHOW_NAVIGATION_BAR = DefaultSettings.SHOW_NAVIGATION_BAR;
+    this.keyValueStorage.remove(UserSettings.DIFFERENCES_MAX_COUNT);
+    this.keyValueStorage.remove(UserSettings.DIFFERENCES_CIRCLE_COLOR);
 
     this.LeftImageResizeSettings.resetAllSettings();
     this.RightImageResizeSettings.resetAllSettings();

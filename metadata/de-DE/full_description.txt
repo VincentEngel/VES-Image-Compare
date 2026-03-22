@@ -20,6 +20,8 @@ Professionelle Vergleichsmodi:
 
 * Touch Transparent: Wische das vordere Bild mit dem Finger weg, um das darunterliegende Bild zu enthüllen. Pausiere den Pinsel, um beide Bilder gleichzeitig zu zoomen und zu verschieben, und setze das Wischen danach genau dort fort, wo du aufgehört hast.
 
+* Unterschiede: Lass die App die Arbeit erledigen. Beide Bilder werden automatisch Pixel für Pixel verglichen und die größten Unterschiede werden mit farbigen Kreisen markiert – so findest du Abweichungen auf einen Blick, ohne langes Suchen.
+
 
 Die wichtigsten Features auf einen Blick:
 

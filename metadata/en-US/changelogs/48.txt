@@ -1,2 +1,4 @@
 * Update App description
 * Add new compare mode: Touch Transparent
+* Add new compare mode: Differences
+* New user settings: max number of differences shown and circle colour (red, blue, green)

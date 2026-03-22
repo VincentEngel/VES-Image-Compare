@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.widget.Button;
 import com.vincentengelsoftware.androidimagecompare.databinding.DialogCompareModeSelectionBinding;
+import com.vincentengelsoftware.androidimagecompare.ui.compare.DifferencesActivity;
 import com.vincentengelsoftware.androidimagecompare.ui.compare.OverlayCutActivity;
 import com.vincentengelsoftware.androidimagecompare.ui.compare.OverlaySlideActivity;
 import com.vincentengelsoftware.androidimagecompare.ui.compare.OverlayTapActivity;
@@ -74,6 +75,12 @@ public class CompareModeDialogHelper {
     addButton(
         dialogBinding.selectCompareModeDialogBtnOverlayTouch,
         OverlayTouchActivity.class,
+        dialog,
+        listener);
+
+    addButton(
+        dialogBinding.selectCompareModeDialogBtnDifferences,
+        DifferencesActivity.class,
         dialog,
         listener);
 

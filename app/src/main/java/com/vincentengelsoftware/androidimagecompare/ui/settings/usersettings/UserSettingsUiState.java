@@ -15,6 +15,10 @@ package com.vincentengelsoftware.androidimagecompare.ui.settings.usersettings;
  * @param tapHideModeDescriptionResId String resource ID for the current tap-hide mode description
  * @param themeButtonTextResId String resource ID for the theme toggle button label
  * @param fullscreen Whether fullscreen (hidden navigation bar) is enabled in compare modes
+ * @param differencesMaxCount Maximum number of difference circles to show, as a display string
+ * @param differencesCircleColorRed Whether the Red circle colour radio button is selected
+ * @param differencesCircleColorBlue Whether the Blue circle colour radio button is selected
+ * @param differencesCircleColorGreen Whether the Green circle colour radio button is selected
  */
 public record UserSettingsUiState(
     String maxZoom,
@@ -28,4 +32,8 @@ public record UserSettingsUiState(
     boolean tapHideModeBackgroundChecked,
     int tapHideModeDescriptionResId,
     int themeButtonTextResId,
-    boolean fullscreen) {}
+    boolean fullscreen,
+    String differencesMaxCount,
+    boolean differencesCircleColorRed,
+    boolean differencesCircleColorBlue,
+    boolean differencesCircleColorGreen) {}

@@ -19,6 +19,8 @@ Powerful Comparison Modes
 
 * Touch Transparent: Paint away the front image with your finger to reveal the image underneath. Pause the brush to zoom and pan both images together, then resume erasing exactly where you left off.
 
+* Differences: Let the app do the work. Both images are compared pixel-by-pixel and the biggest difference regions are automatically highlighted with coloured circles — no squinting required.
+
 
 Key Features for Better Results
 

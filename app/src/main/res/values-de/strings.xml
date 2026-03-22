@@ -9,6 +9,7 @@
     <string name="compare_mode_overlay_slide">Wischen</string>
     <string name="compare_mode_overlay_tap">Tippen</string>
     <string name="compare_mode_overlay_touch">Touch Transparent</string>
+    <string name="compare_mode_differences">Unterschiede</string>
     <string name="color_theme">Design</string>
     <string name="switch_slide_direction">Wechsel Richtung</string>
     <string name="background_image">Hintergrundbild</string>
@@ -100,4 +101,10 @@
     <string name="settings_tap_hide_mode_background">In den Hintergrund</string>
     <string name="settings_show_navigation_bar">Navigationsleiste einblenden</string>
     <string name="settings_show_navigation_bar_description">Navigationsleiste im Vergleichsmodus einblenden</string>
+    <string name="settings_differences_max_count">Max. angezeigte Unterschiede</string>
+    <string name="settings_differences_max_count_default">(Standard: 10)</string>
+    <string name="settings_differences_circle_color">Farbe des Unterschiedskreises</string>
+    <string name="settings_differences_circle_color_red">Rot</string>
+    <string name="settings_differences_circle_color_blue">Blau</string>
+    <string name="settings_differences_circle_color_green">Grün</string>
 </resources>
