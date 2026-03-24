@@ -18,6 +18,7 @@ public class AskForReview {
 
   public static void askForReviewWhenNecessary(Context context, KeyValueStorage keyValueStorage) {
     if (isItTimeToAsk(context, keyValueStorage)) {
+      keyValueStorage.setBoolean(KeyValueStorage.ASKED_FOR_REVIEW, true);
       askForReview(context);
     }
   }

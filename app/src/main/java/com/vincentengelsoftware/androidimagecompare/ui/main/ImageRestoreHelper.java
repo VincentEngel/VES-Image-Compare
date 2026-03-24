@@ -34,7 +34,10 @@ public class ImageRestoreHelper {
    * preview views for every holder that has a bitmap.
    */
   public static void restoreImages(
-      AppCompatActivity activity, ImageSessionState sessionState, ActivityMainBinding binding) {
+      AppCompatActivity activity,
+      ImageSessionState sessionState,
+      ActivityMainBinding binding,
+      Dimensions dimensions) {
     ContentResolver cr = activity.getContentResolver();
     File cacheDir = activity.getCacheDir();
 
@@ -48,7 +51,8 @@ public class ImageRestoreHelper {
           first,
           cacheDir,
           CacheManager.COMPARE_FILE_ONE,
-          activity);
+          activity,
+          dimensions);
     }
     if (second.getBitmap() == null && sessionState.getRightImageUri() != null) {
       loadHolder(
@@ -57,7 +61,8 @@ public class ImageRestoreHelper {
           second,
           cacheDir,
           CacheManager.COMPARE_FILE_TWO,
-          activity);
+          activity,
+          dimensions);
     }
 
     updateViews(sessionState, binding);
@@ -89,15 +94,16 @@ public class ImageRestoreHelper {
       ImageInfoHolder holder,
       File cacheDir,
       String compareFileName,
-      AppCompatActivity activity) {
+      AppCompatActivity activity,
+      Dimensions dimensions) {
     try {
       Bitmap bitmap = BitmapExtractor.fromUri(cr, uri);
       if (bitmap == null) return;
 
       holder.updateFromBitmap(
           bitmap,
-          Dimensions.maxSide,
-          Dimensions.maxSideForPreview,
+          dimensions.maxSide(),
+          dimensions.maxSideForPreview(),
           stripSlotPrefix(MainHelper.getImageName(activity, uri)));
 
       if (new File(cacheDir, compareFileName).exists()) {
@@ -112,11 +118,11 @@ public class ImageRestoreHelper {
     ImageInfoHolder second = sessionState.getSecondImageInfoHolder();
 
     if (first.getBitmap() != null) {
-      first.updateImageViewPreviewImage(binding.homeImageLeft);
+      binding.homeImageLeft.setImageBitmap(first.getBitmapSmall());
       binding.mainTextViewNameImageLeft.setText(first.getImageName());
     }
     if (second.getBitmap() != null) {
-      second.updateImageViewPreviewImage(binding.homeImageRight);
+      binding.homeImageRight.setImageBitmap(second.getBitmapSmall());
       binding.mainTextViewNameImageRight.setText(second.getImageName());
     }
   }

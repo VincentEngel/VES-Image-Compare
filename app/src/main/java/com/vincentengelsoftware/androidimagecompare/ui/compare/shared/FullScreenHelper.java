@@ -1,4 +1,4 @@
-package com.vincentengelsoftware.androidimagecompare.ui.util;
+package com.vincentengelsoftware.androidimagecompare.ui.compare.shared;
 
 import android.view.Window;
 import android.view.WindowManager;

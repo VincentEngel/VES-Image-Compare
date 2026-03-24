@@ -1,4 +1,4 @@
-package com.vincentengelsoftware.androidimagecompare.ui.compare;
+package com.vincentengelsoftware.androidimagecompare.ui.compare.overlayTransparent;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,27 +11,29 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.constants.IntentExtras;
-import com.vincentengelsoftware.androidimagecompare.constants.Settings;
+import com.vincentengelsoftware.androidimagecompare.constants.Status;
 import com.vincentengelsoftware.androidimagecompare.databinding.ActivityOverlayTransparentBinding;
 import com.vincentengelsoftware.androidimagecompare.ui.animation.ControlsBarHost;
 import com.vincentengelsoftware.androidimagecompare.ui.animation.ControlsBarManager;
-import com.vincentengelsoftware.androidimagecompare.ui.util.FullScreenHelper;
+import com.vincentengelsoftware.androidimagecompare.ui.compare.shared.FullScreenHelper;
+import com.vincentengelsoftware.androidimagecompare.ui.compare.shared.SyncZoom;
+import com.vincentengelsoftware.androidimagecompare.ui.compare.shared.TransparentHelper;
 
 /**
  * Displays two images stacked on top of each other and lets the user adjust the opacity of the
  * front image via a seekbar, or hide it entirely with a toggle button.
  *
  * <p>The Activity owns only UI concerns: view binding, seekbar/button wiring, and controls-bar
- * animation. The sync-zoom flag is delegated to {@link OverlayTransparentViewModel}. Images are
- * loaded directly from their content URIs on every (re-)creation – no bitmap is retained in memory
- * across configuration changes.
+ * animation. The sync-zoom flag is delegated to {@link ViewModel}. Images are loaded directly from
+ * their content URIs on every (re-)creation – no bitmap is retained in memory across configuration
+ * changes.
  */
 public class OverlayTransparentActivity extends AppCompatActivity implements ControlsBarHost {
 
   private static final String KEY_SYNC_IMAGE_INTERACTIONS = "key_sync_image_interactions";
 
   /** Survives configuration changes; owns the sync flag. */
-  private OverlayTransparentViewModel viewModel;
+  private ViewModel viewModel;
 
   /** Encapsulates the animated show/hide behaviour of the controls bar. */
   private ControlsBarManager controlsBarManager;
@@ -44,7 +46,7 @@ public class OverlayTransparentActivity extends AppCompatActivity implements Con
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    viewModel = new ViewModelProvider(this).get(OverlayTransparentViewModel.class);
+    viewModel = new ViewModelProvider(this).get(ViewModel.class);
 
     // On first launch read the sync state from the Intent;
     // on process-death restoration read it from savedInstanceState.
@@ -57,10 +59,16 @@ public class OverlayTransparentActivity extends AppCompatActivity implements Con
           .set(getIntent().getBooleanExtra(IntentExtras.SYNC_IMAGE_INTERACTIONS, true));
     }
 
-    FullScreenHelper.apply(getWindow(), Settings.SHOW_NAVIGATION_BAR);
+    FullScreenHelper.apply(
+        getWindow(), getIntent().getBooleanExtra(IntentExtras.SHOW_NAVIGATION_BAR, true));
 
     binding = ActivityOverlayTransparentBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());
+
+    int maxZoom = IntentExtras.getMaxZoom(getIntent());
+    float minZoom = IntentExtras.getMinZoom(getIntent());
+    binding.overlayTransparentImageViewBase.initZoomLimits(maxZoom, minZoom);
+    binding.overlayTransparentImageViewTransparent.initZoomLimits(maxZoom, minZoom);
 
     controlsBarManager =
         new ControlsBarManager(binding.overlayTransparentExtensions, getResources());
@@ -171,14 +179,16 @@ public class OverlayTransparentActivity extends AppCompatActivity implements Con
     SyncZoom.setLinkedTargets(
         binding.overlayTransparentImageViewBase,
         binding.overlayTransparentImageViewTransparent,
-        viewModel.getSync());
+        viewModel.getSync(),
+        getIntent().getIntExtra(IntentExtras.MIRRORING_TYPE, Status.NATURAL_MIRRORING));
     SyncZoom.setUpSyncZoomToggleButton(
         binding.overlayTransparentImageViewBase,
         binding.overlayTransparentImageViewTransparent,
         binding.overlayTransparentButtonZoomSync,
         ContextCompat.getDrawable(this, R.drawable.ic_link),
         ContextCompat.getDrawable(this, R.drawable.ic_link_off),
-        viewModel.getSync());
+        viewModel.getSync(),
+        getIntent().getBooleanExtra(IntentExtras.RESET_IMAGE_ON_LINKING, true));
 
     if (getIntent().getBooleanExtra(IntentExtras.HAS_HARDWARE_KEY, false)) {
       ViewGroup.MarginLayoutParams layoutParams =

@@ -1,4 +1,4 @@
-package com.vincentengelsoftware.androidimagecompare.ui.compare;
+package com.vincentengelsoftware.androidimagecompare.ui.compare.overlaySlide;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -11,11 +11,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.constants.IntentExtras;
-import com.vincentengelsoftware.androidimagecompare.constants.Settings;
+import com.vincentengelsoftware.androidimagecompare.constants.Status;
 import com.vincentengelsoftware.androidimagecompare.databinding.ActivityOverlaySlideBinding;
 import com.vincentengelsoftware.androidimagecompare.ui.animation.ControlsBarHost;
 import com.vincentengelsoftware.androidimagecompare.ui.animation.ControlsBarManager;
-import com.vincentengelsoftware.androidimagecompare.ui.util.FullScreenHelper;
+import com.vincentengelsoftware.androidimagecompare.ui.compare.shared.FullScreenHelper;
+import com.vincentengelsoftware.androidimagecompare.ui.compare.shared.SlideHelper;
+import com.vincentengelsoftware.androidimagecompare.ui.compare.shared.SyncZoom;
 import com.vincentengelsoftware.androidimagecompare.ui.widget.ImageScaleCenter;
 import com.vincentengelsoftware.androidimagecompare.util.BitmapExtractor;
 
@@ -25,7 +27,7 @@ import com.vincentengelsoftware.androidimagecompare.util.BitmapExtractor;
  *
  * <p>The Activity owns only UI concerns: view binding, seekbar feedback, controls bar animation,
  * and hide/show button state. All bitmap processing and persistent state are delegated to {@link
- * OverlaySlideViewModel}.
+ * ViewModel}.
  */
 public class OverlaySlideActivity extends AppCompatActivity implements ControlsBarHost {
 
@@ -33,7 +35,7 @@ public class OverlaySlideActivity extends AppCompatActivity implements ControlsB
   private static final String KEY_LEFT_TO_RIGHT = "key_left_to_right";
 
   /** Survives configuration changes; owns bitmaps, crop logic, and direction state. */
-  private OverlaySlideViewModel viewModel;
+  private ViewModel viewModel;
 
   /** Encapsulates the animated show/hide behaviour of the controls bar. */
   private ControlsBarManager controlsBarManager;
@@ -46,7 +48,7 @@ public class OverlaySlideActivity extends AppCompatActivity implements ControlsB
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    viewModel = new ViewModelProvider(this).get(OverlaySlideViewModel.class);
+    viewModel = new ViewModelProvider(this).get(ViewModel.class);
 
     // Restore sync and direction from savedInstanceState on rotation,
     // or seed from the launching Intent on first launch.
@@ -59,10 +61,16 @@ public class OverlaySlideActivity extends AppCompatActivity implements ControlsB
           .set(getIntent().getBooleanExtra(IntentExtras.SYNC_IMAGE_INTERACTIONS, true));
     }
 
-    FullScreenHelper.apply(getWindow(), Settings.SHOW_NAVIGATION_BAR);
+    FullScreenHelper.apply(
+        getWindow(), getIntent().getBooleanExtra(IntentExtras.SHOW_NAVIGATION_BAR, true));
 
     binding = ActivityOverlaySlideBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());
+
+    int maxZoom = IntentExtras.getMaxZoom(getIntent());
+    float minZoom = IntentExtras.getMinZoom(getIntent());
+    binding.overlaySlideImageViewBase.initZoomLimits(maxZoom, minZoom);
+    binding.overlaySlideImageViewFront.initZoomLimits(maxZoom, minZoom);
 
     controlsBarManager = new ControlsBarManager(binding.overlaySlideExtensions, getResources());
 
@@ -178,7 +186,10 @@ public class OverlaySlideActivity extends AppCompatActivity implements ControlsB
     }
 
     SyncZoom.setLinkedTargets(
-        binding.overlaySlideImageViewFront, binding.overlaySlideImageViewBase, viewModel.getSync());
+        binding.overlaySlideImageViewFront,
+        binding.overlaySlideImageViewBase,
+        viewModel.getSync(),
+        getIntent().getIntExtra(IntentExtras.MIRRORING_TYPE, Status.NATURAL_MIRRORING));
 
     return true;
   }

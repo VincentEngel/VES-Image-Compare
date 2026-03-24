@@ -39,6 +39,7 @@ public class ImageSlotPickerHelper {
   private final ImageSessionState sessionState;
   private final ActivityMainBinding binding;
   private final AtomicBoolean openingActivity;
+  private final Dimensions dimensions;
 
   private final ActivityResultLauncher<String> galleryPicker;
   private final ActivityResultLauncher<Uri> cameraPicker;
@@ -50,12 +51,14 @@ public class ImageSlotPickerHelper {
       String slot,
       ImageSessionState sessionState,
       ActivityMainBinding binding,
-      AtomicBoolean openingActivity) {
+      AtomicBoolean openingActivity,
+      Dimensions dimensions) {
     this.activity = activity;
     this.slot = slot;
     this.sessionState = sessionState;
     this.binding = binding;
     this.openingActivity = openingActivity;
+    this.dimensions = dimensions;
 
     // Launchers must be registered before the activity starts.
     this.galleryPicker =
@@ -76,8 +79,10 @@ public class ImageSlotPickerHelper {
       String slot,
       ImageSessionState sessionState,
       ActivityMainBinding binding,
-      AtomicBoolean openingActivity) {
-    return new ImageSlotPickerHelper(activity, slot, sessionState, binding, openingActivity);
+      AtomicBoolean openingActivity,
+      Dimensions dimensions) {
+    return new ImageSlotPickerHelper(
+        activity, slot, sessionState, binding, openingActivity, dimensions);
   }
 
   // ── public API ────────────────────────────────────────────────────────────
@@ -177,8 +182,8 @@ public class ImageSlotPickerHelper {
                 getHolder()
                     .updateFromBitmap(
                         bitmap,
-                        Dimensions.maxSide,
-                        Dimensions.maxSideForPreview,
+                        dimensions.maxSide(),
+                        dimensions.maxSideForPreview(),
                         MainHelper.getImageName(activity, destUri));
               } catch (Exception ignored) {
               }
@@ -213,10 +218,11 @@ public class ImageSlotPickerHelper {
     ImageInfoHolder holder = getHolder();
     holder.updateFromBitmap(
         BitmapExtractor.fromUri(activity.getContentResolver(), localUri),
-        Dimensions.maxSide,
-        Dimensions.maxSideForPreview,
+        dimensions.maxSide(),
+        dimensions.maxSideForPreview(),
         originalName);
-    holder.updateImageViewPreviewImage(isLeft() ? binding.homeImageLeft : binding.homeImageRight);
+    (isLeft() ? binding.homeImageLeft : binding.homeImageRight)
+        .setImageBitmap(holder.getBitmapSmall());
     (isLeft() ? binding.mainTextViewNameImageLeft : binding.mainTextViewNameImageRight)
         .setText(holder.getImageName());
   }

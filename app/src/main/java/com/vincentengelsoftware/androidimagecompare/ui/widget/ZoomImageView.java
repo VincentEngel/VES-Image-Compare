@@ -11,7 +11,6 @@ import android.view.MotionEvent;
 import android.view.ViewGroup;
 import com.ortiz.touchview.OnTouchImageViewListener;
 import com.ortiz.touchview.TouchImageView;
-import com.vincentengelsoftware.androidimagecompare.constants.Settings;
 import com.vincentengelsoftware.androidimagecompare.ui.animation.ControlsBarHost;
 import com.vincentengelsoftware.androidimagecompare.ui.widget.listeners.FadeListener;
 import com.vincentengelsoftware.androidimagecompare.ui.widget.listeners.MirrorListener;
@@ -40,16 +39,10 @@ public class ZoomImageView extends TouchImageView implements VesImageInterface {
     super(context);
   }
 
-  /**
-   * Applies zoom limits from {@link Settings} after the view is attached to its window. {@link
-   * Settings#init} is guaranteed to have been called by this point (it runs during Application
-   * start-up, before any Activity window is created).
-   */
   @Override
-  protected void onAttachedToWindow() {
-    super.onAttachedToWindow();
-    super.setMaxZoom(Settings.MAX_ZOOM);
-    super.setMinZoom(Settings.MIN_ZOOM);
+  public void initZoomLimits(int maxZoom, float minZoom) {
+    super.setMaxZoom(maxZoom);
+    super.setMinZoom(minZoom);
   }
 
   @SuppressLint("ClickableViewAccessibility")
@@ -60,8 +53,8 @@ public class ZoomImageView extends TouchImageView implements VesImageInterface {
 
   @Override
   public void addMirrorListener(
-      VesImageInterface target, AtomicBoolean sync, AtomicBoolean disabled) {
-    this.addOnTouchEventListener(new MirrorListener(this, target, sync, disabled));
+      VesImageInterface target, AtomicBoolean sync, AtomicBoolean disabled, int mirroringType) {
+    this.addOnTouchEventListener(new MirrorListener(this, target, sync, disabled, mirroringType));
   }
 
   @Override

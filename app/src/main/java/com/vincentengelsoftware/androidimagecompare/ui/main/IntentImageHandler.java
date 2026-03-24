@@ -34,17 +34,18 @@ public class IntentImageHandler {
       Intent intent,
       AppCompatActivity activity,
       ImageSessionState sessionState,
-      ActivityMainBinding binding) {
+      ActivityMainBinding binding,
+      Dimensions dimensions) {
     try {
       String action = intent.getAction();
       String type = intent.getType();
 
       if (Intent.ACTION_SEND.equals(action) && type != null && type.startsWith("image/")) {
-        handleSendImage(intent, activity, sessionState, binding);
+        handleSendImage(intent, activity, sessionState, binding, dimensions);
       } else if (Intent.ACTION_SEND_MULTIPLE.equals(action)
           && type != null
           && type.startsWith("image/")) {
-        handleSendMultipleImages(intent, activity, sessionState, binding);
+        handleSendMultipleImages(intent, activity, sessionState, binding, dimensions);
       }
     } catch (Exception ignored) {
     }
@@ -56,7 +57,8 @@ public class IntentImageHandler {
       Intent intent,
       AppCompatActivity activity,
       ImageSessionState sessionState,
-      ActivityMainBinding binding) {
+      ActivityMainBinding binding,
+      Dimensions dimensions) {
     Uri imageUri = UriExtractor.getOutOfParcelableExtra(intent);
     if (imageUri == null) return;
 
@@ -77,8 +79,8 @@ public class IntentImageHandler {
     MainHelper.updateImageFromIntent(
         holder,
         BitmapExtractor.fromUri(activity.getContentResolver(), localUri),
-        Dimensions.maxSide,
-        Dimensions.maxSideForPreview,
+        dimensions.maxSide(),
+        dimensions.maxSideForPreview(),
         originalName,
         isFirst ? binding.homeImageLeft : binding.homeImageRight,
         isFirst ? binding.mainTextViewNameImageLeft : binding.mainTextViewNameImageRight);
@@ -88,7 +90,8 @@ public class IntentImageHandler {
       Intent intent,
       AppCompatActivity activity,
       ImageSessionState sessionState,
-      ActivityMainBinding binding) {
+      ActivityMainBinding binding,
+      Dimensions dimensions) {
     ArrayList<Uri> imageUris = UriExtractor.getOutOfParcelableArrayListExtra(intent);
     if (imageUris == null) return;
 
@@ -102,8 +105,8 @@ public class IntentImageHandler {
         MainHelper.updateImageFromIntent(
             sessionState.getFirstImageInfoHolder(),
             BitmapExtractor.fromUri(activity.getContentResolver(), localUri),
-            Dimensions.maxSide,
-            Dimensions.maxSideForPreview,
+            dimensions.maxSide(),
+            dimensions.maxSideForPreview(),
             name,
             binding.homeImageLeft,
             binding.mainTextViewNameImageLeft);
@@ -120,8 +123,8 @@ public class IntentImageHandler {
         MainHelper.updateImageFromIntent(
             sessionState.getSecondImageInfoHolder(),
             BitmapExtractor.fromUri(activity.getContentResolver(), localUri),
-            Dimensions.maxSide,
-            Dimensions.maxSideForPreview,
+            dimensions.maxSide(),
+            dimensions.maxSideForPreview(),
             name,
             binding.homeImageRight,
             binding.mainTextViewNameImageRight);

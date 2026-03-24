@@ -39,6 +39,21 @@ android {
         warningsAsErrors = true
         disable          'AndroidGradlePluginVersion', 'ObsoleteSdkInt'
         lintConfig       = file('lint.xml')
+        /*
+         * Do not run lint on test sources (androidTest / unit test).
+         *
+         * Rationale:
+         *  - The spotlessApply task writes formatted files to build/spotless-clean/spotlessJava/
+         *    as a staging area.  The Kotlin/PSI virtual file system used by lint indexes that
+         *    directory.  When lint then walks the superclass chain of the first androidTest class
+         *    it encounters (CacheManagerTest), SingleJavaFileRootsIndex tries to read every
+         *    registered .java virtual file — including ones in the staging dir that spotless has
+         *    already moved back to source and deleted — which causes the FileNotFoundException /
+         *    "unexpected failure during lint analysis" crash.
+         *  - Keeping warningsAsErrors = true while checking test code with production lint rules
+         *    would generate many false positives (reflection usage, accessing private fields, etc.).
+         */
+        checkTestSources = false
     }
 
     testOptions {
@@ -72,11 +87,16 @@ dependencies {
     implementation libs.lifecycle.viewmodel
 
     testImplementation libs.junit.junit
+
+    androidTestImplementation libs.junit
+    androidTestImplementation libs.test.runner
+    androidTestImplementation libs.test.rules
+    androidTestImplementation libs.espresso.core
 }
 
 spotless {
     java {
-        target 'src/main/java/**/*.java', 'src/test/java/**/*.java'
+        target 'src/main/java/**/*.java', 'src/test/java/**/*.java', 'src/androidTest/java/**/*.java'
         googleJavaFormat('1.35.0')
         removeUnusedImports()
         trimTrailingWhitespace()

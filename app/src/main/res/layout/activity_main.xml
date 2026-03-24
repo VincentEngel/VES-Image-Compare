@@ -277,7 +277,8 @@
                 <Button
                     android:id="@+id/main_button_last_compare"
                     android:layout_weight="1"
-                    android:autoSizeTextType="uniform"
+                    android:autoSizeTextType="none"
+                    android:ellipsize="end"
                     android:maxLines="1"
                     android:layout_gravity="center"
                     style="@style/buttonStyles"

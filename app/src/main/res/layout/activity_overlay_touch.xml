@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:keepScreenOn="true"
-    tools:context=".ui.compare.OverlayTouchActivity">
+    tools:context=".ui.compare.overlayTouch.OverlayTouchActivity">
 
     <!-- Image area: bottom image + touch-reveal view stacked on top -->
     <FrameLayout
@@ -26,7 +26,7 @@
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
         <!-- Front image with touch-to-reveal erasing -->
-        <com.vincentengelsoftware.androidimagecompare.ui.compare.TouchRevealView
+        <com.vincentengelsoftware.androidimagecompare.ui.widget.TouchRevealView
             android:id="@+id/overlay_touch_reveal_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

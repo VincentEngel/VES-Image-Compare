@@ -1,4 +1,4 @@
-package com.vincentengelsoftware.androidimagecompare.ui.compare;
+package com.vincentengelsoftware.androidimagecompare.ui.widget;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -37,8 +37,8 @@ import androidx.annotation.Nullable;
  *   <li>The original image is stored as a compact JPEG byte array instead of a full decoded {@link
  *       Bitmap}, cutting the "original" footprint from ~4 MB to ~200 KB for a typical 1 MP image.
  *       {@link #reset()} decodes it on demand.
- *   <li>The bitmap is owned by {@link OverlayTouchViewModel}; this view never recycles it. The
- *       ViewModel recycles it in {@code onCleared()} when the Activity is permanently finished.
+ *   <li>The bitmap is owned by {@link com.vincentengelsoftware.androidimagecompare.ui.compare.overlayTouch.ViewModel}; this view never recycles it. The ViewModel
+ *       recycles it in {@code onCleared()} when the Activity is permanently finished.
  *   <li>References are released in {@link #onDetachedFromWindow()}.
  * </ul>
  *
@@ -124,7 +124,7 @@ public class TouchRevealView extends View {
    * <p>All heavy work (JPEG compression, bitmap copy) must be done by the caller on a worker thread
    * before calling this method.
    *
-   * <p>Bitmap ownership stays with {@link OverlayTouchViewModel}; this view never recycles the
+   * <p>Bitmap ownership stays with {@link com.vincentengelsoftware.androidimagecompare.ui.compare.overlayTouch.OverlayTouchActivity}; this view never recycles the
    * bitmap.
    *
    * @param jpegBytes compact JPEG snapshot of the original image, used by {@link #reset()}

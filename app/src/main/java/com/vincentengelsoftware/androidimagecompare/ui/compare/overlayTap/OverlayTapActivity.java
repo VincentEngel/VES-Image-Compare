@@ -1,4 +1,4 @@
-package com.vincentengelsoftware.androidimagecompare.ui.compare;
+package com.vincentengelsoftware.androidimagecompare.ui.compare.overlayTap;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,25 +10,26 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.constants.IntentExtras;
-import com.vincentengelsoftware.androidimagecompare.constants.Settings;
 import com.vincentengelsoftware.androidimagecompare.constants.Status;
 import com.vincentengelsoftware.androidimagecompare.databinding.ActivityOverlayTapBinding;
-import com.vincentengelsoftware.androidimagecompare.ui.util.FullScreenHelper;
+import com.vincentengelsoftware.androidimagecompare.ui.compare.shared.FullScreenHelper;
+import com.vincentengelsoftware.androidimagecompare.ui.compare.shared.SyncZoom;
+import com.vincentengelsoftware.androidimagecompare.ui.compare.shared.TapHelper;
 
 /**
  * Displays two images stacked on top of each other; tapping the front image swaps which image is on
  * top.
  *
  * <p>The Activity owns only UI concerns: view binding and controls wiring. The sync state is
- * delegated to {@link OverlayTapViewModel}. Images are loaded directly from their content URIs on
- * every (re-)creation – no bitmap is retained in memory across configuration changes.
+ * delegated to {@link ViewModel}. Images are loaded directly from their content URIs on every
+ * (re-)creation – no bitmap is retained in memory across configuration changes.
  */
 public class OverlayTapActivity extends AppCompatActivity {
 
   private static final String KEY_SYNC_IMAGE_INTERACTIONS = "key_sync_image_interactions";
 
   /** Survives configuration changes; owns the sync flag. */
-  private OverlayTapViewModel viewModel;
+  private ViewModel viewModel;
 
   private ActivityOverlayTapBinding binding;
 
@@ -38,7 +39,7 @@ public class OverlayTapActivity extends AppCompatActivity {
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    viewModel = new ViewModelProvider(this).get(OverlayTapViewModel.class);
+    viewModel = new ViewModelProvider(this).get(ViewModel.class);
 
     // On first launch, read the sync state from the Intent;
     // on configuration changes, restore it from savedInstanceState.
@@ -50,18 +51,27 @@ public class OverlayTapActivity extends AppCompatActivity {
           .set(getIntent().getBooleanExtra(IntentExtras.SYNC_IMAGE_INTERACTIONS, true));
     }
 
-    FullScreenHelper.apply(getWindow(), Settings.SHOW_NAVIGATION_BAR);
+    FullScreenHelper.apply(
+        getWindow(), getIntent().getBooleanExtra(IntentExtras.SHOW_NAVIGATION_BAR, true));
 
     binding = ActivityOverlayTapBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());
 
-    if (!initImages()) {
+    int maxZoom = IntentExtras.getMaxZoom(getIntent());
+    float minZoom = IntentExtras.getMinZoom(getIntent());
+    binding.overlayTapImageViewOne.initZoomLimits(maxZoom, minZoom);
+    binding.overlayTapImageViewTwo.initZoomLimits(maxZoom, minZoom);
+
+    int tapHideMode =
+        getIntent().getIntExtra(IntentExtras.TAP_HIDE_MODE, Status.TAP_HIDE_MODE_INVISIBLE);
+
+    if (!initImages(tapHideMode)) {
       // URIs are missing or invalid; nothing to show.
       finish();
       return;
     }
 
-    initControls();
+    initControls(tapHideMode);
   }
 
   @Override
@@ -83,7 +93,7 @@ public class OverlayTapActivity extends AppCompatActivity {
    *
    * @return {@code false} if either URI string is absent; the caller should finish().
    */
-  private boolean initImages() {
+  private boolean initImages(int tapHideMode) {
     String uriStringOne = getIntent().getStringExtra(IntentExtras.IMAGE_URI_ONE);
     String uriStringTwo = getIntent().getStringExtra(IntentExtras.IMAGE_URI_TWO);
 
@@ -97,7 +107,7 @@ public class OverlayTapActivity extends AppCompatActivity {
     binding.overlayTapImageViewOne.setImageURI(Uri.parse(uriStringOne));
     binding.overlayTapImageViewTwo.setImageURI(Uri.parse(uriStringTwo));
 
-    if (Settings.TAP_HIDE_MODE == Status.TAP_HIDE_MODE_INVISIBLE) {
+    if (tapHideMode == Status.TAP_HIDE_MODE_INVISIBLE) {
       binding.overlayTapImageViewTwo.setVisibility(View.INVISIBLE);
     } else {
       binding.overlayTapImageViewOne.bringToFront();
@@ -106,7 +116,7 @@ public class OverlayTapActivity extends AppCompatActivity {
     return true;
   }
 
-  private void initControls() {
+  private void initControls(int tapHideMode) {
     String nameOne = getIntent().getStringExtra(IntentExtras.IMAGE_NAME_ONE);
     String nameTwo = getIntent().getStringExtra(IntentExtras.IMAGE_NAME_TWO);
 
@@ -117,14 +127,16 @@ public class OverlayTapActivity extends AppCompatActivity {
         binding.overlayTapImageViewTwo,
         viewModel.getSync(),
         binding.overlayTapImageName,
-        nameTwo);
+        nameTwo,
+        tapHideMode);
 
     TapHelper.setOnClickListener(
         binding.overlayTapImageViewTwo,
         binding.overlayTapImageViewOne,
         viewModel.getSync(),
         binding.overlayTapImageName,
-        nameOne);
+        nameOne,
+        tapHideMode);
 
     SyncZoom.setUpSyncZoomToggleButton(
         binding.overlayTapImageViewOne,
@@ -132,7 +144,8 @@ public class OverlayTapActivity extends AppCompatActivity {
         binding.overlayTapButtonZoomSync,
         ContextCompat.getDrawable(this, R.drawable.ic_link),
         ContextCompat.getDrawable(this, R.drawable.ic_link_off),
-        viewModel.getSync());
+        viewModel.getSync(),
+        getIntent().getBooleanExtra(IntentExtras.RESET_IMAGE_ON_LINKING, true));
 
     binding.overlayTapExtensions.setVisibility(
         getIntent().getBooleanExtra(IntentExtras.SHOW_EXTENSIONS, false)

@@ -8,6 +8,12 @@ import com.vincentengelsoftware.androidimagecompare.ui.settings.usersettings.Use
 import com.vincentengelsoftware.androidimagecompare.ui.util.PlayStoreNavigator;
 import com.vincentengelsoftware.androidimagecompare.util.AppVersion;
 
+/**
+ * Entry-point screen for the app's configuration section.
+ *
+ * <p>Displays the current version and provides navigation to the Privacy Policy, About, and User
+ * Settings screens, as well as the Play Store listing.
+ */
 public class ConfigActivity extends AppCompatActivity {
 
   private ActivityConfigsBinding binding;
@@ -19,7 +25,13 @@ public class ConfigActivity extends AppCompatActivity {
     binding = ActivityConfigsBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());
 
-    this.setUpViews();
+    setUpViews();
+  }
+
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
+    binding = null;
   }
 
   private void setUpViews() {

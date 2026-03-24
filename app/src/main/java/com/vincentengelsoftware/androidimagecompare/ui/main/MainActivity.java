@@ -3,28 +3,29 @@ package com.vincentengelsoftware.androidimagecompare.ui.main;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.ViewConfiguration;
+import android.text.TextPaint;
+import android.util.TypedValue;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import com.vincentengelsoftware.androidimagecompare.R;
-import com.vincentengelsoftware.androidimagecompare.constants.Settings;
-import com.vincentengelsoftware.androidimagecompare.constants.Status;
 import com.vincentengelsoftware.androidimagecompare.data.cache.CacheManager;
 import com.vincentengelsoftware.androidimagecompare.data.preferences.ApplyUserSettings;
 import com.vincentengelsoftware.androidimagecompare.data.preferences.KeyValueStorage;
 import com.vincentengelsoftware.androidimagecompare.data.preferences.UserSettings;
 import com.vincentengelsoftware.androidimagecompare.databinding.ActivityMainBinding;
 import com.vincentengelsoftware.androidimagecompare.domain.model.ImageSessionState;
-import com.vincentengelsoftware.androidimagecompare.ui.compare.CompareModeNames;
-import com.vincentengelsoftware.androidimagecompare.ui.compare.OverlayCutActivity;
-import com.vincentengelsoftware.androidimagecompare.ui.compare.OverlaySlideActivity;
-import com.vincentengelsoftware.androidimagecompare.ui.compare.OverlayTapActivity;
-import com.vincentengelsoftware.androidimagecompare.ui.compare.OverlayTransparentActivity;
-import com.vincentengelsoftware.androidimagecompare.ui.compare.SideBySideActivity;
+import com.vincentengelsoftware.androidimagecompare.ui.compare.differences.DifferencesActivity;
+import com.vincentengelsoftware.androidimagecompare.ui.compare.overlayCut.OverlayCutActivity;
+import com.vincentengelsoftware.androidimagecompare.ui.compare.overlaySlide.OverlaySlideActivity;
+import com.vincentengelsoftware.androidimagecompare.ui.compare.overlayTap.OverlayTapActivity;
+import com.vincentengelsoftware.androidimagecompare.ui.compare.overlayTouch.OverlayTouchActivity;
+import com.vincentengelsoftware.androidimagecompare.ui.compare.overlayTransparent.OverlayTransparentActivity;
+import com.vincentengelsoftware.androidimagecompare.ui.compare.sideBySide.SideBySideActivity;
 import com.vincentengelsoftware.androidimagecompare.ui.settings.ConfigActivity;
 import com.vincentengelsoftware.androidimagecompare.ui.util.AskForReview;
+import com.vincentengelsoftware.androidimagecompare.util.Dimensions;
 import com.vincentengelsoftware.androidimagecompare.util.DimensionsInitializer;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -61,10 +62,13 @@ public class MainActivity extends AppCompatActivity {
   // Core dependencies
   private ImageSessionState sessionState;
   private UserSettings userSettings;
+  private Dimensions dimensions;
 
   // Delegates created in onCreate / setUpActions
   private CompareActivityLauncher compareLauncher;
+  // DO NOT INLINE in order to avoid gc
   private ImageSlotPickerHelper leftPicker;
+  // DO NOT INLINE in order to avoid gc
   private ImageSlotPickerHelper rightPicker;
 
   protected ActivityMainBinding binding;
@@ -77,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
     this.userSettings = UserSettings.getInstance(keyValueStorage);
     this.sessionState = ImageSessionState.getInstance();
 
-    Settings.init(userSettings);
     ApplyUserSettings.apply(
         this.userSettings,
         sessionState.getFirstImageInfoHolder(),
@@ -88,8 +91,7 @@ public class MainActivity extends AppCompatActivity {
     binding = ActivityMainBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());
 
-    Status.HAS_HARDWARE_KEY = ViewConfiguration.get(this).hasPermanentMenuKey();
-    DimensionsInitializer.init(this);
+    dimensions = DimensionsInitializer.init(this);
 
     compareLauncher = new CompareActivityLauncher(openingActivity);
 
@@ -99,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
       boolean firstWasNull = sessionState.getFirstImageInfoHolder().getBitmap() == null;
       boolean secondWasNull = sessionState.getSecondImageInfoHolder().getBitmap() == null;
 
-      ImageRestoreHelper.restoreImages(this, sessionState, binding);
+      ImageRestoreHelper.restoreImages(this, sessionState, binding, dimensions);
 
       // Re-apply saved rotation / dirty-tracking state for holders that had to reload
       // their bitmap from disk (process was killed while the app was in the background).
@@ -107,13 +109,15 @@ public class MainActivity extends AppCompatActivity {
         sessionState
             .getFirstImageInfoHolder()
             .restoreTransformState(savedInstanceState.getBundle("leftImageTransformState"));
-        sessionState.getFirstImageInfoHolder().updateImageViewPreviewImage(binding.homeImageLeft);
+        binding.homeImageLeft.setImageBitmap(
+            sessionState.getFirstImageInfoHolder().getBitmapSmall());
       }
       if (secondWasNull && sessionState.getSecondImageInfoHolder().getBitmap() != null) {
         sessionState
             .getSecondImageInfoHolder()
             .restoreTransformState(savedInstanceState.getBundle("rightImageTransformState"));
-        sessionState.getSecondImageInfoHolder().updateImageViewPreviewImage(binding.homeImageRight);
+        binding.homeImageRight.setImageBitmap(
+            sessionState.getSecondImageInfoHolder().getBitmapSmall());
       }
     }
 
@@ -123,9 +127,8 @@ public class MainActivity extends AppCompatActivity {
     // inside ImageSlotPickerHelper is still within the allowed window.
     setUpActions();
 
-    if (Status.handleIntentOnCreate) {
-      Status.handleIntentOnCreate = false;
-      IntentImageHandler.handleIntent(getIntent(), this, sessionState, binding);
+    if (savedInstanceState == null) {
+      IntentImageHandler.handleIntent(getIntent(), this, sessionState, binding, dimensions);
     }
 
     AskForReview.askForReviewWhenNecessary(this, keyValueStorage);
@@ -168,11 +171,10 @@ public class MainActivity extends AppCompatActivity {
   protected void onResume() {
     super.onResume();
 
-    Settings.init(userSettings);
-
     binding.mainButtonLastCompare.setText(
         CompareModeNames.getUserCompareModeNameFromInternalName(
             getBaseContext(), this.userSettings.getLastCompareMode()));
+    fitLastCompareButtonText();
 
     binding.homeButtonExtensions.setImageDrawable(
         ContextCompat.getDrawable(
@@ -192,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
   @Override
   public void onNewIntent(Intent intent) {
     super.onNewIntent(intent);
-    IntentImageHandler.handleIntent(intent, this, sessionState, binding);
+    IntentImageHandler.handleIntent(intent, this, sessionState, binding, dimensions);
   }
 
   // ── action wiring ─────────────────────────────────────────────────────────
@@ -217,6 +219,7 @@ public class MainActivity extends AppCompatActivity {
     binding.mainButtonLastCompare.setText(
         CompareModeNames.getUserCompareModeNameFromInternalName(
             getBaseContext(), this.userSettings.getLastCompareMode()));
+    fitLastCompareButtonText();
     binding.mainButtonLastCompare.setOnClickListener(
         view -> {
           String mode =
@@ -229,6 +232,8 @@ public class MainActivity extends AppCompatActivity {
             case CompareModeNames.OVERLAY_TRANSPARENT ->
                 openCompareActivity(OverlayTransparentActivity.class);
             case CompareModeNames.OVERLAY_CUT -> openCompareActivity(OverlayCutActivity.class);
+            case CompareModeNames.OVERLAY_TOUCH -> openCompareActivity(OverlayTouchActivity.class);
+            case CompareModeNames.DIFFERENCES -> openCompareActivity(DifferencesActivity.class);
             default -> openCompareDialog();
           }
         });
@@ -343,15 +348,44 @@ public class MainActivity extends AppCompatActivity {
     // Image-slot pickers: camera / gallery / share per slot.
     // Stored as fields to ensure the instances (and their registered launcher callbacks)
     // are not garbage-collected while the activity is alive.
-    leftPicker = ImageSlotPickerHelper.create(this, "left", sessionState, binding, openingActivity);
+    leftPicker =
+        ImageSlotPickerHelper.create(
+            this, "left", sessionState, binding, openingActivity, dimensions);
     rightPicker =
-        ImageSlotPickerHelper.create(this, "right", sessionState, binding, openingActivity);
+        ImageSlotPickerHelper.create(
+            this, "right", sessionState, binding, openingActivity, dimensions);
 
     binding.homeImageLeft.setOnClickListener(leftPicker.buildClickListener());
     binding.homeImageRight.setOnClickListener(rightPicker.buildClickListener());
   }
 
   // ── private helpers ───────────────────────────────────────────────────────
+
+  /**
+   * Resets the last-compare button to its full configured text size, then — after the next layout
+   * pass when the button's actual width is known — reduces it by 20 % if the label doesn't fit. The
+   * XML {@code ellipsize="end"} attribute handles the rare case where even 80 % is too large.
+   */
+  private void fitLastCompareButtonText() {
+    float fullSizePx = getResources().getDimension(R.dimen.activity_button_text_size);
+    binding.mainButtonLastCompare.setTextSize(TypedValue.COMPLEX_UNIT_PX, fullSizePx);
+    binding.mainButtonLastCompare.post(
+        () -> {
+          int available =
+              binding.mainButtonLastCompare.getWidth()
+                  - binding.mainButtonLastCompare.getPaddingLeft()
+                  - binding.mainButtonLastCompare.getPaddingRight();
+          if (available <= 0) return;
+
+          TextPaint tp = new TextPaint(binding.mainButtonLastCompare.getPaint());
+          tp.setTextSize(fullSizePx);
+          CharSequence text = binding.mainButtonLastCompare.getText();
+          if (tp.measureText(text, 0, text.length()) > available) {
+            binding.mainButtonLastCompare.setTextSize(
+                TypedValue.COMPLEX_UNIT_PX, fullSizePx * 0.8f);
+          }
+        });
+  }
 
   private void openCompareDialog() {
     CompareModeDialogHelper.show(this, this::openCompareActivity);

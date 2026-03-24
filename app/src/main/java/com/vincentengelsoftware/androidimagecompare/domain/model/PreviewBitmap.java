@@ -3,8 +3,16 @@ package com.vincentengelsoftware.androidimagecompare.domain.model;
 import android.graphics.Bitmap;
 import com.vincentengelsoftware.androidimagecompare.util.BitmapTransformer;
 
+/**
+ * Caches the scaled-down preview bitmap for a single image slot and applies rotation and mirroring
+ * on demand.
+ *
+ * <p>The unmodified scaled base is kept separate from the transformed result so that rotation and
+ * mirror can always be recomputed from a clean base, regardless of the order in which the user
+ * applied them. Call {@link #invalidate()} whenever the source bitmap changes so the base is
+ * re-derived on the next {@link #getSmall} call.
+ */
 public class PreviewBitmap {
-  private static final int DEGREES_PER_ROTATION_STEP = 90;
 
   /**
    * Unmodified scaled-down version of the source bitmap.
@@ -41,9 +49,7 @@ public class PreviewBitmap {
               source.maxSideSizeForSmallBitmap(),
               source.maxSideSizeForSmallBitmap());
     }
-    Bitmap rotated =
-        BitmapTransformer.rotateBitmap(
-            scaledBase, DEGREES_PER_ROTATION_STEP * settings.getCurrentRotation());
+    Bitmap rotated = BitmapTransformer.rotateBitmap(scaledBase, settings.getRotationDegrees());
     return settings.isMirrored() ? BitmapTransformer.mirrorBitmap(rotated) : rotated;
   }
 }

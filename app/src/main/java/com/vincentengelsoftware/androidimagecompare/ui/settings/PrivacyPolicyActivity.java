@@ -7,6 +7,7 @@ import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.databinding.ActivityPrivacyPolicyBinding;
 import com.vincentengelsoftware.androidimagecompare.ui.util.TextViewModifier;
 
+/** Displays the app's privacy policy as formatted HTML and makes any embedded links clickable. */
 public class PrivacyPolicyActivity extends AppCompatActivity {
 
   @Override

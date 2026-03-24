@@ -1,4 +1,4 @@
-package com.vincentengelsoftware.androidimagecompare.ui.compare;
+package com.vincentengelsoftware.androidimagecompare.ui.compare.overlayCut;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -10,10 +10,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.constants.IntentExtras;
-import com.vincentengelsoftware.androidimagecompare.constants.Settings;
+import com.vincentengelsoftware.androidimagecompare.constants.Status;
 import com.vincentengelsoftware.androidimagecompare.databinding.ActivityOverlayCutBinding;
+import com.vincentengelsoftware.androidimagecompare.domain.model.CropEdge;
 import com.vincentengelsoftware.androidimagecompare.domain.model.CropParams;
-import com.vincentengelsoftware.androidimagecompare.ui.util.FullScreenHelper;
+import com.vincentengelsoftware.androidimagecompare.ui.compare.shared.FullScreenHelper;
+import com.vincentengelsoftware.androidimagecompare.ui.compare.shared.SyncZoom;
 import com.vincentengelsoftware.androidimagecompare.util.BitmapExtractor;
 import com.vincentengelsoftware.androidimagecompare.util.Calculator;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -23,14 +25,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * dragging any two of the four edge seekbars.
  *
  * <p>The Activity owns only UI concerns: view binding, seekbar colour feedback, and sync-zoom
- * setup. All bitmap processing and state management is delegated to {@link OverlayCutViewModel}.
+ * setup. All bitmap processing and state management is delegated to {@link ViewModel}.
  */
 public class OverlayCutActivity extends AppCompatActivity {
 
   private static final String KEY_SYNC_IMAGE_INTERACTIONS = "key_sync_image_interactions";
 
   /** Survives configuration changes; owns bitmaps, crop logic and seekbar state. */
-  private OverlayCutViewModel viewModel;
+  private ViewModel viewModel;
 
   /** Whether both image views pan/zoom together. */
   private final AtomicBoolean sync = new AtomicBoolean(true);
@@ -55,7 +57,7 @@ public class OverlayCutActivity extends AppCompatActivity {
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    viewModel = new ViewModelProvider(this).get(OverlayCutViewModel.class);
+    viewModel = new ViewModelProvider(this).get(ViewModel.class);
 
     if (savedInstanceState != null) {
       sync.set(savedInstanceState.getBoolean(KEY_SYNC_IMAGE_INTERACTIONS, true));
@@ -63,10 +65,16 @@ public class OverlayCutActivity extends AppCompatActivity {
       sync.set(getIntent().getBooleanExtra(IntentExtras.SYNC_IMAGE_INTERACTIONS, true));
     }
 
-    FullScreenHelper.apply(getWindow(), Settings.SHOW_NAVIGATION_BAR);
+    FullScreenHelper.apply(
+        getWindow(), getIntent().getBooleanExtra(IntentExtras.SHOW_NAVIGATION_BAR, true));
 
     binding = ActivityOverlayCutBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());
+
+    int maxZoom = IntentExtras.getMaxZoom(getIntent());
+    float minZoom = IntentExtras.getMinZoom(getIntent());
+    binding.fullSlideImageViewBase.initZoomLimits(maxZoom, minZoom);
+    binding.fullSlideImageViewFront.initZoomLimits(maxZoom, minZoom);
 
     if (!initImages()) {
       // URIs are invalid or images could not be decoded; nothing to show.
@@ -188,7 +196,10 @@ public class OverlayCutActivity extends AppCompatActivity {
     binding.fullSlideImageViewFront.setBitmapImage(viewModel.bitmapAdjusted);
 
     SyncZoom.setLinkedTargets(
-        binding.fullSlideImageViewFront, binding.fullSlideImageViewBase, sync);
+        binding.fullSlideImageViewFront,
+        binding.fullSlideImageViewBase,
+        sync,
+        getIntent().getIntExtra(IntentExtras.MIRRORING_TYPE, Status.NATURAL_MIRRORING));
   }
 
   private void initExtensionButtons() {
@@ -262,14 +273,18 @@ public class OverlayCutActivity extends AppCompatActivity {
   @NonNull
   private CropParams buildCropParams() {
     return new CropParams(
-        seekBarTracker.isActive(binding.fullSliderSeekbarTop),
-        binding.fullSliderSeekbarTop.getProgress(),
-        seekBarTracker.isActive(binding.fullSliderSeekbarLeft),
-        binding.fullSliderSeekbarLeft.getProgress(),
-        seekBarTracker.isActive(binding.fullSliderSeekbarRight),
-        binding.fullSliderSeekbarRight.getProgress(),
-        seekBarTracker.isActive(binding.fullSliderSeekbarBottom),
-        binding.fullSliderSeekbarBottom.getProgress());
+        new CropEdge(
+            seekBarTracker.isActive(binding.fullSliderSeekbarTop),
+            binding.fullSliderSeekbarTop.getProgress()),
+        new CropEdge(
+            seekBarTracker.isActive(binding.fullSliderSeekbarLeft),
+            binding.fullSliderSeekbarLeft.getProgress()),
+        new CropEdge(
+            seekBarTracker.isActive(binding.fullSliderSeekbarRight),
+            binding.fullSliderSeekbarRight.getProgress()),
+        new CropEdge(
+            seekBarTracker.isActive(binding.fullSliderSeekbarBottom),
+            binding.fullSliderSeekbarBottom.getProgress()));
   }
 
   // ── SeekBarTracker ─────────────────────────────────────────────────────────

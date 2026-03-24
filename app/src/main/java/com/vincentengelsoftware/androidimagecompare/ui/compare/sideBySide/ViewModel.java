@@ -1,6 +1,5 @@
-package com.vincentengelsoftware.androidimagecompare.ui.compare;
+package com.vincentengelsoftware.androidimagecompare.ui.compare.sideBySide;
 
-import androidx.lifecycle.ViewModel;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -15,7 +14,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * <p>Images are loaded directly from their URIs on each (re-)creation of the Activity; no bitmap is
  * retained in memory here.
  */
-public class SideBySideViewModel extends ViewModel {
+public class ViewModel extends androidx.lifecycle.ViewModel {
 
   // ── Shared sync state ──────────────────────────────────────────────────────
 

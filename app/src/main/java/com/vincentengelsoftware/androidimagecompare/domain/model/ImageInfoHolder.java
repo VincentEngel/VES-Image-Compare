@@ -2,18 +2,27 @@ package com.vincentengelsoftware.androidimagecompare.domain.model;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.widget.ImageView;
 import com.vincentengelsoftware.androidimagecompare.constants.ImageResizeOptions;
 import com.vincentengelsoftware.androidimagecompare.util.BitmapTransformer;
 import java.io.File;
 
 public class ImageInfoHolder {
+  // ── Bundle keys ───────────────────────────────────────────────────────────
+
+  private static final String KEY_ROTATION = "rotation";
+  private static final String KEY_MIRRORED = "mirrored";
+  private static final String KEY_SAVED_ROTATION = "savedRotation";
+  private static final String KEY_SAVED_RESIZE_OPTION = "savedResizeOption";
+  private static final String KEY_SAVED_CUSTOM_HEIGHT = "savedCustomHeight";
+  private static final String KEY_SAVED_CUSTOM_WIDTH = "savedCustomWidth";
+  private static final String KEY_SAVED_MIRRORED = "savedMirrored";
+
+  // ── State ─────────────────────────────────────────────────────────────────
+
   private ImageSource source = new ImageSource(null, null, 0, 0);
   private final BitmapTransformSettings transformSettings = new BitmapTransformSettings();
   private final PreviewBitmap previewBitmap = new PreviewBitmap();
   private AdjustImageState stateSaver = AdjustImageState.empty();
-
-  private static final int DEGREES_PER_ROTATION_STEP = 90;
 
   /**
    * Initialises this holder from a freshly decoded bitmap. All cached bitmaps and the save-state
@@ -29,12 +38,7 @@ public class ImageInfoHolder {
 
   /** Copies all state from another holder into this one (used by the swap-images feature). */
   public void updateFromImageHolder(ImageInfoHolder other) {
-    source =
-        new ImageSource(
-            other.source.bitmap(),
-            other.source.imageName(),
-            other.source.maxSideSize(),
-            other.source.maxSideSizeForSmallBitmap());
+    source = other.source;
     transformSettings.copyFrom(other.transformSettings);
     previewBitmap.updateFrom(other.previewBitmap);
     stateSaver = AdjustImageState.empty();
@@ -77,8 +81,7 @@ public class ImageInfoHolder {
         transformSettings.isMirrored() ? BitmapTransformer.mirrorBitmap(scaled) : scaled;
 
     // Step 3: apply rotation.
-    return BitmapTransformer.rotateBitmap(
-        mirrored, DEGREES_PER_ROTATION_STEP * transformSettings.getCurrentRotation());
+    return BitmapTransformer.rotateBitmap(mirrored, transformSettings.getRotationDegrees());
   }
 
   public void rotatePreviewImage() {
@@ -87,10 +90,6 @@ public class ImageInfoHolder {
 
   public void mirrorPreviewImage() {
     transformSettings.toggleMirror();
-  }
-
-  public void updateImageViewPreviewImage(ImageView imageView) {
-    imageView.setImageBitmap(getBitmapSmall());
   }
 
   /**
@@ -128,13 +127,13 @@ public class ImageInfoHolder {
    */
   public Bundle saveTransformState() {
     Bundle b = new Bundle();
-    b.putInt("rotation", transformSettings.getCurrentRotation());
-    b.putBoolean("mirrored", transformSettings.isMirrored());
-    b.putInt("savedRotation", stateSaver.savedRotation());
-    b.putInt("savedResizeOption", stateSaver.savedResizeOption());
-    b.putInt("savedCustomHeight", stateSaver.savedCustomHeight());
-    b.putInt("savedCustomWidth", stateSaver.savedCustomWidth());
-    b.putInt("savedMirrored", stateSaver.savedMirrored());
+    b.putInt(KEY_ROTATION, transformSettings.getCurrentRotation());
+    b.putBoolean(KEY_MIRRORED, transformSettings.isMirrored());
+    b.putInt(KEY_SAVED_ROTATION, stateSaver.savedRotation());
+    b.putInt(KEY_SAVED_RESIZE_OPTION, stateSaver.savedResizeOption());
+    b.putInt(KEY_SAVED_CUSTOM_HEIGHT, stateSaver.savedCustomHeight());
+    b.putInt(KEY_SAVED_CUSTOM_WIDTH, stateSaver.savedCustomWidth());
+    b.putBoolean(KEY_SAVED_MIRRORED, stateSaver.savedMirrored());
     return b;
   }
 
@@ -156,7 +155,7 @@ public class ImageInfoHolder {
   public void restoreTransformState(Bundle b) {
     if (b == null || source.bitmap() == null) return;
 
-    int rotation = b.getInt("rotation", 0);
+    int rotation = b.getInt(KEY_ROTATION, 0);
 
     // Re-apply each 90° step to keep the rotation counter in sync.
     // PreviewBitmap will recompute the preview from scaledBase when next requested.
@@ -165,18 +164,18 @@ public class ImageInfoHolder {
     }
 
     // Re-apply mirroring flag if it was active before recreation.
-    if (b.getBoolean("mirrored", false)) {
+    if (b.getBoolean(KEY_MIRRORED, false)) {
       transformSettings.toggleMirror();
     }
 
     // Restore the dirty-tracking snapshot so compare files are not needlessly re-encoded.
     stateSaver =
         new AdjustImageState(
-            b.getInt("savedRotation", -1),
-            b.getInt("savedResizeOption", -1),
-            b.getInt("savedCustomHeight", -1),
-            b.getInt("savedCustomWidth", -1),
-            b.getInt("savedMirrored", -1));
+            b.getInt(KEY_SAVED_ROTATION, -1),
+            b.getInt(KEY_SAVED_RESIZE_OPTION, -1),
+            b.getInt(KEY_SAVED_CUSTOM_HEIGHT, -1),
+            b.getInt(KEY_SAVED_CUSTOM_WIDTH, -1),
+            b.getBoolean(KEY_SAVED_MIRRORED, false));
   }
 
   /**

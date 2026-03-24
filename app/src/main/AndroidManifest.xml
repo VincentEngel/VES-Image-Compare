@@ -28,25 +28,25 @@
             android:name=".ui.settings.ConfigActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.compare.DifferencesActivity"
+            android:name=".ui.compare.differences.DifferencesActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.compare.OverlayCutActivity"
+            android:name=".ui.compare.overlayCut.OverlayCutActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.compare.OverlayTouchActivity"
+            android:name=".ui.compare.overlayTouch.OverlayTouchActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.compare.SideBySideActivity"
+            android:name=".ui.compare.sideBySide.SideBySideActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.compare.OverlayTransparentActivity"
+            android:name=".ui.compare.overlayTransparent.OverlayTransparentActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.compare.OverlayTapActivity"
+            android:name=".ui.compare.overlayTap.OverlayTapActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.compare.OverlaySlideActivity"
+            android:name=".ui.compare.overlaySlide.OverlaySlideActivity"
             android:exported="false" />
         <activity
             android:name=".ui.settings.AboutActivity"

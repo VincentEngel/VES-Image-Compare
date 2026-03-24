@@ -1,14 +1,13 @@
 package com.vincentengelsoftware.androidimagecompare.domain.model;
 
 import android.net.Uri;
-import com.vincentengelsoftware.androidimagecompare.ui.main.MainActivity;
 
 /**
  * Singleton that owns the two image slots (left / right) for the main comparison screen.
  *
  * <p>Centralises the URIs and {@link ImageInfoHolder} references that were previously scattered as
- * {@code public static} fields on {@link MainActivity}, removing the global-mutable-state
- * anti-pattern from the Activity class.
+ * {@code public static} fields on the main Activity, removing the global-mutable-state anti-pattern
+ * from the Activity class.
  */
 public class ImageSessionState {
 

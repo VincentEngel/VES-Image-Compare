@@ -2,12 +2,12 @@ package com.vincentengelsoftware.androidimagecompare.ui.settings;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
-import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.databinding.ActivityAboutBinding;
 import com.vincentengelsoftware.androidimagecompare.ui.util.PlayStoreNavigator;
 import com.vincentengelsoftware.androidimagecompare.ui.util.TextViewModifier;
-import com.vincentengelsoftware.androidimagecompare.util.PackageInfoHelper;
+import com.vincentengelsoftware.androidimagecompare.util.AppVersion;
 
+/** Displays app information: version, open-source acknowledgements, and a Play Store link. */
 public class AboutActivity extends AppCompatActivity {
 
   @Override
@@ -26,12 +26,6 @@ public class AboutActivity extends AppCompatActivity {
     binding.infoBtnOpenPlaystore.setOnClickListener(
         view -> PlayStoreNavigator.openPlayStoreAppPage(this));
 
-    String version = getString(R.string.unknown);
-    try {
-      version = "v" + PackageInfoHelper.getPackageVersion(this);
-    } catch (Exception ignored) {
-    }
-
-    binding.infoVersion.setText(version);
+    binding.infoVersion.setText(AppVersion.getVersionName(this));
   }
 }

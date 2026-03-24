@@ -1,11 +1,10 @@
-package com.vincentengelsoftware.androidimagecompare.ui.compare;
+package com.vincentengelsoftware.androidimagecompare.ui.compare.overlaySlide;
 
 import android.graphics.Bitmap;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 import com.vincentengelsoftware.androidimagecompare.util.BitmapTransformer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -24,7 +23,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  *       main thread via {@link #getFrontBitmap()} LiveData.
  * </ul>
  */
-public class OverlaySlideViewModel extends ViewModel {
+public class ViewModel extends androidx.lifecycle.ViewModel {
 
   // ── Bitmaps (survive rotation) ─────────────────────────────────────────────
 

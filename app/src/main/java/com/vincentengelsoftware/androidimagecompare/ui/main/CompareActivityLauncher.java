@@ -4,16 +4,15 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.widget.Toast;
 import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.constants.IntentExtras;
-import com.vincentengelsoftware.androidimagecompare.constants.Status;
 import com.vincentengelsoftware.androidimagecompare.data.cache.CacheManager;
 import com.vincentengelsoftware.androidimagecompare.data.preferences.UserSettings;
 import com.vincentengelsoftware.androidimagecompare.databinding.ActivityMainBinding;
 import com.vincentengelsoftware.androidimagecompare.domain.model.ImageInfoHolder;
 import com.vincentengelsoftware.androidimagecompare.domain.model.ImageSessionState;
-import com.vincentengelsoftware.androidimagecompare.ui.compare.CompareModeNames;
 import com.vincentengelsoftware.androidimagecompare.util.ImageFileSaver;
 import java.io.File;
 import java.util.concurrent.ExecutorService;
@@ -90,7 +89,14 @@ public class CompareActivityLauncher {
     Intent intent = new Intent(activity, targetActivity);
     intent.putExtra(IntentExtras.SHOW_EXTENSIONS, userSettings.isShowExtensions());
     intent.putExtra(IntentExtras.SYNC_IMAGE_INTERACTIONS, userSettings.isSyncImageInteractions());
-    intent.putExtra(IntentExtras.HAS_HARDWARE_KEY, Status.HAS_HARDWARE_KEY);
+    intent.putExtra(IntentExtras.SHOW_NAVIGATION_BAR, userSettings.getShowNavigationBar());
+    intent.putExtra(IntentExtras.TAP_HIDE_MODE, userSettings.getTapHideMode());
+    intent.putExtra(IntentExtras.MIRRORING_TYPE, userSettings.getMirroringType());
+    intent.putExtra(IntentExtras.RESET_IMAGE_ON_LINKING, userSettings.getResetImageOnLink());
+    intent.putExtra(IntentExtras.MAX_ZOOM, userSettings.getMaxZoom());
+    intent.putExtra(IntentExtras.MIN_ZOOM, userSettings.getMinZoom());
+    intent.putExtra(
+        IntentExtras.HAS_HARDWARE_KEY, ViewConfiguration.get(activity).hasPermanentMenuKey());
 
     binding.pbProgess.setVisibility(View.VISIBLE);
 

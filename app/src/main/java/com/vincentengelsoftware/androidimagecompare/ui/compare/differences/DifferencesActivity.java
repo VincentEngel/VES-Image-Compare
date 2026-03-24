@@ -1,4 +1,4 @@
-package com.vincentengelsoftware.androidimagecompare.ui.compare;
+package com.vincentengelsoftware.androidimagecompare.ui.compare.differences;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,26 +10,27 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.constants.IntentExtras;
-import com.vincentengelsoftware.androidimagecompare.constants.Settings;
+import com.vincentengelsoftware.androidimagecompare.constants.Status;
 import com.vincentengelsoftware.androidimagecompare.data.preferences.KeyValueStorage;
 import com.vincentengelsoftware.androidimagecompare.data.preferences.UserSettings;
 import com.vincentengelsoftware.androidimagecompare.databinding.ActivityDifferencesBinding;
-import com.vincentengelsoftware.androidimagecompare.ui.util.FullScreenHelper;
+import com.vincentengelsoftware.androidimagecompare.ui.compare.shared.FullScreenHelper;
+import com.vincentengelsoftware.androidimagecompare.ui.compare.shared.SyncZoom;
 
 /**
  * Displays two images side-by-side after automatically detecting and highlighting the most
  * significant visual differences between them.
  *
- * <p>All heavy work (I/O, BFS, drawing) is delegated to {@link DifferencesViewModel}, which
- * survives configuration changes. On rotation the ViewModel immediately re-delivers its cached
- * {@link DifferencesViewModel.ProcessingState#DONE} state via LiveData and the Activity applies the
- * already-annotated bitmaps — zero re-processing.
+ * <p>All heavy work (I/O, BFS, drawing) is delegated to {@link ViewModel}, which survives
+ * configuration changes. On rotation the ViewModel immediately re-delivers its cached {@link
+ * ViewModel.ProcessingState#DONE} state via LiveData and the Activity applies the already-annotated
+ * bitmaps — zero re-processing.
  *
  * <p>The Activity owns only UI concerns: view binding, spinner visibility, and controls wiring.
  */
 public class DifferencesActivity extends AppCompatActivity {
 
-  private DifferencesViewModel viewModel;
+  private ViewModel viewModel;
   private ActivityDifferencesBinding binding;
 
   // ── Lifecycle ──────────────────────────────────────────────────────────────
@@ -38,12 +39,18 @@ public class DifferencesActivity extends AppCompatActivity {
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    viewModel = new ViewModelProvider(this).get(DifferencesViewModel.class);
+    viewModel = new ViewModelProvider(this).get(ViewModel.class);
 
-    FullScreenHelper.apply(getWindow(), Settings.SHOW_NAVIGATION_BAR);
+    FullScreenHelper.apply(
+        getWindow(), getIntent().getBooleanExtra(IntentExtras.SHOW_NAVIGATION_BAR, true));
 
     binding = ActivityDifferencesBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());
+
+    int maxZoom = IntentExtras.getMaxZoom(getIntent());
+    float minZoom = IntentExtras.getMinZoom(getIntent());
+    binding.differencesImageTop.initZoomLimits(maxZoom, minZoom);
+    binding.differencesImageBottom.initZoomLimits(maxZoom, minZoom);
 
     if (!initProcessing()) {
       finish();
@@ -122,7 +129,7 @@ public class DifferencesActivity extends AppCompatActivity {
           Uri.parse(uriStringOne),
           Uri.parse(uriStringTwo),
           userSettings.getDifferencesMaxCount(),
-          DifferencesViewModel.resolveCircleColor(userSettings.getDifferencesCircleColor()));
+          ViewModel.resolveCircleColor(userSettings.getDifferencesCircleColor()));
     }
 
     return true;
@@ -134,7 +141,10 @@ public class DifferencesActivity extends AppCompatActivity {
    */
   private void initImageViews() {
     SyncZoom.setLinkedTargets(
-        binding.differencesImageTop, binding.differencesImageBottom, viewModel.getSync());
+        binding.differencesImageTop,
+        binding.differencesImageBottom,
+        viewModel.getSync(),
+        getIntent().getIntExtra(IntentExtras.MIRRORING_TYPE, Status.NATURAL_MIRRORING));
 
     SyncZoom.setUpSyncZoomToggleButton(
         binding.differencesImageTop,
@@ -142,7 +152,8 @@ public class DifferencesActivity extends AppCompatActivity {
         binding.toggleButton,
         ContextCompat.getDrawable(this, R.drawable.ic_link),
         ContextCompat.getDrawable(this, R.drawable.ic_link_off),
-        viewModel.getSync());
+        viewModel.getSync(),
+        getIntent().getBooleanExtra(IntentExtras.RESET_IMAGE_ON_LINKING, true));
   }
 
   /** Shows or hides the extensions bar based on the Intent extra. */

@@ -4,18 +4,24 @@ import com.vincentengelsoftware.androidimagecompare.constants.ImageResizeOptions
 import com.vincentengelsoftware.androidimagecompare.domain.model.ImageInfoHolder;
 import com.vincentengelsoftware.androidimagecompare.ui.util.Theme;
 
-public class ApplyUserSettings {
+/**
+ * Utility class that applies a {@link UserSettings} snapshot to the running session.
+ *
+ * <p>Bridges persisted preferences and the in-memory state of the UI without coupling either side
+ * directly to the other.
+ */
+public final class ApplyUserSettings {
+
+  private ApplyUserSettings() {}
+
   public static void apply(
       UserSettings userSettings,
       ImageInfoHolder firstImageInfoHolder,
       ImageInfoHolder secondImageInfoHolder) {
     Theme.updateTheme(userSettings.getTheme());
 
-    ApplyUserSettings.applyImageSettings(
-        userSettings.getLeftImageResizeSettings(), firstImageInfoHolder);
-
-    ApplyUserSettings.applyImageSettings(
-        userSettings.getRightImageResizeSettings(), secondImageInfoHolder);
+    applyImageSettings(userSettings.getLeftImageResizeSettings(), firstImageInfoHolder);
+    applyImageSettings(userSettings.getRightImageResizeSettings(), secondImageInfoHolder);
   }
 
   private static void applyImageSettings(

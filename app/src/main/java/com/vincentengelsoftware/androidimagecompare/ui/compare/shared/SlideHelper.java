@@ -1,4 +1,4 @@
-package com.vincentengelsoftware.androidimagecompare.ui.compare;
+package com.vincentengelsoftware.androidimagecompare.ui.compare.shared;
 
 import android.widget.ImageButton;
 import android.widget.SeekBar;

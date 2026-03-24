@@ -7,6 +7,8 @@ import com.vincentengelsoftware.androidimagecompare.constants.ImageResizeOptions
  * mode, the target dimensions.
  */
 public class BitmapTransformSettings {
+  private static final int DEGREES_PER_ROTATION_STEP = 90;
+
   private int resizeOption = ImageResizeOptions.RESIZE_OPTION_AUTOMATIC;
   private int customHeight;
   private int customWidth;
@@ -63,5 +65,13 @@ public class BitmapTransformSettings {
 
   public int getCurrentRotation() {
     return currentRotation;
+  }
+
+  /**
+   * Returns the current rotation expressed in degrees (multiples of 90°), suitable for passing
+   * directly to bitmap transform utilities.
+   */
+  public int getRotationDegrees() {
+    return currentRotation * DEGREES_PER_ROTATION_STEP;
   }
 }

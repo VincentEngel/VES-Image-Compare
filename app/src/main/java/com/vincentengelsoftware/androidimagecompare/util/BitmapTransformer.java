@@ -132,14 +132,14 @@ public class BitmapTransformer {
   public static Bitmap cutBitmapAny(@NonNull Bitmap bitmapSource, @NonNull CropParams params) {
     return cutBitmapAnyInternal(
         bitmapSource,
-        params.topActive(),
-        params.topProgress(),
-        params.leftActive(),
-        params.leftProgress(),
-        params.rightActive(),
-        params.rightProgress(),
-        params.bottomActive(),
-        params.bottomProgress());
+        params.top().active(),
+        params.top().progress(),
+        params.left().active(),
+        params.left().progress(),
+        params.right().active(),
+        params.right().progress(),
+        params.bottom().active(),
+        params.bottom().progress());
   }
 
   private static Bitmap cutBitmapAnyInternal(

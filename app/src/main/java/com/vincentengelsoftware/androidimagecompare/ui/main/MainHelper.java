@@ -30,7 +30,7 @@ public class MainHelper {
             return;
           }
           imageInfoHolder.rotatePreviewImage();
-          imageInfoHolder.updateImageViewPreviewImage(imageView);
+          imageView.setImageBitmap(imageInfoHolder.getBitmapSmall());
         });
   }
 
@@ -45,7 +45,7 @@ public class MainHelper {
             return;
           }
           imageInfoHolder.mirrorPreviewImage();
-          imageInfoHolder.updateImageViewPreviewImage(imageView);
+          imageView.setImageBitmap(imageInfoHolder.getBitmapSmall());
         });
   }
 
@@ -71,8 +71,9 @@ public class MainHelper {
           imageTextViewNameRight.setText(
               imageSessionState.getSecondImageInfoHolder().getImageName());
 
-          imageSessionState.getFirstImageInfoHolder().updateImageViewPreviewImage(imageViewOne);
-          imageSessionState.getSecondImageInfoHolder().updateImageViewPreviewImage(imageViewTwo);
+          imageViewOne.setImageBitmap(imageSessionState.getFirstImageInfoHolder().getBitmapSmall());
+          imageViewTwo.setImageBitmap(
+              imageSessionState.getSecondImageInfoHolder().getBitmapSmall());
         });
   }
 
@@ -113,7 +114,7 @@ public class MainHelper {
       ImageView imageView,
       TextView textView) {
     imageInfoHolder.updateFromBitmap(bitmap, maxSideSize, maxSideSizeForSmallBitmap, imageName);
-    imageInfoHolder.updateImageViewPreviewImage(imageView);
+    imageView.setImageBitmap(imageInfoHolder.getBitmapSmall());
     textView.setText(imageInfoHolder.getImageName());
   }
 }

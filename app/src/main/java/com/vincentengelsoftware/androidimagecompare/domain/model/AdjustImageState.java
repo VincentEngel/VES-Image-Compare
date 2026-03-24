@@ -15,10 +15,11 @@ public record AdjustImageState(
     int savedResizeOption,
     int savedCustomHeight,
     int savedCustomWidth,
-    int savedMirrored) {
+    boolean savedMirrored) {
+
   /** Sentinel instance that always causes {@link #requiresRecalculation} to return {@code true}. */
   public static AdjustImageState empty() {
-    return new AdjustImageState(-1, -1, -1, -1, -1);
+    return new AdjustImageState(-1, -1, -1, -1, false);
   }
 
   /** Captures the current image state into a new snapshot. */
@@ -28,16 +29,7 @@ public record AdjustImageState(
         settings.getResizeOption(),
         settings.getCustomHeight(),
         settings.getCustomWidth(),
-        settings.isMirrored() ? 1 : 0);
-  }
-
-  public static AdjustImageState of(AdjustImageState adjustImageState) {
-    return new AdjustImageState(
-        adjustImageState.savedRotation,
-        adjustImageState.savedResizeOption,
-        adjustImageState.savedCustomHeight,
-        adjustImageState.savedCustomWidth,
-        adjustImageState.savedMirrored);
+        settings.isMirrored());
   }
 
   /**
@@ -48,7 +40,7 @@ public record AdjustImageState(
   public boolean requiresRecalculation(File compareFile, BitmapTransformSettings settings) {
     if (!compareFile.exists()) return true;
     if (savedRotation != settings.getCurrentRotation()) return true;
-    if (savedMirrored != (settings.isMirrored() ? 1 : 0)) return true;
+    if (savedMirrored != settings.isMirrored()) return true;
     if (savedResizeOption != settings.getResizeOption()) return true;
     if (settings.getResizeOption() == ImageResizeOptions.RESIZE_OPTION_CUSTOM) {
       return savedCustomHeight != settings.getCustomHeight()

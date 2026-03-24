@@ -1,4 +1,4 @@
-package com.vincentengelsoftware.androidimagecompare.ui.compare;
+package com.vincentengelsoftware.androidimagecompare.ui.compare.overlayTouch;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -11,10 +11,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.constants.IntentExtras;
-import com.vincentengelsoftware.androidimagecompare.constants.Settings;
 import com.vincentengelsoftware.androidimagecompare.databinding.ActivityOverlayTouchBinding;
-import com.vincentengelsoftware.androidimagecompare.ui.util.FullScreenHelper;
+import com.vincentengelsoftware.androidimagecompare.ui.compare.shared.FullScreenHelper;
 import com.vincentengelsoftware.androidimagecompare.ui.widget.ImageScaleCenter;
+import com.vincentengelsoftware.androidimagecompare.ui.widget.TouchRevealView;
 import com.vincentengelsoftware.androidimagecompare.util.BitmapExtractor;
 import java.io.ByteArrayOutputStream;
 
@@ -28,8 +28,8 @@ import java.io.ByteArrayOutputStream;
  * events and erases circular areas at each touch point.
  *
  * <p>All UI state (erasing enabled, brush size) and the erased bitmap itself are retained across
- * configuration changes via {@link OverlayTouchViewModel}, so rotating the screen preserves the
- * current erase marks, seekbar position, and pause/resume status.
+ * configuration changes via {@link ViewModel}, so rotating the screen preserves the current erase
+ * marks, seekbar position, and pause/resume status.
  *
  * <p>Controls (shown when {@code SHOW_EXTENSIONS} is {@code true}):
  *
@@ -40,7 +40,7 @@ import java.io.ByteArrayOutputStream;
  */
 public class OverlayTouchActivity extends AppCompatActivity {
 
-  private OverlayTouchViewModel viewModel;
+  private ViewModel viewModel;
 
   private ActivityOverlayTouchBinding binding;
 
@@ -50,12 +50,16 @@ public class OverlayTouchActivity extends AppCompatActivity {
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    viewModel = new ViewModelProvider(this).get(OverlayTouchViewModel.class);
+    viewModel = new ViewModelProvider(this).get(ViewModel.class);
 
-    FullScreenHelper.apply(getWindow(), Settings.SHOW_NAVIGATION_BAR);
+    FullScreenHelper.apply(
+        getWindow(), getIntent().getBooleanExtra(IntentExtras.SHOW_NAVIGATION_BAR, true));
 
     binding = ActivityOverlayTouchBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());
+
+    binding.overlayTouchImageViewBottom.initZoomLimits(
+        IntentExtras.getMaxZoom(getIntent()), IntentExtras.getMinZoom(getIntent()));
 
     if (!initImages()) {
       finish();

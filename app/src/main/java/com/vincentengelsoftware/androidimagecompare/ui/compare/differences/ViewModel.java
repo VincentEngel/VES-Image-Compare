@@ -1,4 +1,4 @@
-package com.vincentengelsoftware.androidimagecompare.ui.compare;
+package com.vincentengelsoftware.androidimagecompare.ui.compare.differences;
 
 import android.app.Application;
 import android.graphics.Bitmap;
@@ -38,7 +38,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  *       Activity is truly finishing, not on rotation).
  * </ul>
  */
-public class DifferencesViewModel extends AndroidViewModel {
+public class ViewModel extends AndroidViewModel {
 
   // ── Processing state ───────────────────────────────────────────────────────
 
@@ -90,7 +90,7 @@ public class DifferencesViewModel extends AndroidViewModel {
 
   // ── Constructor ────────────────────────────────────────────────────────────
 
-  public DifferencesViewModel(@NonNull Application application) {
+  public ViewModel(@NonNull Application application) {
     super(application);
   }
 

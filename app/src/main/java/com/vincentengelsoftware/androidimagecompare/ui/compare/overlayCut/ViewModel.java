@@ -1,11 +1,10 @@
-package com.vincentengelsoftware.androidimagecompare.ui.compare;
+package com.vincentengelsoftware.androidimagecompare.ui.compare.overlayCut;
 
 import android.graphics.Bitmap;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 import com.vincentengelsoftware.androidimagecompare.domain.model.CropParams;
 import com.vincentengelsoftware.androidimagecompare.util.BitmapTransformer;
 import java.util.concurrent.ExecutorService;
@@ -26,7 +25,7 @@ import java.util.concurrent.Future;
  *   <li>Persists seekbar positions across configuration changes.
  * </ul>
  */
-public class OverlayCutViewModel extends ViewModel {
+public class ViewModel extends androidx.lifecycle.ViewModel {
 
   // ── Bitmaps (survive rotation) ─────────────────────────────────────────────
 

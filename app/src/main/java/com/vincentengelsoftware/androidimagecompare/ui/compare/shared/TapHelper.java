@@ -1,9 +1,8 @@
-package com.vincentengelsoftware.androidimagecompare.ui.compare;
+package com.vincentengelsoftware.androidimagecompare.ui.compare.shared;
 
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import com.vincentengelsoftware.androidimagecompare.constants.Settings;
 import com.vincentengelsoftware.androidimagecompare.constants.Status;
 import com.vincentengelsoftware.androidimagecompare.ui.widget.VesImageInterface;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -28,20 +27,22 @@ public final class TapHelper {
    * @param sync shared flag; when {@code true} zoom/pan state is copied
    * @param textViewImageName label updated to show the target image's name
    * @param targetImageName the display name of the target image
+   * @param tapHideMode the tap hide mode, determining the visibility behaviour on tap
    */
   public static void setOnClickListener(
       VesImageInterface imageViewListener,
       VesImageInterface imageViewTarget,
       AtomicBoolean sync,
       TextView textViewImageName,
-      String targetImageName) {
+      String targetImageName,
+      int tapHideMode) {
     imageViewListener.setOnClickListener(
         view -> {
           if (sync.get()) {
             imageViewTarget.applyScaleAndCenter(imageViewListener);
           }
 
-          if (Settings.TAP_HIDE_MODE == Status.TAP_HIDE_MODE_INVISIBLE) {
+          if (tapHideMode == Status.TAP_HIDE_MODE_INVISIBLE) {
             imageViewListener.setVisibility(View.INVISIBLE);
             imageViewTarget.setVisibility(View.VISIBLE);
           } else {

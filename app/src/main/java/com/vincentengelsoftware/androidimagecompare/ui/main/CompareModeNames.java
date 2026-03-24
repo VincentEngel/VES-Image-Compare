@@ -1,8 +1,15 @@
-package com.vincentengelsoftware.androidimagecompare.ui.compare;
+package com.vincentengelsoftware.androidimagecompare.ui.main;
 
 import android.content.Context;
 import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.data.preferences.DefaultSettings;
+import com.vincentengelsoftware.androidimagecompare.ui.compare.differences.DifferencesActivity;
+import com.vincentengelsoftware.androidimagecompare.ui.compare.overlayCut.OverlayCutActivity;
+import com.vincentengelsoftware.androidimagecompare.ui.compare.overlaySlide.OverlaySlideActivity;
+import com.vincentengelsoftware.androidimagecompare.ui.compare.overlayTap.OverlayTapActivity;
+import com.vincentengelsoftware.androidimagecompare.ui.compare.overlayTouch.OverlayTouchActivity;
+import com.vincentengelsoftware.androidimagecompare.ui.compare.overlayTransparent.OverlayTransparentActivity;
+import com.vincentengelsoftware.androidimagecompare.ui.compare.sideBySide.SideBySideActivity;
 
 public class CompareModeNames {
   public static final String SIDE_BY_SIDE = "SIDE_BY_SIDE";

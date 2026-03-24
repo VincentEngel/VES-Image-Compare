@@ -6,35 +6,32 @@ import androidx.window.layout.WindowMetrics;
 import androidx.window.layout.WindowMetricsCalculator;
 
 /**
- * Initialises the global {@link Dimensions} constants that depend on the device screen size.
+ * Factory that computes the screen-size constraints required by {@link Dimensions}.
  *
- * <p>Call {@link #init(Activity)} once from {@code Activity.onCreate}. Subsequent calls are no-ops
- * once both dimension values have been set.
+ * <p>Call {@link #init(Activity)} once from {@code Activity.onCreate} and keep the returned {@link
+ * Dimensions} instance alive for the lifetime of the activity. Pass it by dependency injection to
+ * every component that needs it — never store it in static state.
  */
 public class DimensionsInitializer {
 
   private DimensionsInitializer() {}
 
   /**
-   * Computes and stores {@link Dimensions#maxSide} and {@link Dimensions#maxSideForPreview} from
-   * the current window metrics. Safe to call multiple times; re-initialises only when a value is
-   * still at its default ({@code 0}).
+   * Computes {@link Dimensions#maxSide()} and {@link Dimensions#maxSideForPreview()} from the
+   * current window metrics and returns an immutable {@link Dimensions} value object.
    */
-  public static void init(Activity activity) {
-    if (Dimensions.maxSide == 0) {
-      WindowMetrics windowMetrics =
-          WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(activity);
-      Dimensions.maxSide =
-          Math.max(windowMetrics.getBounds().height(), windowMetrics.getBounds().width());
-    }
+  public static Dimensions init(Activity activity) {
+    WindowMetrics windowMetrics =
+        WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(activity);
+    int maxSide = Math.max(windowMetrics.getBounds().height(), windowMetrics.getBounds().width());
 
-    if (Dimensions.maxSideForPreview == 0) {
-      Dimensions.maxSideForPreview =
-          Math.round(
-              TypedValue.applyDimension(
-                  TypedValue.COMPLEX_UNIT_DIP,
-                  Dimensions.MAX_SMALL_SIZE_DP,
-                  activity.getResources().getDisplayMetrics()));
-    }
+    int maxSideForPreview =
+        Math.round(
+            TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                Dimensions.MAX_SMALL_SIZE_DP,
+                activity.getResources().getDisplayMetrics()));
+
+    return new Dimensions(maxSide, maxSideForPreview);
   }
 }

@@ -6,9 +6,9 @@
     <string name="second_image">Zweites Bild</string>
     <string name="compare_mode_transparent">Schiebe Transparent</string>
     <string name="compare_mode_side_by_side">Nebeneinander</string>
-    <string name="compare_mode_overlay_slide">Wischen</string>
+    <string name="compare_mode_overlay_slide">Schieben</string>
     <string name="compare_mode_overlay_tap">Tippen</string>
-    <string name="compare_mode_overlay_touch">Touch Transparent</string>
+    <string name="compare_mode_overlay_touch">Wischen Transparent</string>
     <string name="compare_mode_differences">Unterschiede</string>
     <string name="color_theme">Design</string>
     <string name="switch_slide_direction">Wechsel Richtung</string>

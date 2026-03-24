@@ -1,4 +1,4 @@
-package com.vincentengelsoftware.androidimagecompare.ui.compare;
+package com.vincentengelsoftware.androidimagecompare.ui.compare.sideBySide;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,23 +10,24 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.constants.IntentExtras;
-import com.vincentengelsoftware.androidimagecompare.constants.Settings;
+import com.vincentengelsoftware.androidimagecompare.constants.Status;
 import com.vincentengelsoftware.androidimagecompare.databinding.ActivitySideBySideBinding;
-import com.vincentengelsoftware.androidimagecompare.ui.util.FullScreenHelper;
+import com.vincentengelsoftware.androidimagecompare.ui.compare.shared.FullScreenHelper;
+import com.vincentengelsoftware.androidimagecompare.ui.compare.shared.SyncZoom;
 
 /**
  * Displays two images side-by-side with optional synchronised zoom/pan.
  *
  * <p>The Activity owns only UI concerns: view binding and controls wiring. The sync state is
- * delegated to {@link SideBySideViewModel}. Images are loaded directly from their content URIs on
- * every (re-)creation – no bitmap is retained in memory across configuration changes.
+ * delegated to {@link ViewModel}. Images are loaded directly from their content URIs on every
+ * (re-)creation – no bitmap is retained in memory across configuration changes.
  */
 public class SideBySideActivity extends AppCompatActivity {
 
   private static final String KEY_SYNC_IMAGE_INTERACTIONS = "key_sync_image_interactions";
 
   /** Survives configuration changes; owns the sync flag. */
-  private SideBySideViewModel viewModel;
+  private ViewModel viewModel;
 
   private ActivitySideBySideBinding binding;
 
@@ -36,7 +37,7 @@ public class SideBySideActivity extends AppCompatActivity {
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    viewModel = new ViewModelProvider(this).get(SideBySideViewModel.class);
+    viewModel = new ViewModelProvider(this).get(ViewModel.class);
 
     // On first launch, read the sync state from the Intent;
     // on configuration changes, restore it from savedInstanceState.
@@ -48,10 +49,16 @@ public class SideBySideActivity extends AppCompatActivity {
           .set(getIntent().getBooleanExtra(IntentExtras.SYNC_IMAGE_INTERACTIONS, true));
     }
 
-    FullScreenHelper.apply(getWindow(), Settings.SHOW_NAVIGATION_BAR);
+    FullScreenHelper.apply(
+        getWindow(), getIntent().getBooleanExtra(IntentExtras.SHOW_NAVIGATION_BAR, true));
 
     binding = ActivitySideBySideBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());
+
+    int maxZoom = IntentExtras.getMaxZoom(getIntent());
+    float minZoom = IntentExtras.getMinZoom(getIntent());
+    binding.sideBySideImageTopLeft.initZoomLimits(maxZoom, minZoom);
+    binding.sideBySideImageBottomRight.initZoomLimits(maxZoom, minZoom);
 
     if (!initImages()) {
       // URIs are missing or invalid; nothing to show.
@@ -110,7 +117,10 @@ public class SideBySideActivity extends AppCompatActivity {
    */
   private void initImageViews() {
     SyncZoom.setLinkedTargets(
-        binding.sideBySideImageTopLeft, binding.sideBySideImageBottomRight, viewModel.getSync());
+        binding.sideBySideImageTopLeft,
+        binding.sideBySideImageBottomRight,
+        viewModel.getSync(),
+        getIntent().getIntExtra(IntentExtras.MIRRORING_TYPE, Status.NATURAL_MIRRORING));
 
     SyncZoom.setUpSyncZoomToggleButton(
         binding.sideBySideImageTopLeft,
@@ -118,7 +128,8 @@ public class SideBySideActivity extends AppCompatActivity {
         binding.toggleButton,
         ContextCompat.getDrawable(this, R.drawable.ic_link),
         ContextCompat.getDrawable(this, R.drawable.ic_link_off),
-        viewModel.getSync());
+        viewModel.getSync(),
+        getIntent().getBooleanExtra(IntentExtras.RESET_IMAGE_ON_LINKING, true));
   }
 
   /** Shows or hides the extensions bar based on the Intent extra. */

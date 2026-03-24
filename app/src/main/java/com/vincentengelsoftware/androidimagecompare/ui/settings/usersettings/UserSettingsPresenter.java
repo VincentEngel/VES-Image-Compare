@@ -1,5 +1,6 @@
 package com.vincentengelsoftware.androidimagecompare.ui.settings.usersettings;
 
+import androidx.annotation.VisibleForTesting;
 import com.vincentengelsoftware.androidimagecompare.R;
 import com.vincentengelsoftware.androidimagecompare.constants.Status;
 import com.vincentengelsoftware.androidimagecompare.data.preferences.UserSettings;
@@ -14,8 +15,8 @@ import com.vincentengelsoftware.androidimagecompare.data.preferences.UserSetting
  */
 public class UserSettingsPresenter {
 
-  static final float MIN_ZOOM_FALLBACK = 0.1F;
-  static final int MAX_ZOOM_FALLBACK = 1;
+  @VisibleForTesting static final float MIN_ZOOM_FALLBACK = 0.1F;
+  @VisibleForTesting static final int MAX_ZOOM_FALLBACK = 1;
 
   /** Total number of theme options: System, Light, Dark. */
   private static final int THEME_COUNT = 3;
@@ -55,6 +56,14 @@ public class UserSettingsPresenter {
         circleColor == Status.DIFF_CIRCLE_COLOR_GREEN);
   }
 
+  /**
+   * Validates and persists zoom bounds.
+   *
+   * <p>Values below their minimum are clamped to {@link #MAX_ZOOM_FALLBACK} / {@link
+   * #MIN_ZOOM_FALLBACK} respectively.
+   *
+   * @return a {@link SaveZoomResult} indicating whether any clamping occurred
+   */
   public SaveZoomResult saveZoom(int rawMaxZoom, float rawMinZoom) {
     boolean maxZoomClamped = false;
     boolean minZoomClamped = false;
@@ -86,18 +95,22 @@ public class UserSettingsPresenter {
     return newTheme;
   }
 
+  /** Persists whether images should reset their transform when linking is toggled. */
   public void setResetImageOnLinking(boolean checked) {
     userSettings.setResetImageOnLinking(checked);
   }
 
+  /** Persists the active mirroring type (e.g. {@link Status#NATURAL_MIRRORING}). */
   public void setMirroringType(int mirroringType) {
     userSettings.setMirroringType(mirroringType);
   }
 
+  /** Persists the active tap-hide mode (e.g. {@link Status#TAP_HIDE_MODE_INVISIBLE}). */
   public void setTapHideMode(int tapHideMode) {
-    userSettings.setTypHideMode(tapHideMode);
+    userSettings.setTapHideMode(tapHideMode);
   }
 
+  /** Persists whether the system navigation bar is shown during compare sessions. */
   public void setShowNavigationBar(boolean showNavigationBar) {
     userSettings.setShowNavigationBar(showNavigationBar);
   }
@@ -116,15 +129,20 @@ public class UserSettingsPresenter {
     return false;
   }
 
+  /** Persists the circle colour used to highlight detected differences. */
   public void setDifferencesCircleColor(int color) {
     userSettings.setDifferencesCircleColor(color);
   }
 
+  /**
+   * Resets all settings to their defaults and returns the resulting {@link UserSettingsUiState}.
+   */
   public UserSettingsUiState resetAllSettings() {
     userSettings.resetAllSettings();
     return buildUiState();
   }
 
+  /** Returns the string resource ID for the description of the given mirroring type. */
   public static int mirroringExplanationResId(int mirroringType) {
     return switch (mirroringType) {
       case Status.STRICT_MIRRORING -> R.string.settings_mirroring_strict_description;
@@ -133,12 +151,14 @@ public class UserSettingsPresenter {
     };
   }
 
+  /** Returns the string resource ID for the description of the given tap-hide mode. */
   public static int tapHideModeDescriptionResId(int tapHideMode) {
     return tapHideMode == Status.TAP_HIDE_MODE_BACKGROUND
         ? R.string.settings_tap_hide_mode_description_background
         : R.string.settings_tap_hide_mode_description_invisible;
   }
 
+  /** Returns the string resource ID for the theme toggle button label for the given theme. */
   public static int themeButtonTextResId(int theme) {
     return switch (theme) {
       case Status.THEME_SYSTEM -> R.string.theme_system;
@@ -147,5 +167,6 @@ public class UserSettingsPresenter {
     };
   }
 
+  /** Result of a {@link #saveZoom} call, indicating whether any input was out of range. */
   public record SaveZoomResult(boolean hadInvalidInput) {}
 }

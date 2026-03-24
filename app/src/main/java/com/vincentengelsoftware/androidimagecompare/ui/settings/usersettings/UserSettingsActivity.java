@@ -10,9 +10,16 @@ import com.vincentengelsoftware.androidimagecompare.data.preferences.KeyValueSto
 import com.vincentengelsoftware.androidimagecompare.data.preferences.UserSettings;
 import com.vincentengelsoftware.androidimagecompare.databinding.ActivityUserSettingsBinding;
 import com.vincentengelsoftware.androidimagecompare.ui.util.Theme;
-import java.util.Objects;
 
+/**
+ * Screen that lets the user view and modify all configurable app preferences.
+ *
+ * <p>Delegates all business logic to {@link UserSettingsPresenter}. The Activity is responsible
+ * only for inflating views, wiring click listeners, and calling {@link
+ * #render(UserSettingsUiState)} to reflect the current state.
+ */
 public class UserSettingsActivity extends AppCompatActivity {
+
   private UserSettingsPresenter presenter;
   private ActivityUserSettingsBinding binding;
 
@@ -22,35 +29,48 @@ public class UserSettingsActivity extends AppCompatActivity {
         UserSettings.getInstance(new KeyValueStorage(getApplicationContext()));
     Theme.updateTheme(userSettings.getTheme());
     super.onCreate(savedInstanceState);
-    this.presenter = new UserSettingsPresenter(userSettings);
+    presenter = new UserSettingsPresenter(userSettings);
 
     binding = ActivityUserSettingsBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());
 
-    this.setUp();
-    this.render(presenter.buildUiState());
+    setUp();
+    render(presenter.buildUiState());
   }
 
-  private void setUp() {
-    this.setUpThemeToggleButton(binding.homeTheme);
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
+    binding = null;
+  }
 
+  // ── Setup ─────────────────────────────────────────────────────────────────
+
+  private void setUp() {
+    setUpThemeToggleButton(binding.homeTheme);
+    setUpSaveButton();
+    setUpSwitches();
+    setUpMirroringButtons();
+    setUpTapHideModeButtons();
+    setUpDiffCircleColorButtons();
+    setUpResetButton();
+  }
+
+  private void setUpSaveButton() {
     binding.settingsSave.setOnClickListener(
         view -> {
           try {
-            int maxZoomValue =
-                Integer.parseInt(
-                    Objects.requireNonNull(binding.settingsMaxZoom.getText()).toString());
+            int maxZoomValue = Integer.parseInt(String.valueOf(binding.settingsMaxZoom.getText()));
             float minZoomValue =
-                Float.parseFloat(
-                    Objects.requireNonNull(binding.settingsMinZoom.getText()).toString());
+                Float.parseFloat(String.valueOf(binding.settingsMinZoom.getText()));
             int maxDifferencesValue =
-                Integer.parseInt(
-                    Objects.requireNonNull(binding.settingsMaxDifferences.getText()).toString());
+                Integer.parseInt(String.valueOf(binding.settingsMaxDifferences.getText()));
 
             UserSettingsPresenter.SaveZoomResult zoomResult =
                 presenter.saveZoom(maxZoomValue, minZoomValue);
             boolean diffError = presenter.saveDifferencesMaxCount(maxDifferencesValue);
-            this.render(presenter.buildUiState());
+            render(presenter.buildUiState());
+
             if (zoomResult.hadInvalidInput() || diffError) {
               Toast.makeText(
                       this,
@@ -69,14 +89,18 @@ public class UserSettingsActivity extends AppCompatActivity {
                 .show();
           }
         });
+  }
 
+  private void setUpSwitches() {
     binding.settingsSwitchResetZoomOnLinking.setOnClickListener(
         view ->
             presenter.setResetImageOnLinking(binding.settingsSwitchResetZoomOnLinking.isChecked()));
 
     binding.settingsSwitchFullscreen.setOnClickListener(
         view -> presenter.setShowNavigationBar(binding.settingsSwitchFullscreen.isChecked()));
+  }
 
+  private void setUpMirroringButtons() {
     binding.settingsMirroringNatural.setOnClickListener(
         view -> {
           presenter.setMirroringType(Status.NATURAL_MIRRORING);
@@ -97,7 +121,9 @@ public class UserSettingsActivity extends AppCompatActivity {
           binding.settingsMirroringExplanation.setText(
               UserSettingsPresenter.mirroringExplanationResId(Status.LOOSE_MIRRORING));
         });
+  }
 
+  private void setUpTapHideModeButtons() {
     binding.settingsTapHideModeBtnInvisible.setOnClickListener(
         view -> {
           presenter.setTapHideMode(Status.TAP_HIDE_MODE_INVISIBLE);
@@ -111,7 +137,9 @@ public class UserSettingsActivity extends AppCompatActivity {
           binding.settingsTapHideModeDescription.setText(
               UserSettingsPresenter.tapHideModeDescriptionResId(Status.TAP_HIDE_MODE_BACKGROUND));
         });
+  }
 
+  private void setUpDiffCircleColorButtons() {
     binding.settingsDiffCircleColorRed.setOnClickListener(
         view -> presenter.setDifferencesCircleColor(Status.DIFF_CIRCLE_COLOR_RED));
 
@@ -120,15 +148,28 @@ public class UserSettingsActivity extends AppCompatActivity {
 
     binding.settingsDiffCircleColorGreen.setOnClickListener(
         view -> presenter.setDifferencesCircleColor(Status.DIFF_CIRCLE_COLOR_GREEN));
+  }
 
+  private void setUpResetButton() {
     binding.settingsReset.setOnClickListener(
         view -> {
-          this.render(presenter.resetAllSettings());
+          render(presenter.resetAllSettings());
           Toast.makeText(this, getString(R.string.settings_reset_success), Toast.LENGTH_LONG)
               .show();
           recreate();
         });
   }
+
+  private void setUpThemeToggleButton(Button buttonTheme) {
+    buttonTheme.setOnClickListener(
+        view -> {
+          int newTheme = presenter.cycleTheme();
+          Theme.updateTheme(newTheme);
+          buttonTheme.setText(UserSettingsPresenter.themeButtonTextResId(newTheme));
+        });
+  }
+
+  // ── Render ────────────────────────────────────────────────────────────────
 
   private void render(UserSettingsUiState state) {
     binding.settingsMaxZoom.setText(state.maxZoom());
@@ -151,14 +192,5 @@ public class UserSettingsActivity extends AppCompatActivity {
     binding.settingsDiffCircleColorRed.setChecked(state.differencesCircleColorRed());
     binding.settingsDiffCircleColorBlue.setChecked(state.differencesCircleColorBlue());
     binding.settingsDiffCircleColorGreen.setChecked(state.differencesCircleColorGreen());
-  }
-
-  private void setUpThemeToggleButton(Button buttonTheme) {
-    buttonTheme.setOnClickListener(
-        view -> {
-          int newTheme = presenter.cycleTheme();
-          Theme.updateTheme(newTheme);
-          buttonTheme.setText(UserSettingsPresenter.themeButtonTextResId(newTheme));
-        });
   }
 }

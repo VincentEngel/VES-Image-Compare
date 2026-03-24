@@ -3,7 +3,19 @@ package com.vincentengelsoftware.androidimagecompare.data.preferences;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-public class KeyValueStorage {
+/**
+ * Thin wrapper around {@link SharedPreferences} that provides typed get/set helpers for all
+ * primitive types used by the app's settings layer.
+ *
+ * <p>All read and write operations silently swallow exceptions so that a corrupt preference file
+ * never crashes the app; callers receive the supplied default value instead.
+ */
+public final class KeyValueStorage {
+
+  /**
+   * Preference key that tracks whether the user has already been asked to leave a review. Kept here
+   * alongside other storage keys so that all preference key strings remain in one layer.
+   */
   public static final String ASKED_FOR_REVIEW = "ASKED_FOR_REVIEW";
 
   private final Context context;

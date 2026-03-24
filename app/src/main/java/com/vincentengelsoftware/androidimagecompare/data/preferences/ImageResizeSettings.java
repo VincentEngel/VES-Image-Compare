@@ -1,5 +1,11 @@
 package com.vincentengelsoftware.androidimagecompare.data.preferences;
 
+/**
+ * Holds and persists the resize settings for a single image slot (left or right).
+ *
+ * <p>Keys are prefixed with a side-specific string (e.g. {@code "LEFT_"} or {@code "RIGHT_"}) so
+ * that both instances can coexist in the same {@link KeyValueStorage} without key collisions.
+ */
 public class ImageResizeSettings {
   private int imageResizeOption;
   private int imageResizeWidth;
@@ -9,24 +15,24 @@ public class ImageResizeSettings {
   public static final String IMAGE_RESIZE_WIDTH = "IMAGE_RESIZE_WIDTH";
   public static final String IMAGE_RESIZE_HEIGHT = "IMAGE_RESIZE_HEIGHT";
 
-  private final String PREFIX;
+  private final String prefix;
   private final KeyValueStorage keyValueStorage;
 
   public ImageResizeSettings(String prefix, KeyValueStorage keyValueStorage) {
-    this.PREFIX = prefix;
+    this.prefix = prefix;
     this.keyValueStorage = keyValueStorage;
 
     this.imageResizeOption =
         this.keyValueStorage.getInt(
-            this.PREFIX + ImageResizeSettings.IMAGE_RESIZE_OPTION,
+            this.prefix + ImageResizeSettings.IMAGE_RESIZE_OPTION,
             DefaultSettings.IMAGE_RESIZE_OPTION);
     this.imageResizeWidth =
         this.keyValueStorage.getInt(
-            this.PREFIX + ImageResizeSettings.IMAGE_RESIZE_WIDTH,
+            this.prefix + ImageResizeSettings.IMAGE_RESIZE_WIDTH,
             DefaultSettings.IMAGE_RESIZE_WIDTH);
     this.imageResizeHeight =
         this.keyValueStorage.getInt(
-            this.PREFIX + ImageResizeSettings.IMAGE_RESIZE_HEIGHT,
+            this.prefix + ImageResizeSettings.IMAGE_RESIZE_HEIGHT,
             DefaultSettings.IMAGE_RESIZE_HEIGHT);
   }
 
@@ -37,7 +43,7 @@ public class ImageResizeSettings {
   public void setImageResizeOption(int imageResizeOption) {
     this.imageResizeOption = imageResizeOption;
     this.keyValueStorage.setInt(
-        this.PREFIX + ImageResizeSettings.IMAGE_RESIZE_OPTION, imageResizeOption);
+        this.prefix + ImageResizeSettings.IMAGE_RESIZE_OPTION, imageResizeOption);
   }
 
   public int getImageResizeWidth() {
@@ -47,7 +53,7 @@ public class ImageResizeSettings {
   public void setImageResizeWidth(int imageResizeWidth) {
     this.imageResizeWidth = imageResizeWidth;
     this.keyValueStorage.setInt(
-        this.PREFIX + ImageResizeSettings.IMAGE_RESIZE_WIDTH, imageResizeWidth);
+        this.prefix + ImageResizeSettings.IMAGE_RESIZE_WIDTH, imageResizeWidth);
   }
 
   public int getImageResizeHeight() {
@@ -57,7 +63,7 @@ public class ImageResizeSettings {
   public void setImageResizeHeight(int imageResizeHeight) {
     this.imageResizeHeight = imageResizeHeight;
     this.keyValueStorage.setInt(
-        this.PREFIX + ImageResizeSettings.IMAGE_RESIZE_HEIGHT, imageResizeHeight);
+        this.prefix + ImageResizeSettings.IMAGE_RESIZE_HEIGHT, imageResizeHeight);
   }
 
   public void resetAllSettings() {

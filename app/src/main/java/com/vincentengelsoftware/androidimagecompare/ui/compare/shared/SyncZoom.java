@@ -1,8 +1,7 @@
-package com.vincentengelsoftware.androidimagecompare.ui.compare;
+package com.vincentengelsoftware.androidimagecompare.ui.compare.shared;
 
 import android.graphics.drawable.Drawable;
 import android.widget.ToggleButton;
-import com.vincentengelsoftware.androidimagecompare.constants.Settings;
 import com.vincentengelsoftware.androidimagecompare.ui.widget.VesImageInterface;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -30,13 +29,14 @@ public final class SyncZoom {
    * @param sync shared flag controlling whether mirroring is active
    */
   public static void setLinkedTargets(
-      VesImageInterface imageOne, VesImageInterface imageTwo, AtomicBoolean sync) {
-    // The disabled flag is shared so that while one listener is forwarding
-    // a touch event the other does not echo it back.
+      VesImageInterface imageOne,
+      VesImageInterface imageTwo,
+      AtomicBoolean sync,
+      int mirroringType) {
     AtomicBoolean disabled = new AtomicBoolean(false);
 
-    imageOne.addMirrorListener(imageTwo, sync, disabled);
-    imageTwo.addMirrorListener(imageOne, sync, disabled);
+    imageOne.addMirrorListener(imageTwo, sync, disabled, mirroringType);
+    imageTwo.addMirrorListener(imageOne, sync, disabled, mirroringType);
   }
 
   /**
@@ -49,6 +49,7 @@ public final class SyncZoom {
    * @param iconLinkedOn icon shown when sync is active
    * @param iconLinkedOff icon shown when sync is inactive
    * @param sync shared flag updated by this button
+   * @param resetImageOnLinking when {@code true} both images are reset to default zoom on re-link
    */
   public static void setUpSyncZoomToggleButton(
       VesImageInterface imageOne,
@@ -56,14 +57,15 @@ public final class SyncZoom {
       ToggleButton toggleButton,
       Drawable iconLinkedOn,
       Drawable iconLinkedOff,
-      AtomicBoolean sync) {
+      AtomicBoolean sync,
+      boolean resetImageOnLinking) {
     toggleButton.setChecked(sync.get());
     toggleButton.setBackground(sync.get() ? iconLinkedOn : iconLinkedOff);
 
     toggleButton.setOnCheckedChangeListener(
         (button, isChecked) -> {
           if (isChecked) {
-            if (Settings.RESET_IMAGE_ON_LINKING) {
+            if (resetImageOnLinking) {
               imageOne.resetZoom();
               imageTwo.resetZoom();
             }

@@ -1,21 +1,21 @@
 package com.vincentengelsoftware.androidimagecompare.ui.main;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.widget.Button;
 import com.vincentengelsoftware.androidimagecompare.databinding.DialogCompareModeSelectionBinding;
-import com.vincentengelsoftware.androidimagecompare.ui.compare.DifferencesActivity;
-import com.vincentengelsoftware.androidimagecompare.ui.compare.OverlayCutActivity;
-import com.vincentengelsoftware.androidimagecompare.ui.compare.OverlaySlideActivity;
-import com.vincentengelsoftware.androidimagecompare.ui.compare.OverlayTapActivity;
-import com.vincentengelsoftware.androidimagecompare.ui.compare.OverlayTouchActivity;
-import com.vincentengelsoftware.androidimagecompare.ui.compare.OverlayTransparentActivity;
-import com.vincentengelsoftware.androidimagecompare.ui.compare.SideBySideActivity;
+import com.vincentengelsoftware.androidimagecompare.ui.compare.differences.DifferencesActivity;
+import com.vincentengelsoftware.androidimagecompare.ui.compare.overlayCut.OverlayCutActivity;
+import com.vincentengelsoftware.androidimagecompare.ui.compare.overlaySlide.OverlaySlideActivity;
+import com.vincentengelsoftware.androidimagecompare.ui.compare.overlayTap.OverlayTapActivity;
+import com.vincentengelsoftware.androidimagecompare.ui.compare.overlayTouch.OverlayTouchActivity;
+import com.vincentengelsoftware.androidimagecompare.ui.compare.overlayTransparent.OverlayTransparentActivity;
+import com.vincentengelsoftware.androidimagecompare.ui.compare.sideBySide.SideBySideActivity;
 
 /**
  * Builds and shows the compare-mode selection dialog.
  *
- * <p>Use the single static entry point {@link #show(Activity, OnCompareModeSelectedListener)}.
+ * <p>Use the single static entry point {@link #show(android.app.Activity,
+ * OnCompareModeSelectedListener)}.
  */
 public class CompareModeDialogHelper {
 
@@ -35,7 +35,7 @@ public class CompareModeDialogHelper {
    * @param activity the host activity
    * @param listener called once the user taps a mode button; the dialog is dismissed first
    */
-  public static void show(Activity activity, OnCompareModeSelectedListener listener) {
+  public static void show(android.app.Activity activity, OnCompareModeSelectedListener listener) {
     DialogCompareModeSelectionBinding dialogBinding =
         DialogCompareModeSelectionBinding.inflate(activity.getLayoutInflater());
 

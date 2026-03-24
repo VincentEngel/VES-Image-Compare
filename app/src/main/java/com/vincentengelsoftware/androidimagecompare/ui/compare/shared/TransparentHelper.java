@@ -1,4 +1,4 @@
-package com.vincentengelsoftware.androidimagecompare.ui.compare;
+package com.vincentengelsoftware.androidimagecompare.ui.compare.shared;
 
 import android.view.View;
 import android.widget.ImageButton;
@@ -16,7 +16,7 @@ public final class TransparentHelper {
 
   /**
    * Seekbar progress value at or below which the front image is considered fully hidden. Used both
-   * inside this class and by the hide/show button logic in {@link OverlayTransparentActivity}.
+   * inside this class and by the hide/show button logic in {@link com.vincentengelsoftware.androidimagecompare.ui.compare.overlayTransparent.OverlayTransparentActivity}.
    */
   public static final int HIDE_THRESHOLD = 2;
 

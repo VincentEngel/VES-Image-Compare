@@ -14,7 +14,9 @@ import java.util.Set;
  * {@link #cleanup} method that prunes every cached file that is no longer referenced by the current
  * {@link ImageSessionState}.
  */
-public class CacheManager {
+public final class CacheManager {
+
+  private CacheManager() {}
 
   /** Output file for the left (first) processed compare image. */
   public static final String COMPARE_FILE_ONE = "compare_image_one.png";
@@ -41,6 +43,7 @@ public class CacheManager {
    * Deletes every file in {@code cacheDir} whose canonical path is not referenced by the current
    * left or right image URI in {@code sessionState}. Safe to call from {@code Activity.onDestroy}.
    */
+  @SuppressWarnings("ResultOfMethodCallIgnored")
   public static void cleanup(File cacheDir, ImageSessionState sessionState) {
     try {
       File[] files = cacheDir.listFiles();

@@ -28,7 +28,10 @@ public interface VesImageInterface {
 
   void addFadeListener(ControlsBarHost controlsBarHost);
 
-  void addMirrorListener(VesImageInterface target, AtomicBoolean sync, AtomicBoolean disabled);
+  void initZoomLimits(int maxZoom, float minZoom);
+
+  void addMirrorListener(
+      VesImageInterface target, AtomicBoolean sync, AtomicBoolean disabled, int mirroringType);
 
   void setImageScale(ImageScaleCenter imageScaleCenter);
 

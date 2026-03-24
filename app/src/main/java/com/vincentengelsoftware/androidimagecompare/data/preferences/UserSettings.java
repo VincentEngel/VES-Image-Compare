@@ -1,9 +1,15 @@
 package com.vincentengelsoftware.androidimagecompare.data.preferences;
 
-import com.vincentengelsoftware.androidimagecompare.constants.Settings;
-
-public class UserSettings {
-  private static UserSettings instance;
+/**
+ * Singleton that provides typed access to all persisted user preferences.
+ *
+ * <p>Obtain the shared instance via {@link #getInstance(KeyValueStorage)}. The first call
+ * initialises the singleton; subsequent calls with a different {@link KeyValueStorage} are ignored
+ * – the original instance is always returned. The implementation is thread-safe through
+ * double-checked locking on a {@code volatile} field.
+ */
+public final class UserSettings {
+  private static volatile UserSettings instance;
   private final KeyValueStorage keyValueStorage;
   public static final String USER_THEME = "USER_THEME";
   public static final String SYNC_IMAGE_INTERACTIONS = "SYNCED_ZOOM";
@@ -23,30 +29,34 @@ public class UserSettings {
   public static final String DIFFERENCES_MAX_COUNT = "DIFFERENCES_MAX_COUNT";
   public static final String DIFFERENCES_CIRCLE_COLOR = "DIFFERENCES_CIRCLE_COLOR";
 
-  private final ImageResizeSettings LeftImageResizeSettings;
-  private final ImageResizeSettings RightImageResizeSettings;
+  private final ImageResizeSettings leftImageResizeSettings;
+  private final ImageResizeSettings rightImageResizeSettings;
 
   private UserSettings(KeyValueStorage keyValueStorage) {
     this.keyValueStorage = keyValueStorage;
 
-    this.LeftImageResizeSettings = new ImageResizeSettings("LEFT_", this.keyValueStorage);
-    this.RightImageResizeSettings = new ImageResizeSettings("RIGHT_", this.keyValueStorage);
+    this.leftImageResizeSettings = new ImageResizeSettings("LEFT_", this.keyValueStorage);
+    this.rightImageResizeSettings = new ImageResizeSettings("RIGHT_", this.keyValueStorage);
   }
 
   public static UserSettings getInstance(KeyValueStorage keyValueStorage) {
     if (instance == null) {
-      instance = new UserSettings(keyValueStorage);
+      synchronized (UserSettings.class) {
+        if (instance == null) {
+          instance = new UserSettings(keyValueStorage);
+        }
+      }
     }
 
     return instance;
   }
 
   public ImageResizeSettings getLeftImageResizeSettings() {
-    return this.LeftImageResizeSettings;
+    return this.leftImageResizeSettings;
   }
 
   public ImageResizeSettings getRightImageResizeSettings() {
-    return this.RightImageResizeSettings;
+    return this.rightImageResizeSettings;
   }
 
   public String getLastCompareMode() {
@@ -93,7 +103,6 @@ public class UserSettings {
       maxZoom = 1;
     }
 
-    Settings.MAX_ZOOM = maxZoom;
     this.keyValueStorage.setInt(UserSettings.MAX_ZOOM, maxZoom);
   }
 
@@ -103,8 +112,6 @@ public class UserSettings {
   }
 
   public void setResetImageOnLinking(boolean resetImageOnLinking) {
-    Settings.RESET_IMAGE_ON_LINKING = resetImageOnLinking;
-
     this.keyValueStorage.setBoolean(UserSettings.RESET_IMAGE_ON_LINKING, resetImageOnLinking);
   }
 
@@ -113,8 +120,6 @@ public class UserSettings {
   }
 
   public void setMirroringType(int mirroringType) {
-    Settings.MIRRORING_TYPE = mirroringType;
-
     this.keyValueStorage.setInt(UserSettings.MIRRORING_TYPE, mirroringType);
   }
 
@@ -130,8 +135,8 @@ public class UserSettings {
     this.keyValueStorage.setFloat(UserSettings.MIN_ZOOM, minZoom);
   }
 
-  public void setTypHideMode(int tapHideMode) {
-    Settings.TAP_HIDE_MODE = tapHideMode;
+  /** Sets the tap-hide mode. Corrected spelling (was {@code setTypHideMode}). */
+  public void setTapHideMode(int tapHideMode) {
     this.keyValueStorage.setInt(UserSettings.TAP_HIDE_MODE, tapHideMode);
   }
 
@@ -141,7 +146,6 @@ public class UserSettings {
   }
 
   public void setShowNavigationBar(boolean showNavigationBar) {
-    Settings.SHOW_NAVIGATION_BAR = showNavigationBar;
     this.keyValueStorage.setBoolean(UserSettings.SHOW_NAVIGATION_BAR, showNavigationBar);
   }
 
@@ -169,21 +173,15 @@ public class UserSettings {
     this.keyValueStorage.remove(UserSettings.SHOW_EXTENSIONS);
     this.keyValueStorage.remove(UserSettings.LAST_COMPARE_MODE);
     this.keyValueStorage.remove(UserSettings.MAX_ZOOM);
-    Settings.MAX_ZOOM = DefaultSettings.MAX_ZOOM;
     this.keyValueStorage.remove(UserSettings.RESET_IMAGE_ON_LINKING);
-    Settings.RESET_IMAGE_ON_LINKING = DefaultSettings.RESET_IMAGE_ON_LINKING;
     this.keyValueStorage.remove(UserSettings.MIRRORING_TYPE);
-    Settings.MIRRORING_TYPE = DefaultSettings.MIRRORING_TYPE;
     this.keyValueStorage.remove(UserSettings.TAP_HIDE_MODE);
-    Settings.TAP_HIDE_MODE = DefaultSettings.TAP_HIDE_MODE;
     this.keyValueStorage.remove(UserSettings.MIN_ZOOM);
-    Settings.MIN_ZOOM = DefaultSettings.MIN_ZOOM;
     this.keyValueStorage.remove(UserSettings.SHOW_NAVIGATION_BAR);
-    Settings.SHOW_NAVIGATION_BAR = DefaultSettings.SHOW_NAVIGATION_BAR;
     this.keyValueStorage.remove(UserSettings.DIFFERENCES_MAX_COUNT);
     this.keyValueStorage.remove(UserSettings.DIFFERENCES_CIRCLE_COLOR);
 
-    this.LeftImageResizeSettings.resetAllSettings();
-    this.RightImageResizeSettings.resetAllSettings();
+    this.leftImageResizeSettings.resetAllSettings();
+    this.rightImageResizeSettings.resetAllSettings();
   }
 }

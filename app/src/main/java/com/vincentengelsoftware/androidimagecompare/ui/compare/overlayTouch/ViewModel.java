@@ -1,9 +1,8 @@
-package com.vincentengelsoftware.androidimagecompare.ui.compare;
+package com.vincentengelsoftware.androidimagecompare.ui.compare.overlayTouch;
 
 import android.graphics.Bitmap;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModel;
 
 /**
  * Survives configuration changes (e.g. screen rotation) for the Overlay Touch compare mode.
@@ -19,17 +18,17 @@ import androidx.lifecycle.ViewModel;
  *   <li>Brush-size seekbar progress
  * </ul>
  */
-public class OverlayTouchViewModel extends ViewModel {
+public class ViewModel extends androidx.lifecycle.ViewModel {
 
   // ── Front image state ──────────────────────────────────────────────────────
 
   /**
-   * Mutable copy of the front image; transparent holes are punched here by {@link TouchRevealView}.
+   * Mutable copy of the front image; transparent holes are punched here by {@link com.vincentengelsoftware.androidimagecompare.ui.widget.TouchRevealView}.
    * {@code null} until the background decode finishes.
    */
   @Nullable private Bitmap mutableBitmap;
 
-  /** Compact JPEG snapshot of the original front image used by {@link TouchRevealView#reset()}. */
+  /** Compact JPEG snapshot of the original front image used by {@link com.vincentengelsoftware.androidimagecompare.ui.widget.TouchRevealView#reset()}. */
   @Nullable private byte[] originalBytes;
 
   // ── UI state ───────────────────────────────────────────────────────────────

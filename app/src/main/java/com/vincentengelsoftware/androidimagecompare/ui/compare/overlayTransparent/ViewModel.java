@@ -1,6 +1,5 @@
-package com.vincentengelsoftware.androidimagecompare.ui.compare;
+package com.vincentengelsoftware.androidimagecompare.ui.compare.overlayTransparent;
 
-import androidx.lifecycle.ViewModel;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -15,7 +14,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * <p>Images are loaded directly from their URIs on each (re-)creation of the Activity; no bitmap is
  * retained in memory here.
  */
-public class OverlayTransparentViewModel extends ViewModel {
+public class ViewModel extends androidx.lifecycle.ViewModel {
 
   // ── Shared mutable state ───────────────────────────────────────────────────
 
@@ -26,7 +25,7 @@ public class OverlayTransparentViewModel extends ViewModel {
    */
   private final AtomicBoolean sync = new AtomicBoolean(true);
 
-  /** Returns the shared sync flag used by {@link SyncZoom}. */
+  /** Returns the shared sync flag used by {@link com.vincentengelsoftware.androidimagecompare.ui.compare.shared.SyncZoom}. */
   public AtomicBoolean getSync() {
     return sync;
   }
