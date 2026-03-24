@@ -23,12 +23,16 @@ public class ViewModel extends androidx.lifecycle.ViewModel {
   // ── Front image state ──────────────────────────────────────────────────────
 
   /**
-   * Mutable copy of the front image; transparent holes are punched here by {@link com.vincentengelsoftware.androidimagecompare.ui.widget.TouchRevealView}.
-   * {@code null} until the background decode finishes.
+   * Mutable copy of the front image; transparent holes are punched here by {@link
+   * com.vincentengelsoftware.androidimagecompare.ui.widget.TouchRevealView}. {@code null} until the
+   * background decode finishes.
    */
   @Nullable private Bitmap mutableBitmap;
 
-  /** Compact JPEG snapshot of the original front image used by {@link com.vincentengelsoftware.androidimagecompare.ui.widget.TouchRevealView#reset()}. */
+  /**
+   * Compact JPEG snapshot of the original front image used by {@link
+   * com.vincentengelsoftware.androidimagecompare.ui.widget.TouchRevealView#reset()}.
+   */
   @Nullable private byte[] originalBytes;
 
   // ── UI state ───────────────────────────────────────────────────────────────

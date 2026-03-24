@@ -9,5 +9,4 @@ package com.vincentengelsoftware.androidimagecompare.domain.model;
  * <p>Four {@code CropEdge} instances (top, left, right, bottom) are bundled together into a {@link
  * CropParams} record.
  */
-public record CropEdge(boolean active, int progress) {
-}
+public record CropEdge(boolean active, int progress) {}

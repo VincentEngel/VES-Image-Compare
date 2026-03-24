@@ -9,5 +9,4 @@ package com.vincentengelsoftware.androidimagecompare.domain.model;
  * <p>Passed to {@code BitmapTransformer.cutBitmapAny(Bitmap, CropParams)} instead of eight raw
  * primitive parameters.
  */
-public record CropParams(CropEdge top, CropEdge left, CropEdge right, CropEdge bottom) {
-}
+public record CropParams(CropEdge top, CropEdge left, CropEdge right, CropEdge bottom) {}

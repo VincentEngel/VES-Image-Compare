@@ -25,7 +25,11 @@ public class ViewModel extends androidx.lifecycle.ViewModel {
    */
   private final AtomicBoolean sync = new AtomicBoolean(true);
 
-  /** Returns the shared sync flag used by {@link com.vincentengelsoftware.androidimagecompare.ui.compare.shared.TapHelper} and {@link com.vincentengelsoftware.androidimagecompare.ui.compare.shared.SyncZoom}. */
+  /**
+   * Returns the shared sync flag used by {@link
+   * com.vincentengelsoftware.androidimagecompare.ui.compare.shared.TapHelper} and {@link
+   * com.vincentengelsoftware.androidimagecompare.ui.compare.shared.SyncZoom}.
+   */
   public AtomicBoolean getSync() {
     return sync;
   }
