@@ -1,1 +1,1 @@
-Compare photos with side-by-side, overlay, slider, transparent, touch reveal, auto-differences and zoom.
+Compare photos by side-by-side, overlay, slider, transparent, differences, zoom
