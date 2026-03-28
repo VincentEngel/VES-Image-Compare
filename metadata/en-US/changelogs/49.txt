@@ -1,0 +1,1 @@
+* Fix MainActivity navigation bar issue on Android 15
