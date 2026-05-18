@@ -240,9 +240,20 @@ public class ImageSlotPickerHelper {
         return;
       }
 
+      // Convert file:// URI to content:// URI via FileProvider for sharing with other apps.
+      // Since Android 7 (API 24), file:// URIs cause a FileUriExposedException.
+      if ("file".equals(imageUri.getScheme())) {
+        File file = new File(imageUri.getPath());
+        imageUri =
+            FileProvider.getUriForFile(
+                activity,
+                activity.getApplicationContext().getPackageName() + ".fileprovider",
+                file);
+      }
+
       Intent shareIntent = new Intent(Intent.ACTION_SEND);
       shareIntent.setType("image/*");
-      shareIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+      shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
       shareIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
       activity.startActivity(
           Intent.createChooser(shareIntent, activity.getString(R.string.share_image)));
