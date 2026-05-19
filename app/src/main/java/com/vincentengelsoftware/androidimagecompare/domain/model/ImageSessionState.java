@@ -76,4 +76,15 @@ public class ImageSessionState {
     firstImageInfoHolder.updateFromImageHolder(secondImageInfoHolder);
     secondImageInfoHolder.updateFromImageHolder(imageInfoHolder);
   }
+
+  /**
+   * Releases all bitmap resources held by both image slots. Call this when the owning Activity is
+   * finishing so that full-resolution bitmaps are not retained for the lifetime of the process.
+   */
+  public void release() {
+    firstImageInfoHolder.release();
+    secondImageInfoHolder.release();
+    leftImageUri = null;
+    rightImageUri = null;
+  }
 }

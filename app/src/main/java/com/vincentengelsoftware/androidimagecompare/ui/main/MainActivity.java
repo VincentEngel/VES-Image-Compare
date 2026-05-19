@@ -165,6 +165,11 @@ public class MainActivity extends AppCompatActivity {
     if (!isChangingConfigurations()) {
       CacheManager.cleanup(getCacheDir(), sessionState);
     }
+    // Release full-resolution bitmaps when the activity is finishing so the singleton
+    // does not retain 50–200 MB of heap for the lifetime of the process.
+    if (isFinishing()) {
+      sessionState.release();
+    }
   }
 
   @Override

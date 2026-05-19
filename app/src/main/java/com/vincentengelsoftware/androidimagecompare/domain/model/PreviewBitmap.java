@@ -27,6 +27,14 @@ public class PreviewBitmap {
     scaledBase = null;
   }
 
+  /** Recycles the cached scaled base bitmap and nulls the reference. */
+  public void release() {
+    if (scaledBase != null && !scaledBase.isRecycled()) {
+      scaledBase.recycle();
+    }
+    scaledBase = null;
+  }
+
   public void updateFrom(PreviewBitmap other) {
     this.scaledBase = other.scaledBase;
   }

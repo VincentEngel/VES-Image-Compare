@@ -44,6 +44,20 @@ public class ImageInfoHolder {
     stateSaver = AdjustImageState.empty();
   }
 
+  /**
+   * Releases all bitmap resources held by this holder. After this call the holder is empty and
+   * must be re-initialised via {@link #updateFromBitmap} before it can be used again.
+   */
+  public void release() {
+    if (source != null && source.bitmap() != null && !source.bitmap().isRecycled()) {
+      source.bitmap().recycle();
+    }
+    source = new ImageSource(null, null, 0, 0);
+    previewBitmap.release();
+    transformSettings.reset();
+    stateSaver = AdjustImageState.empty();
+  }
+
   public void setResizeOption(int resizeOption) {
     transformSettings.setResizeOption(resizeOption);
     stateSaver = AdjustImageState.empty();
