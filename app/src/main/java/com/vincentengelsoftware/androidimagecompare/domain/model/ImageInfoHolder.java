@@ -87,15 +87,22 @@ public class ImageInfoHolder {
   }
 
   public Bitmap getAdjustedBitmap() {
+    Bitmap sourceBitmap = source.bitmap();
+
     // Step 1: scale the source bitmap to the configured target size.
     Bitmap scaled = scaleSource(source, transformSettings);
 
-    // Step 2: apply horizontal mirror if toggled to the already-small bitmap.
-    Bitmap mirrored =
-        transformSettings.isMirrored() ? BitmapTransformer.mirrorBitmap(scaled) : scaled;
+    // Step 2: apply rotation and mirror in the canonical order (rotate → mirror).
+    Bitmap result = BitmapTransformer.applyRotateAndMirror(
+        scaled, transformSettings.getRotationDegrees(), transformSettings.isMirrored());
 
-    // Step 3: apply rotation.
-    return BitmapTransformer.rotateBitmap(mirrored, transformSettings.getRotationDegrees());
+    // Recycle intermediate scaled bitmap if it is a new allocation (not the original source
+    // and not returned as the final result).
+    if (scaled != sourceBitmap && scaled != result && !scaled.isRecycled()) {
+      scaled.recycle();
+    }
+
+    return result;
   }
 
   public void rotatePreviewImage() {

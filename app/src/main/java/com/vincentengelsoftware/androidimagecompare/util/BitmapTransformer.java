@@ -84,6 +84,31 @@ public class BitmapTransformer {
     return bitmap;
   }
 
+  /**
+   * Applies rotation and optional horizontal mirror to {@code source} in the canonical order
+   * <b>rotate → mirror</b>, recycling any intermediate bitmap that is a new allocation (i.e. not
+   * the same object as {@code source}).
+   *
+   * @param source          the input bitmap (never recycled by this method)
+   * @param rotationDegrees rotation in degrees (must be a multiple of 90)
+   * @param mirrored        whether to apply a horizontal flip after rotation
+   * @return the transformed bitmap — may be {@code source} itself when no transforms are needed
+   */
+  public static Bitmap applyRotateAndMirror(Bitmap source, int rotationDegrees, boolean mirrored) {
+    Bitmap rotated = rotateBitmap(source, rotationDegrees);
+
+    if (mirrored) {
+      Bitmap mirroredBitmap = mirrorBitmap(rotated);
+      // Recycle the intermediate rotated bitmap if it is a new allocation.
+      if (rotated != source && rotated != mirroredBitmap && !rotated.isRecycled()) {
+        rotated.recycle();
+      }
+      return mirroredBitmap;
+    }
+
+    return rotated;
+  }
+
   public static Bitmap createTransparentBitmap(int width, int height) {
     // Bitmap.createBitmap initialises all pixels to 0 (fully transparent for ARGB_8888);
     return Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);

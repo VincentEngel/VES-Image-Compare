@@ -22,13 +22,27 @@ public class PreviewBitmap {
    */
   private Bitmap scaledBase;
 
-  /** Clears the cached base so it will be re-derived from source on the next access. */
+  /**
+   * Cached result of the last {@link #getSmall} call. Recycled and replaced whenever the transform
+   * settings change.
+   */
+  private Bitmap cachedTransformed;
+
+  /** Snapshot of the rotation degrees used to produce {@link #cachedTransformed}. */
+  private int cachedRotationDegrees = -1;
+
+  /** Snapshot of the mirror flag used to produce {@link #cachedTransformed}. */
+  private boolean cachedMirrored;
+
+  /** Clears the cached base and transformed preview so they will be re-derived on the next access. */
   public void invalidate() {
+    recycleCachedTransformed();
     scaledBase = null;
   }
 
-  /** Recycles the cached scaled base bitmap and nulls the reference. */
+  /** Recycles the cached scaled base bitmap and transformed preview, and nulls the references. */
   public void release() {
+    recycleCachedTransformed();
     if (scaledBase != null && !scaledBase.isRecycled()) {
       scaledBase.recycle();
     }
@@ -36,7 +50,11 @@ public class PreviewBitmap {
   }
 
   public void updateFrom(PreviewBitmap other) {
+    recycleCachedTransformed();
     this.scaledBase = other.scaledBase;
+    this.cachedTransformed = other.cachedTransformed;
+    this.cachedRotationDegrees = other.cachedRotationDegrees;
+    this.cachedMirrored = other.cachedMirrored;
   }
 
   /**
@@ -44,10 +62,9 @@ public class PreviewBitmap {
    * mirror</b>, which is identical to the order used by {@link
    * com.vincentengelsoftware.androidimagecompare.domain.model.ImageInfoHolder#getAdjustedBitmap()}.
    *
-   * <p>The scaled base is cached lazily and reused across calls; rotation and mirror are recomputed
-   * from it on every call so the result is always consistent with the current {@link
-   * BitmapTransformSettings}, regardless of the order in which individual operations were applied
-   * interactively.
+   * <p>The scaled base is cached lazily and reused across calls. The transformed result is also
+   * cached and only recomputed when the rotation or mirror settings actually change, avoiding
+   * repeated bitmap allocations.
    */
   public Bitmap getSmall(ImageSource source, BitmapTransformSettings settings) {
     if (scaledBase == null) {
@@ -57,7 +74,41 @@ public class PreviewBitmap {
               source.maxSideSizeForSmallBitmap(),
               source.maxSideSizeForSmallBitmap());
     }
-    Bitmap rotated = BitmapTransformer.rotateBitmap(scaledBase, settings.getRotationDegrees());
-    return settings.isMirrored() ? BitmapTransformer.mirrorBitmap(rotated) : rotated;
+
+    int rotationDegrees = settings.getRotationDegrees();
+    boolean mirrored = settings.isMirrored();
+
+    // Return the cached result if the settings have not changed.
+    if (cachedTransformed != null
+        && !cachedTransformed.isRecycled()
+        && cachedRotationDegrees == rotationDegrees
+        && cachedMirrored == mirrored) {
+      return cachedTransformed;
+    }
+
+    // Recycle the previous transformed bitmap before creating a new one.
+    recycleCachedTransformed();
+
+    cachedTransformed = BitmapTransformer.applyRotateAndMirror(scaledBase, rotationDegrees, mirrored);
+
+    cachedRotationDegrees = rotationDegrees;
+    cachedMirrored = mirrored;
+
+    return cachedTransformed;
+  }
+
+  /**
+   * Recycles {@link #cachedTransformed} if it is non-null, not yet recycled, and distinct from
+   * {@link #scaledBase} (which must be kept alive for future transforms).
+   */
+  private void recycleCachedTransformed() {
+    if (cachedTransformed != null
+        && cachedTransformed != scaledBase
+        && !cachedTransformed.isRecycled()) {
+      cachedTransformed.recycle();
+    }
+    cachedTransformed = null;
+    cachedRotationDegrees = -1;
+    cachedMirrored = false;
   }
 }
