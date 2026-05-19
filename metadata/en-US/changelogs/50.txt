@@ -1,2 +1,3 @@
 * Fix share image button
 * Add feature to save image to gallery
+* Update gradle to 9.2.1
