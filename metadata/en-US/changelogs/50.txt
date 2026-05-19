@@ -2,3 +2,4 @@
 * Add feature to save image to gallery
 * Update gradle to 9.2.1
 * Correctly release memory when exiting the app
+* Improve performance and memory usage for rotated image calculation
