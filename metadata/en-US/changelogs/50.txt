@@ -1,1 +1,2 @@
 * Fix share image button
+* Add feature to save image to gallery

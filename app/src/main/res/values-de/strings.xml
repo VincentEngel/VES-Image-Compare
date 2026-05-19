@@ -37,6 +37,8 @@
     <string name="select_compare_mode_title">Vergleichsmodus auswählen</string>
     <string name="last_compare">Letzter Vergleichsmodus</string>
     <string name="share_image">Bild teilen</string>
+    <string name="save_image">Bild speichern</string>
+    <string name="save_image_success">Bild erfolgreich gespeichert</string>
     <string name="ask_for_review_text">Sollte dir die App gefallen, unterstütze sie bitte durch eine Bewertung im Google PlayStore!</string>
     <string name="ask_for_review_positive">Playstore öffnen</string>
     <string name="ask_for_review_negative">Nicht nochmal anzeigen</string>

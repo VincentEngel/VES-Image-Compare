@@ -20,6 +20,8 @@
     <string name="compare">Compare</string>
     <string name="last_compare">Last Compare</string>
     <string name="share_image">Share Image</string>
+    <string name="save_image">Save Image</string>
+    <string name="save_image_success">Image saved successfully</string>
     <string name="load_image_camera">Take Photo</string>
     <string name="load_image_gallery">Choose from Gallery</string>
 

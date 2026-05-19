@@ -1,8 +1,12 @@
 package com.vincentengelsoftware.androidimagecompare.ui.main;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
@@ -19,6 +23,8 @@ import com.vincentengelsoftware.androidimagecompare.util.BitmapExtractor;
 import com.vincentengelsoftware.androidimagecompare.util.Dimensions;
 import com.vincentengelsoftware.androidimagecompare.util.ImageFileSaver;
 import java.io.File;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -98,7 +104,8 @@ public class ImageSlotPickerHelper {
       CharSequence[] options = {
         activity.getString(R.string.load_image_camera),
         activity.getString(R.string.load_image_gallery),
-        activity.getString(R.string.share_image)
+        activity.getString(R.string.share_image),
+        activity.getString(R.string.save_image)
       };
 
       new AlertDialog.Builder(activity)
@@ -109,8 +116,10 @@ public class ImageSlotPickerHelper {
                   launchCamera();
                 } else if (options[i].equals(activity.getString(R.string.load_image_gallery))) {
                   galleryPicker.launch("image/*");
-                } else {
+                } else if (options[i].equals(activity.getString(R.string.share_image))) {
                   shareCurrentImage();
+                } else {
+                  saveCurrentImage();
                 }
                 dialogInterface.dismiss();
               })
@@ -257,6 +266,81 @@ public class ImageSlotPickerHelper {
       shareIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
       activity.startActivity(
           Intent.createChooser(shareIntent, activity.getString(R.string.share_image)));
+    } catch (Exception ignored) {
+      Toast.makeText(
+              activity, activity.getString(R.string.error_message_general), Toast.LENGTH_SHORT)
+          .show();
+    }
+  }
+
+  // ── private: save ──────────────────────────────────────────────────────────
+
+  private void saveCurrentImage() {
+    try {
+      Uri imageUri = isLeft() ? sessionState.getLeftImageUri() : sessionState.getRightImageUri();
+
+      if (imageUri == null) {
+        Toast.makeText(
+                activity, activity.getString(R.string.error_msg_missing_images), Toast.LENGTH_SHORT)
+            .show();
+        return;
+      }
+
+      String imageName = getHolder().getImageName();
+      if (imageName == null || imageName.isEmpty()) {
+        imageName = "image_" + System.currentTimeMillis() + ".jpg";
+      }
+
+      ContentValues contentValues = new ContentValues();
+      contentValues.put(MediaStore.Images.Media.DISPLAY_NAME, imageName);
+      contentValues.put(MediaStore.Images.Media.MIME_TYPE, "image/*");
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        contentValues.put(
+            MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES);
+        contentValues.put(MediaStore.Images.Media.IS_PENDING, 1);
+      }
+
+      Uri collection;
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        collection = MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY);
+      } else {
+        collection = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+      }
+      Uri savedUri =
+          activity.getContentResolver().insert(collection, contentValues);
+
+      if (savedUri == null) {
+        Toast.makeText(
+                activity, activity.getString(R.string.error_message_general), Toast.LENGTH_SHORT)
+            .show();
+        return;
+      }
+
+      try (InputStream in = activity.getContentResolver().openInputStream(imageUri);
+          OutputStream out = activity.getContentResolver().openOutputStream(savedUri)) {
+        if (in == null || out == null) {
+          activity.getContentResolver().delete(savedUri, null, null);
+          Toast.makeText(
+                  activity, activity.getString(R.string.error_message_general), Toast.LENGTH_SHORT)
+              .show();
+          return;
+        }
+        byte[] buffer = new byte[8192];
+        int bytesRead;
+        while ((bytesRead = in.read(buffer)) != -1) {
+          out.write(buffer, 0, bytesRead);
+        }
+      }
+
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        contentValues.clear();
+        contentValues.put(MediaStore.Images.Media.IS_PENDING, 0);
+        activity.getContentResolver().update(savedUri, contentValues, null, null);
+      }
+
+      Toast.makeText(
+              activity, activity.getString(R.string.save_image_success), Toast.LENGTH_SHORT)
+          .show();
     } catch (Exception ignored) {
       Toast.makeText(
               activity, activity.getString(R.string.error_message_general), Toast.LENGTH_SHORT)
