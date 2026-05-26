@@ -17,6 +17,7 @@ public final class UserSettings {
   public static final String LAST_COMPARE_MODE = "LAST_COMPARE_MODE";
   public static final String MAX_ZOOM = "MAX_ZOOM";
   public static final String MIN_ZOOM = "MIN_ZOOM";
+  public static final String DOUBLE_TAP_ZOOM = "DOUBLE_TAP_ZOOM";
 
   public static final String RESET_IMAGE_ON_LINKING = "RESET_IMAGE_ON_LINKING";
 
@@ -135,6 +136,15 @@ public final class UserSettings {
     this.keyValueStorage.setFloat(UserSettings.MIN_ZOOM, minZoom);
   }
 
+  public float getDoubleTapZoom() {
+    return this.keyValueStorage.getFloat(
+        UserSettings.DOUBLE_TAP_ZOOM, DefaultSettings.DOUBLE_TAP_ZOOM);
+  }
+
+  public void setDoubleTapZoom(float doubleTapZoom) {
+    this.keyValueStorage.setFloat(UserSettings.DOUBLE_TAP_ZOOM, doubleTapZoom);
+  }
+
   /** Sets the tap-hide mode. Corrected spelling (was {@code setTypHideMode}). */
   public void setTapHideMode(int tapHideMode) {
     this.keyValueStorage.setInt(UserSettings.TAP_HIDE_MODE, tapHideMode);
@@ -177,6 +187,7 @@ public final class UserSettings {
     this.keyValueStorage.remove(UserSettings.MIRRORING_TYPE);
     this.keyValueStorage.remove(UserSettings.TAP_HIDE_MODE);
     this.keyValueStorage.remove(UserSettings.MIN_ZOOM);
+    this.keyValueStorage.remove(UserSettings.DOUBLE_TAP_ZOOM);
     this.keyValueStorage.remove(UserSettings.SHOW_NAVIGATION_BAR);
     this.keyValueStorage.remove(UserSettings.DIFFERENCES_MAX_COUNT);
     this.keyValueStorage.remove(UserSettings.DIFFERENCES_CIRCLE_COLOR);

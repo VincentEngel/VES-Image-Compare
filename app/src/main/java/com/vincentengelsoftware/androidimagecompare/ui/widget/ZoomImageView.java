@@ -40,9 +40,10 @@ public class ZoomImageView extends TouchImageView implements VesImageInterface {
   }
 
   @Override
-  public void initZoomLimits(int maxZoom, float minZoom) {
+  public void initZoomLimits(int maxZoom, float minZoom, float doubleTapZoom) {
     super.setMaxZoom(maxZoom);
     super.setMinZoom(minZoom);
+    super.setDoubleTapScale(doubleTapZoom);
   }
 
   @SuppressLint("ClickableViewAccessibility")

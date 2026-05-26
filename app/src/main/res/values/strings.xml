@@ -95,8 +95,10 @@
     <string name="user_settings">User settings</string>
     <string name="max_zoom">Max Zoom</string>
     <string name="min_zoom">Min Zoom</string>
+    <string name="double_tap_zoom">Double Tap Zoom</string>
     <string name="default_100">(default: 100)</string>
     <string name="default_1.0">(default: 1.0)</string>
+    <string name="default_3.0">(default: 3.0)</string>
     <string name="open_settings">Open Settings</string>
     <string name="settings_save_success">Successfully saved</string>
     <string name="settings_reset_success">Successfully reset all settings</string>

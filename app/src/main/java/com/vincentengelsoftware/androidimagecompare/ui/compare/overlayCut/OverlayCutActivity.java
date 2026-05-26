@@ -73,8 +73,9 @@ public class OverlayCutActivity extends AppCompatActivity {
 
     int maxZoom = IntentExtras.getMaxZoom(getIntent());
     float minZoom = IntentExtras.getMinZoom(getIntent());
-    binding.fullSlideImageViewBase.initZoomLimits(maxZoom, minZoom);
-    binding.fullSlideImageViewFront.initZoomLimits(maxZoom, minZoom);
+    float doubleTapZoom = IntentExtras.getDoubleTapZoom(getIntent());
+    binding.fullSlideImageViewBase.initZoomLimits(maxZoom, minZoom, doubleTapZoom);
+    binding.fullSlideImageViewFront.initZoomLimits(maxZoom, minZoom, doubleTapZoom);
 
     if (!initImages()) {
       // URIs are invalid or images could not be decoded; nothing to show.

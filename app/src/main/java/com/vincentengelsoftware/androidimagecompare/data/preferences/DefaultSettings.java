@@ -28,6 +28,7 @@ public final class DefaultSettings {
   public static final int MIRRORING_TYPE = Status.NATURAL_MIRRORING;
 
   public static final float MIN_ZOOM = 1.0F;
+public static final float DOUBLE_TAP_ZOOM = 3.0F;
 
   public static final int TAP_HIDE_MODE = Status.TAP_HIDE_MODE_INVISIBLE;
 

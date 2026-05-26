@@ -63,11 +63,13 @@ public class UserSettingsActivity extends AppCompatActivity {
             int maxZoomValue = Integer.parseInt(String.valueOf(binding.settingsMaxZoom.getText()));
             float minZoomValue =
                 Float.parseFloat(String.valueOf(binding.settingsMinZoom.getText()));
+            float doubleTapZoomValue =
+                Float.parseFloat(String.valueOf(binding.settingsDoubleTapZoom.getText()));
             int maxDifferencesValue =
                 Integer.parseInt(String.valueOf(binding.settingsMaxDifferences.getText()));
 
             UserSettingsPresenter.SaveZoomResult zoomResult =
-                presenter.saveZoom(maxZoomValue, minZoomValue);
+                presenter.saveZoom(maxZoomValue, minZoomValue, doubleTapZoomValue);
             boolean diffError = presenter.saveDifferencesMaxCount(maxDifferencesValue);
             render(presenter.buildUiState());
 
@@ -174,6 +176,7 @@ public class UserSettingsActivity extends AppCompatActivity {
   private void render(UserSettingsUiState state) {
     binding.settingsMaxZoom.setText(state.maxZoom());
     binding.settingsMinZoom.setText(state.minZoom());
+    binding.settingsDoubleTapZoom.setText(state.doubleTapZoom());
 
     binding.homeTheme.setText(state.themeButtonTextResId());
     binding.settingsSwitchResetZoomOnLinking.setChecked(state.resetImageOnLinking());

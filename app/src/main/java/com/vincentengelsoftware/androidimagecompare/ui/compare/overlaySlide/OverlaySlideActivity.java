@@ -69,8 +69,9 @@ public class OverlaySlideActivity extends AppCompatActivity implements ControlsB
 
     int maxZoom = IntentExtras.getMaxZoom(getIntent());
     float minZoom = IntentExtras.getMinZoom(getIntent());
-    binding.overlaySlideImageViewBase.initZoomLimits(maxZoom, minZoom);
-    binding.overlaySlideImageViewFront.initZoomLimits(maxZoom, minZoom);
+    float doubleTapZoom = IntentExtras.getDoubleTapZoom(getIntent());
+    binding.overlaySlideImageViewBase.initZoomLimits(maxZoom, minZoom, doubleTapZoom);
+    binding.overlaySlideImageViewFront.initZoomLimits(maxZoom, minZoom, doubleTapZoom);
 
     controlsBarManager = new ControlsBarManager(binding.overlaySlideExtensions, getResources());
 

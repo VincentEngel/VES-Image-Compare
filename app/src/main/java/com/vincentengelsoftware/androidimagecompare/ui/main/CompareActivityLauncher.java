@@ -95,6 +95,7 @@ public class CompareActivityLauncher {
     intent.putExtra(IntentExtras.RESET_IMAGE_ON_LINKING, userSettings.getResetImageOnLink());
     intent.putExtra(IntentExtras.MAX_ZOOM, userSettings.getMaxZoom());
     intent.putExtra(IntentExtras.MIN_ZOOM, userSettings.getMinZoom());
+    intent.putExtra(IntentExtras.DOUBLE_TAP_ZOOM, userSettings.getDoubleTapZoom());
     intent.putExtra(
         IntentExtras.HAS_HARDWARE_KEY, ViewConfiguration.get(activity).hasPermanentMenuKey());
 

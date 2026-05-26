@@ -5,6 +5,7 @@ package com.vincentengelsoftware.androidimagecompare.ui.settings.usersettings;
  *
  * @param maxZoom Maximum zoom level as a display string
  * @param minZoom Minimum zoom level as a display string
+ * @param doubleTapZoom Double-tap zoom level as a display string
  * @param resetImageOnLinking Whether reset-on-linking is enabled
  * @param mirroringNaturalChecked Whether the Natural mirroring radio button is selected
  * @param mirroringStrictChecked Whether the Strict mirroring radio button is selected
@@ -23,6 +24,7 @@ package com.vincentengelsoftware.androidimagecompare.ui.settings.usersettings;
 public record UserSettingsUiState(
     String maxZoom,
     String minZoom,
+    String doubleTapZoom,
     boolean resetImageOnLinking,
     boolean mirroringNaturalChecked,
     boolean mirroringStrictChecked,

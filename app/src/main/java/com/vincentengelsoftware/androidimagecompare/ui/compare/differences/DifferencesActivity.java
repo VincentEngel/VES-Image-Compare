@@ -49,8 +49,9 @@ public class DifferencesActivity extends AppCompatActivity {
 
     int maxZoom = IntentExtras.getMaxZoom(getIntent());
     float minZoom = IntentExtras.getMinZoom(getIntent());
-    binding.differencesImageTop.initZoomLimits(maxZoom, minZoom);
-    binding.differencesImageBottom.initZoomLimits(maxZoom, minZoom);
+    float doubleTapZoom = IntentExtras.getDoubleTapZoom(getIntent());
+    binding.differencesImageTop.initZoomLimits(maxZoom, minZoom, doubleTapZoom);
+    binding.differencesImageBottom.initZoomLimits(maxZoom, minZoom, doubleTapZoom);
 
     if (!initProcessing()) {
       finish();

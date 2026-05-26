@@ -59,7 +59,9 @@ public class OverlayTouchActivity extends AppCompatActivity {
     setContentView(binding.getRoot());
 
     binding.overlayTouchImageViewBottom.initZoomLimits(
-        IntentExtras.getMaxZoom(getIntent()), IntentExtras.getMinZoom(getIntent()));
+        IntentExtras.getMaxZoom(getIntent()),
+        IntentExtras.getMinZoom(getIntent()),
+        IntentExtras.getDoubleTapZoom(getIntent()));
 
     if (!initImages()) {
       finish();

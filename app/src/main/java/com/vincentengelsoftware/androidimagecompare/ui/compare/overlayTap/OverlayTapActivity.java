@@ -59,8 +59,9 @@ public class OverlayTapActivity extends AppCompatActivity {
 
     int maxZoom = IntentExtras.getMaxZoom(getIntent());
     float minZoom = IntentExtras.getMinZoom(getIntent());
-    binding.overlayTapImageViewOne.initZoomLimits(maxZoom, minZoom);
-    binding.overlayTapImageViewTwo.initZoomLimits(maxZoom, minZoom);
+    float doubleTapZoom = IntentExtras.getDoubleTapZoom(getIntent());
+    binding.overlayTapImageViewOne.initZoomLimits(maxZoom, minZoom, doubleTapZoom);
+    binding.overlayTapImageViewTwo.initZoomLimits(maxZoom, minZoom, doubleTapZoom);
 
     int tapHideMode =
         getIntent().getIntExtra(IntentExtras.TAP_HIDE_MODE, Status.TAP_HIDE_MODE_INVISIBLE);

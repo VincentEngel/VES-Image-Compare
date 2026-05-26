@@ -59,8 +59,10 @@
     <string name="resize_image_mode_automatic">Automatisch</string>
     <string name="resize_image_mode_original">Original</string>
     <string name="resize_image">Bild zuschneiden</string>
+    <string name="double_tap_zoom">Doppelklick Zoom</string>
     <string name="max_zoom">Maximal Zoom</string>
     <string name="min_zoom">Minimal Zoom</string>
+    <string name="default_3.0">(standard: 3.0)</string>
     <string name="save">Speichern</string>
     <string name="number">Nummer</string>
     <string name="number_decimal">Dezimalzahl</string>

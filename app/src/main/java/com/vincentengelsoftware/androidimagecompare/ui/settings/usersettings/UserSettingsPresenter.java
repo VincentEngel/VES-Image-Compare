@@ -17,6 +17,7 @@ public class UserSettingsPresenter {
 
   @VisibleForTesting static final float MIN_ZOOM_FALLBACK = 0.1F;
   @VisibleForTesting static final int MAX_ZOOM_FALLBACK = 1;
+  @VisibleForTesting static final float DOUBLE_TAP_ZOOM_FALLBACK = 3.0F;
 
   /** Total number of theme options: System, Light, Dark. */
   private static final int THEME_COUNT = 3;
@@ -40,6 +41,7 @@ public class UserSettingsPresenter {
     return new UserSettingsUiState(
         String.valueOf(userSettings.getMaxZoom()),
         String.valueOf(userSettings.getMinZoom()),
+        String.valueOf(userSettings.getDoubleTapZoom()),
         userSettings.getResetImageOnLink(),
         mirroringType == Status.NATURAL_MIRRORING,
         mirroringType == Status.STRICT_MIRRORING,
@@ -57,16 +59,17 @@ public class UserSettingsPresenter {
   }
 
   /**
-   * Validates and persists zoom bounds.
+   * Validates and persists zoom bounds and double-tap zoom level.
    *
    * <p>Values below their minimum are clamped to {@link #MAX_ZOOM_FALLBACK} / {@link
-   * #MIN_ZOOM_FALLBACK} respectively.
+   * #MIN_ZOOM_FALLBACK} / {@link #DOUBLE_TAP_ZOOM_FALLBACK} respectively.
    *
    * @return a {@link SaveZoomResult} indicating whether any clamping occurred
    */
-  public SaveZoomResult saveZoom(int rawMaxZoom, float rawMinZoom) {
+  public SaveZoomResult saveZoom(int rawMaxZoom, float rawMinZoom, float rawDoubleTapZoom) {
     boolean maxZoomClamped = false;
     boolean minZoomClamped = false;
+    boolean doubleTapZoomClamped = false;
 
     int maxZoom = rawMaxZoom;
     if (maxZoom < 1) {
@@ -80,10 +83,17 @@ public class UserSettingsPresenter {
       minZoomClamped = true;
     }
 
+    float doubleTapZoom = rawDoubleTapZoom;
+    if (doubleTapZoom <= 0F) {
+      doubleTapZoom = DOUBLE_TAP_ZOOM_FALLBACK;
+      doubleTapZoomClamped = true;
+    }
+
     userSettings.setMaxZoom(maxZoom);
     userSettings.setMinZoom(minZoom);
+    userSettings.setDoubleTapZoom(doubleTapZoom);
 
-    return new SaveZoomResult(maxZoomClamped || minZoomClamped);
+    return new SaveZoomResult(maxZoomClamped || minZoomClamped || doubleTapZoomClamped);
   }
 
   /**

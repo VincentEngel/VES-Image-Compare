@@ -57,8 +57,9 @@ public class SideBySideActivity extends AppCompatActivity {
 
     int maxZoom = IntentExtras.getMaxZoom(getIntent());
     float minZoom = IntentExtras.getMinZoom(getIntent());
-    binding.sideBySideImageTopLeft.initZoomLimits(maxZoom, minZoom);
-    binding.sideBySideImageBottomRight.initZoomLimits(maxZoom, minZoom);
+    float doubleTapZoom = IntentExtras.getDoubleTapZoom(getIntent());
+    binding.sideBySideImageTopLeft.initZoomLimits(maxZoom, minZoom, doubleTapZoom);
+    binding.sideBySideImageBottomRight.initZoomLimits(maxZoom, minZoom, doubleTapZoom);
 
     if (!initImages()) {
       // URIs are missing or invalid; nothing to show.

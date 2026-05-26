@@ -1,0 +1,1 @@
+* Add setting to allow custom double tap zoom

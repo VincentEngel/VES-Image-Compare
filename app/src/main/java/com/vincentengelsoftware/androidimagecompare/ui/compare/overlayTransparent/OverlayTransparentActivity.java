@@ -67,8 +67,9 @@ public class OverlayTransparentActivity extends AppCompatActivity implements Con
 
     int maxZoom = IntentExtras.getMaxZoom(getIntent());
     float minZoom = IntentExtras.getMinZoom(getIntent());
-    binding.overlayTransparentImageViewBase.initZoomLimits(maxZoom, minZoom);
-    binding.overlayTransparentImageViewTransparent.initZoomLimits(maxZoom, minZoom);
+    float doubleTapZoom = IntentExtras.getDoubleTapZoom(getIntent());
+    binding.overlayTransparentImageViewBase.initZoomLimits(maxZoom, minZoom, doubleTapZoom);
+    binding.overlayTransparentImageViewTransparent.initZoomLimits(maxZoom, minZoom, doubleTapZoom);
 
     controlsBarManager =
         new ControlsBarManager(binding.overlayTransparentExtensions, getResources());
