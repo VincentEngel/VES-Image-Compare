@@ -1,9 +1,9 @@
 [versions]
-agp = "9.3.0"
+agp = "9.3.1"
 appcompat = "1.7.1"
-constraintlayout = "2.2.1"
+constraintlayout = "2.2.2"
 core = "1.19.0"
-diffplugSpotless = "8.8.0"
+diffplugSpotless = "8.9.0"
 documentfile = "1.1.0"
 espresso = "3.7.0"
 junit = "4.13.2"
